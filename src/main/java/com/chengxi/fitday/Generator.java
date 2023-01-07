@@ -41,8 +41,10 @@ public class Generator {
 
         StrategyConfig strategyConfig = new StrategyConfig();
 
+
         //在使用之前，设置数据库生成的表，一定不要填目前已经生成过的，否则会覆盖！！！
-        strategyConfig.setInclude("请设置表名");
+        //修改下面这行代码开始使用：
+        strategyConfig.setInclude("在此处填入数据库表名");
 
 
         //是否启用Rest风格

@@ -2,17 +2,15 @@ package com.chengxi.fitday.controller;
 
 
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
+import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.chengxi.fitday.common.R;
 import com.chengxi.fitday.entity.Employee;
 import com.chengxi.fitday.entity.User;
 import com.chengxi.fitday.service.IEmployeeService;
+import org.apache.commons.lang.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.util.DigestUtils;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletRequest;
 
@@ -31,7 +29,7 @@ public class EmployeeController {
     @Autowired
     private IEmployeeService employeeService;
 
-    //员工账号登录
+    //员工账号登录（员工后台）
     @PostMapping("/login")
     public R<Employee> emplogin(HttpServletRequest request, @RequestBody Employee employee){
         String password=employee.getPassword();
@@ -53,11 +51,22 @@ public class EmployeeController {
         return R.success(emp);
     }
 
-    //员工账号退出登录
+    //员工账号退出登录（员工后台）
     @PostMapping("/logout")
     public R<String> logout(HttpServletRequest request){
         request.getSession().removeAttribute("empeid");
         return R.success("退出成功");
+    }
+
+    //员工信息分页查询（员工后台）
+    @GetMapping("/page")
+    public R<Page> page(int page, int pageSize, String name){
+        Page pageinfo=new Page<>(page,pageSize);
+        LambdaQueryWrapper<Employee> queryWrapper=new LambdaQueryWrapper<>();
+        queryWrapper.eq(StringUtils.isNotEmpty(name),Employee::getName,name);   //精确查询昵称
+        queryWrapper.orderByDesc(Employee::getCreateTime);  //按照创建时间排序
+        employeeService.page(pageinfo,queryWrapper);
+        return R.success(pageinfo);
     }
 }
 

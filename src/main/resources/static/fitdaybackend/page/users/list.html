@@ -6,9 +6,9 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Document</title>
   <!-- 引入样式 -->
-  <link rel="stylesheet" href="../../plugins/element-ui/index.css" />
-  <link rel="stylesheet" href="../../styles/common.css" />
-  <link rel="stylesheet" href="../../styles/page.css" />
+  <link rel="stylesheet" href="../../../public/plugins/element-ui/index.css" />
+  <link rel="stylesheet" href="../../../public/styles/common2.css" />
+  <link rel="stylesheet" href="../../../public/styles/page.css" />
   <style>
     #member-app  .notAdmin::after{
       border: 0 !important;
@@ -63,7 +63,7 @@
           width="140"
         >
           <template slot-scope="{row}">
-            {{ row.phone || '-----' }}
+            {{ row.phone || '尚未填写' }}
           </template>
         </el-table-column>
 
@@ -103,6 +103,7 @@
           prop="remain"
           label="账号余额"
         ></el-table-column>
+
         <el-table-column label="账号状态">
           <template slot-scope="scope">
             {{ String(scope.row.status) === '0' ? '已冻结' : '正常' }}
@@ -119,7 +120,6 @@
 
         <el-table-column
           label="操作"
-          width="160"
           align="center"
         >
           <template slot-scope="scope">
@@ -158,12 +158,12 @@
     </div>
   </div>
     <!-- 开发环境版本，包含了有帮助的命令行警告 -->
-    <script src="../../plugins/vue/vue.js"></script>
+    <script src="../../../public/plugins/vue/vue.js"></script>
     <!-- 引入组件库 -->
-    <script src="../../plugins/element-ui/index.js"></script>
+    <script src="../../../public/plugins/element-ui/index.js"></script>
     <!-- 引入axios -->
-    <script src="../../plugins/axios/axios.min.js"></script>
-    <script src="../../js/request.js"></script>
+    <script src="../../../public/plugins/axios/axios.min.js"></script>
+    <script src="../../../public/js/request.js"></script>
     <script src="../../myapi/users.js"></script>
     <script>
       new Vue({
@@ -176,13 +176,13 @@
              pageSize: 10,
              tableData : [],
              id : '',
-             status : '',
+             status : ''
           }
         },
         computed: {},
         created() {
           this.init()
-          this.user = JSON.parse(localStorage.getItem('userInfo')).username
+          this.empInfo = JSON.parse(localStorage.getItem('empInfo')).name
         },
         mounted() {
         },

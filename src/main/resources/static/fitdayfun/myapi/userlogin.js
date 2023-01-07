@@ -19,3 +19,10 @@ function phoneloginApi(data) {
         data
     })
 }
+function nologinfeedbackApi(data) {
+    return $axios({
+        'url': '/feedback/nologinfeedback',
+        'method': 'post',
+        data
+    })
+}

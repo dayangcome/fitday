@@ -8,7 +8,7 @@
         <title>FitDay运动瘦身,饮食推荐</title>
 
         <!-- 引入图标 -->
-        <link rel="icon" type="image/x-icon" href="assets/favicon.ico" />
+        <link rel="icon" type="image/x-icon" href="../../../public/favicon.ico" />
         <!-- 引入图标字体库-->
         <script src="https://use.fontawesome.com/releases/v5.15.4/js/all.js" crossorigin="anonymous"></script>
         <!-- 引入字体 -->
@@ -16,8 +16,8 @@
         <link href="https://fonts.googleapis.com/css?family=Lato:400,700,400italic,700italic" rel="stylesheet" type="text/css" />
 
         <!-- 引入样式 -->
-        <link href="styles/styles.css" rel="stylesheet" />
-        <link rel="stylesheet" href="plugins/element-ui/index.css" />
+        <link href="../../../public/styles/styles.css" rel="stylesheet" />
+        <link rel="stylesheet" href="../../../public/plugins/element-ui/index.css" />
         <style type="text/css">
             .t1 img{
                 width:200px;
@@ -51,7 +51,7 @@
             }
             .mytop{
                 height: 150px;
-                background-image: url(assets/img/portfolio/bmi.jpg);
+                background-image: url(../../assets/img/portfolio/bmi.jpg);
                 background-size: 100%;
                 background-repeat:no-repeat;
             }
@@ -65,7 +65,7 @@
             .main{
                 padding-top: 20px;
                 width: 860px;
-                height: 320px;
+                height: 350px;
                 margin: 0px auto;
                 overflow:hidden; /*清除浮动*/
                 font-size: 16px;
@@ -133,7 +133,7 @@
         <header class="masthead bg-primary text-white text-center" style="padding-top: 125px;" >
             <div class="container d-flex align-items-center flex-column">
                 <!-- Masthead Avatar Image-->
-                <img class="masthead-avatar mb-5" src="assets/img/avataaars.svg" alt="..." />
+                <img class="masthead-avatar mb-5" src="../../assets/img/avataaars.svg" alt="..." />
                 <!-- Masthead Heading-->
                 <h1 class="masthead-heading text-uppercase mb-0">FitDay</h1>
                 <!-- Icon Divider-->
@@ -170,9 +170,17 @@
                             <el-form-item style="margin-top: 30px;">
                                 <span>还没有账号？</span><el-button type="text" @click="zcdialogVisible = true">点击注册</el-button>
                             </el-form-item>
+                            <!-- 忘记密码 -->
+                            <el-form-item >
+                               <span>忘记密码？</span><el-button type="text" @click="GetbackdialogVisible = true">点击找回</el-button>
+                            </el-form-item>
                             <el-form-item>
                                 <el-button type="primary" @click="userLogin">登录</el-button>
                                 <el-button @click="dialogVisible = false">取消</el-button>
+                            </el-form-item>
+                            <!-- 登录协议 -->
+                            <el-form-item>
+                                 <span>注册和登录即代表同意</span><el-button type="text" @click="serviceItemdialogVisible = true">服务条款</el-button><span>和</span><el-button type="text" @click="privacyPolicydialogVisible = true">隐私政策</el-button>
                             </el-form-item>
                         </el-form>
                     </el-tab-pane>
@@ -187,10 +195,19 @@
                             <el-form-item style="margin-top: 30px;">
                                 <span>还没有账号？</span><el-button type="text" @click="zcdialogVisible = true">点击注册</el-button>
                             </el-form-item>
+                            <!-- 忘记密码 -->
+                            <el-form-item >
+                               <span>忘记密码？</span><el-button type="text" @click="GetbackdialogVisible = true">点击找回</el-button>
+                            </el-form-item>
                             <el-form-item>
                                 <el-button type="primary" @click="userphoneLogin">登录</el-button>
                                 <el-button @click="dialogVisible = false">取消</el-button>
                             </el-form-item>
+                            <!-- 登录协议 -->
+                            <el-form-item>
+                                 <span>注册和登录即代表同意</span><el-button type="text" @click="serviceItemdialogVisible = true">服务条款</el-button><span>和</span><el-button type="text" @click="privacyPolicydialogVisible = true">隐私政策</el-button>
+                            </el-form-item>
+                            
                         </el-form>
                     </el-tab-pane>
                     </el-tabs>
@@ -222,8 +239,115 @@
                             <el-button type="primary" @click="register">注册</el-button>
                             <el-button @click="zcdialogVisible = false">取消</el-button>
                         </el-form-item>
+                        <el-form-item>
+                             <span>注册和登录即代表同意</span><el-button type="text" @click="serviceItemdialogVisible = true">服务条款</el-button><span>和</span><el-button type="text" @click="privacyPolicydialogVisible = true">隐私政策</el-button>
+                        </el-form-item>
                     </el-form>
                 </el-dialog>
+                
+                <!-- 忘记密码(手机修改) -->
+                <el-dialog
+                    title="找回密码"
+                    :visible.sync="GetbackdialogVisible"
+                    width="30%"
+                >
+                    <el-form ref="form" :model="phonemodForm" :rules="phoneloginRules">
+                        <el-form-item label="手机号" prop="phone">
+                            <el-input placeholder="请输入手机号" v-model="phonemodForm.phone" style="width: 300px;float: left;" ></el-input>
+                        </el-form-item>
+                        <el-form-item label="验证码" >
+                            <el-input style="width: 225px;float: left;"  placeholder="请输入6位数字验证码" v-model="phonemodForm.idencode"></el-input>
+                            <el-button type="primary" @click="register">获取验证码</el-button>  <!-- @click要改 -->
+                            <br>
+                            <br>
+                            <div>其他找回密码方式</div>
+                            <div>
+                                <el-button type="text" @click="GetbackMailboxdialogVisible = true , GetbackdialogVisible = false" >邮箱找回</el-button>
+                            </div>
+
+                            <el-button type="primary" @click="modifypassworddialogVisible = true">下一步</el-button>
+                            <el-button @click="GetbackdialogVisible = false">取消</el-button>
+                        </el-form-item>
+                        
+                    </el-form>
+                </el-dialog>    
+                <!-- 忘记密码(手机修改) -->
+
+                <!-- 忘记密码(邮箱修改) -->
+                <el-dialog
+                    title="通过邮箱找回密码"
+                    :visible.sync="GetbackMailboxdialogVisible"
+                    width="30%"
+                >
+                <el-form ref="form" :model="mailboxmodForm" :rules="phoneloginRules">
+                <el-form-item label="邮箱" prop="phone">
+                    <el-input placeholder="请输入邮箱号" v-model="mailboxmodForm.mailboxnum" style="width: 300px;float: left;"></el-input>
+                </el-form-item>
+                <el-form-item label="验证码" >
+                    <el-input style="width: 225px;float: left;"  placeholder="请输入6位数字验证码" v-model="mailboxmodForm.idencode"></el-input>
+                    <el-button type="primary" @click="register">获取验证码</el-button>  <!-- @click要改 -->
+                    <br>
+                    <br>
+                    <div>其他找回密码方式</div>
+                    <div>
+                        <el-button type="text" @click="GetbackdialogVisible = true , GetbackMailboxdialogVisible = false">手机号找回</el-button>
+                    </div>
+                    <el-button type="primary" @click="modifypassworddialogVisible = true">下一步</el-button>
+                    <el-button @click="GetbackMailboxdialogVisible = false">取消</el-button>
+                </el-form-item>
+                </el-form>
+                </el-dialog>   
+                <!-- 忘记密码(邮箱修改) -->
+
+                <!-- 修改密码 -->
+                <el-dialog
+                        title="修改密码"
+                        :visible.sync="modifypassworddialogVisible"
+                        width="30%"
+                        >
+                    <el-form ref="form" :model="modifyPassform" label-width="80px" :rules="registerRules">
+                        <el-form-item label="新的密码" prop="mypassword" >
+                            <el-input type="password"  v-model="modifyPassform.password"  placeholder="新的密码为8-16位字母数字组合"></el-input>
+                        </el-form-item>
+                        <el-form-item label="确认密码" prop="myagainpassword" >
+                            <el-input  type="password" v-model="modifyPassform.passwordagain"></el-input>
+                        </el-form-item>
+                        <el-form-item>
+                            <el-button type="primary" @click="register">完成</el-button>  <!-- @click要修改 -->
+                            <el-button @click="modifypassworddialogVisible = false">取消</el-button>
+                        </el-form-item>
+                    </el-form>
+                </el-dialog>  
+                <!-- 修改密码 -->
+                <!-- 服务条款 -->
+                    <el-dialog
+                        title="服务条款"
+                        :visible.sync="serviceItemdialogVisible"
+                        width="70%"
+                        >
+                    <div>
+                        服务条款内容
+                    </div>
+                    <el-form-item>
+                        <el-button type="primary" @click="serviceItemdialogVisible = false">确认</el-button>
+                    </el-form-item>
+                    </el-dialog>   
+                    
+    
+                    <!-- 隐私政策 -->
+                    <el-dialog
+                        title="隐私政策"
+                        :visible.sync="privacyPolicydialogVisible"
+                        width="70%"
+                        >
+                    <div>
+                        隐私政策内容
+                    </div>
+                    <el-form-item>
+                        <el-button type="primary" @click="privacyPolicydialogVisible = false">确认</el-button>
+                    </el-form-item>
+                    </el-dialog>  
+                    
             </div>
         </header>
         
@@ -247,7 +371,7 @@
                             <div class="portfolio-item-caption d-flex align-items-center justify-content-center h-100 w-100">
                                 <div class="portfolio-item-caption-content text-center text-white"><i class="fas fa-plus fa-3x"></i></div>
                             </div>
-                            <img class="img-fluid" src="assets/img/portfolio/1.png" alt="..." />
+                            <img class="img-fluid" src="../../assets/img/portfolio/1.png" alt="..." />
                         </div>
                     </div>
                     <!-- Portfolio Item 2-->
@@ -256,7 +380,7 @@
                             <div class="portfolio-item-caption d-flex align-items-center justify-content-center h-100 w-100">
                                 <div class="portfolio-item-caption-content text-center text-white"><i class="fas fa-plus fa-3x"></i></div>
                             </div>
-                            <img class="img-fluid" src="assets/img/portfolio/2.jpg" alt="..." />
+                            <img class="img-fluid" src="../../assets/img/portfolio/2.jpg" alt="..." />
                         </div>
                     </div>
                     <!-- Portfolio Item 3-->
@@ -265,7 +389,7 @@
                             <div class="portfolio-item-caption d-flex align-items-center justify-content-center h-100 w-100">
                                 <div class="portfolio-item-caption-content text-center text-white"><i class="fas fa-plus fa-3x"></i></div>
                             </div>
-                            <img class="img-fluid" src="assets/img/portfolio/3.jpg" alt="..." />
+                            <img class="img-fluid" src="../../assets/img/portfolio/3.jpg" alt="..." />
                         </div>
                     </div>
                     <!-- Portfolio Item 4-->
@@ -274,7 +398,7 @@
                             <div class="portfolio-item-caption d-flex align-items-center justify-content-center h-100 w-100">
                                 <div class="portfolio-item-caption-content text-center text-white"><i class="fas fa-plus fa-3x"></i></div>
                             </div>
-                            <img class="img-fluid" src="assets/img/portfolio/4.jpg" alt="..." />
+                            <img class="img-fluid" src="../../assets/img/portfolio/4.jpg" alt="..." />
                         </div>
                     </div>
                     <!-- Portfolio Item 5-->
@@ -283,7 +407,7 @@
                             <div class="portfolio-item-caption d-flex align-items-center justify-content-center h-100 w-100">
                                 <div class="portfolio-item-caption-content text-center text-white"><i class="fas fa-plus fa-3x"></i></div>
                             </div>
-                            <img class="img-fluid" src="assets/img/portfolio/5.jpg" alt="..." />
+                            <img class="img-fluid" src="../../assets/img/portfolio/5.jpg" alt="..." />
                         </div>
                     </div>
                     <!-- Portfolio Item 6-->
@@ -292,7 +416,7 @@
                             <div class="portfolio-item-caption d-flex align-items-center justify-content-center h-100 w-100">
                                 <div class="portfolio-item-caption-content text-center text-white"><i class="fas fa-plus fa-3x"></i></div>
                             </div>
-                            <img class="img-fluid" src="assets/img/portfolio/6.jpg" alt="..." />
+                            <img class="img-fluid" src="../../assets/img/portfolio/6.jpg" alt="..." />
                         </div>
                     </div>
                 </div>
@@ -395,51 +519,46 @@
                 <!-- Contact Section Form-->
                 <div class="row justify-content-center">
                     <div class="col-lg-8 col-xl-7">
-                        <form id="contactForm" data-sb-form-api-token="API_TOKEN">
+                        <form id="contactForm" data-sb-form-api-token="666000">
                             <!-- Name input-->
                             <div class="form-floating mb-3">
-                                <input class="form-control" id="name" type="text" placeholder="Enter your name..." data-sb-validations="required" />
-                                <label for="name">Full name</label>
-                                <div class="invalid-feedback" data-sb-feedback="name:required">A name is required.</div>
+                                <input class="form-control" id="name" type="text" v-model="feedbackForm.name" placeholder="Enter your name..." data-sb-validations="required" />
+                                <label for="name">昵称</label>
+                                <div class="invalid-feedback" data-sb-feedback="name:required">请输入您的昵称</div>
                             </div>
                             <!-- Email address input-->
                             <div class="form-floating mb-3">
-                                <input class="form-control" id="email" type="email" placeholder="name@example.com" data-sb-validations="required,email" />
-                                <label for="email">Email address</label>
-                                <div class="invalid-feedback" data-sb-feedback="email:required">An email is required.</div>
-                                <div class="invalid-feedback" data-sb-feedback="email:email">Email is not valid.</div>
+                                <input class="form-control" id="email" type="email" v-model="feedbackForm.email" placeholder="name@example.com" data-sb-validations="required,email" />
+                                <label for="email">邮箱地址</label>
+                                <div class="invalid-feedback" data-sb-feedback="email:required">请输入您的邮箱</div>
+                                <div class="invalid-feedback" data-sb-feedback="email:email">邮箱格式不正确</div>
                             </div>
                             <!-- Phone number input-->
                             <div class="form-floating mb-3">
-                                <input class="form-control" id="phone" type="tel" placeholder="(123) 456-7890" data-sb-validations="required" />
-                                <label for="phone">Phone number</label>
-                                <div class="invalid-feedback" data-sb-feedback="phone:required">A phone number is required.</div>
+                                <input class="form-control" id="phone" type="tel" v-model="feedbackForm.phone" placeholder="(123) 456-7890" data-sb-validations="required" />
+                                <label for="phone">电话</label>
+                                <div class="invalid-feedback" data-sb-feedback="phone:required">请输入您的电话</div>
                             </div>
                             <!-- Message input-->
                             <div class="form-floating mb-3">
-                                <textarea class="form-control" id="message" type="text" placeholder="Enter your message here..." style="height: 10rem" data-sb-validations="required"></textarea>
-                                <label for="message">Message</label>
-                                <div class="invalid-feedback" data-sb-feedback="message:required">A message is required.</div>
+                                <textarea class="form-control" id="message" type="text" v-model="feedbackForm.message" placeholder="Enter your message here..." style="height: 10rem" data-sb-validations="required"></textarea>
+                                <label for="message">反馈信息</label>
+                                <div class="invalid-feedback" data-sb-feedback="message:required">请输入您要反馈的信息</div>
                             </div>
                             <!-- Submit success message-->
                             <!---->
                             <!-- This is what your users will see when the form-->
                             <!-- has successfully submitted-->
                             <div class="d-none" id="submitSuccessMessage">
-                                <div class="text-center mb-3">
-                                    <div class="fw-bolder">Form submission successful!</div>
-                                    To activate this form, sign up at
-                                    <br />
-                                    <a href="https://startbootstrap.com/solution/contact-forms">https://startbootstrap.com/solution/contact-forms</a>
-                                </div>
                             </div>
                             <!-- Submit error message-->
                             <!---->
                             <!-- This is what your users will see when there is-->
                             <!-- an error submitting the form-->
-                            <div class="d-none" id="submitErrorMessage"><div class="text-center text-danger mb-3">Error sending message!</div></div>
+                            <div class="d-none" id="submitErrorMessage">
+                            </div>
                             <!-- Submit Button-->
-                            <button class="btn btn-primary btn-xl disabled" id="submitButton" type="submit">Send</button>
+                            <button class="btn btn-primary btn-xl disabled" id="submitButton" type="submit" @click="sendMessage">发送</button>
                         </form>
                     </div>
                 </div>
@@ -486,7 +605,7 @@
         <!-- Portfolio Modal 1-->
         <div class="portfolio-modal modal fade" id="portfolioModal1" tabindex="-1" aria-labelledby="portfolioModal1" aria-hidden="true">
             <div class="modal-dialog modal-xl" >
-                <div class="modal-content" style="background: url(assets/img/portfolio/b1.jpg);background-repeat:no-repeat;
+                <div class="modal-content" style="background: url(../../assets/img/portfolio/b1.jpg);background-repeat:no-repeat;
                     background-size: 150%;
                     ">
                     <div class="modal-header border-0"><button class="btn-close" type="button" data-bs-dismiss="modal" aria-label="Close"></button></div>
@@ -506,19 +625,19 @@
                                     <table class="t1" >
                                         <tr class="tr1">
                                             <td>
-                                                <img src="assets/img/portfolio/model1-1.png"/>
+                                                <img src="../../assets/img/portfolio/model1-1.png"/>
                                                 <p style="color: #146c43; font-style: italic">
                                                     <strong>制定减重目标和运动计划</strong>
                                                 </p>
                                             </td>
                                             <td>
-                                                <img src="assets/img/portfolio/model1-2%20(2).jpg"/>
+                                                <img src="../../assets/img/portfolio/model1-2%20(2).jpg"/>
                                                 <p style="color: #146c43;font-style: italic">
                                                     <strong>遵循运动计划,记录每日运动</strong>
                                                 </p>
                                             </td>
                                             <td>
-                                                <img src="assets/img/portfolio/model1-3.jpg"/>
+                                                <img src="../../assets/img/portfolio/model1-3.jpg"/>
                                                 <p style="color: #146c43; font-style: italic">
                                                     <strong>由计划达成情况给出评价与分析</strong>
                                                 </p>
@@ -545,7 +664,7 @@
         <!-- Portfolio Modal 2-->
         <div class="portfolio-modal modal fade" id="portfolioModal2" tabindex="-1" aria-labelledby="portfolioModal2" aria-hidden="true">
             <div class="modal-dialog modal-xl">
-                <div class="modal-content" style="background: url(assets/img/portfolio/b2.jpg);background-repeat:no-repeat;
+                <div class="modal-content" style="background: url(../../assets/img/portfolio/b2.jpg);background-repeat:no-repeat;
                     background-size: 100%;
                     ">
                     <div class="modal-header border-0"><button class="btn-close" type="button" data-bs-dismiss="modal" aria-label="Close"></button></div>
@@ -565,19 +684,19 @@
                                     <table class="t1" >
                                         <tr class="tr1">
                                             <td>
-                                                <img src="assets/img/portfolio/model2-1.jpg"/>
+                                                <img src="../../assets/img/portfolio/model2-1.jpg"/>
                                                 <p style="color: #146c43; font-style: italic">
                                                     <strong>输入您将要做的运动类型</strong>
                                                 </p>
                                             </td>
                                             <td>
-                                                <img src="assets/img/portfolio/model2-2.jpg"/>
+                                                <img src="../../assets/img/portfolio/model2-2.jpg"/>
                                                 <p style="color: #146c43;font-style: italic">
                                                     <strong>输入您的运动时段</strong>
                                                 </p>
                                             </td>
                                             <td>
-                                                <img src="assets/img/portfolio/model2-3.jpg"/>
+                                                <img src="../../assets/img/portfolio/model2-3.jpg"/>
                                                 <p style="color: #146c43; font-style: italic">
                                                     <strong>针对运动项目及时间推荐适宜食谱</strong>
                                                 </p>
@@ -604,7 +723,7 @@
         <!-- Portfolio Modal 3-->
         <div class="portfolio-modal modal fade" id="portfolioModal3" tabindex="-1" aria-labelledby="portfolioModal3" aria-hidden="true">
             <div class="modal-dialog modal-xl">
-                <div class="modal-content"  style="background: url(assets/img/portfolio/b3.jpg);background-repeat:no-repeat;
+                <div class="modal-content"  style="background: url(../../assets/img/portfolio/b3.jpg);background-repeat:no-repeat;
                     background-size: 110%;
                     ">
                     <div class="modal-header border-0"><button class="btn-close" type="button" data-bs-dismiss="modal" aria-label="Close"></button></div>
@@ -624,19 +743,19 @@
                                     <table class="t1" >
                                         <tr class="tr1">
                                             <td>
-                                                <img src="assets/img/portfolio/model3-1.jpg"/>
+                                                <img src="../../assets/img/portfolio/model3-1.jpg"/>
                                                 <p style="color: #146c43; font-style: italic">
                                                     <strong>制定自己的每天食谱，在软件中记录早/午/晚/加餐饮食情况</strong>
                                                 </p>
                                             </td>
                                             <td>
-                                                <img src="assets/img/portfolio/model3-2.jpg"/>
+                                                <img src="../../assets/img/portfolio/model3-2.jpg"/>
                                                 <p style="color: #146c43;font-style: italic">
                                                     <strong>分析饮食营养成分含量，给出饮食评价周报，月报</strong>
                                                 </p>
                                             </td>
                                             <td>
-                                                <img src="assets/img/portfolio/model3-3.jpg"/>
+                                                <img src="../../assets/img/portfolio/model3-3.jpg"/>
                                                 <p style="color: #146c43; font-style: italic">
                                                     <strong>建立您喜欢的零食列表，分析每种食物热量要多久的运动来抵消</strong>
                                                 </p>
@@ -662,7 +781,7 @@
         <!-- Portfolio Modal 4-->
         <div class="portfolio-modal modal fade" id="portfolioModal4" tabindex="-1" aria-labelledby="portfolioModal4" aria-hidden="true">
             <div class="modal-dialog modal-xl">
-                <div class="modal-content" style="background: url(assets/img/portfolio/b4.jpg);background-repeat:no-repeat;
+                <div class="modal-content" style="background: url(../../assets/img/portfolio/b4.jpg);background-repeat:no-repeat;
                     background-size: 100%;">
                     <div class="modal-header border-0"><button class="btn-close" type="button" data-bs-dismiss="modal" aria-label="Close"></button></div>
                     <div class="modal-body text-center pb-5">
@@ -681,19 +800,19 @@
                                     <table class="t1" >
                                         <tr class="tr1">
                                             <td>
-                                                <img src="assets/img/portfolio/model4-1.jpg"/>
+                                                <img src="../../assets/img/portfolio/model4-1.jpg"/>
                                                 <p style="color: #146c43; font-style: italic">
                                                     <strong>建立一个社区论坛，根据使用者的阶段所推荐一些同阶段有经验者的动态，方便学习与借鉴</strong>
                                                 </p>
                                             </td>
                                             <td>
-                                                <img src="assets/img/portfolio/model4-2.jpg"/>
+                                                <img src="../../assets/img/portfolio/model4-2.jpg"/>
                                                 <p style="color: #146c43 ;font-style: italic">
                                                     <strong>建立一个瘦身群组，每个人每天在群里发布自己的饮食运动。群里的人可以约运动，约吃饭</strong>
                                                 </p>
                                             </td>
                                             <td>
-                                                <img src="assets/img/portfolio/model4-3.jpg"/>
+                                                <img src="../../assets/img/portfolio/model4-3.jpg"/>
                                                 <p style="color: #146c43; font-style: italic">
                                                     <strong>群里每过一个礼拜进行一次总结评比，决出谁变化最大，谁自制力最好，谁目标完成得更好</strong>
                                                 </p>
@@ -719,7 +838,7 @@
         <!-- Portfolio Modal 5-->
         <div class="portfolio-modal modal fade" id="portfolioModal5" tabindex="-1" aria-labelledby="portfolioModal5" aria-hidden="true">
             <div class="modal-dialog modal-xl">
-                <div class="modal-content" style="background: url(assets/img/portfolio/b5.jpg);background-repeat:no-repeat;
+                <div class="modal-content" style="background: url(../../assets/img/portfolio/b5.jpg);background-repeat:no-repeat;
                     background-size: 120%;">
                     <div class="modal-header border-0"><button class="btn-close" type="button" data-bs-dismiss="modal" aria-label="Close"></button></div>
                     <div class="modal-body text-center pb-5">
@@ -738,19 +857,19 @@
                                     <table class="t1" >
                                         <tr class="tr1">
                                             <td>
-                                                <img src="assets/img/portfolio/model5-1.jpg"/>
+                                                <img src="../../assets/img/portfolio/model5-1.jpg"/>
                                                 <p style="color: #146c43; font-style: italic">
                                                     <strong>用户挑选自己需要的健身器材或瘦身食谱</strong>
                                                 </p>
                                             </td>
                                             <td>
-                                                <img src="assets/img/portfolio/model5-2.jpg"/>
+                                                <img src="../../assets/img/portfolio/model5-2.jpg"/>
                                                 <p style="color: #146c43 ;font-style: italic">
                                                     <strong>用户在下单前添加自己的收货地址以及联系方式等信息</strong>
                                                 </p>
                                             </td>
                                             <td>
-                                                <img src="assets/img/portfolio/model5-3.jpg"/>
+                                                <img src="../../assets/img/portfolio/model5-3.jpg"/>
                                                 <p style="color: #146c43; font-style: italic">
                                                     <strong>平台也会在每一个产品的下方设置评论区，用户可以为商品进行打分</strong>
                                                 </p>
@@ -775,7 +894,7 @@
         <!-- Portfolio Modal 6-->
         <div class="portfolio-modal modal fade" id="portfolioModal6" tabindex="-1" aria-labelledby="portfolioModal6" aria-hidden="true">
             <div class="modal-dialog modal-xl">
-                <div class="modal-content"style="background: url(assets/img/portfolio/b6.jpg);background-repeat:no-repeat;
+                <div class="modal-content"style="background: url(../../assets/img/portfolio/b6.jpg);background-repeat:no-repeat;
                     background-size: 100%;">
                     <div class="modal-header border-0"><button class="btn-close" type="button" data-bs-dismiss="modal" aria-label="Close"></button></div>
                     <div class="modal-body text-center pb-5">
@@ -794,19 +913,19 @@
                                     <table class="t1" >
                                         <tr class="tr1">
                                             <td>
-                                                <img src="assets/img/portfolio/model6-1.jpg"/>
+                                                <img src="../../assets/img/portfolio/model6-1.jpg"/>
                                                 <p style="color: #146c43; font-style: italic">
                                                     <strong>您可以获取相应的心理咨询服务，帮助您摆正心态，减少肥胖带来的自卑心理和消极情绪</strong>
                                                 </p>
                                             </td>
                                             <td>
-                                                <img src="assets/img/portfolio/model6-2.jpg"/>
+                                                <img src="../../assets/img/portfolio/model6-2.jpg"/>
                                                 <p style="color: #146c43 ;font-style: italic">
                                                     <strong>同时您也可以记录自己减肥过程中的心路历程，留下自己的困扰和问题</strong>
                                                 </p>
                                             </td>
                                             <td>
-                                                <img src="assets/img/portfolio/model6-3.jpg"/>
+                                                <img src="../../assets/img/portfolio/model6-3.jpg"/>
                                                 <p style="color: #146c43; font-style: italic">
                                                     <strong>与校园心理平台对接，联系心理咨询师或院系辅导员入驻，为用户提供专业的心理咨询服务</strong>
                                                 </p>
@@ -834,25 +953,24 @@
         <!-- Bootstrap的JS-->
         <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js"></script>
         <script src="https://cdn.startbootstrap.com/sb-forms-latest.js"></script>
-        <script src="js/scripts.js"></script>
+        <script src="../../../public/js/scripts.js"></script>
 
         <!-- Vue和element-ui以及axios的JS-->
-        <script src="plugins/vue/vue.js"></script>
-        <script src="plugins/axios/axios.min.js"></script>
-        <script src="plugins/element-ui/index.js"></script>
+        <script src="../../../public/plugins/vue/vue.js"></script>
+        <script src="../../../public/plugins/axios/axios.min.js"></script>
+        <script src="../../../public/plugins/element-ui/index.js"></script>
 
         <!-- 发送请求的JS，里面有$axios，要在vue和axios引入后再引入-->
-        <script src="js/request.js"></script>
+        <script src="../../../public/js/request.js"></script>
 
         <!-- 自己的JS-->
-        <script src="myapi/userlogin.js"></script>
+        <script src="../../myapi/userlogin.js"></script>
+        
         <script>
             const topDom = document.querySelector('.top');
             topDom.addEventListener('click', function() {
                 document.body.scrollTop = document.documentElement.scrollTop = 0;
-            });   
-        </script>
-        <script>
+            }); 
             new Vue({
                 el: "#app",
                 data() {
@@ -872,9 +990,44 @@
                             myname:"",
                             code:""
                         },
+                        feedbackForm:{
+                            name:"",
+                            email:"",
+                            phone:"",
+                            message:""
+                        },
+                        phonemodForm:{
+                            phone:"",
+                            idencode:""
+                        },
+                        // 手机验证码
+                        // 修改密码
+                        modifyPassform:{
+                            password:"",
+                            passwordagain:""
+                        },
+                        // 修改密码
+                        // 邮箱验证码
+                        mailboxmodForm:{
+                            mailboxnum:"",
+                            idencode:""
+                        },
+                        // 邮箱验证码
+                        registerForm: {
+                            myaccount:"",
+                            mypassword:"",
+                            myagainpassword:"",
+                            myname:"",
+                            code:""
+                        },
                         dialogVisible: false,
                         zcdialogVisible: false,
                         bmiFormVisible: false,
+                        serviceItemdialogVisible:false,
+                        privacyPolicydialogVisible:false,
+                        GetbackdialogVisible: false,
+                        GetbackMailboxdialogVisible: false,
+                        modifypassworddialogVisible: false,
                         activeName: 'first',
                         imageURL:'/identifyImage',
                         hv:"",
@@ -1085,7 +1238,7 @@
                                         message: '用户注册成功，即将刷新登录页面！',
                                         duration: 1800,
                                         onClose:()=>{
-                                            window.location.href='index.html'
+                                            window.location.href='login.html'
                                         }
                                     })
                                 } else {
@@ -1093,6 +1246,18 @@
                                 }
                             }
                         })
+                    },
+                    async sendMessage(){
+                        let res = await nologinfeedbackApi(this.feedbackForm)
+                        if (String(res.code) === '1') {
+                            this.$message({
+                                type:'success',
+                                message: '反馈成功！请注意查看您的手机或邮箱！',
+                                duration: 5000
+                            })
+                        } else {
+                            this.$message.error(res.msg);
+                        }
                     }
                 }
             })
