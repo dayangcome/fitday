@@ -29,15 +29,21 @@ public class Employee implements Serializable {
 
     private String password;
 
-    private String username;
+    private String name;
 
     private String phone;
 
     private Integer sex;
 
     private String avatar;
-
-    private Integer powerlevel;
+    /**
+     * 账号状态 0:冻结 1:正常
+     */
+    private Integer status;
+    /**
+     * 属于的角色类型，0：超级管理员
+     */
+    private Integer rolenum;
 
     private String idNumber;
 

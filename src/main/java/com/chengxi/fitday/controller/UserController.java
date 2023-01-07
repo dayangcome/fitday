@@ -2,17 +2,15 @@ package com.chengxi.fitday.controller;
 
 
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
+import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.chengxi.fitday.common.R;
 import com.chengxi.fitday.dto.Registerinfodto;
 import com.chengxi.fitday.entity.User;
 import com.chengxi.fitday.service.IUserService;
+import org.apache.commons.lang.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.util.DigestUtils;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
@@ -70,7 +68,7 @@ public class UserController {
             return R.error("该手机号不存在！");
         }
         if(!password.equals(user1.getPassword())){
-            return R.error("账号或密码错误，请重新输入！");
+            return R.error("手机号或密码错误，请重新输入！");
         }
         if(user1.getStatus()==0){
             return R.error("账号已冻结！");
@@ -99,6 +97,8 @@ public class UserController {
         user.setAccount(registerinfodto.getMyaccount());
         user.setPassword(DigestUtils.md5DigestAsHex(registerinfodto.getMypassword().getBytes()));
         user.setUsername(registerinfodto.getMyname());
+        //设置默认头像
+        user.setAvatar("https://cube.elemecdn.com/3/7c/3ea6beec64369c2642b92c6726f1epng.png");
         user.setStatus(1);
         user.setExp(0);
         user.setLevel(1);
@@ -111,6 +111,17 @@ public class UserController {
 //        return null;
         userService.save(user);
         return R.success("注册成功");
+    }
+
+    //用户信息分页查询（员工后台）
+    @GetMapping("/page")
+    public R<Page> page(int page,int pageSize,String name){
+        Page pageinfo=new Page<>(page,pageSize);
+        LambdaQueryWrapper<User> queryWrapper=new LambdaQueryWrapper<>();
+        queryWrapper.eq(StringUtils.isNotEmpty(name),User::getUsername,name);   //精确查询昵称
+        queryWrapper.orderByDesc(User::getCreateTime);  //按照创建时间排序
+        userService.page(pageinfo,queryWrapper);
+        return R.success(pageinfo);
     }
 }
 
