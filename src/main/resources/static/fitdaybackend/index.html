@@ -78,10 +78,21 @@
               <span>{{headTitle}}</span>
             </div>
             <div class="right-menu">
-              <div class="block" style="margin: 10px 10px 0 0"><el-avatar size="medium" :src="circleUrl"></el-avatar></div>
-              <div class="avatar-wrapper">{{ empInfo.name }}</div>
-               <div class="logout" @click="logout">退出登录</div>
-              <img src="images/icons/btn_close@2x.png" style="margin-top: 20px;margin-left: 10px;width: 25px;height: 25px;" class="outLogin" alt="退出" @click="logout" />
+                
+                 <el-dropdown @command="handleCommand">
+                      <div style="cursor: pointer; display: flex;">
+                        <div class="block" style="margin: 10px 10px 0 0;"><el-avatar size="medium" :src="circleUrl"></el-avatar></div>
+                        <div class="avatar-wrapper" >{{empInfo.name}}</div>
+                      </div>
+                      <el-dropdown-menu slot="dropdown">
+                        <el-dropdown-item icon="el-icon-user-solid" command="a">个人中心</el-dropdown-item>
+                        <el-dropdown-item icon="el-icon-message-solid" command="b">查看消息</el-dropdown-item>
+                        <el-dropdown-item icon="el-icon-switch-button" divided command="c">退出登录</el-dropdown-item>
+                      </el-dropdown-menu>
+                </el-dropdown>
+                
+            
+    
             </div>
           </div>
           <div class="app-main" v-loading="loading">
@@ -190,7 +201,7 @@
             goBackFlag: false,
             loading: true,
             timer: null,
-            circleUrl:'https://cube.elemecdn.com/3/7c/3ea6beec64369c2642b92c6726f1epng.png'
+            circleUrl:'https://cube.elemecdn.com/e/fd/0fc7d20532fdaf769a25683617711png.png'
           }
         },
         computed: {},
@@ -237,6 +248,13 @@
             this.timer = setTimeout(()=>{
               this.loading = false
             },1000)
+          },
+          handleCommand(command) {
+            if(command=='a'){
+                window.location.href = '/fitdaybackend/page/mycenter/mycenter.html';
+            }else if(command=='c'){
+                this.logout();
+            }
           }
         }
       })

@@ -217,8 +217,8 @@
 }
 .el-submenu > .el-submenu__title,
 .el-submenu .el-menu-item {
-  min-width: 190px !important;
-  background-color: #272a36 !important;
+  /* min-width: 190px !important; */
+  background-color: #ffffff !important;
 }
 /* .el-submenu > .el-submenu__title:hover, .el-submenu .el-menu-item:hover {
   background-color: #0e132b !important;

@@ -13,6 +13,13 @@
     #member-app  .notAdmin::after{
       border: 0 !important;
     }
+    .tdleft{
+      font-weight: bold;
+      width: 180px;
+    }
+    tr{
+      height: 26px;
+    }
   </style>
 </head>
 <body>
@@ -33,12 +40,8 @@
             @click="handleQuery"
           ></i>
         </el-input>
-        <el-button
-          type="primary"
-          @click="addMemberHandle('add')"
-        >
-          用户申请信息
-        </el-button>
+        
+        
       </div>
       <el-table
         :data="tableData"
@@ -59,11 +62,11 @@
 
         <el-table-column
           prop="phone"
-          label="手机号"
+          label="绑定的手机号"
           width="140"
         >
           <template slot-scope="{row}">
-            {{ row.phone || '尚未填写' }}
+            {{ row.phone || '尚未绑定' }}
           </template>
         </el-table-column>
 
@@ -78,7 +81,6 @@
               <img :src="scope.row.avatar" alt="" style="width: 200px;height: 200px;">
               <img slot="reference" :src="scope.row.avatar" style="width: 32px;height: 32px;border-radius: 50%">
             </el-popover>
-            <span>{{scope.row.title}}</span>
           </template>
         </el-table-column>
 
@@ -87,13 +89,13 @@
           label="账号等级"
         ></el-table-column>
 
-        <el-table-column label="注册时间">
+        <el-table-column label="注册时间" width="90">
           <template slot-scope="scope">
             <span>{{scope.row.createTime.toLocaleString().replace(/T/g, ' ').replace(/\.[\d]{3}Z/, '')}}</span>
           </template>
         </el-table-column>
 
-        <el-table-column label="修改时间">
+        <el-table-column label="修改时间" width="90">
           <template slot-scope="scope">
             <span>{{scope.row.updateTime.toLocaleString().replace(/T/g, ' ').replace(/\.[\d]{3}Z/, '')}}</span>
           </template>
@@ -121,23 +123,24 @@
         <el-table-column
           label="操作"
           align="center"
+          width="160"
         >
           <template slot-scope="scope">
             <el-button
               type="text"
               size="small"
               class="blueBug"
-              @click="addMemberHandle(scope.row.id)"
-              :class="{notAdmin:user !== 'admin'}"
+              @click="userdetail(scope.row)"
             >
               查看
             </el-button>
+
+            
             <el-button
               type="text"
               size="small"
               class="delBut non"
               @click="statusHandle(scope.row)"
-              v-if="user === 'admin'"
             >
               {{ scope.row.status == '1' ? '冻结' : '启用' }}
             </el-button>
@@ -156,6 +159,78 @@
         @current-change="handleCurrentChange"
       ></el-pagination>
     </div>
+    <el-dialog title="用户详情" :visible.sync="userVisible" width="50%" top="15px">
+      <table>
+        <tr>
+          <td class="tdleft">UID</td>
+          <td>{{userinfo.uid}}</td>
+        </tr>
+        <tr>
+          <td class="tdleft">账号</td>
+          <td>{{userinfo.account}}</td>
+        </tr>
+        <tr>
+          <td class="tdleft">昵称</td>
+          <td>{{userinfo.username}}</td>
+        </tr>
+        <tr>
+          <td class="tdleft">绑定的手机号</td>
+          <td>{{ userinfo.phone || '尚未绑定' }}</td>
+        </tr>
+        <tr>
+          <td class="tdleft">性别</td>
+          <td>{{ userinfo.sex=='0'?'男':(userinfo.sex=='1'?'女':(userinfo.sex=='2'?'保密':'尚未填写')) }}</td>
+        </tr>
+        <tr>
+          <td class="tdleft">个性签名</td>
+          <td>{{userinfo.sign|| '尚未填写' }}</td>
+        </tr>
+        <tr>
+          <td class="tdleft">账号状态</td>
+          <td>{{ String(userinfo.status) === '0' ? '已冻结' : '正常' }}</td>
+        </tr>
+        <tr>
+          <td class="tdleft">当前经验</td>
+          <td>{{ userinfo.exp}}</td>
+        </tr>
+        <tr>
+          <td class="tdleft">当前等级</td>
+          <td>{{ userinfo.level}}</td>
+        </tr>
+        <tr>
+          <td class="tdleft">当前VIP等级</td>
+          <td>{{ userinfo.viplevel}}</td>
+        </tr>
+        <tr>
+          <td class="tdleft">当前账户余额</td>
+          <td>{{ userinfo.remain}}&nbsp;元</td>
+        </tr>
+        <tr>
+          <td class="tdleft">用户地址</td>
+          <td>{{ userinfo.address|| '尚未填写' }}</td>
+        </tr>
+        <tr>
+          <td class="tdleft">绑定的微信号</td>
+          <td>{{ userinfo.wxNumber|| '尚未绑定' }}</td>
+        </tr>
+        <tr>
+          <td class="tdleft">账号创建时间</td>
+          <td>
+            <template>
+              <span>{{userinfo.createTime}}</span>
+            </template>
+          </td>
+        </tr>
+        <tr>
+          <td class="tdleft">账号更新时间</td>
+          <td>{{userinfo.updateTime}}</td>
+        </tr>
+      </table>
+      <div slot="footer" class="dialog-footer">
+        <el-button @click="userVisible = false">取 消</el-button>
+        <el-button type="primary" @click="userVisible = false">确 定</el-button>
+      </div>
+    </el-dialog>
   </div>
     <!-- 开发环境版本，包含了有帮助的命令行警告 -->
     <script src="../../../public/plugins/vue/vue.js"></script>
@@ -176,7 +251,9 @@
              pageSize: 10,
              tableData : [],
              id : '',
-             status : ''
+             status : '',
+             userVisible:false,
+             userinfo:{}
           }
         },
         computed: {},
@@ -207,20 +284,10 @@
             this.init();
           },
            // 添加
-          addMemberHandle (st) {
-            if (st === 'add'){
-              window.parent.menuHandle({
-                id: '2',
-                url: '/backend/page/member/add.html',
-                name: '添加员工'
-              },true)
-            } else {
-              window.parent.menuHandle({
-                id: '2',
-                url: '/backend/page/member/add.html?id='+st,
-                name: '修改员工'
-              },true)
-            }
+          userdetail (st) {
+            this.userVisible = true;
+            console.log(st);
+            this.userinfo=st;
           },
           //状态修改
           statusHandle (row) {

@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta charset="utf-8" />
+        <title>首页</title>
+        <link rel="stylesheet" href="../public/plugins/element-ui/index.css" />
+        <link rel="shortcut icon" href="../public/favicon.ico">
+        <style type="text/css">
+        #user{
+            float: right;
+        }
+        </style>
+    </head>
+    <body>
+        <div id="app">
+            <el-container>
+                
+                <el-header>
+                    <el-menu default-active="1" 
+                    class="el-menu-demo" 
+                    mode="horizontal" 
+                    @select="handleSelect"
+                    text-color="#000000"
+                    active-text-color="#003bff">
+                      <el-menu-item >
+                          <div>
+                            <img src="assets/img/fitdaylogo.png" alt="" style="width: 142px; height: 50px;margin-bottom:8px;" />
+                          </div>
+                      </el-menu-item>
+                      <el-menu-item index="1">首页</el-menu-item>
+                      <el-menu-item index="2">饮食计划</el-menu-item>
+                      <el-menu-item index="3">运动计划</el-menu-item>
+                      <el-menu-item index="4">小组</el-menu-item>
+                      <el-menu-item index="5">社区</el-menu-item>
+                      <el-menu-item index="6">商城</el-menu-item>
+                      <el-menu-item index="7">心理咨询</el-menu-item>
+                      <el-menu-item id="user">
+                          <div>
+                              <el-dropdown @command="handleCmd">
+                                <span style="cursor: pointer;">
+                                  <span style="margin:0 15px 8px 0;"><el-avatar size="medium" :src="circleUrl"></el-avatar></span>
+                                  <span>用户名</span>
+                                </span>
+                                <el-dropdown-menu slot="dropdown">
+                                <el-dropdown-item icon="el-icon-user-solid" command="a"> 个人中心 </el-dropdown-item>
+                                <el-dropdown-item icon="el-icon-message-solid" command="b"> 查看消息 </el-dropdown-item>
+                                <el-dropdown-item icon="el-icon-switch-button" divided command="c"> 退出登录 </el-dropdown-item>
+                              </el-dropdown-menu>
+                            </el-dropdown>  
+                          </div>
+                      </el-menu-item>
+                    </el-menu>
+    
+                </el-header>
+                
+            </el-container>
+                
+            <el-container>
+                <el-main>
+                    主要信息展示页面
+                </el-main>
+            </el-container>
+            
+        </div>
+        <!-- 开发环境版本，包含了有帮助的命令行警告 -->
+        <script src="../public/plugins/vue/vue.js"></script>
+        <!-- 引入组件库 -->
+        <script src="../public/plugins/element-ui/index.js"></script>
+        <script>
+            new Vue({
+                el: '#app',
+                data() {
+                      return {
+                        
+                      }
+                    },
+                methods: {
+                    
+                }
+            })
+        </script>
+    </body>
+</html>
