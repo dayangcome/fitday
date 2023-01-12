@@ -13,6 +13,13 @@
     #member-app  .notAdmin::after{
       border: 0 !important;
     }
+    .tdleft{
+      font-weight: bold;
+      width: 180px;
+    }
+    tr{
+      height: 26px;
+    }
   </style>
 </head>
 <body>
@@ -48,9 +55,13 @@
         :header-cell-style="{ textAlign: 'center' }"
       >
         <el-table-column
-          prop="eid"
           label="EID"
-        ></el-table-column>
+        >
+          <template slot-scope="scope">
+            {{scope.row.eid}}
+            <strong v-if="scope.row.eid==empInfo.eid">（我）</strong>
+          </template>
+        </el-table-column>
 
         <el-table-column
           prop="account"
@@ -81,7 +92,9 @@
 
         <el-table-column label="账号状态">
           <template slot-scope="scope">
-            {{ String(scope.row.status) === '0' ? '已冻结' : '正常' }}
+            <span :style="String(scope.row.status) === '0' ? 'color:red;':'' ">
+              {{ String(scope.row.status) === '0' ? '已封禁' : '正常' }}
+            </span>
           </template>
         </el-table-column>
 
@@ -115,19 +128,18 @@
               type="text"
               size="small"
               class="blueBug"
-              @click="addMemberHandle(scope.row.id)"
-              :class="{notAdmin:user !== 'admin'}"
+              @click="empdetail(scope.row)"
             >
               查看
             </el-button>
             <el-button
               type="text"
               size="small"
-              class="delBut non"
+              :class="scope.row.status == '1' ?'delBut':'reBut'"
               @click="statusHandle(scope.row)"
-              v-if="user === 'admin'"
+              v-if="empInfo.rolenum==0 & scope.row.rolenum!=0"
             >
-              {{ scope.row.status == '1' ? '冻结' : '启用' }}
+              {{ scope.row.status == '1' ? '封禁' : '解封' }}
             </el-button>
           </template>
         </el-table-column>
@@ -144,6 +156,62 @@
         @current-change="handleCurrentChange"
       ></el-pagination>
     </div>
+    <el-dialog title="员工详情" :visible.sync="listVisible" width="50%" top="15px">
+      <table>
+        <tr>
+          <td class="tdleft">EID</td>
+          <td>{{listinfo.eid}}</td>
+        </tr>
+        <tr>
+          <td class="tdleft">账号</td>
+          <td>{{listinfo.account}}</td>
+        </tr>
+        <tr>
+          <td class="tdleft">昵称</td>
+          <td>{{listinfo.name}}</td>
+        </tr>
+        <tr>
+          <td class="tdleft">绑定的手机号</td>
+          <td>{{ listinfo.phone}}</td>
+        </tr>
+        <tr>
+          <td class="tdleft">性别</td>
+          <td>{{ listinfo.sex=='0'?'男':(listinfo.sex=='1'?'女':(listinfo.sex=='2'?'保密':'尚未填写')) }}</td>
+        </tr>
+        <tr>
+          <td class="tdleft">账号状态</td>
+          <td>
+            <span :style="String(listinfo.status) === '0' ? 'color:red;':'' ">
+              {{ String(listinfo.status) === '0' ? '已封禁' : '正常' }}
+            </span>
+          </td>
+        </tr>
+        <tr>
+          <td class="tdleft">绑定的身份证号</td>
+          <td>{{ listinfo.idNumber|| '尚未绑定' }}</td>
+        </tr>
+        <tr>
+          <td class="tdleft">绑定的微信号</td>
+          <td>{{ listinfo.wxNumber|| '尚未绑定' }}</td>
+        </tr>
+        <tr>
+          <td class="tdleft">账号创建时间</td>
+          <td>
+            <template>
+              <span>{{listinfo.createTime}}</span>
+            </template>
+          </td>
+        </tr>
+        <tr>
+          <td class="tdleft">账号更新时间</td>
+          <td>{{listinfo.updateTime}}</td>
+        </tr>
+      </table>
+      <div slot="footer" class="dialog-footer">
+        <el-button @click="listVisible = false">取 消</el-button>
+        <el-button type="primary" @click="listVisible = false">确 定</el-button>
+      </div>
+    </el-dialog>
   </div>
     <!-- 开发环境版本，包含了有帮助的命令行警告 -->
     <script src="../../../public/plugins/vue/vue.js"></script>
@@ -164,13 +232,18 @@
              pageSize: 10,
              tableData : [],
              id : '',
-             status : ''
+             status : '',
+             empInfo:{},
+             listinfo:{},
+             listVisible:false,
+             account:'',
+             name:''
           }
         },
         computed: {},
         created() {
           this.init()
-          this.empInfo = JSON.parse(localStorage.getItem('empInfo')).name
+          this.empInfo = JSON.parse(localStorage.getItem('empInfo'))
         },
         mounted() {
         },
@@ -194,6 +267,12 @@
             this.page = 1;
             this.init();
           },
+          empdetail(st){
+            this.listVisible = true;
+            this.listinfo=st;
+            this.listinfo.createTime=this.listinfo.createTime.replace(/T/g, '  ').replace(/.[\d]{3}Z/, '  ')
+            this.listinfo.updateTime=this.listinfo.updateTime.replace(/T/g, '  ').replace(/.[\d]{3}Z/, '  ')
+          },
            // 添加
           addMemberHandle (st) {
             if (st === 'add'){
@@ -212,17 +291,41 @@
           },
           //状态修改
           statusHandle (row) {
-            this.id = row.id
-            this.status = row.status
-            this.$confirm('确认调整该账号的状态?', '提示', {
+            this.id = row.eid
+            this.account=row.account
+            this.name=row.name
+            this.status=row.status
+            if(this.status==1){
+              this.getfreeze()
+            }else{
+              this.delgetfreeze()
+            }
+          },
+          getfreeze(){
+            this.$confirm('确认要封禁员工 '+this.name+'（账号：'+this.account+'）吗?', '提示', {
               'confirmButtonText': '确定',
               'cancelButtonText': '取消',
               'type': 'warning'
-              }).then(() => {
-              enableOrDisableEmployee({ 'id': this.id, 'status': !this.status ? 1 : 0 }).then(res => {
-                console.log('enableOrDisableEmployee',res)
+            }).then(() => {
+              freezeemp(this.id).then(res => {
                 if (String(res.code) === '1') {
-                  this.$message.success('账号状态更改成功！')
+                  this.$message.warning('已成功封禁该员工！')
+                  this.handleQuery()
+                }
+              }).catch(err => {
+                this.$message.error('请求出错了：' + err)
+              })
+            })
+          },
+          delgetfreeze(){
+            this.$confirm('确认要解封员工 '+this.name+'（账号：'+this.account+'）吗?', '提示', {
+              'confirmButtonText': '确定',
+              'cancelButtonText': '取消',
+              'type': 'warning'
+            }).then(() => {
+              delfreezeemp(this.id).then(res => {
+                if (String(res.code) === '1') {
+                  this.$message.success('已成功解封该员工！')
                   this.handleQuery()
                 }
               }).catch(err => {

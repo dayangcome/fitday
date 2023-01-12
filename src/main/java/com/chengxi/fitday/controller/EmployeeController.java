@@ -5,6 +5,7 @@ import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.chengxi.fitday.common.R;
 import com.chengxi.fitday.entity.Employee;
+import com.chengxi.fitday.entity.Freeze;
 import com.chengxi.fitday.entity.User;
 import com.chengxi.fitday.service.IEmployeeService;
 import org.apache.commons.lang.StringUtils;
@@ -45,7 +46,7 @@ public class EmployeeController {
             return R.error("账号或密码错误，请重新输入！");
         }
         if(emp.getStatus()==0){
-            return R.error("账号已冻结！");
+            return R.error("账号已被封禁！请联系超级管理员！");
         }
         request.getSession().setAttribute("empeid",emp.getEid());
         return R.success(emp);
@@ -67,6 +68,36 @@ public class EmployeeController {
         queryWrapper.orderByDesc(Employee::getCreateTime);  //按照创建时间排序
         employeeService.page(pageinfo,queryWrapper);
         return R.success(pageinfo);
+    }
+
+    //封禁员工账号（员工后台）
+    @GetMapping("/freeze/{eid}")
+    public R<String> freezeemp(@PathVariable Long eid){
+        Employee employee= employeeService.getById(eid);
+        if(employee==null){
+            return R.error("该员工不存在！");
+        }
+        if(employee.getStatus()==0){
+            return R.error("该员工已经被封禁！");
+        }
+        employee.setStatus(0);
+        employeeService.updateById(employee);    //把员工状态改为0，标记为封禁
+        return R.success("成功封禁");
+    }
+
+    //解封员工账号（员工后台）
+    @GetMapping("/delfreeze/{eid}")
+    public R<String> delfreezeemp(@PathVariable Long eid){
+        Employee employee= employeeService.getById(eid);
+        if(employee==null){
+            return R.error("该员工不存在！");
+        }
+        if(employee.getStatus()==1){
+            return R.error("该员工未处于封禁状态！");
+        }
+        employee.setStatus(1);
+        employeeService.updateById(employee);    //把员工状态改为1，标记为解封
+        return R.success("成功解除封禁");
     }
 }
 

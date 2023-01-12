@@ -333,7 +333,7 @@
             this.page = 1;
             this.init();
           },
-           // 添加
+           // 查看用户状态
           userdetail (st) {
             this.userVisible = true;
             this.userinfo=st;
@@ -355,7 +355,6 @@
           //封禁用户
           async freezeuser(){
             this.freezeVisible = false
-            console.log(this.empeid)
             let res = await freezeuserApi(this.reason,this.des,this.id,this.empeid)
             if (String(res.code) === '1') {
                 this.$message({
