@@ -34,7 +34,7 @@ public class LoginCheckFilter implements Filter {
             filterChain.doFilter(request,response);
             return;
         }
-        if(request.getSession().getAttribute("empid")!=null){
+        if(request.getSession().getAttribute("empeid")!=null){
             filterChain.doFilter(request,response);
             return;
         }

@@ -21,7 +21,8 @@ public class UserLoginCheckFilter implements Filter {
         String [] urls=new String[]{
                 "/fitdayfun/assets/**",
                 "/fitdayfun/myapi/**",
-                "/fitdayfun/page/login/login.html"
+                "/fitdayfun/page/login/login.html",
+                "/fitdayfun/page/accountexplain/**"
         };
         boolean check=check(urls,requesturi);
         if(check){

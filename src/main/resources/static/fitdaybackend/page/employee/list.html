@@ -85,13 +85,13 @@
           </template>
         </el-table-column>
 
-        <el-table-column label="注册时间">
+        <el-table-column label="注册时间" width="90">
           <template slot-scope="scope">
             <span>{{scope.row.createTime.toLocaleString().replace(/T/g, ' ').replace(/\.[\d]{3}Z/, '')}}</span>
           </template>
         </el-table-column>
 
-        <el-table-column label="修改时间">
+        <el-table-column label="修改时间" width="90">
           <template slot-scope="scope">
             <span>{{scope.row.updateTime.toLocaleString().replace(/T/g, ' ').replace(/\.[\d]{3}Z/, '')}}</span>
           </template>

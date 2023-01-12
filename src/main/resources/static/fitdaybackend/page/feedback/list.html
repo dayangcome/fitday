@@ -53,7 +53,7 @@
           label="反馈者UID"
         >
           <template slot-scope="{row}">
-            {{ row.useruid || '尚未填写' }}
+            {{ row.useruid || '游客反馈' }}
           </template>
         </el-table-column>
 
@@ -88,7 +88,7 @@
         ></el-table-column>
 
 
-        <el-table-column label="反馈时间" width="80">
+        <el-table-column label="反馈时间" width="90">
           <template slot-scope="scope">
             <span>{{scope.row.createTime.toLocaleString().replace(/T/g, ' ').replace(/\.[\d]{3}Z/, '')}}</span>
           </template>
@@ -253,7 +253,7 @@
             	} else if (type == 1) {
             	return '举报用户'
             	} else if (type == 2) {
-            	return '举报视频'
+            	return '账号封禁申诉'
             	} else if (type == 3) {
           	    return '举报商家'
             	} else {

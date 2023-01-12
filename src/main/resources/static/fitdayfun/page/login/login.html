@@ -104,6 +104,14 @@
                 color: red;
                 font-size: 18px;
             }
+            .account .dialog-footer{
+                text-align: center;
+            }
+            .account .el-dialog__body{
+                font-size: 16px;
+                color: #222222;
+                text-align: left;
+            }
         </style>
 
     </head>
@@ -162,10 +170,10 @@
                     <el-tab-pane label="账号登录" name="first">
                         <el-form ref="loginForm" :model="loginForm" :rules="loginRules" style="margin: 20px;">
                             <el-form-item prop="account">
-                                <el-input v-model="loginForm.account" placeholder="请输入账号"></el-input>
+                                <el-input prefix-icon="el-icon-user" v-model="loginForm.account" placeholder="请输入账号"></el-input>
                             </el-form-item>
                             <el-form-item prop="password" style="margin-top: 30px;">
-                                <el-input type="password" v-model="loginForm.password" placeholder="请输入密码"></el-input>
+                                <el-input prefix-icon="el-icon-lock" type="password" v-model="loginForm.password" placeholder="请输入密码"></el-input>
                             </el-form-item>
                             <el-form-item style="margin-top: 30px;">
                                 <span>还没有账号？</span><el-button type="text" @click="zcdialogVisible = true">点击注册</el-button>
@@ -187,10 +195,10 @@
                     <el-tab-pane label="手机号登录" name="second">
                         <el-form ref="phoneloginForm" :model="phoneloginForm" :rules="phoneloginRules" style="margin: 20px;">
                             <el-form-item prop="phone">
-                                <el-input v-model="phoneloginForm.phone" placeholder="请输入手机号"></el-input>
+                                <el-input prefix-icon="el-icon-mobile-phone" v-model="phoneloginForm.phone" placeholder="请输入手机号"></el-input>
                             </el-form-item>
                             <el-form-item prop="password" style="margin-top: 30px;">
-                                <el-input type="password" v-model="phoneloginForm.password" placeholder="请输入密码"></el-input>
+                                <el-input prefix-icon="el-icon-lock" type="password" v-model="phoneloginForm.password" placeholder="请输入密码"></el-input>
                             </el-form-item>
                             <el-form-item style="margin-top: 30px;">
                                 <span>还没有账号？</span><el-button type="text" @click="zcdialogVisible = true">点击注册</el-button>
@@ -220,19 +228,19 @@
                         >
                     <el-form ref="registerForm" :model="registerForm"  :rules="registerRules" style="margin:0 20px;">
                         <el-form-item prop="myaccount">
-                            <el-input v-model="registerForm.myaccount" placeholder="请输入设置的账号"></el-input>
+                            <el-input prefix-icon="el-icon-user" v-model="registerForm.myaccount" placeholder="请输入设置的账号"></el-input>
                         </el-form-item>
                         <el-form-item  prop="mypassword">
-                            <el-input type="password" v-model="registerForm.mypassword" placeholder="请输入设置的密码"></el-input>
+                            <el-input prefix-icon="el-icon-lock" type="password" v-model="registerForm.mypassword" placeholder="请输入设置的密码"></el-input>
                         </el-form-item>
                         <el-form-item prop="myagainpassword">
-                            <el-input type="password" v-model="registerForm.myagainpassword" placeholder="请再次输入密码进行确认"></el-input>
+                            <el-input prefix-icon="el-icon-plus" type="password" v-model="registerForm.myagainpassword" placeholder="请再次输入密码进行确认"></el-input>
                         </el-form-item>
                         <el-form-item prop="myname">
-                            <el-input v-model="registerForm.myname" placeholder="请输入设置的昵称"></el-input>
+                            <el-input prefix-icon="el-icon-postcard" v-model="registerForm.myname" placeholder="请输入设置的昵称"></el-input>
                         </el-form-item>
                         <el-form-item prop="code">
-                            <el-input v-model="registerForm.code" style="float: left;width: 136px;" placeholder="请输入验证码"></el-input>
+                            <el-input prefix-icon="el-icon-circle-check" v-model="registerForm.code" style="float: left;width: 136px;" placeholder="请输入验证码"></el-input>
                             <img :src="imageURL" @click="changeCode" style="cursor: pointer"/>&nbsp;&nbsp;&nbsp;&nbsp;<a href="javascript:void(0)" @click.prevent="changeCode">看不清，换一张</a><br/>
                         </el-form-item>
                         <el-form-item>
@@ -346,8 +354,21 @@
                     <el-form-item>
                         <el-button type="primary" @click="privacyPolicydialogVisible = false">确认</el-button>
                     </el-form-item>
-                    </el-dialog>  
-                    
+                    </el-dialog>
+
+<!--                账号已封禁-->
+                <div class="account">
+                    <el-dialog title="账号已封禁" :visible.sync="freezeVisible" width="35%">
+                        当前账号已于 <strong>{{freezeInfo.createTime}}</strong> 被封禁！<br><br>
+                        处理员工/管理员EID：<strong>{{freezeInfo.empeid}}</strong><br><br>
+                        封禁原因：<strong>{{freezeInfo.reason}}</strong><br><br>
+                        封禁说明：<strong>{{freezeInfo.desciption}}</strong>
+                        <div slot="footer" class="dialog-footer">
+                            <el-button type="warning" @click="toexplain">去申诉</el-button>
+                            <el-button @click="freezeVisible = false">取消</el-button>
+                        </div>
+                    </el-dialog>
+                </div>
             </div>
         </header>
         
@@ -427,6 +448,7 @@
           title="Fitday BMI自测"
           :visible.sync="bmiFormVisible"
           width="60%"
+          top="15px"
           >
           <div class="mytop">
               <p>欢迎来到FitdayBMI自测界面！&#128512;身体质量指数，是BMI指数，简称体质指数，是国际上常用的衡量人体胖瘦程度以及是否健康的一个标准。</p>
@@ -498,9 +520,9 @@
                 </div>
                 <!-- About Section Button-->
                 <div class="text-center mt-4">
-                    <a class="btn btn-xl btn-outline-light" href="https://startbootstrap.com/theme/freelancer/">
-                        <i class="fas fa-download me-2"></i>
-                        Free Download!
+                    <a class="btn btn-xl btn-outline-light" @click="dialogVisible=true">
+                        <i class="el-icon-circle-check"></i>
+                        &nbsp;快速开始！
                     </a>
                 </div>
             </div>
@@ -1020,6 +1042,7 @@
                             myname:"",
                             code:""
                         },
+                        freezeInfo:{},
                         dialogVisible: false,
                         zcdialogVisible: false,
                         bmiFormVisible: false,
@@ -1028,13 +1051,15 @@
                         GetbackdialogVisible: false,
                         GetbackMailboxdialogVisible: false,
                         modifypassworddialogVisible: false,
+                        freezeVisible:false,
                         activeName: 'first',
                         imageURL:'/identifyImage',
                         hv:"",
                         wv:"",
                         bmi:0,
                         printbmi0:"",
-                        printbmi1:""
+                        printbmi1:"",
+                        logintype:0
                     };
                 },
                 mounted () {
@@ -1198,7 +1223,15 @@
                                     })
                                     localStorage.setItem('userInfo',JSON.stringify(res.data))
                                     window.location.href= '/fitdayfun/index.html'
-                                } else {
+                                } else if(res.msg=='freeze'){
+                                    let res2 = await getfreezeInfo(this.loginForm.account)
+                                    if (String(res2.code) === '1'){
+                                        this.freezeInfo=res2.data
+                                        this.freezeInfo.createTime=this.freezeInfo.createTime.replace(/T/g, '  ').replace(/.[\d]{3}Z/, '  ')
+                                        this.freezeVisible=true
+                                        this.logintype=1
+                                    }
+                                }else{
                                     this.$message.error(res.msg)
                                 }
                             }
@@ -1216,7 +1249,15 @@
                                     })
                                     localStorage.setItem('userInfo',JSON.stringify(res.data))
                                     window.location.href= '/fitdayfun/index.html'
-                                } else {
+                                }else if(res.msg=='freeze'){
+                                    let res2 = await phonegetfreezeInfo(this.phoneloginForm.phone)
+                                    if (String(res2.code) === '1'){
+                                        this.freezeInfo=res2.data
+                                        this.freezeInfo.createTime=this.freezeInfo.createTime.replace(/T/g, '  ').replace(/.[\d]{3}Z/, '  ')
+                                        this.freezeVisible=true
+                                        this.logintype=2
+                                    }
+                                }else{
                                     this.$message.error(res.msg)
                                 }
                             }
@@ -1258,6 +1299,13 @@
                         } else {
                             this.$message.error(res.msg);
                         }
+                    },
+                    toexplain(){
+                        localStorage.setItem("exaccount", this.loginForm.account);
+                        localStorage.setItem("exphone", this.phoneloginForm.phone);
+                        localStorage.setItem("exreason", this.freezeInfo.reason);
+                        localStorage.setItem("type", this.logintype);
+                        window.location.href='../accountexplain/accountexplain.html'
                     }
                 }
             })

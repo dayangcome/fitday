@@ -20,6 +20,9 @@
     tr{
       height: 26px;
     }
+    #freeze .el-dialog__body{
+      padding: 30px 40px 30px 0px;
+    }
   </style>
 </head>
 <body>
@@ -108,7 +111,9 @@
 
         <el-table-column label="账号状态">
           <template slot-scope="scope">
-            {{ String(scope.row.status) === '0' ? '已冻结' : '正常' }}
+            <span :style="String(scope.row.status) === '0' ? 'color:red;':'' ">
+              {{ String(scope.row.status) === '0' ? '已封禁' : '正常' }}
+            </span>
           </template>
         </el-table-column>
 
@@ -139,10 +144,10 @@
             <el-button
               type="text"
               size="small"
-              class="delBut non"
+              :class="scope.row.status == '1' ?'delBut':'reBut'"
               @click="statusHandle(scope.row)"
             >
-              {{ scope.row.status == '1' ? '冻结' : '启用' }}
+              {{ scope.row.status == '1' ? '封禁' : '解封' }}
             </el-button>
           </template>
         </el-table-column>
@@ -187,7 +192,11 @@
         </tr>
         <tr>
           <td class="tdleft">账号状态</td>
-          <td>{{ String(userinfo.status) === '0' ? '已冻结' : '正常' }}</td>
+          <td>
+            <span :style="String(userinfo.status) === '0' ? 'color:red;':'' ">
+              {{ String(userinfo.status) === '0' ? '已封禁' : '正常' }}
+            </span>
+          </td>
         </tr>
         <tr>
           <td class="tdleft">当前经验</td>
@@ -231,6 +240,41 @@
         <el-button type="primary" @click="userVisible = false">确 定</el-button>
       </div>
     </el-dialog>
+
+    <div id="freeze">
+    <el-dialog title="封禁用户" :visible.sync="freezeVisible">
+      <el-form :model="form">
+        <el-form-item label-width="60px">
+          <span>封禁用户：<strong>{{name}}</strong>，UID：<strong>{{id}}</strong>，账号：<strong>{{account}}</strong></span>
+        </el-form-item>
+        <el-form-item label="封禁原因" label-width="120px">
+          <el-select v-model="reason" placeholder="请选择封禁原因">
+            <el-option label="个人信息违规" value="个人信息违规"></el-option>
+            <el-option label="散播谣言" value="散播谣言"></el-option>
+            <el-option label="涉嫌欺诈" value="涉嫌欺诈"></el-option>
+            <el-option label="涉嫌人身攻击" value="涉嫌人身攻击"></el-option>
+            <el-option label="传播色情" value="传播色情"></el-option>
+            <el-option label="侵犯他人隐私" value="侵犯他人隐私"></el-option>
+            <el-option label="多次引战" value="多次引战"></el-option>
+            <el-option label="其他" value="其他"></el-option>
+          </el-select>
+        </el-form-item>
+        
+        <el-form-item label="详细说明" label-width="120px">
+            <el-input
+              type="textarea"
+              placeholder="请输入详细说明"
+              v-model="des"
+              rows="3">
+            </el-input>
+        </el-form-item>
+      </el-form>
+      <div slot="footer" class="dialog-footer">
+        <el-button @click="freezeVisible = false">取 消</el-button>
+        <el-button type="primary" @click="freezeuser">确 定</el-button>
+      </div>
+    </el-dialog>
+    </div>
   </div>
     <!-- 开发环境版本，包含了有帮助的命令行警告 -->
     <script src="../../../public/plugins/vue/vue.js"></script>
@@ -252,14 +296,20 @@
              tableData : [],
              id : '',
              status : '',
+             name:'',
+             account:'',
+             reason:'',
+             des:'',
              userVisible:false,
-             userinfo:{}
+             freezeVisible:false,
+             userinfo:{},
+             empeid:''
           }
         },
         computed: {},
         created() {
           this.init()
-          this.empInfo = JSON.parse(localStorage.getItem('empInfo')).name
+          this.empeid = JSON.parse(localStorage.getItem('empInfo')).eid
         },
         mounted() {
         },
@@ -286,22 +336,48 @@
            // 添加
           userdetail (st) {
             this.userVisible = true;
-            console.log(st);
             this.userinfo=st;
+            this.userinfo.createTime=this.userinfo.createTime.replace(/T/g, '  ').replace(/.[\d]{3}Z/, '  ')
+            this.userinfo.updateTime=this.userinfo.updateTime.replace(/T/g, '  ').replace(/.[\d]{3}Z/, '  ')
           },
           //状态修改
           statusHandle (row) {
-            this.id = row.id
+            this.id = row.uid
+            this.account=row.account
+            this.name=row.username
             this.status = row.status
-            this.$confirm('确认调整该账号的状态?', '提示', {
+            if(this.status==1){
+              this.freezeVisible = true
+            }else{
+              this.delfreeze()
+            }
+          },
+          //封禁用户
+          async freezeuser(){
+            this.freezeVisible = false
+            console.log(this.empeid)
+            let res = await freezeuserApi(this.reason,this.des,this.id,this.empeid)
+            if (String(res.code) === '1') {
+                this.$message({
+                    type:'success',
+                    message: '已成功封禁用户',
+                    duration: 5000
+                })
+              this.handleQuery()
+            } else {
+                this.$message.error(res.msg);
+            }
+          },
+          //解封用户
+          async delfreeze(){
+            this.$confirm('确认要解封用户 '+this.name+'（账号：'+this.account+'）吗?', '提示', {
               'confirmButtonText': '确定',
               'cancelButtonText': '取消',
               'type': 'warning'
-              }).then(() => {
-              enableOrDisableEmployee({ 'id': this.id, 'status': !this.status ? 1 : 0 }).then(res => {
-                console.log('enableOrDisableEmployee',res)
+            }).then(() => {
+              delfreezeuser(this.id).then(res => {
                 if (String(res.code) === '1') {
-                  this.$message.success('账号状态更改成功！')
+                  this.$message.success('已成功解封该用户！')
                   this.handleQuery()
                 }
               }).catch(err => {

@@ -26,3 +26,17 @@ function nologinfeedbackApi(data) {
         data
     })
 }
+
+function getfreezeInfo(account) {
+    return $axios({
+        'url': `/user/freezeInfo/${account}`,
+        'method': 'get'
+    })
+}
+
+function phonegetfreezeInfo(phone) {
+    return $axios({
+        'url': `/user/phonefreezeInfo/${phone}`,
+        'method': 'get'
+    })
+}

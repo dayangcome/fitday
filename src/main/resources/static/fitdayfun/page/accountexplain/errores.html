@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta charset="utf-8" />
+        <title>首页</title>
+        <link rel="stylesheet" href="https://unpkg.com/element-ui/lib/theme-chalk/index.css">
+        <style type="text/css">
+        #user{
+            float: right;
+        }
+        .el-page-header__left .el-icon-back{
+            font-size: 30px;
+            margin-right: 15px;
+        }
+        .el-page-header__title{
+            font-size: 18px;
+        }
+        </style>
+    </head>
+    <body>
+        <div id="app">
+           <div class="banner" style="height: 120px; display: flex; background-image: url(../../assets/img/222.jpg);">
+               <img src="../../assets/img/fitdaylogo.png" alt="" style="height:100px ;width:300px;margin:0 80px;">
+               <span class="myfont" style="color: azure;
+               font-size: 40px;
+               line-height: 120px;
+               margin-left: 100px;">吃好，练好，拥有好心态，轻装上阵！</span>
+           </div>
+            <el-result icon="error" title="申诉出错" subTitle="请尝试重新申诉" style="margin-top: 50px;font-size: 30px;">
+                <template slot="extra">
+                    <el-button type="primary" @click="goBack">返回主页面</el-button>
+                </template>
+            </el-result>
+
+        </div>
+        <!-- 开发环境版本，包含了有帮助的命令行警告 -->
+        <script src="../../../public/plugins/vue/vue.js"></script>
+        <!-- 引入组件库 -->
+        <script src="https://unpkg.com/element-ui/lib/index.js"></script>
+        <script>
+            new Vue({
+                el: '#app',
+                data() {
+                    return{
+                        
+                    }
+                },
+                methods: {
+                    goBack() {
+                        window.location.href='../../index.html'
+                    }
+                },
+                destroyed(){
+                }
+            })
+        </script>
+    </body>
+</html>

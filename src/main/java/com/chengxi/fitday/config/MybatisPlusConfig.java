@@ -8,7 +8,6 @@ import org.springframework.context.annotation.Configuration;
 //配置MabatisPlus的分页插件
 @Configuration
 public class MybatisPlusConfig {
-
     @Bean
     public MybatisPlusInterceptor mybatisPlusInterceptor(){
         MybatisPlusInterceptor mybatisPlusInterceptor=new MybatisPlusInterceptor();
