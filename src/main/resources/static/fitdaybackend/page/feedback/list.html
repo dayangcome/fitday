@@ -13,6 +13,13 @@
     #member-app  .notAdmin::after{
       border: 0 !important;
     }
+    .tdleft{
+      font-weight: bold;
+      width: 200px;
+    }
+    tr{
+      height: 26px;
+    }
   </style>
 </head>
 <body>
@@ -45,6 +52,7 @@
           prop="type"
           label="反馈类型"
           :formatter="typeFormatter"
+          :show-overflow-tooltip="true"
         >
         </el-table-column>
 
@@ -97,7 +105,9 @@
 
         <el-table-column label="反馈状态">
           <template slot-scope="scope">
-            {{ String(scope.row.status) === '0' ? '未回复' : '已回复' }}
+            <span :style="String(scope.row.status) === '0' ? 'color:red;':(String(scope.row.status) === '1' ? 'color:blue;' :'color:green') ">
+              {{ String(scope.row.status) === '0'?'未回复':(String(scope.row.status) === '1'?'已回复':(String(scope.row.status) === '2'?'已解决':'状态异常')) }}
+            </span>
           </template>
         </el-table-column>
 
@@ -113,8 +123,7 @@
               type="text"
               size="small"
               class="blueBug"
-              @click="addMemberHandle(scope.row.id)"
-              :class="{notAdmin:user !== 'admin'}"
+              @click="feeddetail(scope.row)"
             >
               查看
             </el-button>
@@ -123,9 +132,10 @@
               size="small"
               class="delBut non"
               @click="statusHandle(scope.row)"
-              v-if="user === 'admin'"
             >
-              {{ scope.row.status == '1' ? '已回复' : '' }}
+              <span :style="String(scope.row.status) === '0' ? 'color:red;':(String(scope.row.status) === '1' ? 'color:blue;' :'color:green') ">
+                {{ scope.row.status == '0' ? '回复' : (scope.row.status== '1'?'解决':'---') }}
+              </span>
             </el-button>
           </template>
         </el-table-column>
@@ -142,6 +152,63 @@
         @current-change="handleCurrentChange"
       ></el-pagination>
     </div>
+
+    <el-dialog title="反馈详情" :visible.sync="listVisible" width="50%" top="35px">
+      <table>
+        <tr>
+          <td class="tdleft">反馈ID</td>
+          <td>{{listinfo.id}}</td>
+        </tr>
+        <tr>
+          <td class="tdleft">反馈类型</td>
+          <td>{{listinfo.type=='0'?'普通反馈':(listinfo.type=='1'?'用户举报':(listinfo.type=='2'?'账号封禁申诉':'其他反馈'))}}</td>
+        </tr>
+        <tr>
+          <td class="tdleft">反馈者UID</td>
+          <td>{{listinfo.useruid}}</td>
+        </tr>
+        <tr>
+          <td class="tdleft">反馈者昵称</td>
+          <td>{{ listinfo.name}}</td>
+        </tr>
+        <tr>
+          <td class="tdleft">反馈者邮箱</td>
+          <td>{{ listinfo.email}}</td>
+        </tr>
+        <tr>
+          <td class="tdleft">反馈者电话</td>
+          <td>{{ listinfo.phone}}</td>
+        </tr>
+        <tr>
+          <td class="tdleft">反馈信息</td>
+          <td>{{ listinfo.message}}</td>
+        </tr>
+        <tr>
+          <td class="tdleft">反馈状态</td>
+          <td>
+            <span :style="String(listinfo.status) === '0' ? 'color:red;':(String(listinfo.status) === '1' ? 'color:blue;' :'color:green') ">
+            {{ listinfo.status=='0'?'未回复':(listinfo.status=='1'?'已回复':(listinfo.status=='2'?'已解决':'状态异常')) }}
+            </span>
+          </td>
+        </tr>
+
+        <tr>
+          <td class="tdleft">反馈提交时间</td>
+          <td>
+            <template>
+              <span>{{listinfo.createTime}}</span>
+            </template>
+          </td>
+        </tr>
+
+      </table>
+      <div slot="footer" class="dialog-footer">
+        <el-button type="danger" @click="delfeed(listinfo.status,listinfo.id)">删 除</el-button>
+        <el-button type="primary" @click="listVisible = false">确 定</el-button>
+        <el-button @click="listVisible = false">取 消</el-button>
+
+      </div>
+    </el-dialog>
   </div>
     <!-- 开发环境版本，包含了有帮助的命令行警告 -->
     <script src="../../../public/plugins/vue/vue.js"></script>
@@ -162,7 +229,9 @@
              pageSize: 10,
              tableData : [],
              id : '',
-             status : ''
+             status : '',
+             listinfo:{},
+             listVisible:false
           }
         },
         computed: {},
@@ -192,6 +261,11 @@
             this.page = 1;
             this.init();
           },
+          feeddetail(st){
+            this.listVisible = true;
+            this.listinfo=st;
+            this.listinfo.createTime=this.listinfo.createTime.replace(/T/g, '  ').replace(/.[\d]{3}Z/, '  ')
+          },
            // 添加
           addMemberHandle (st) {
             if (st === 'add'){
@@ -212,21 +286,37 @@
           statusHandle (row) {
             this.id = row.id
             this.status = row.status
-            this.$confirm('确认调整该账号的状态?', '提示', {
-              'confirmButtonText': '确定',
-              'cancelButtonText': '取消',
-              'type': 'warning'
+            if(row.status==0){
+              this.$confirm('确认将状态调整为已回复？', '提示', {
+                'confirmButtonText': '确定',
+                'cancelButtonText': '取消',
+                'type': 'warning'
               }).then(() => {
-              enableOrDisableEmployee({ 'id': this.id, 'status': !this.status ? 1 : 0 }).then(res => {
-                console.log('enableOrDisableEmployee',res)
-                if (String(res.code) === '1') {
-                  this.$message.success('账号状态更改成功！')
-                  this.handleQuery()
-                }
-              }).catch(err => {
-                this.$message.error('请求出错了：' + err)
+                changestatus(this.id).then(res => {
+                  if (String(res.code) === '1') {
+                    this.$message.success('已将状态调整为已回复！')
+                    this.handleQuery()
+                  }
+                }).catch(err => {
+                  this.$message.error('请求出错了：' + err)
+                })
               })
-            })
+            }else if(row.status==1){
+              this.$confirm('确认将状态调整为已解决？', '提示', {
+                'confirmButtonText': '确定',
+                'cancelButtonText': '取消',
+                'type': 'warning'
+              }).then(() => {
+                changestatus(this.id).then(res => {
+                  if (String(res.code) === '1') {
+                    this.$message.success('已将状态调整为已解决！')
+                    this.handleQuery()
+                  }
+                }).catch(err => {
+                  this.$message.error('请求出错了：' + err)
+                })
+              })
+            }
           },
           handleSizeChange (val) {
             this.pageSize = val
@@ -235,6 +325,55 @@
           handleCurrentChange (val) {
             this.page = val
             this.init()
+          },
+          //删除反馈
+          delfeed(status,id){
+            if(status==0){
+              this.$confirm('当前反馈还尚未回复，确定要删除该反馈吗？', '提示', {
+                'confirmButtonText': '确定',
+                'cancelButtonText': '取消',
+                'type': 'warning'
+              }).then(() => {
+                delfeedback(id).then(res => {
+                  if (String(res.code) === '1') {
+                    this.$message.success('已成功删除该反馈！')
+                    this.handleQuery()
+                  }
+                }).catch(err => {
+                  this.$message.error('请求出错了：' + err)
+                })
+              })
+            }else if(status==1){
+              this.$confirm('当前反馈已回复，但还尚未解决，确定要删除该反馈吗？', '提示', {
+                'confirmButtonText': '确定',
+                'cancelButtonText': '取消',
+                'type': 'warning'
+              }).then(() => {
+                delfeedback(id).then(res => {
+                  if (String(res.code) === '1') {
+                    this.$message.success('已成功删除该反馈！')
+                    this.handleQuery()
+                  }
+                }).catch(err => {
+                  this.$message.error('请求出错了：' + err)
+                })
+              })
+            }else{
+              this.$confirm('确定要删除该反馈吗？', '提示', {
+                'confirmButtonText': '确定',
+                'cancelButtonText': '取消',
+                'type': 'warning'
+              }).then(() => {
+                delfeedback(id).then(res => {
+                  if (String(res.code) === '1') {
+                    this.$message.success('已成功删除该反馈！')
+                    this.handleQuery()
+                  }
+                }).catch(err => {
+                  this.$message.error('请求出错了：' + err)
+                })
+              })
+            }
           },
           // 时间格式化
           dataFormat(value) {

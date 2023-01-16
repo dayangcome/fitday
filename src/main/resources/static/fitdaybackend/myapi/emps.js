@@ -19,3 +19,19 @@ function delfreezeemp (eid) {
         method: 'get'
     })
 }
+function registerempApi (data) {
+    return $axios({
+        'url': '/employee/register',
+        'method': 'post',
+        data
+    })
+}
+
+function delemployee (eid) {
+    return $axios({
+        url: `/employee/delemp/${eid}`,
+        method: 'get'
+    })
+}
+
+

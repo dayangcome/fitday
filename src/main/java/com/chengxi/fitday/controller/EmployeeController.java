@@ -4,6 +4,8 @@ package com.chengxi.fitday.controller;
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.chengxi.fitday.common.R;
+import com.chengxi.fitday.dto.Empregisterdto;
+import com.chengxi.fitday.dto.Registerinfodto;
 import com.chengxi.fitday.entity.Employee;
 import com.chengxi.fitday.entity.Freeze;
 import com.chengxi.fitday.entity.User;
@@ -14,6 +16,9 @@ import org.springframework.util.DigestUtils;
 import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpSession;
+import java.math.BigDecimal;
+import java.time.LocalDateTime;
 
 /**
  * <p>
@@ -98,6 +103,43 @@ public class EmployeeController {
         employee.setStatus(1);
         employeeService.updateById(employee);    //把员工状态改为1，标记为解封
         return R.success("成功解除封禁");
+    }
+
+    //添加员工账号（员工后台）
+    @PostMapping("/register")
+    public R<String> register(@RequestBody Empregisterdto empregisterdto){
+        LambdaQueryWrapper<Employee> queryWrapper=new LambdaQueryWrapper<>();
+        queryWrapper.eq(Employee::getAccount,empregisterdto.getAccount());
+        Employee employee1= employeeService.getOne(queryWrapper);
+        if(employee1!=null){
+            return R.error("该账号已存在，请重新设置账号！");
+        }
+        if(!empregisterdto.getPassword().equals(empregisterdto.getAgainpassword())){
+            return R.error("两次输入的密码不一致！");
+        }
+
+        Employee employee=new Employee();
+        employee.setAccount(empregisterdto.getAccount());
+        employee.setPassword(DigestUtils.md5DigestAsHex(empregisterdto.getPassword().getBytes()));
+        employee.setName(empregisterdto.getName());
+        employee.setPhone(empregisterdto.getPhone());
+        //设置默认头像
+        employee.setAvatar("https://cube.elemecdn.com/3/7c/3ea6beec64369c2642b92c6726f1epng.png");
+        employee.setStatus(1);
+        employee.setCreateTime(LocalDateTime.now());
+        employee.setUpdateTime(LocalDateTime.now());
+        employee.setRolenum(empregisterdto.getRolenum());
+//        System.out.println(employee);
+//        return null;
+        employeeService.save(employee);
+        return R.success("注册成功");
+    }
+
+    //删除员工账号（员工后台）
+    @GetMapping("/delemp/{eid}")
+    public R<String> delemp(@PathVariable Long eid){
+        employeeService.removeById(eid);        //删除员工信息
+        return R.success("成功删除");
     }
 }
 

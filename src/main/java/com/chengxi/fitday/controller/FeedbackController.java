@@ -6,6 +6,7 @@ import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.chengxi.fitday.common.R;
 import com.chengxi.fitday.dto.Explaindto;
 import com.chengxi.fitday.entity.Feedback;
+import com.chengxi.fitday.entity.Freeze;
 import com.chengxi.fitday.entity.User;
 import com.chengxi.fitday.service.IFeedbackService;
 import com.chengxi.fitday.service.IUserService;
@@ -88,5 +89,29 @@ public class FeedbackController {
         feedbackService.save(feedback1);
         return R.success("反馈成功！");
     }
+
+    //更改反馈状态（员工后台）
+    @GetMapping("/change/{id}")
+    public R<String> change(@PathVariable Long id){
+        Feedback feedback=feedbackService.getById(id);
+        if(feedback==null){
+            return R.error("该反馈不存在！");
+        }
+        if(feedback.getStatus()==2){
+            return R.error("该反馈不能再继续更改状态！");
+        }
+        feedback.setStatus(feedback.getStatus()+1);
+        feedbackService.updateById(feedback);
+
+        return R.success("成功更改反馈状态！");
+    }
+
+    //删除反馈信息（员工后台）
+    @GetMapping("/delfeed/{id}")
+    public R<String> delfeed(@PathVariable Long id){
+        feedbackService.removeById(id);        //删除反馈信息
+        return R.success("成功删除");
+    }
+
 }
 

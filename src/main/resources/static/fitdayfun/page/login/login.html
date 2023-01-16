@@ -313,7 +313,7 @@
                         :visible.sync="modifypassworddialogVisible"
                         width="30%"
                         >
-                    <el-form ref="form" :model="modifyPassform" label-width="80px" :rules="registerRules">
+                    <el-form ref="form" :model="modifyPassform" label-width="80px" >
                         <el-form-item label="新的密码" prop="mypassword" >
                             <el-input type="password"  v-model="modifyPassform.password"  placeholder="新的密码为8-16位字母数字组合"></el-input>
                         </el-form-item>
@@ -1035,13 +1035,6 @@
                             idencode:""
                         },
                         // 邮箱验证码
-                        registerForm: {
-                            myaccount:"",
-                            mypassword:"",
-                            myagainpassword:"",
-                            myname:"",
-                            code:""
-                        },
                         freezeInfo:{},
                         dialogVisible: false,
                         zcdialogVisible: false,

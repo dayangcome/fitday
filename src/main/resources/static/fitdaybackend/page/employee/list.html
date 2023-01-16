@@ -42,9 +42,9 @@
         </el-input>
         <el-button
           type="primary"
-          @click="addMemberHandle('add')"
+          @click="addMemberHandle"
         >
-          员工申请信息
+          + 添加员工
         </el-button>
       </div>
       <el-table
@@ -137,7 +137,7 @@
               size="small"
               :class="scope.row.status == '1' ?'delBut':'reBut'"
               @click="statusHandle(scope.row)"
-              v-if="empInfo.rolenum==0 & scope.row.rolenum!=0"
+              v-if="empInfo.rolenum==0 && scope.row.rolenum!=0"
             >
               {{ scope.row.status == '1' ? '封禁' : '解封' }}
             </el-button>
@@ -156,7 +156,7 @@
         @current-change="handleCurrentChange"
       ></el-pagination>
     </div>
-    <el-dialog title="员工详情" :visible.sync="listVisible" width="50%" top="15px">
+    <el-dialog title="员工详情" :visible.sync="listVisible" width="50%" top="35px">
       <table>
         <tr>
           <td class="tdleft">EID</td>
@@ -208,10 +208,48 @@
         </tr>
       </table>
       <div slot="footer" class="dialog-footer">
-        <el-button @click="listVisible = false">取 消</el-button>
+        <el-button type="danger" @click="delemp(listinfo.eid)" v-if="empInfo.rolenum==0 && empInfo.eid!=listinfo.eid">删 除</el-button>
         <el-button type="primary" @click="listVisible = false">确 定</el-button>
+        <el-button @click="listVisible = false">取 消</el-button>
+
       </div>
     </el-dialog>
+
+
+<!--    添加员工-->
+    <el-dialog title="添加员工" :visible.sync="addVisible" top="15px">
+      <el-form ref="addform" :model="addform" :rules="registerRules">
+        <el-form-item label="员工账号" :label-width="formLabelWidth" prop="account">
+          <el-input v-model="addform.account" autocomplete="off" style="width: 400px"></el-input>
+        </el-form-item>
+        <el-form-item label="员工密码" :label-width="formLabelWidth" prop="password">
+          <el-input show-password v-model="addform.password" autocomplete="off" style="width: 400px"></el-input>
+        </el-form-item>
+        <el-form-item label="确认密码" :label-width="formLabelWidth" prop="againpassword">
+          <el-input show-password v-model="addform.againpassword" autocomplete="off" style="width: 400px"></el-input>
+        </el-form-item>
+        <el-form-item label="员工昵称" :label-width="formLabelWidth" prop="name">
+          <el-input v-model="addform.name" autocomplete="off" style="width: 400px"></el-input>
+        </el-form-item>
+        <el-form-item label="员工手机号" :label-width="formLabelWidth" prop="phone">
+          <el-input v-model="addform.phone" autocomplete="off" style="width: 400px"></el-input>
+        </el-form-item>
+        <el-form-item label="员工角色" :label-width="formLabelWidth" prop="rolenum">
+          <el-select v-model="addform.rolenum" placeholder="请选择员工角色">
+            <el-option label="甲类员工" value="1"></el-option>
+            <el-option label="乙类员工" value="2"></el-option>
+            <el-option label="丙类员工" value="3"></el-option>
+            <el-option label="丁类员工" value="4"></el-option>
+            <el-option label="其他员工" value="5"></el-option>
+          </el-select>
+        </el-form-item>
+      </el-form>
+      <div slot="footer" class="dialog-footer">
+        <el-button type="primary" @click="addemp">添 加</el-button>
+        <el-button @click="addVisible = false">取 消</el-button>
+      </div>
+    </el-dialog>
+
   </div>
     <!-- 开发环境版本，包含了有帮助的命令行警告 -->
     <script src="../../../public/plugins/vue/vue.js"></script>
@@ -236,11 +274,104 @@
              empInfo:{},
              listinfo:{},
              listVisible:false,
+             addVisible:false,
              account:'',
-             name:''
+             name:'',
+             addform:{
+               account:'',
+               password:'',
+               againpassword:'',
+               name:'',
+               phone:'',
+               rolenum:''
+             },
+            formLabelWidth: '120px'
           }
         },
-        computed: {},
+        computed: {
+          registerRules() {
+            const validatemyaccount = (rule, value, callback) => {
+              for(let i=0;i<value.length;i++){
+                if(!(value.charAt(i)>='0'&&value.charAt(i)<='9'||value.charAt(i)>='a'&&value.charAt(i)<='z'||value.charAt(i)>='A'&&value.charAt(i)<='Z')){
+                  callback(new Error('账号必须由字母和数字组成'))
+                }
+              }
+              if (value.length < 6 ) {
+                callback(new Error('账号长度需要设置为6-24个字符'))
+              }else if(value.length > 24){
+                new Error('账号长度需要设置为6-24个字符')
+              } else {
+                callback()
+              }
+            }
+            const validatemypassword = (rule, value, callback) => {
+              let containnum=0
+              let containalp=0
+              for(let i=0;i<value.length;i++){
+                if(value.charAt(i)>='0'&&value.charAt(i)<='9'){
+                  containnum=1
+                }
+                if(value.charAt(i)>='a'&&value.charAt(i)<='z'||value.charAt(i)>='A'&&value.charAt(i)<='Z'){
+                  containalp=1
+                }
+              }
+              if (value.length < 8) {
+                callback(new Error('密码长度需要设置为8-16个字符'))
+              }else if(value.length > 16){
+                new Error('密码长度需要设置为8-16个字符')
+              } else if(containalp==0||containnum==0){
+                callback(new Error('密码必须包含字母和数字'))
+              }else{
+                callback()
+              }
+            }
+            const validatemyagainpassword = (rule, value, callback) => {
+              let containnum=0
+              let containalp=0
+              for(let i=0;i<value.length;i++){
+                if(value.charAt(i)>='0'&&value.charAt(i)<='9'){
+                  containnum=1
+                }
+                if(value.charAt(i)>='a'&&value.charAt(i)<='z'||value.charAt(i)>='A'&&value.charAt(i)<='Z'){
+                  containalp=1
+                }
+              }
+              if (value.length < 8) {
+                callback(new Error('密码长度需要设置为8-16个字符'))
+              } else if(value.length > 16){
+                new Error('密码长度需要设置为8-16个字符')
+              }else if(containalp==0||containnum==0){
+                callback(new Error('密码必须包含字母和数字'))
+              }else{
+                callback()
+              }
+            }
+            const validatemyname = (rule, value, callback) => {
+              if (value.length < 1) {
+                callback(new Error('请输入您设置的用户名'))
+              } else if(value.length > 30){
+                new Error('用户名必须设置在30个字符及以下')
+              }else {
+                callback()
+              }
+            }
+            const validatePhone = (rule, value, callback) => {
+              if (value.length != 11 ) {
+                callback(new Error('请输入正确的手机号'))
+              } else {
+                callback()
+              }
+            }
+            return {
+              'account': [{ required: true,'validator': validatemyaccount, 'trigger': 'blur' }],
+              'password': [{ required: true,'validator': validatemypassword, 'trigger': 'blur' }],
+              'againpassword': [{ required: true,'validator': validatemyagainpassword, 'trigger': 'blur' }],
+              'phone': [{ required: true,'validator': validatePhone, 'trigger': 'blur' }],
+              'name': [{ required: true,'validator': validatemyname, 'trigger': 'blur' }],
+              'rolenum': [{ required: true, message: '请选择员工角色', trigger: 'change' }],
+            }
+          }
+        },
         created() {
           this.init()
           this.empInfo = JSON.parse(localStorage.getItem('empInfo'))
@@ -274,20 +405,27 @@
             this.listinfo.updateTime=this.listinfo.updateTime.replace(/T/g, '  ').replace(/.[\d]{3}Z/, '  ')
           },
            // 添加
-          addMemberHandle (st) {
-            if (st === 'add'){
-              window.parent.menuHandle({
-                id: '2',
-                url: '/backend/page/member/add.html',
-                name: '添加员工'
-              },true)
-            } else {
-              window.parent.menuHandle({
-                id: '2',
-                url: '/backend/page/member/add.html?id='+st,
-                name: '修改员工'
-              },true)
-            }
+          addMemberHandle () {
+              this.addVisible=true
+              console.log(this.addform)
+          },
+          async addemp(){
+            this.$refs.addform.validate(async (valid) => {
+              if (valid) {
+                let res = await registerempApi(this.addform)
+                if (String(res.code) === '1') {
+                  this.$message({
+                    type:'success',
+                    message: '员工添加成功！',
+                    duration: 5000,
+                  })
+                  this.addVisible=false
+                  this.handleQuery()
+                } else {
+                  this.$message.error(res.msg)
+                }
+              }
+            })
           },
           //状态修改
           statusHandle (row) {
@@ -336,6 +474,37 @@
           handleSizeChange (val) {
             this.pageSize = val
             this.init()
+          },
+          delemp(eid){
+            this.$prompt('此操作将永久删除员工，请输入“YES”进行确认', '提示', {
+              confirmButtonText: '确定',
+              cancelButtonText: '取消'
+            }).then(({ value }) => {
+              if(value=='YES'){
+                delemployee(eid).then(res => {
+                  if (String(res.code) === '1') {
+                    this.$message({
+                      type: 'success',
+                      message: '已成功删除员工！'
+                    });
+                    this.listVisible = false
+                    this.handleQuery()
+                  }
+                }).catch(err => {
+                  this.$message.error('请求出错了：' + err)
+                })
+              }else {
+                this.$message({
+                  type: 'error',
+                  message: '输入的不是“YES”，删除失败！'
+                });
+              }
+            }).catch(() => {
+              this.$message({
+                type: 'info',
+                message: '已经取消删除员工！'
+              });
+            });
           },
           handleCurrentChange (val) {
             this.page = val
