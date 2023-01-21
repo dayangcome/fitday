@@ -209,6 +209,12 @@ public class UserController {
         return R.success(freeze);
     }
 
+    //用户账号退出登录
+    @PostMapping("/logout")
+    public R<String> logout(HttpServletRequest request){
+        request.getSession().removeAttribute("useruid");
+        return R.success("退出成功");
+    }
 
 }
 

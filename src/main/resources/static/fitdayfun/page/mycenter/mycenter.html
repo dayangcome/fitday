@@ -110,8 +110,8 @@
     <body>
         <div id="app">
             
-            <div class="banner" style="height: 120px; display: flex; background-image: url(../../images/222.jpg);">
-                <img src="../../images/fitdaylogo.png" alt="" style="height:100px ;width:300px;margin:0 80px;">
+            <div class="banner" style="height: 120px; display: flex; background-image: url(../../assets/img/222.jpg);">
+                <img src="../../assets/img/fitdaylogo.png" alt="" style="height:100px ;width:300px;margin:0 80px;">
                 <span class="myfont" style="color: azure;
                 font-size: 40px;
                 line-height: 120px;
@@ -163,7 +163,16 @@
                                   >
                                 </el-input>
                             </div>
-                            
+                            <div class="myrow">
+                                <h3>我的等级</h3>
+                                {{empInfo.wxNumber}}
+                                44444444
+                                <i class="el-icon-star-on" style="color:red"></i>
+                                <h3 style="margin-left: 20px">我的余额</h3>
+                                {{empInfo.wxNumber}}
+                                44444444
+                                <i class="el-icon-wallet" style="color:navy"></i>
+                            </div>
                             <div class="myrow">
                                 <h3>我的电话</h3>
                                 <el-input
@@ -255,8 +264,140 @@
                             <el-button type="danger" style="margin: 20px;">注销账号</el-button>
                         </div>
                     </el-tab-pane>
+                    <el-tab-pane label="体重监管">
+                        <el-card :body-style="{ padding: '20x' }" style="background-color: #bcbebf; margin-right: 750px">
+                        <div style="margin:0 30px;">
 
+                            <div class="myrow">
+                                <h3>我的身高</h3>
+                                {{empInfo.eid}}
+                                cm
+                                <el-button
+                                        size="medium"
+                                        @click="handleEdit(scope.$index, scope.row)" style="margin-left: 10px">编辑</el-button>
 
+                            </div>
+
+                            <div class="myrow">
+                                <h3>最新体重</h3>
+                                {{empInfo.account}}
+                                kg
+                                <el-button
+                                        size="medium"
+                                        @click="handleEdit(scope.$index, scope.row)" style="margin-left: 10px">编辑</el-button>
+
+                            </div>
+
+                            <div class="myrow">
+                                <h3>最新BMI</h3>
+                                {{empInfo.phone}}
+                                 16
+                                <el-progress :text-inside="true" :stroke-width="26" :stroke-length="20" :percentage="23" :color="customColorMethod" :format="ss"></el-progress>
+                            </div>
+
+                            <div class="myrow">
+                                <h3>基础代谢</h3>
+                                {{empInfo.wxNumber}}
+                                44444444
+                            </div>
+
+                            <div class="myrow">
+                                <h3>体重目标</h3>
+                                {{empInfo.rolenum}}
+                                kg
+                                <el-button
+                                        size="medium"
+                                        @click="handleEdit(scope.$index, scope.row)" style="margin-left: 10px">编辑</el-button>
+                                <h3 style="margin-left: 5px">达成时间</h3>
+                                {{empInfo.rolenum}}
+                                天
+                                <el-button
+                                        size="medium"
+                                        @click="handleEdit(scope.$index, scope.row)" style="margin-left: 10px">编辑</el-button>
+                            </div>
+
+                            <div class="myrow">
+                                <h3>热量预算</h3>
+                                鉴于您需要在147天减去7kg,热量预算
+                                {{empInfo.createTime}}
+                                <el-tag type="success">1824千卡</el-tag>
+                            </div>
+
+                        </div>
+                        </el-card>
+                    </el-tab-pane>
+                    <el-tab-pane label="我的栏目">
+                        <div>
+                            <el-col :span="11" v-for="(o, index) in 1" :key="o" :offset="index > 0 ? 1 : 0">
+                                <el-card :body-style="{ padding: '20x' }" style="background-color: #c2e7b0">
+                                    <div slot="header" class="clearfix">
+                                        <span style="font-style: italic"><strong>我的栏目</strong></span>
+                                    </div>
+                                    <el-row style="padding: 14px;">
+
+                                        <el-button type="primary" icon="el-icon-document-copy" circle size="200">我的订单</el-button>
+                                        <el-button type="success" icon="el-icon-shopping-cart-full" circle> 购物小车 </el-button>
+                                        <el-button type="info" icon="el-icon-basketball" circle>运动计划</el-button>
+                                        <el-button type="danger" icon="el-icon-dish-1" circle>饮食记录</el-button>
+                                    </el-row>
+                                    <el-row style="padding: 14px;">
+                                        <el-button type="primary" icon="el-icon-finished" circle plain>运动小结</el-button>
+                                        <el-button type="success" icon="el-icon-edit-outline" circle plain>饮食测评</el-button>
+                                        <el-button type="warning" icon="el-icon-chat-dot-square" circle plain>我的群组</el-button>
+                                        <el-button type="warning" icon="el-icon-star-off" circle>我的收藏</el-button>
+
+                                    </el-row>
+                                    <div style="padding: 14px;">
+
+                                        <div >
+                                            <el-row :gutter="20">
+                                                <el-col :span="2">
+                                                    <div>
+                                                        <el-statistic group-separator="," :precision="2" :value="value2" :title="title"></el-statistic>
+                                                    </div>
+                                                </el-col>
+                                                <el-col :span="2">
+                                                    <div>
+                                                        <el-statistic  title="男女比">
+                                                            <template slot="formatter">
+                                                                456/2
+                                                            </template>
+
+                                                        </el-statistic>
+                                                    </div>
+                                                </el-col>
+                                                <el-col :span="2">
+                                                    <div>
+                                                        <el-statistic group-separator="," :precision="2" decimal-separator="." :value="value1" :title="title">
+                                                            <template slot="prefix">
+                                                                <i class="el-icon-s-flag" style="color: red"></i>
+                                                            </template>
+                                                            <template slot="suffix">
+                                                                <i class="el-icon-s-flag" style="color: blue"></i>
+                                                            </template>
+                                                        </el-statistic>
+                                                    </div>
+
+                                                </el-col>
+                                                <el-col :span="2">
+                                                    <div>
+                                                        <el-statistic :value="like ? 521 : 520" title="Feedback">
+                                                            <template slot="suffix">
+            <span @click="like = !like" class="like">
+              <i class="el-icon-star-on" style="color:red" v-show="!!like"></i>
+              <i class="el-icon-star-off"  v-show="!like"></i>
+            </span> </template>
+                                                        </el-statistic>
+                                                    </div>
+                                                </el-col>
+                                            </el-row>
+                                        </div>
+
+                                        <time class="time">{{ currentDate }}</time>
+                                        <el-button type="text" class="button">操作按钮</el-button>
+                                    </div>
+                        </div>
+                    </el-tab-pane>
                 </el-tabs>
                </div>
 

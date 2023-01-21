@@ -22,6 +22,9 @@
         width: 100%;
         height: 100%;
       }
+      .el-icon-arrow-down:before{
+        color: #818693;
+      }
     </style>
   </head>
 
@@ -82,7 +85,11 @@
                  <el-dropdown @command="handleCommand">
                       <div style="cursor: pointer; display: flex;">
                         <div class="block" style="margin: 10px 10px 0 0;"><el-avatar size="medium" :src="circleUrl"></el-avatar></div>
-                        <div class="avatar-wrapper" >{{empInfo.name}}</div>
+                        <div class="avatar-wrapper" >
+                          {{empInfo.name}}
+                          <i class="el-icon-arrow-down"></i>
+                        </div>
+
                       </div>
                       <el-dropdown-menu slot="dropdown">
                         <el-dropdown-item icon="el-icon-user-solid" command="a">个人中心</el-dropdown-item>

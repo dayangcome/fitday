@@ -1,0 +1,270 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta charset="utf-8" />
+        <title>饮食计划</title>
+        <link rel="stylesheet" href="../../../public/plugins/element-ui/index.css" />
+        <style type="text/css">
+            .myflex{
+                display:flex;
+                background-image: url(../../assets/img/foodblackground.png);
+            }
+            .left{
+                height:700px;
+                width:52%;
+                display:flex;
+                flex-wrap: wrap;
+                align-content: flex-start;
+                border-right: 1px solid #ffffff;
+            }
+            .right{
+                height:700px;
+                width:48%;
+                padding:0 35px;
+                
+            }
+            .plan{
+                padding:0 30px;
+                width:45%;
+                height: 300px;
+                border-right: 1px solid #ffffff;
+            }
+            .log{
+                height: 300px;
+            }
+            h3{
+                display: inline-block;
+                margin: 20px 0;
+            }
+            h4{
+                margin: 15px;
+            }
+            .block{
+                margin: 15px;
+            }
+            .foodform{
+                border-top: 1px solid #ffffff;
+                padding: 0 30px;
+                width: 100%;
+            }
+            .time{
+                font-size: 17px;
+                font-weight: bold;
+            }
+        </style>
+    </head>
+    <body>
+        <div id="app">
+           <div class="myflex">
+                <div class="left">
+                    <div class="plan">
+                        <div style="width: 100%;text-align: center;">
+                            <h3>今日计划</h3>
+                        </div>
+                        <div style="margin: 12px 0;text-align: center;">
+                            <time class="time">{{ year }}/{{month}}/{{day}}</time><br>
+                            今日需要摄入<strong>{{finish}}</strong>千卡热量
+                        </div>
+                        <div style="display: flex;">
+                            <div style="width: 30%;">
+                                已摄入 <h4>{{finish}}</h4> 千卡
+                            </div>
+                            <div style="width: 40%;">
+                                <el-progress type="circle" :format="format" :percentage="50"></el-progress>
+                            </div>
+                            <div style="width: 30%;">
+                                运动消耗 <h4>{{consume}}</h4> 千卡
+                            </div>
+
+                        </div>
+                        
+                         
+                    </div>
+                    
+                    <div class="log">
+                        <div style="width: 100%;text-align: center;">
+                            <h3>饮食记录</h3>
+                        </div>
+                        <div style="margin-top: 20px;">
+                            <div class="block" style="display: inline-block;"><el-avatar :size="50" :src="circleUrl"></el-avatar><br><el-button type="text" style="color:blue">+ 早餐</el-button></div>
+                            <div class="block" style="display: inline-block;"><el-avatar :size="50" :src="circleUrl"></el-avatar><br><el-button type="text" style="color:green">+ 午餐</el-button></div>
+                            <div class="block" style="display: inline-block;"><el-avatar :size="50" :src="circleUrl"></el-avatar><br><el-button type="text" style="color:black">+ 晚餐</el-button></div>
+                            <div class="block" style="display: inline-block;"><el-avatar :size="50" :src="circleUrl"></el-avatar><br><el-button type="text" style="color:deeppink">+ 加餐</el-button></div>
+                        </div>
+                    </div>
+                    
+                    <div class="foodform">
+                        <div style="width: 100%;text-align: center;">
+                            <h3>饮食计划周期表</h3>
+                        </div>
+                        <div class="block" style="display: flex;">
+                          <div>
+
+                           <el-date-picker
+                             v-model="value2"
+                             align="right"
+                             type="date"
+                             placeholder="选择日期"
+                             :picker-options="pickerOptions">
+                           </el-date-picker>
+                          </div>
+                          
+                          <div style="margin-left: 40px;">
+                           <el-tabs type="border-card" stretch style="width: 380px;">
+                             <el-tab-pane label="早餐">早餐</el-tab-pane>
+                             <el-tab-pane label="午餐">午餐</el-tab-pane>
+                             <el-tab-pane label="晚餐">晚餐</el-tab-pane>
+                             <el-tab-pane label="加餐">加餐</el-tab-pane>
+                           </el-tabs>
+                         </div>
+                         </div>
+                    </div>
+                </div>
+                <div class="right">
+                    <div style="width: 100%;text-align: center;">
+                        <h3>热量查询</h3>
+                    <el-input
+                      v-model="input"
+                      placeholder="请输入食物名称"
+                      style="display: block;width: 400px;margin-top: 30px;"
+                      clearable
+                       @keyup.enter.native="handleQuery"
+                    >
+                      <i
+                        slot="suffix"
+                        class="el-input__icon el-icon-search"
+                        style="cursor: pointer"
+                        @click="handleQuery"
+                      ></i>
+                    </el-input>
+                    </div>
+                    
+                    <el-card class="box-card" shadow="hover" style="text-align: center;margin-top: 20px;">
+                        <h4>推荐食物</h4>
+                        <el-table
+                            :data="foodData"
+                            stripe
+                            style="width: 100%"
+                            :show-header="false"
+                            highlight-current-row="true"
+                            >
+                            <el-table-column
+                              prop="date"
+                              width="180">
+                            </el-table-column>
+                            <el-table-column
+                              prop="name"
+                              width="180">
+                            </el-table-column>
+                            <el-table-column
+                              prop="address"
+                              >
+                            </el-table-column>
+                            <el-table-column
+                              align="center"
+                              width="160"
+                            >
+                              <template slot-scope="scope">
+                                <el-button
+                                  type="text"
+                                  class="blueBug"
+                                  @click="userdetail(scope.row)"
+                                >
+                                  查看
+                                </el-button>
+                              </template>
+                            </el-table-column>
+                          </el-table>
+                      </el-card>
+                </div>
+           </div>
+            
+        
+
+        </div>
+        <!-- 开发环境版本，包含了有帮助的命令行警告 -->
+        <script src="../../../public/plugins/vue/vue.js"></script>
+        <!-- 引入组件库 -->
+        <script src="../../../public/plugins/element-ui/index.js"></script>
+
+        <script src="../../../public/plugins/axios/axios.min.js"></script>
+        <script src="../../../public/js/request.js"></script>
+        <script src="../../myapi/explain.js"></script>
+        <script>
+            new Vue({
+                el: '#app',
+                data() {
+                    return {
+                      account:'',
+                      phone:'',
+                      reason:'',
+                      explain:'',
+                      logintype:0,
+                      finish:0,
+                      consume:0,
+                      year :new Date().getFullYear(),
+                      month :new Date().getMonth() + 1,
+                      day:new Date().getDate(),
+                      pickerOptions: {
+                        disabledDate(time) {
+                            return time.getTime() > Date.now();
+                        },
+                        shortcuts: [{
+                            text: '今天',
+                            onClick(picker) {
+                            picker.$emit('pick', new Date());
+                            }
+                        }, {
+                            text: '昨天',
+                            onClick(picker) {
+                            const date = new Date();
+                            date.setTime(date.getTime() - 3600 * 1000 * 24);
+                            picker.$emit('pick', date);
+                            }
+                        }, {
+                            text: '一周前',
+                            onClick(picker) {
+                            const date = new Date();
+                            date.setTime(date.getTime() - 3600 * 1000 * 24 * 7);
+                            picker.$emit('pick', date);
+                            }
+                        }]
+                        },
+                        value2: '',
+                    }
+                },
+                mounted() {
+                    this.account=localStorage.getItem("exaccount");
+                    this.phone=localStorage.getItem("exphone");
+                    this.reason=localStorage.getItem("exreason");
+                    this.logintype=localStorage.getItem("type");
+                },    
+                methods: {
+                    async submitex(){
+                        let res = await sendexplain(this.account,this.phone,this.reason,this.explain)
+                        if (String(res.code) === '1') {
+                            window.location.href='successres.html'
+                        } else {
+                            window.location.href='errores.html'
+                        }
+                    },
+                    goBack() {
+                        window.location.href='../../index.html'
+                    },
+                    handleQuery(){
+                        
+                    },
+                    format(percentage) {
+                        return percentage === 100 ? '今日已摄入完毕' : `${percentage}%`;
+                    }
+                },
+                destroyed(){
+                    localStorage.removeItem("exaccount");
+                    localStorage.removeItem("exphone");
+                    localStorage.removeItem("exreason");
+                    localStorage.removeItem("type");
+                }
+            })
+        </script>
+    </body>
+</html>

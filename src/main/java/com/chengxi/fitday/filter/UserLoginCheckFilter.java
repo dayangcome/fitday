@@ -26,12 +26,10 @@ public class UserLoginCheckFilter implements Filter {
         };
         boolean check=check(urls,requesturi);
         if(check){
-            System.out.println("111");
             filterChain.doFilter(request,response);
             return;
         }
         if(request.getSession().getAttribute("useruid")!=null){
-            System.out.println("222");
             filterChain.doFilter(request,response);
             return;
         }

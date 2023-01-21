@@ -9,6 +9,9 @@
         #user{
             float: right;
         }
+        .el-main{
+            padding: 0px;
+        }
         </style>
     </head>
     <body>
@@ -16,12 +19,14 @@
             <el-container>
                 
                 <el-header>
-                    <el-menu default-active="1" 
+                    <el-menu 
+                    default-active="1" 
                     class="el-menu-demo" 
                     mode="horizontal" 
-                    @select="handleSelect"
+                    @select="selectMenu"
                     text-color="#000000"
-                    active-text-color="#003bff">
+                    active-text-color="#003bff"
+                    >
                       <el-menu-item >
                           <div>
                             <img src="assets/img/fitdaylogo.png" alt="" style="width: 142px; height: 50px;margin-bottom:8px;" />
@@ -36,10 +41,11 @@
                       <el-menu-item index="7">心理咨询</el-menu-item>
                       <el-menu-item id="user">
                           <div>
-                              <el-dropdown @command="handleCmd">
-                                <span style="cursor: pointer;">
+                              <el-dropdown @command="handleCommand">
+                                <span style="cursor: pointer;" @click.prevent="myclick">
                                   <span style="margin:0 15px 8px 0;"><el-avatar size="medium" :src="circleUrl"></el-avatar></span>
-                                  <span>用户名</span>
+                                  <span>{{userInfo.username}}</span>
+                                  <i class="el-icon-caret-bottom"></i>
                                 </span>
                                 <el-dropdown-menu slot="dropdown">
                                 <el-dropdown-item icon="el-icon-user-solid" command="a"> 个人中心 </el-dropdown-item>
@@ -57,7 +63,16 @@
                 
             <el-container>
                 <el-main>
-                    主要信息展示页面
+                    <iframe
+                      id="cIframe"
+                      class="c_iframe"
+                      name="cIframe"
+                      :src="iframeUrl"
+                      width="100%"
+                      :height="frameheight+'px'" 
+                      frameborder="0"
+                      scrolling="no"
+                    ></iframe>
                 </el-main>
             </el-container>
             
@@ -66,16 +81,59 @@
         <script src="../public/plugins/vue/vue.js"></script>
         <!-- 引入组件库 -->
         <script src="../public/plugins/element-ui/index.js"></script>
+        <script src="../public/plugins/axios/axios.min.js"></script>
+        <script src="../public/js/request.js"></script>
+        <script src="./myapi/userlogin.js"></script>
         <script>
             new Vue({
                 el: '#app',
                 data() {
                     return {
-                    
+                        urlList: [
+                            './page/home/home.html',
+                            './page/food/food.html',
+                            './page/sport/sport.html',
+                            'page/users/list4.html',
+                            'page/users/list5.html',
+                            'page/users/list6.html',
+                            'page/users/list7.html'
+                        ],
+                        userInfo:{},
+                        iframeUrl: './page/home/home.html',
+                        headTitle: '用户管理',
+                        frameheight:1080,
+                        circleUrl:'https://cube.elemecdn.com/e/fd/0fc7d20532fdaf769a25683617711png.png'
                     }
                 },
+                mounted(){
+                    var userInfo = window.localStorage.getItem('userInfo')
+                    userInfo = JSON.parse(userInfo)
+                    this.userInfo=userInfo
+                    this.circleUrl=userInfo.avatar
+                    this.frameheight= document.documentElement.scrollHeight
+                },
                 methods: {
-                    
+                    selectMenu(key, keyPath) {
+                        this.iframeUrl=this.urlList[key-1];
+                    },
+                    handleCommand(command) {
+                        if(command=='a'){
+                            window.location.href = './page/mycenter/mycenter.html';
+                        }else if(command=='c'){
+                            this.logout()
+                        }
+                    },
+                    myclick(){
+
+                    },
+                    logout() {
+                        userlogoutApi().then((res)=>{
+                            if(res.code === 1){
+                                localStorage.removeItem('userInfo')
+                                window.location.href = './page/login/login.html'
+                            }
+                        })
+                    },
                 }
             })
         </script>

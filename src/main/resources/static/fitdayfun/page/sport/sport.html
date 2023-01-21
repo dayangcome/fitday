@@ -1,0 +1,342 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta charset="utf-8" />
+        <title>运动计划</title>
+        <link rel="stylesheet" href="../../../public/plugins/element-ui/index.css" />
+        <style type="text/css">
+            .myflex{
+                display:flex;
+            }
+            .left{
+                width:65%;
+                display:flex;
+                flex-wrap: wrap;
+                align-content: flex-start;
+                border-right: 1px solid #DCDFE6;
+            }
+            .right{
+                width:35%;
+                padding:0 35px;
+                
+            }
+            .plan{
+                padding:0 30px;
+                width:100%;
+                height: 450px;
+                border-bottom: 1px solid #DCDFE6;
+            }
+            .mainpart{
+                width: 100%;
+                height:400px;
+                display:flex;
+            }
+            .mainleft{
+                width: 58%;
+            }
+            .mainright{
+                width: 42%;
+                padding: 0 60px;
+            }
+            .el-progress--circle .el-progress__text, .el-progress--dashboard .el-progress__text{
+                top: 36%;
+            }
+            h3{
+                display: inline-block;
+                margin: 20px 0;
+            }
+            h4{
+                margin: 15px;
+            }
+            .recommend{
+                border-top: 1px solid #ffffff;
+                padding: 0 30px;
+                width: 100%;
+            }
+            .time{
+                font-size: 17px;
+                font-weight: bold;
+                margin: 0 5px;
+            }
+            .el-input__inner{
+               border: 1.5px solid #ccc;
+               border-radius: 28px;
+            }
+            .bottom {
+                margin-top: 13px;
+                line-height: 12px;
+              }
+            
+              .button {
+                padding: 0;
+                float: right;
+              }
+            
+              .image {
+                width: 100%;
+                display: block;
+              }
+            
+              .clearfix:before,
+              .clearfix:after {
+                  display: table;
+                  content: "";
+              }
+              
+              .clearfix:after {
+                  clear: both
+              }
+              .rightup{
+                  height: 450px;
+              }
+        </style>
+    </head>
+    <body>
+        <div id="app">
+           <div class="myflex">
+                <div class="left">
+                    <div class="plan">
+                        <div class="mainpart">
+                            <div class="mainleft">
+                                <h3>运动计划</h3>
+                                <el-card class="box-card" shadow="hover">
+                                    <el-table
+                                        :data="mysportplan"
+                                        stripe
+                                        style="width: 100%;margin-bottom: 20px;"
+                                        :show-header="false"
+                                        highlight-current-row="true"
+                                        >
+                                        <el-table-column
+                                          prop="date"
+                                          >
+                                        </el-table-column>
+                                        <el-table-column
+                                          prop="name"
+                                          >
+                                        </el-table-column>
+                                        <el-table-column
+                                          prop="address"
+                                          >
+                                        </el-table-column>
+                                        <el-table-column
+                                          align="center"
+                                        >
+                                          <template slot-scope="scope">
+                                            <el-button
+                                              type="success" 
+                                              icon="el-icon-check" 
+                                              circle
+                                              @click="userdetail(scope.row)"
+                                            >
+                                            </el-button>
+                                            <el-button
+                                              type="danger" 
+                                              icon="el-icon-delete" 
+                                              circle
+                                              @click="userdetail(scope.row)"
+                                            >
+                                            </el-button>
+                                          </template>
+                                        </el-table-column>
+                                      </el-table>
+                                      <el-button type="primary" plain>+ 添加计划</el-button>
+                                      <el-button type="info" plain>+ 自定义计划</el-button>
+                                      <el-button type="danger" plain>清空计划</el-button>
+                                </el-card>
+                            </div> 
+                            <div class="mainright">
+                                <h3 style="margin-bottom: 0px;">完成情况</h3>
+                                <div style="display: flex;justify-content: space-around">
+                                    <el-progress type="circle" :format="format" :percentage="50" width="170" style="margin-top: 70px;"></el-progress>
+                                    <div style="display: flex;flex-direction: column;padding-left: 40px;">
+                                        <div style="height: 100px;width: 100px;border:5px solid rgb(0, 255, 121);border-radius: 50%;text-align: center;padding: 15px;margin-bottom: 40px;">
+                                        已消耗 <h4>{{finish}}</h4> 卡路里
+                                        </div>
+                                        <div style="height: 100px;width: 100px;border:5px solid rgb(225, 48, 48);border-radius: 50%;text-align: center;padding: 15px;">
+                                        待消耗 <h4>{{finish}}</h4> 卡路里
+                                        </div>
+                                    </div>
+                                </div>
+                                
+                            </div>
+                        </div> 
+                        <div class="mydate" style="text-align: center;font-size: 18px;">
+                            <i class="el-icon-arrow-left" style="cursor:pointer"></i>
+                            <time class="time">{{ year }}/{{month}}/{{day}}</time>
+                            <i class="el-icon-arrow-right" style="cursor:pointer"></i>
+                        </div>
+                         
+                    </div>
+                    
+                    <div class="recommend">
+                        
+                        <h3>推荐计划</h3>
+                        <el-input
+                          v-model="input"
+                          placeholder="搜索"
+                          style="float: right;width: 350px;margin: 10px 50px 0 0;"
+                          clearable
+                           @keyup.enter.native="handleQuery"
+                        >
+                          <i
+                            slot="suffix"
+                            class="el-input__icon el-icon-search"
+                            style="cursor: pointer;font-size: 17px;"
+                            @click="handleQuery"
+                          ></i>
+                        </el-input>
+                        <div style="display: flex;">
+                            <div v-for="(o, index) in 4" :key="o" :offset="index > 0 ? 4 : 0" style="width: 220px;margin-right: 50px;">
+                                <el-card :body-style="{ padding: '0px' }">
+                                  <img src="../../assets/img/portfolio/1.png" class="image">
+                                  <div style="padding: 14px;">
+                                    <span>计划{{o}}</span>
+                                    <div class="bottom clearfix">
+                                      <el-button type="text" class="button">查看详情</el-button>
+                                    </div>
+                                  </div>
+                                </el-card>
+                              </div>
+                        </div>
+                        <br>
+                        <el-button type="info" plain style="display: block;float: right;margin-right: 50px;">更多</el-button><br>
+                        <h3>运动科普</h3>
+                        <div style="display: flex;">
+                            <div v-for="(o, index) in 4" :key="o" :offset="index > 0 ? 4 : 0" style="width: 220px;margin-right: 50px;">
+                                <el-card :body-style="{ padding: '0px' }">
+                                  <img src="../../assets/img/portfolio/model2-1.jpg" class="image">
+                                  <div style="padding: 14px;">
+                                    <span>运动{{o}}</span>
+                                    <div class="bottom clearfix">
+                                      <el-button type="text" class="button">查看详情</el-button>
+                                    </div>
+                                  </div>
+                                </el-card>
+                              </div>
+                        </div>
+                        <br>
+                        <el-button type="info" plain style="display: block;float: right;margin-right: 50px;">更多</el-button>
+                    </div>
+                </div>
+                <div class="right">
+                    <div class="rightup">
+                        <h3>运动记录</h3>
+                        <el-table
+                            :data="tableData"
+                            stripe
+                            style="width: 100%">
+                            <el-table-column
+                              prop="date"
+                              label="日期"
+                              >
+                            </el-table-column>
+                            <el-table-column
+                              prop="name"
+                              label="运动类型"
+                              >
+                            </el-table-column>
+                            <el-table-column
+                              prop="address"
+                              label="完成情况">
+                            </el-table-column>
+                          </el-table>
+                      </div>
+                      <div class="rightdown">
+                          <h3>运动日历</h3>
+                          <el-calendar v-model="value">
+                          </el-calendar>
+                      </div>
+                </div>
+           </div>
+            
+        
+
+        </div>
+        <!-- 开发环境版本，包含了有帮助的命令行警告 -->
+        <script src="../../../public/plugins/vue/vue.js"></script>
+        <!-- 引入组件库 -->
+        <script src="../../../public/plugins/element-ui/index.js"></script>
+
+        <script src="../../../public/plugins/axios/axios.min.js"></script>
+        <script src="../../../public/js/request.js"></script>
+        <script src="../../myapi/explain.js"></script>
+        <script>
+            new Vue({
+                el: '#app',
+                data() {
+                    return {
+                      account:'',
+                      phone:'',
+                      reason:'',
+                      explain:'',
+                      logintype:0,
+                      finish:0,
+                      consume:0,
+                      year :new Date().getFullYear(),
+                      month :new Date().getMonth() + 1,
+                      day:new Date().getDate(),
+                      value: new Date(),
+                      pickerOptions: {
+                        disabledDate(time) {
+                            return time.getTime() > Date.now();
+                        },
+                        shortcuts: [{
+                            text: '今天',
+                            onClick(picker) {
+                            picker.$emit('pick', new Date());
+                            }
+                        }, {
+                            text: '昨天',
+                            onClick(picker) {
+                            const date = new Date();
+                            date.setTime(date.getTime() - 3600 * 1000 * 24);
+                            picker.$emit('pick', date);
+                            }
+                        }, {
+                            text: '一周前',
+                            onClick(picker) {
+                            const date = new Date();
+                            date.setTime(date.getTime() - 3600 * 1000 * 24 * 7);
+                            picker.$emit('pick', date);
+                            }
+                        }]
+                        },
+                        value2: '',
+                    }
+                },
+                mounted() {
+                    this.account=localStorage.getItem("exaccount");
+                    this.phone=localStorage.getItem("exphone");
+                    this.reason=localStorage.getItem("exreason");
+                    this.logintype=localStorage.getItem("type");
+                },    
+                methods: {
+                    async submitex(){
+                        let res = await sendexplain(this.account,this.phone,this.reason,this.explain)
+                        if (String(res.code) === '1') {
+                            window.location.href='successres.html'
+                        } else {
+                            window.location.href='errores.html'
+                        }
+                    },
+                    goBack() {
+                        window.location.href='../../index.html'
+                    },
+                    handleQuery(){
+                        
+                    },
+                    format(percentage) {
+                        return `已完成${percentage}%`;
+                    }
+                },
+                destroyed(){
+                    localStorage.removeItem("exaccount");
+                    localStorage.removeItem("exphone");
+                    localStorage.removeItem("exreason");
+                    localStorage.removeItem("type");
+                }
+            })
+        </script>
+    </body>
+</html>

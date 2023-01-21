@@ -104,7 +104,6 @@
               this.loading = true
               let res = await emploginApi(this.loginForm)
               if (String(res.code) === '1') {
-                console.log(res);
                 localStorage.setItem('empInfo',JSON.stringify(res.data))
                 window.location.href= '/fitdaybackend/index.html'
               } else {

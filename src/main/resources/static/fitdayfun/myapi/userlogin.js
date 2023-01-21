@@ -40,3 +40,10 @@ function phonegetfreezeInfo(phone) {
         'method': 'get'
     })
 }
+
+function userlogoutApi(){
+    return $axios({
+        'url': '/user/logout',
+        'method': 'post',
+    })
+}

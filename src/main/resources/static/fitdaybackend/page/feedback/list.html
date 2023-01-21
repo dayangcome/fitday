@@ -336,6 +336,7 @@
               }).then(() => {
                 delfeedback(id).then(res => {
                   if (String(res.code) === '1') {
+                    this.listVisible=false
                     this.$message.success('已成功删除该反馈！')
                     this.handleQuery()
                   }
@@ -351,6 +352,7 @@
               }).then(() => {
                 delfeedback(id).then(res => {
                   if (String(res.code) === '1') {
+                    this.listVisible=false
                     this.$message.success('已成功删除该反馈！')
                     this.handleQuery()
                   }
@@ -366,6 +368,7 @@
               }).then(() => {
                 delfeedback(id).then(res => {
                   if (String(res.code) === '1') {
+                    this.listVisible=false
                     this.$message.success('已成功删除该反馈！')
                     this.handleQuery()
                   }

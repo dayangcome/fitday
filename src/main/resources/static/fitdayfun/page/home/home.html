@@ -1,0 +1,265 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta charset="utf-8" />
+        <title>首页</title>
+        <link rel="stylesheet" href="../../../public/plugins/element-ui/index.css" />
+        <style type="text/css">
+              .el-carousel-item img{
+                width: 100%;
+                height: 100%;
+              }
+              .bannerimg{
+                width: 100%;
+                height: inherit;
+              }
+              .myflex{
+                display:flex;
+                margin:5px;
+                background-color:#550000;
+              }
+              .left{
+                  width:52%;
+                  height:800px;
+                  background-color:#fff;
+              }
+              .right{
+                  width:48%;
+                  margin-left:2px;
+                  height:800px;
+                  background-color:#fff;
+              }
+              .left-up{
+                  height: 50%;
+              }
+              .left-down{
+                  display: flex;
+                  flex-wrap: wrap;
+                  border-top: #550000 solid 2px;
+                  margin-top: 2px;
+                  height: 50%;
+              }
+              .mybanner{
+                  background-color:#ecfdd1;
+                  margin-top: 60px;
+                  height: 120px;
+                  text-align: center;
+              }
+              .mytags{
+                  margin: 30px 0 0 10px;
+              }
+              .search{
+                  margin: 60px 0 0 50px;
+                  
+              }
+              .hotsearch{
+                   margin: 60px 50px 0 50px;
+                   border: #550000 solid 1px;
+              }
+              .tools{
+                  margin: 60px 50px 0 50px;
+                  border: #550000 solid 1px;
+              }
+              .search .el-input{
+                  font-size: 18px;
+              }
+              .search .el-input__inner{
+                 border: 2px solid #ccc;
+                 width: 600px; 
+                 height: 60px;
+                 border-radius: 28px;
+              }
+              .search .el-input__suffix{
+                  right: 80px;
+              }
+              .el-tag + .el-tag {
+                  margin-left: 10px;
+                }
+                .button-new-tag {
+                  margin-left: 10px;
+                  height: 32px;
+                  line-height: 30px;
+                  padding-top: 0;
+                  padding-bottom: 0;
+                }
+                .input-new-tag {
+                  width: 90px;
+                  margin-left: 10px;
+                  vertical-align: bottom;
+                }
+              h2{
+                  display: inline-block;
+                  margin-top: 20px;
+              }
+              h3{
+                  display: inline-block;
+                  margin: 20px 0 0 20px;
+              }
+              ul li{
+                  list-style: none;
+                  height: 30px;
+                  margin-top: 10px;
+              }
+        </style>
+    </head>
+    <body>
+        <div id="app">
+           <div class="block">
+               <el-carousel :height="bannerHeight + 'px'">
+                 <el-carousel-item v-for="item in piclist" :key="item">
+                   <img :src="item" class="bannerimg"/>
+                 </el-carousel-item>
+               </el-carousel>
+            </div>
+            
+            <div class="myflex">
+                <div class="left">
+                    <div class="left-up">
+                        <div class="mybanner">
+                            <h2>欢迎您<br>fitday大家庭的大洋！</h2>
+                        </div> 
+                        <h3>我的标签</h3>
+                        <div class="mytags">
+                            <el-tag
+                              :key="tag"
+                              v-for="tag in dynamicTags"
+                              closable
+                              :disable-transitions="false"
+                              @close="handleClose(tag)">
+                              {{tag}}
+                            </el-tag>
+                            <el-input
+                              class="input-new-tag"
+                              v-if="inputVisible"
+                              v-model="inputValue"
+                              ref="saveTagInput"
+                              size="small"
+                              @keyup.enter.native="handleInputConfirm"
+                              @blur="handleInputConfirm"
+                            >
+                            </el-input>
+                            <el-button v-else class="button-new-tag" size="small" @click="showInput">+ 新标签</el-button>
+                        </div>
+                        
+                    </div>
+                    
+                    <div class="left-down">
+                        <div style="width: 50%;">
+                            <h3>今日答题</h3>
+                        </div>
+                        <div style="width: 50%;">
+                            <h3>热门答题</h3>
+                        </div>
+                        <div style="width: 100%;">
+                            <h3>今日榜单</h3>
+                        </div>
+                    
+                    </div>
+                    
+                </div> 
+                <div class="right">
+                    <div class="search">
+                        <el-input placeholder="请输入" class="myinput" v-model="keyword"  >
+                                <i
+                                  slot="suffix"
+                                  class="el-input__icon el-icon-search"
+                                  style="cursor: pointer;font-size: 28px;line-height: 60px;"
+                                  @click="handleQuery"
+                                ></i>
+                        </el-input>
+                    </div>
+                    <div class="hotsearch">
+                        <h3>今日热搜</h3>
+                        <ol>
+                        	<li v-for="item in hotlist">
+                        		<strong>{{item}}</strong>
+                        	</li>
+                        </ol>
+                    </div>
+                    <div class="tools">
+                        <div style="text-align: center;">
+                            <h3>健康工具</h3>
+                        </div>
+                        <ul>
+                        	<li v-for="item in toollist">
+                        		<strong>{{item}}</strong>
+                        	</li>
+                        </ul>
+                    </div>
+                </div>
+            </div> 
+        </div>
+        <!-- 开发环境版本，包含了有帮助的命令行警告 -->
+        <script src="../../../public/plugins/vue/vue.js"></script>
+        <!-- 引入组件库 -->
+        <script src="../../../public/plugins/element-ui/index.js"></script>
+
+        <script src="../../../public/plugins/axios/axios.min.js"></script>
+        <script src="../../../public/js/request.js"></script>
+        <script>
+            new Vue({
+                el: '#app',
+                data() {
+                    return {
+                      piclist:[
+                          "../../assets/img/portfolio/b1.jpg",
+                          "../../assets/img/portfolio/b2.jpg",
+                          "../../assets/img/portfolio/b3.jpg",
+                          "../../assets/img/portfolio/b4.jpg",
+                      ],
+                      bannerHeight: 500,
+                      keyword:"",
+                      hotlist:[
+                          "哎对对对",
+                          "内网渗透",
+                          "鸡你太美"
+                      ],
+                      toollist:[
+                          "身体质量指数(BMI)",
+                          "标准体重计算",
+                          "健康体重范围",
+                          "基础代谢计算",
+                          "燃脂运动计算"
+                      ],
+                      dynamicTags: ['标签一', '标签二', '标签三'],
+                      inputVisible: false,
+                      inputValue: ''
+                    }
+                },
+                mounted() {
+                    this.setSize();
+                    window.addEventListener('resize', ()=>{
+                        this.setSize();
+                    },false);  
+                },    
+                methods: {
+                    setSize(){
+                        this.bannerHeight = document.body.clientWidth / 4
+                    },
+                     handleClose(tag) {
+                      this.dynamicTags.splice(this.dynamicTags.indexOf(tag), 1);
+                    },
+            
+                    showInput() {
+                      this.inputVisible = true;
+                      this.$nextTick(_ => {
+                        this.$refs.saveTagInput.$refs.input.focus();
+                      });
+                    },
+            
+                    handleInputConfirm() {
+                      let inputValue = this.inputValue;
+                      if (inputValue) {
+                        this.dynamicTags.push(inputValue);
+                      }
+                      this.inputVisible = false;
+                      this.inputValue = '';
+                    },
+                    handleQuery(){
+                        
+                    }
+                }
+            })
+        </script>
+    </body>
+</html>
