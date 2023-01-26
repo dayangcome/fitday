@@ -12,6 +12,9 @@
         .el-main{
             padding: 0px;
         }
+        .el-avatar{
+            background:#FFFFFF;
+        }
         </style>
     </head>
     <body>
@@ -27,7 +30,7 @@
                     text-color="#000000"
                     active-text-color="#003bff"
                     >
-                      <el-menu-item >
+                      <el-menu-item index="0" style="border-bottom: none;text-decoration: none;">
                           <div>
                             <img src="assets/img/fitdaylogo.png" alt="" style="width: 142px; height: 50px;margin-bottom:8px;" />
                           </div>
@@ -39,10 +42,10 @@
                       <el-menu-item index="5">社区</el-menu-item>
                       <el-menu-item index="6">商城</el-menu-item>
                       <el-menu-item index="7">心理咨询</el-menu-item>
-                      <el-menu-item id="user">
+                        <el-menu-item id="user" index="8" style="border-bottom: none;text-decoration: none;">
                           <div>
                               <el-dropdown @command="handleCommand">
-                                <span style="cursor: pointer;" @click.prevent="myclick">
+                                <span style="cursor: pointer;">
                                   <span style="margin:0 15px 8px 0;"><el-avatar size="medium" :src="circleUrl"></el-avatar></span>
                                   <span>{{userInfo.username}}</span>
                                   <i class="el-icon-caret-bottom"></i>
@@ -114,7 +117,13 @@
                 },
                 methods: {
                     selectMenu(key, keyPath) {
-                        this.iframeUrl=this.urlList[key-1];
+                        if(key==0){
+                            this.iframeUrl=this.urlList[0];
+                        }else if(key==8){
+                            this.iframeUrl=this.iframeUrl;
+                        }else {
+                            this.iframeUrl=this.urlList[key-1];
+                        }
                     },
                     handleCommand(command) {
                         if(command=='a'){
@@ -122,9 +131,6 @@
                         }else if(command=='c'){
                             this.logout()
                         }
-                    },
-                    myclick(){
-
                     },
                     logout() {
                         userlogoutApi().then((res)=>{

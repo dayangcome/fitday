@@ -6,6 +6,7 @@ import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.chengxi.fitday.common.R;
 import com.chengxi.fitday.dto.FreezeInfodto;
 import com.chengxi.fitday.dto.Registerinfodto;
+import com.chengxi.fitday.entity.Employee;
 import com.chengxi.fitday.entity.Freeze;
 import com.chengxi.fitday.entity.User;
 import com.chengxi.fitday.service.IFreezeService;
@@ -113,6 +114,7 @@ public class UserController {
         user.setUpdateTime(LocalDateTime.now());
         user.setRemain(new BigDecimal("0"));
         user.setRolenum(1);
+        user.setSex(2);
 //        System.out.println(user);
 //        return null;
         userService.save(user);
@@ -141,6 +143,7 @@ public class UserController {
             return R.error("该用户已经被封禁！");
         }
         user1.setStatus(0);
+        System.out.println(user1);
         userService.updateById(user1);    //把用户状态改为0，标记为封禁
 
         Freeze freeze=new Freeze();
@@ -216,5 +219,25 @@ public class UserController {
         return R.success("退出成功");
     }
 
+    //更改账号个人信息
+    @PutMapping("/changeuserinfo")
+    public R<String> changeuserinfo(@RequestBody User user){
+        System.out.println(user);
+        User user1=userService.getById(user.getUid());
+        user1.setUsername(user.getUsername());
+        user1.setPhone(user.getPhone());
+        user1.setAvatar(user.getAvatar());
+        user1.setSex(user.getSex());
+        user1.setWxNumber(user.getWxNumber());
+        userService.updateById(user1);
+        return R.success("修改成功");
+    }
+
+    //删除用户账号
+    @GetMapping("/deluser/{uid}")
+    public R<String> deluser(@PathVariable Long uid){
+        userService.removeById(uid);        //删除员工信息
+        return R.success("成功删除");
+    }
 }
 

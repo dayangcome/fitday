@@ -118,6 +118,9 @@
                 margin-left: 100px;">吃好，练好，拥有好心态，轻装上阵！</span>
             </div>
             
+            <el-page-header @back="goBack" style="line-height: 40px;margin-top: 10px">
+            </el-page-header>
+            
             <h1 style="text-align: center;">个人中心</h1>
             
             <div class="main" style="padding: 0 40px;">
@@ -138,18 +141,17 @@
                               >
                               <el-upload
                                 class="avatar-uploader"
-                                action="https://jsonplaceholder.typicode.com/posts/"
+                                action="/common/upload"
                                 :show-file-list="false"
                                 :on-success="handleAvatarSuccess"
                                 :before-upload="beforeAvatarUpload"
-                                :http-request="jjj"
                               >
                                 <img v-if="imageUrl" :src="imageUrl" class="avatar">
                                 <i v-else class="el-icon-plus avatar-uploader-icon"></i>
                               </el-upload>
                               
                               <span slot="footer" class="dialog-footer">
-                                <el-button type="primary" @click="changeVisible = false">确 定</el-button>
+                                <el-button type="primary" @click="changeavatar">确 定</el-button>
                                 <el-button @click="changeVisible = false">取 消</el-button>
                               </span>
                             </el-dialog>
@@ -157,7 +159,7 @@
                             <div class="myrow">
                                 <h3>我的昵称</h3>
                                 <el-input
-                                  v-model="name"
+                                  v-model="username"
                                   prefix-icon="el-icon-user-solid"
                                   style="width: 300px;"
                                   >
@@ -165,12 +167,12 @@
                             </div>
                             <div class="myrow">
                                 <h3>我的等级</h3>
-                                {{empInfo.wxNumber}}
-                                44444444
+                                {{userInfo.level}}
+                               
                                 <i class="el-icon-star-on" style="color:red"></i>
                                 <h3 style="margin-left: 20px">我的余额</h3>
-                                {{empInfo.wxNumber}}
-                                44444444
+                                {{userInfo.remain}}
+                             
                                 <i class="el-icon-wallet" style="color:navy"></i>
                             </div>
                             <div class="myrow">
@@ -179,15 +181,18 @@
                                   v-model="phone"
                                   prefix-icon="el-icon-user-solid"
                                   style="width: 300px;"
+                                  placeholder="尚未绑定电话"
                                   >
                                 </el-input>
                             </div>
                             
                             <div class="myrow">
                                 <h3>我的性别</h3>
-                                <el-radio v-model="sex" label="0">男</el-radio>
-                                <el-radio v-model="sex" label="1">女</el-radio>
-                                <el-radio v-model="sex" label="2">保密</el-radio>
+                                <el-radio-group v-model="sex">
+                                    <el-radio  :label="0">男</el-radio>
+                                    <el-radio  :label="1">女</el-radio>
+                                    <el-radio  :label="2">保密/未知</el-radio>
+                                </el-radio-group>
                             </div>
                             
                             <div class="myrow">
@@ -196,13 +201,14 @@
                                   v-model="wxNumber"
                                   prefix-icon="el-icon-user-solid"
                                   style="width: 300px;"
+                                  placeholder="尚未绑定微信号"
                                   >
                                 </el-input>
                             </div>
                         </div>
                         <div style="margin:18px 40px;">
-                            <el-button type="primary" style="margin-left: 30px;">提交修改</el-button>
-                            <el-button style="margin-left: 50px;">取消</el-button>
+                            <el-button type="primary" @click="submitchange(userInfo.uid,circleUrl,username,phone,sex,wxNumber)" style="margin-left: 30px;">提交修改</el-button>
+                            <el-button style="margin-left: 50px;" @click="goBack">取消</el-button>
                         </div>
                         
                     </el-tab-pane>
@@ -227,41 +233,40 @@
                         <div style="margin:0 30px;">
                             
                             <div class="myrow">
-                                <h3>我的EID</h3>
-                                {{empInfo.eid}}
-                                44444
+                                <h3>我的UID</h3>
+                                {{userInfo.uid}}
                             </div>
                             
                             <div class="myrow">
                                 <h3>我的账号</h3>
-                                {{empInfo.account}}
-                                2222222222
+                                {{userInfo.account}}
                             </div>
                             
                             <div class="myrow">
                                 <h3>绑定的手机号</h3>
-                                {{empInfo.phone}}
-                                33333333
+                                {{userInfo.phone||'尚未绑定'}}
                             </div>
                             
                             <div class="myrow">
                                 <h3>绑定的微信号</h3>
-                                {{empInfo.wxNumber}}
-                                44444444
+                                {{userInfo.wxNumber||'尚未绑定'}}
                             </div>
                             
                             <div class="myrow">
                                 <h3>我的角色</h3>
-                                {{empInfo.rolenum}}
-                                5
+                                {{userInfo.rolenum=='0'?'内测用户':(userInfo.rolenum=='1' ? '普通用户':(userInfo.rolenum=='2'?'健身博主':(userInfo.rolenum=='3'?'商家':'低信用用户')))}}
                             </div>
                             
                             <div class="myrow">
                                 <h3>账号创建时间</h3>
-                                {{empInfo.createTime}}
-                                6666
+                                {{userInfo.createTime}}
                             </div>
-                            <el-button type="danger" style="margin: 20px;">注销账号</el-button>
+
+                            <div class="myrow">
+                                <h3>账号更新时间</h3>
+                                {{userInfo.updateTime}}
+                            </div>
+                            <el-button type="danger" style="margin: 20px;" @click="delmyaccount(userInfo.uid)">注销账号</el-button>
                         </div>
                     </el-tab-pane>
                     <el-tab-pane label="体重监管">
@@ -270,7 +275,7 @@
 
                             <div class="myrow">
                                 <h3>我的身高</h3>
-                                {{empInfo.eid}}
+                                {{userInfo.eid}}
                                 cm
                                 <el-button
                                         size="medium"
@@ -280,7 +285,7 @@
 
                             <div class="myrow">
                                 <h3>最新体重</h3>
-                                {{empInfo.account}}
+                                {{userInfo.account}}
                                 kg
                                 <el-button
                                         size="medium"
@@ -290,26 +295,26 @@
 
                             <div class="myrow">
                                 <h3>最新BMI</h3>
-                                {{empInfo.phone}}
+                                {{userInfo.phone}}
                                  16
                                 <el-progress :text-inside="true" :stroke-width="26" :stroke-length="20" :percentage="23" :color="customColorMethod" :format="ss"></el-progress>
                             </div>
 
                             <div class="myrow">
                                 <h3>基础代谢</h3>
-                                {{empInfo.wxNumber}}
-                                44444444
+                                {{userInfo.wxNumber}}
+
                             </div>
 
                             <div class="myrow">
                                 <h3>体重目标</h3>
-                                {{empInfo.rolenum}}
+                                {{userInfo.rolenum}}
                                 kg
                                 <el-button
                                         size="medium"
                                         @click="handleEdit(scope.$index, scope.row)" style="margin-left: 10px">编辑</el-button>
                                 <h3 style="margin-left: 5px">达成时间</h3>
-                                {{empInfo.rolenum}}
+                                {{userInfo.rolenum}}
                                 天
                                 <el-button
                                         size="medium"
@@ -319,7 +324,7 @@
                             <div class="myrow">
                                 <h3>热量预算</h3>
                                 鉴于您需要在147天减去7kg,热量预算
-                                {{empInfo.createTime}}
+                                {{userInfo.createTime}}
                                 <el-tag type="success">1824千卡</el-tag>
                             </div>
 
@@ -349,7 +354,7 @@
                                     </el-row>
                                     <div style="padding: 14px;">
 
-                                        <div >
+                                        <div>
                                             <el-row :gutter="20">
                                                 <el-col :span="2">
                                                     <div>
@@ -383,10 +388,10 @@
                                                     <div>
                                                         <el-statistic :value="like ? 521 : 520" title="Feedback">
                                                             <template slot="suffix">
-            <span @click="like = !like" class="like">
-              <i class="el-icon-star-on" style="color:red" v-show="!!like"></i>
-              <i class="el-icon-star-off"  v-show="!like"></i>
-            </span> </template>
+                                                            <span @click="like = !like" class="like">
+                                                              <i class="el-icon-star-on" style="color:red" v-show="!!like"></i>
+                                                              <i class="el-icon-star-off"  v-show="!like"></i>
+                                                            </span> </template>
                                                         </el-statistic>
                                                     </div>
                                                 </el-col>
@@ -396,15 +401,12 @@
                                         <time class="time">{{ currentDate }}</time>
                                         <el-button type="text" class="button">操作按钮</el-button>
                                     </div>
+                                </el-card>
+                            </el-col>
                         </div>
                     </el-tab-pane>
                 </el-tabs>
                </div>
-
-
-                            </el-card>
-                        </el-col>
-                   </div>
             </div>
         </div>
         <div class="Snow" style="
@@ -424,20 +426,22 @@
         <script src="../../../public/plugins/vue/vue.js"></script>
         <!-- 引入组件库 -->
         <script src="../../../public/plugins/element-ui/index.js"></script>
+        <script src="../../../public/plugins/axios/axios.min.js"></script>
+        <script src="../../../public/js/request.js"></script>
+        <script src="../../myapi/usercenter.js"></script>
         <script>
             new Vue({
                 el: '#app',
                 data() {
                     return {
                         like: true,
-
                         value1: 4154.564,
                         value2: 2222,
                         title: "今年的增长",
                         input: "Hello Element UI!",
                         currentDate: new Date(),
-                        empInfo: {},
-                        name:"",
+                        userInfo: {},
+                        username:"",
                         phone:"",
                         sex:"",
                         wxNumber:"",
@@ -445,7 +449,7 @@
                         circleUrl:'https://cube.elemecdn.com/e/fd/0fc7d20532fdaf769a25683617711png.png',
                         imageUrl: '',
                         formLabelAlign: {
-                          name: '',
+                          username: '',
                           code: '',
                           newcode: ''
                         }
@@ -453,13 +457,16 @@
                 },
 
                 mounted() {
-                  var empInfo = window.localStorage.getItem('empInfo')
-                  empInfo = JSON.parse(empInfo)
-                  this.name=empInfo.name
-                  this.phone=empInfo.phone
-                  this.sex=empInfo.sex
-                  this.circleUrl=empInfo.avatar
-                  this.wxNumber=empInfo.wxNumber
+                  var userInfo = window.localStorage.getItem('userInfo')
+                  userInfo = JSON.parse(userInfo)
+                  this.userInfo=userInfo
+                  this.username=userInfo.username
+                  this.phone=userInfo.phone
+                  this.sex=userInfo.sex
+                  this.circleUrl=userInfo.avatar
+                  this.wxNumber=userInfo.wxNumber
+                  userInfo.createTime=userInfo.createTime.replace(/T/g, '  ').replace(/.[\d]{3}Z/, '  ')
+                  userInfo.updateTime=userInfo.updateTime.replace(/T/g, '  ').replace(/.[\d]{3}Z/, '  ')
                 },
                 methods: {
                     customColorMethod(percentage) {
@@ -499,8 +506,8 @@
                     handleClose(key, keyPath) {
                         console.log(key, keyPath);
                     },
-                    handleAvatarSuccess(res, file) {
-                        this.imageUrl = URL.createObjectURL(file.raw);
+                    handleAvatarSuccess(response, file,fileList) {
+                        this.imageUrl = `/common/download?name=${response.data}`;
                         this.$forceUpdate() // 触发强制刷新
                     },
                     beforeAvatarUpload(file) {
@@ -517,7 +524,67 @@
                         return false
                       }
                       return true;
-                    }
+                    },
+                    goBack() {
+                        window.location.href='../../index.html'
+                    },
+                    changeavatar(){
+                        this.circleUrl=this.imageUrl
+                        this.changeVisible = false
+                    },
+                    submitchange(uid,avatar,username,phone,sex,wxNumber){
+                        this.$confirm('确定提交修改吗？', '提示', {
+                            'confirmButtonText': '确定',
+                            'cancelButtonText': '取消',
+                            'type': 'warning'
+                        }).then(() => {
+                            changeuserinfo(uid,avatar,username,phone,sex,wxNumber).then(res => {
+                                if (String(res.code) === '1') {
+                                    this.userInfo.avatar=avatar
+                                    this.circleUrl=avatar
+                                    this.userInfo.username=username
+                                    this.username=username
+                                    this.userInfo.phone=phone
+                                    this.phone=phone
+                                    this.userInfo.sex=sex
+                                    this.sex=sex
+                                    this.userInfo.wxNumber=wxNumber
+                                    this.wxNumber=wxNumber
+                                    localStorage.setItem('userInfo',JSON.stringify(this.userInfo))
+                                    this.$message.success('已成功修改个人信息！')
+                                }
+                            }).catch(err => {
+                                this.$message.error('请求出错了：' + err)
+                            })
+                        })
+                    },
+                    delmyaccount(uid){
+                        this.$prompt('账号一旦注销后将永久无法恢复，请输入“YES”进行账号注销确认', '提示', {
+                            confirmButtonText: '确定',
+                            cancelButtonText: '取消'
+                        }).then(({ value }) => {
+                            if(value=='YES'){
+                                deluser(uid).then(res => {
+                                    if (String(res.code) === '1') {
+                                        localStorage.removeItem('userInfo')
+                                        this.$message({
+                                            type: 'success',
+                                            message: '已成功注销该账号！'
+                                        });
+                                        window.location.href='../../page/login/login.html'
+                                    }
+                                }).catch(err => {
+                                    this.$message.error('请求出错了：' + err)
+                                })
+                            }else {
+                                this.$message({
+                                    type: 'error',
+                                    message: '输入的不是“YES”，注销失败！'
+                                });
+                            }
+                        }).catch(() => {
+                        });
+                    },
                 }
             })
         </script>

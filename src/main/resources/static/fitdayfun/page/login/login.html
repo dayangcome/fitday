@@ -188,7 +188,7 @@
                             </el-form-item>
                             <!-- 登录协议 -->
                             <el-form-item>
-                                 <span>注册和登录即代表同意</span><el-button type="text" @click="serviceItemdialogVisible = true">服务条款</el-button><span>和</span><el-button type="text" @click="privacyPolicydialogVisible = true">隐私政策</el-button>
+                                 <span>注册和登录即代表同意</span><a href="../../page/rules/rules1.html" target="_blank">《服务条款》</a><span>和</span><a href="../../page/rules/rules2.html" target="_blank">《隐私政策》</a>
                             </el-form-item>
                         </el-form>
                     </el-tab-pane>
@@ -213,7 +213,7 @@
                             </el-form-item>
                             <!-- 登录协议 -->
                             <el-form-item>
-                                 <span>注册和登录即代表同意</span><el-button type="text" @click="serviceItemdialogVisible = true">服务条款</el-button><span>和</span><el-button type="text" @click="privacyPolicydialogVisible = true">隐私政策</el-button>
+                                <span>注册和登录即代表同意</span><a href="../../page/rules/rules1.html" target="_blank">《服务条款》</a><span>和</span><a href="../../page/rules/rules2.html" target="_blank">《隐私政策》</a>
                             </el-form-item>
                             
                         </el-form>
@@ -248,7 +248,7 @@
                             <el-button @click="zcdialogVisible = false">取消</el-button>
                         </el-form-item>
                         <el-form-item>
-                             <span>注册和登录即代表同意</span><el-button type="text" @click="serviceItemdialogVisible = true">服务条款</el-button><span>和</span><el-button type="text" @click="privacyPolicydialogVisible = true">隐私政策</el-button>
+                            <span>注册和登录即代表同意</span><a href="../../page/rules/rules1.html" target="_blank">《服务条款》</a><span>和</span><a href="../../page/rules/rules2.html" target="_blank">《隐私政策》</a>
                         </el-form-item>
                     </el-form>
                 </el-dialog>
@@ -327,34 +327,7 @@
                     </el-form>
                 </el-dialog>  
                 <!-- 修改密码 -->
-                <!-- 服务条款 -->
-                    <el-dialog
-                        title="服务条款"
-                        :visible.sync="serviceItemdialogVisible"
-                        width="70%"
-                        >
-                    <div>
-                        服务条款内容
-                    </div>
-                    <el-form-item>
-                        <el-button type="primary" @click="serviceItemdialogVisible = false">确认</el-button>
-                    </el-form-item>
-                    </el-dialog>   
-                    
-    
-                    <!-- 隐私政策 -->
-                    <el-dialog
-                        title="隐私政策"
-                        :visible.sync="privacyPolicydialogVisible"
-                        width="70%"
-                        >
-                    <div>
-                        隐私政策内容
-                    </div>
-                    <el-form-item>
-                        <el-button type="primary" @click="privacyPolicydialogVisible = false">确认</el-button>
-                    </el-form-item>
-                    </el-dialog>
+
 
 <!--                账号已封禁-->
                 <div class="account">
@@ -1039,8 +1012,6 @@
                         dialogVisible: false,
                         zcdialogVisible: false,
                         bmiFormVisible: false,
-                        serviceItemdialogVisible:false,
-                        privacyPolicydialogVisible:false,
                         GetbackdialogVisible: false,
                         GetbackMailboxdialogVisible: false,
                         modifypassworddialogVisible: false,

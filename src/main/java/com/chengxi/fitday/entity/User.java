@@ -115,7 +115,8 @@ public class User implements Serializable {
     private LocalDateTime updateTime;
 
     /**
-     * 属于的角色类型，1：普通用户
+     * 属于的角色类型，0:内测用户 1：普通用户 2:健身博主 3：商家 4：低信用用户
+     *
      */
     private Integer rolenum;
 

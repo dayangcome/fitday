@@ -22,7 +22,8 @@ public class UserLoginCheckFilter implements Filter {
                 "/fitdayfun/assets/**",
                 "/fitdayfun/myapi/**",
                 "/fitdayfun/page/login/login.html",
-                "/fitdayfun/page/accountexplain/**"
+                "/fitdayfun/page/accountexplain/**",
+                "/fitdayfun/page/rules/**"
         };
         boolean check=check(urls,requesturi);
         if(check){

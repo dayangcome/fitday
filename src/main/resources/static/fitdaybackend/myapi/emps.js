@@ -34,4 +34,19 @@ function delemployee (eid) {
     })
 }
 
+function changeempinfo (eid,avatar,name,phone,sex,wxNumber) {
+    return $axios({
+        url: 'employee/changeempinfo',
+        method: 'put',
+        data: {eid,avatar,name,phone,sex,wxNumber}
+    })
+}
+
+function changecodeApi (params,eid) {
+    return $axios({
+        url: 'employee/changecodeApi',
+        method: 'post',
+        data:{...params,eid}
+    })
+}
 

@@ -1,0 +1,338 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <!-- 引入样式 -->
+    <link rel="stylesheet" href="../../../public/plugins/element-ui/index.css" />
+    <link rel="stylesheet" href="../../../public/styles/common2.css" />
+    <link rel="stylesheet" href="../../../public/styles/page.css" />
+    <style>
+        #member-app  .notAdmin::after{
+            border: 0 !important;
+        }
+        .tdleft{
+            font-weight: bold;
+            width: 180px;
+        }
+        tr{
+            height: 26px;
+        }
+    </style>
+</head>
+<body>
+<div class="dashboard-container" id="member-app">
+    <div class="container">
+        <div class="tableBar">
+            <el-input
+                    v-model="input"
+                    placeholder="请输入商品名称"
+                    style="width: 250px"
+                    clearable
+                    @keyup.enter.native="handleQuery"
+            >
+                <i
+                        slot="prefix"
+                        class="el-input__icon el-icon-search"
+                        style="cursor: pointer"
+                        @click="handleQuery"
+                ></i>
+            </el-input>
+
+
+        </div>
+        <el-table
+                :data="tableData"
+                stripe
+                class="tableBox"
+                :cell-style="{ textAlign: 'center' }"
+                :header-cell-style="{ textAlign: 'center' }"
+        >
+            <el-table-column
+                    prop="product_id"
+                    label="商品ID"
+            ></el-table-column>
+
+            <el-table-column
+                    prop="product_name"
+                    label="商品名称"
+            ></el-table-column>
+
+            <el-table-column
+                    prop="source"
+                    label="商品来源"
+                    width="140"
+            >
+
+            </el-table-column>
+
+            <el-table-column
+                    prop="price"
+                    label="当前价格"
+            ></el-table-column>
+
+
+            <el-table-column
+                    prop="original_price"
+                    label="原始价格"
+            ></el-table-column>
+
+            <el-table-column
+                    prop="videolink"
+                    label="视频链接"
+            ></el-table-column>
+
+            <el-table-column
+                    prop="sales"
+                    label="销量"
+            ></el-table-column>
+
+            <el-table-column
+                    prop="info"
+                    label="产品介绍"
+            ></el-table-column>
+
+            <el-table-column
+                    prop="stock"
+                    label="库存数量"
+            ></el-table-column>
+
+            <el-table-column
+                    prop="suit_tag"
+                    label="适合人群标签"
+            ></el-table-column>
+
+            <el-table-column
+                    prop="relate_recomm"
+                    label="相关推荐产品"
+            ></el-table-column>
+
+
+            <el-table-column
+                    label="操作"
+                    align="center"
+                    width="160"
+            >
+                <template slot-scope="scope">
+                    <el-button
+                            type="text"
+                            size="small"
+                            class="blueBug"
+                            @click="userdetail(scope.row)"
+                    >
+                        查看
+                    </el-button>
+
+
+                    <el-button
+                            type="text"
+                            size="small"
+                            class="delBut non"
+                            @click="statusHandle(scope.row)"
+                    >
+                        {{ scope.row.status == '1' ? '冻结' : '启用' }}
+                    </el-button>
+                </template>
+            </el-table-column>
+
+        </el-table>
+        <el-pagination
+                class="pageList"
+                :page-sizes="[10, 20, 30, 40]"
+                :page-size="pageSize"
+                layout="total, sizes, prev, pager, next, jumper"
+                :total="counts"
+                :current-page.sync="page"
+                @size-change="handleSizeChange"
+                @current-change="handleCurrentChange"
+        ></el-pagination>
+    </div>
+    <el-dialog title="用户详情" :visible.sync="userVisible" width="50%" top="15px">
+        <table>
+            <tr>
+                <td class="tdleft">UID</td>
+                <td>{{userinfo.uid}}</td>
+            </tr>
+            <tr>
+                <td class="tdleft">账号</td>
+                <td>{{userinfo.account}}</td>
+            </tr>
+            <tr>
+                <td class="tdleft">昵称</td>
+                <td>{{userinfo.username}}</td>
+            </tr>
+            <tr>
+                <td class="tdleft">绑定的手机号</td>
+                <td>{{ userinfo.phone || '尚未绑定' }}</td>
+            </tr>
+            <tr>
+                <td class="tdleft">性别</td>
+                <td>{{ userinfo.sex=='0'?'男':(userinfo.sex=='1'?'女':(userinfo.sex=='2'?'保密':'尚未填写')) }}</td>
+            </tr>
+            <tr>
+                <td class="tdleft">个性签名</td>
+                <td>{{userinfo.sign|| '尚未填写' }}</td>
+            </tr>
+            <tr>
+                <td class="tdleft">账号状态</td>
+                <td>{{ String(userinfo.status) === '0' ? '已冻结' : '正常' }}</td>
+            </tr>
+            <tr>
+                <td class="tdleft">当前经验</td>
+                <td>{{ userinfo.exp}}</td>
+            </tr>
+            <tr>
+                <td class="tdleft">当前等级</td>
+                <td>{{ userinfo.level}}</td>
+            </tr>
+            <tr>
+                <td class="tdleft">当前VIP等级</td>
+                <td>{{ userinfo.viplevel}}</td>
+            </tr>
+            <tr>
+                <td class="tdleft">当前账户余额</td>
+                <td>{{ userinfo.remain}}&nbsp;元</td>
+            </tr>
+            <tr>
+                <td class="tdleft">用户地址</td>
+                <td>{{ userinfo.address|| '尚未填写' }}</td>
+            </tr>
+            <tr>
+                <td class="tdleft">绑定的微信号</td>
+                <td>{{ userinfo.wxNumber|| '尚未绑定' }}</td>
+            </tr>
+            <tr>
+                <td class="tdleft">账号创建时间</td>
+                <td>
+                    <template>
+                        <span>{{userinfo.createTime}}</span>
+                    </template>
+                </td>
+            </tr>
+            <tr>
+                <td class="tdleft">账号更新时间</td>
+                <td>{{userinfo.updateTime}}</td>
+            </tr>
+        </table>
+        <div slot="footer" class="dialog-footer">
+            <el-button @click="userVisible = false">取 消</el-button>
+            <el-button type="primary" @click="userVisible = false">确 定</el-button>
+        </div>
+    </el-dialog>
+</div>
+<!-- 开发环境版本，包含了有帮助的命令行警告 -->
+<script src="../../../public/plugins/vue/vue.js"></script>
+<!-- 引入组件库 -->
+<script src="../../../public/plugins/element-ui/index.js"></script>
+<!-- 引入axios -->
+<script src="../../../public/plugins/axios/axios.min.js"></script>
+<script src="../../../public/js/request.js"></script>
+<script src="../../myapi/users.js"></script>
+<script>
+    new Vue({
+        el: '#member-app',
+        data() {
+            return {
+                input: '',
+                counts: 0,
+                page: 1,
+                pageSize: 10,
+                tableData : [],
+                id : '',
+                status : '',
+                userVisible:false,
+                userinfo:{}
+            }
+        },
+        computed: {},
+        created() {
+            this.init()
+            this.empInfo = JSON.parse(localStorage.getItem('empInfo')).name
+        },
+        mounted() {
+        },
+        methods: {
+            async init () {
+                const params = {
+                    page: this.page,
+                    pageSize: this.pageSize,
+                    name: this.input ? this.input : undefined
+                }
+                await getUserList(params).then(res => {
+                    if (String(res.code) === '1') {
+                        this.tableData = res.data.records || []
+                        this.counts = res.data.total
+                    }
+                }).catch(err => {
+                    this.$message.error('请求出错了：' + err)
+                })
+            },
+            handleQuery() {
+                this.page = 1;
+                this.init();
+            },
+            // 添加
+            userdetail (st) {
+                this.userVisible = true;
+                console.log(st);
+                this.userinfo=st;
+            },
+            //状态修改
+            statusHandle (row) {
+                this.id = row.id
+                this.status = row.status
+                this.$confirm('确认调整该账号的状态?', '提示', {
+                    'confirmButtonText': '确定',
+                    'cancelButtonText': '取消',
+                    'type': 'warning'
+                }).then(() => {
+                    enableOrDisableEmployee({ 'id': this.id, 'status': !this.status ? 1 : 0 }).then(res => {
+                        console.log('enableOrDisableEmployee',res)
+                        if (String(res.code) === '1') {
+                            this.$message.success('账号状态更改成功！')
+                            this.handleQuery()
+                        }
+                    }).catch(err => {
+                        this.$message.error('请求出错了：' + err)
+                    })
+                })
+            },
+            handleSizeChange (val) {
+                this.pageSize = val
+                this.init()
+            },
+            handleCurrentChange (val) {
+                this.page = val
+                this.init()
+            },
+            // 时间格式化
+            dataFormat(value) {
+                var year = value.substr(0, 4)
+                var month = value.substr(5, 2)
+                var day = value.substr(8, 2)
+                var hour = value.substr(11, 2)
+                var min = value.substr(14, 2)
+                var second = value.substr(17,2)
+                return year + "-" + month + "-" + day + " " + hour + ":" + min + ":"+second
+            },
+            rolenumFormatter(row, column){
+                const rolenum = row.rolenum
+                if (rolenum == 0) {
+                    return '内测用户'
+                } else if (rolenum == 1) {
+                    return '普通用户'
+                } else if (rolenum == 2) {
+                    return '健身博主'
+                } else if (rolenum == 3) {
+                    return '商家'
+                } else {
+                    return '低信用用户'
+                }
+            }
+        }
+    })
+</script>
+</body>
+</html>

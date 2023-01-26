@@ -4,6 +4,7 @@ package com.chengxi.fitday.controller;
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.chengxi.fitday.common.R;
+import com.chengxi.fitday.dto.Changecodedto;
 import com.chengxi.fitday.dto.Empregisterdto;
 import com.chengxi.fitday.dto.Registerinfodto;
 import com.chengxi.fitday.entity.Employee;
@@ -129,6 +130,7 @@ public class EmployeeController {
         employee.setCreateTime(LocalDateTime.now());
         employee.setUpdateTime(LocalDateTime.now());
         employee.setRolenum(empregisterdto.getRolenum());
+        employee.setSex(2);
 //        System.out.println(employee);
 //        return null;
         employeeService.save(employee);
@@ -141,5 +143,44 @@ public class EmployeeController {
         employeeService.removeById(eid);        //删除员工信息
         return R.success("成功删除");
     }
+
+    //更改员工账号个人信息（员工后台）
+    @PutMapping("/changeempinfo")
+    public R<String> changeempinfo(@RequestBody Employee employee){
+        Employee emp=employeeService.getById(employee.getEid());
+
+        LambdaQueryWrapper<Employee> queryWrapper=new LambdaQueryWrapper<>();
+        queryWrapper.eq(Employee::getPhone,employee.getPhone());
+        Employee theemp=employeeService.getOne(queryWrapper);
+        if(theemp!=null && !theemp.getEid().equals(emp.getEid())){
+            return R.error("该手机号已存在！");
+        }
+
+        emp.setName(employee.getName());
+        emp.setPhone(employee.getPhone());
+        emp.setAvatar(employee.getAvatar());
+        emp.setSex(employee.getSex());
+        emp.setWxNumber(employee.getWxNumber());
+        employeeService.updateById(emp);
+        return R.success("修改成功");
+    }
+
+    //更改员工账号个人信息（员工后台）
+    @PostMapping("/changecodeApi")
+    public R<String> changecode(@RequestBody Changecodedto changecodedto){
+        Employee emp=employeeService.getById(changecodedto.getEid());
+        String oldcode=DigestUtils.md5DigestAsHex(changecodedto.getCode().getBytes());
+        if(!oldcode.equals(emp.getPassword())){
+            return R.error("原密码不正确！");
+        }
+        if(!changecodedto.getNewcode().equals(changecodedto.getNewcodeagain())){
+            return R.error("两次输入的密码不一致！");
+        }
+        String newcode=DigestUtils.md5DigestAsHex(changecodedto.getNewcode().getBytes());
+        emp.setPassword(newcode);
+        employeeService.updateById(emp);
+        return R.success("修改成功");
+    }
+
 }
 

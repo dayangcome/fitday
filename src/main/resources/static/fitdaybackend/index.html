@@ -25,6 +25,9 @@
       .el-icon-arrow-down:before{
         color: #818693;
       }
+      .el-avatar{
+        background:#FFFFFF;
+      }
     </style>
   </head>
 
@@ -64,7 +67,7 @@
                   >
                 </el-submenu>
                 <el-menu-item v-else :index="item.id" @click="menuHandle(item,false)">
-                  <i class="iconfont" :class="item.icon"></i>
+                  <i :class="item.icon"></i>
                   <span slot="title">{{item.name}}</span>
                 </el-menu-item>
               </div>
@@ -84,7 +87,7 @@
                 
                  <el-dropdown @command="handleCommand">
                       <div style="cursor: pointer; display: flex;">
-                        <div class="block" style="margin: 10px 10px 0 0;"><el-avatar size="medium" :src="circleUrl"></el-avatar></div>
+                        <div class="block" style="margin: 12px 10px 0 0;"><el-avatar size="medium" :src="circleUrl"></el-avatar></div>
                         <div class="avatar-wrapper" >
                           {{empInfo.name}}
                           <i class="el-icon-arrow-down"></i>
@@ -137,71 +140,71 @@
             empInfo: {},
             menuList: [
               {
-                id: '1',
-                name: '用户管理',
-                url: 'page/users/list.html',
-                icon: 'icon-member'
-              },
-              {
-                id: '2',
-                name: '员工管理',
-                url: 'page/employee/list.html',
-                icon: 'icon-member'
-              },
-              {
-                id: '3',
-                name: '反馈管理',
-                url: 'page/feedback/list.html',
-                icon: 'icon-category'
-              },
-              {
-                id: '4',
-                name: '食品管理',
-                url: 'page/food/list.html',
-                icon: 'icon-food'
-              },
-              {
-                id: '5',
-                name: '套餐管理',
-                url: 'page/combo/list.html',
-                icon: 'icon-combo'
-              },
-              {
-                id: '6',
-                name: '套餐类别管理',
-                url: 'page/order/list.html',
-                icon: 'icon-order'
-              },
-              {
-                id: '7',
-                name: '运动管理',
-                url: 'page/order/list.html',
-                icon: 'icon-order'
-              },
-              {
-                id: '8',
-                name: '用户小组管理',
-                url: 'page/order/list.html',
-                icon: 'icon-order'
-              },
-              {
-                id: '9',
-                name: '投稿视频管理',
-                url: 'page/order/list.html',
-                icon: 'icon-order'
-              },
-              {
-                id: '10',
-                name: '商城管理',
-                url: 'page/order/list.html',
-                icon: 'icon-order'
-              },
-              {
-                id: '11',
-                name: '后台数据',
-                url: 'page/order/list.html',
-                icon: 'icon-order'
-              },
+               id: '1',
+               name: '用户管理',
+               url: 'page/users/list.html',
+               icon: 'el-icon-user'
+             },
+             {
+               id: '2',
+               name: '员工管理',
+               url: 'page/employee/list.html',
+               icon: 'el-icon-s-custom'
+             },
+             {
+               id: '3',
+               name: '反馈管理',
+               url: 'page/feedback/list.html',
+               icon: 'el-icon-message'
+             },
+             {
+               id: '4',
+               name: '食品管理',
+               url: 'page/food/list.html',
+               icon: 'el-icon-food'
+             },
+             {
+               id: '5',
+               name: '套餐管理',
+               url: 'page/combo/list.html',
+               icon: 'el-icon-dish'
+             },
+             {
+               id: '6',
+               name: '套餐类别管理',
+               url: 'page/order/list.html',
+               icon: 'el-icon-pie-chart'
+             },
+             {
+               id: '7',
+               name: '运动管理',
+               url: 'page/sports/list.html',
+               icon: 'el-icon-soccer'
+             },
+             {
+               id: '8',
+               name: '用户小组管理',
+               url: 'page/group/list.html',
+               icon: 'el-icon-chat-dot-round'
+             },
+             {
+               id: '9',
+               name: '投稿视频管理',
+               url: 'page/uservideo/list.html',
+               icon: 'el-icon-video-camera'
+             },
+             {
+               id: '10',
+               name: '商城管理',
+               url: 'page/product/list.html',
+               icon: 'el-icon-s-shop'
+             },
+             {
+               id: '11',
+               name: '后台数据',
+               url: 'page/order/list.html',
+               icon: 'el-icon-s-data'
+             },
             ],
             iframeUrl: 'page/users/list.html',
             headTitle: '用户管理',

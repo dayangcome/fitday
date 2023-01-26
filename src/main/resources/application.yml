@@ -17,3 +17,5 @@ mybatis-plus:
   global-config:
     db-config:
       id-type: ASSIGN_ID      #默认主键生成策略：雪花算法
+fitday:
+  path: D:\mypicture\
