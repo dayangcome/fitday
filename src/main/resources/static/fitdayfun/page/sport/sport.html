@@ -5,6 +5,9 @@
         <title>运动计划</title>
         <link rel="stylesheet" href="../../../public/plugins/element-ui/index.css" />
         <style type="text/css">
+            body{
+                padding-right: 0 !important;
+            }
             .myflex{
                 display:flex;
             }
@@ -73,7 +76,8 @@
               }
             
               .image {
-                width: 100%;
+                width: 189px;
+                height: 142px;
                 display: block;
               }
             
@@ -105,7 +109,7 @@
                                         stripe
                                         style="width: 100%;margin-bottom: 20px;"
                                         :show-header="false"
-                                        highlight-current-row="true"
+                                        highlight-current-row
                                         >
                                         <el-table-column
                                           prop="date"
@@ -140,10 +144,87 @@
                                           </template>
                                         </el-table-column>
                                       </el-table>
-                                      <el-button type="primary" plain>+ 添加计划</el-button>
-                                      <el-button type="info" plain>+ 自定义计划</el-button>
+                                      <el-button type="primary" plain @click="addplan('select')">+ 添加计划</el-button>
+                                      <el-button type="info" plain @click="addplan('write')">+ 自定义计划</el-button>
                                       <el-button type="danger" plain>清空计划</el-button>
                                 </el-card>
+                                
+                                <el-dialog title="制定运动计划" :visible.sync="sportVisible" width="40%">
+                                  <el-form>
+                                    <el-form-item label="运动时间" label-width="80px">
+                                      <el-time-select
+                                          placeholder="起始时间"
+                                          v-model="startTime"
+                                          :picker-options="{
+                                            start: '05:00',
+                                            step: '00:10',
+                                            end: '23:30'
+                                          }">
+                                        </el-time-select>
+                                        <el-time-select
+                                          placeholder="结束时间"
+                                          v-model="endTime"
+                                          :picker-options="{
+                                            start: '05:10',
+                                            step: '00:10',
+                                            end: '23:40',
+                                            minTime: startTime
+                                          }">
+                                        </el-time-select>
+                                    </el-form-item>
+                                    <el-form-item label="运动项目" label-width="80px">
+                                    <el-select v-model="value2" placeholder="请选择运动项目">
+                                        <el-option
+                                          v-for="item in alllist"
+                                          :key="item.sportName"
+                                          :label="item.sportName"
+                                          :value="item.sportName">
+                                        </el-option>
+                                      </el-select>
+                                  </el-form-item>
+                                  </el-form>
+                                  <div slot="footer" class="dialog-footer">
+                                    <el-button @click="sportVisible = false">取 消</el-button>
+                                    <el-button type="primary" @click="sportVisible = false">确 定</el-button>
+                                  </div>
+                                </el-dialog>
+                                
+                                <el-dialog title="自定义运动计划" :visible.sync="mysportVisible" width="40%">
+                                  <el-form>
+                                    <el-form-item label="运动时间" label-width="80px">
+                                       
+                                      <el-time-picker
+                                          placeholder="起始时间"
+                                          v-model="value3"
+                                          :picker-options="{
+                                            selectableRange: '00:00:00 - 23:59:59'
+                                          }"
+                                          >
+                                        </el-time-picker>
+                                        <el-time-picker
+                                          placeholder="结束时间"
+                                          v-model="value4"
+                                          :picker-options="{
+                                            selectableRange: '00:00:00 - 23:59:59'
+                                          }"
+                                          >
+                                        </el-time-picker>
+                                    </el-form-item>
+                                    <el-form-item label="运动内容" label-width="80px">
+                                    <el-input
+                                      type="textarea"
+                                      :rows="2"
+                                      placeholder="请输入运动内容"
+                                      v-model="textarea">
+                                    </el-input>
+                                  </el-form-item>
+                                  </el-form>
+                                  <div slot="footer" class="dialog-footer">
+                                    <el-button @click="mysportVisible = false">取 消</el-button>
+                                    <el-button type="primary" @click="mysportVisible = false">确 定</el-button>
+                                  </div>
+                                </el-dialog>
+                                
                             </div> 
                             <div class="mainright">
                                 <h3 style="margin-bottom: 0px;">完成情况</h3>
@@ -188,7 +269,7 @@
                         </el-input>
                         <div style="display: flex;">
                             <div v-for="(o, index) in 4" :key="o" :offset="index > 0 ? 4 : 0" style="width: 220px;margin-right: 50px;">
-                                <el-card :body-style="{ padding: '0px' }">
+                                <el-card :body-style="{ padding: '0px' }" shadow="hover">
                                   <img src="../../assets/img/portfolio/1.png" class="image">
                                   <div style="padding: 14px;">
                                     <span>计划{{o}}</span>
@@ -200,14 +281,16 @@
                               </div>
                         </div>
                         <br>
-                        <el-button type="info" plain style="display: block;float: right;margin-right: 50px;">更多</el-button><br>
+                        <el-button type="info" plain style="display: block;float: right;margin-right: 50px;">更多</el-button>
+                        <el-button type="primary" plain style="display: block;float: right;margin:0 50px 30px 0;">刷新</el-button>
+
                         <h3>运动科普</h3>
                         <div style="display: flex;">
-                            <div v-for="(o, index) in 4" :key="o" :offset="index > 0 ? 4 : 0" style="width: 220px;margin-right: 50px;">
-                                <el-card :body-style="{ padding: '0px' }">
-                                  <img src="../../assets/img/portfolio/model2-1.jpg" class="image">
+                            <div v-for="(item,index) in showlist" :key="index" style="width: 220px;margin-right: 50px;">
+                                <el-card :body-style="{ padding: '0px' }" shadow="hover">
+                                  <img :src="item.picture" class="image">
                                   <div style="padding: 14px;">
-                                    <span>运动{{o}}</span>
+                                    <span>{{item.sportName}}</span>
                                     <div class="bottom clearfix">
                                       <el-button type="text" class="button">查看详情</el-button>
                                     </div>
@@ -217,6 +300,8 @@
                         </div>
                         <br>
                         <el-button type="info" plain style="display: block;float: right;margin-right: 50px;">更多</el-button>
+                        <el-button type="primary" plain style="display: block;float: right;margin-right: 50px;" @click="refresh">刷新</el-button>
+
                     </div>
                 </div>
                 <div class="right">
@@ -260,16 +345,28 @@
 
         <script src="../../../public/plugins/axios/axios.min.js"></script>
         <script src="../../../public/js/request.js"></script>
-        <script src="../../myapi/explain.js"></script>
+        <script src="../../myapi/sport.js"></script>
         <script>
             new Vue({
                 el: '#app',
                 data() {
                     return {
-                      account:'',
-                      phone:'',
-                      reason:'',
-                      explain:'',
+                        counts: 0,
+                        input:'',
+                        page: 1,
+                        pageSize:5,
+                        name:'',
+                        sportData:[],
+                        alllist:[],
+                        showlist:[],
+                        userInfo:{},
+                        tableData:[],
+                        mysportplan:[],
+                        index:0,
+                        sportVisible:false,
+                        mysportVisible:false,
+                        startTime: '',
+                        endTime: '',
                       logintype:0,
                       finish:0,
                       consume:0,
@@ -303,22 +400,62 @@
                         }]
                         },
                         value2: '',
+                        value3: '',
+                        value4: ''
                     }
                 },
+                created(){
+                    this.init()
+                    this.init2()
+                    this.userInfo = JSON.parse(localStorage.getItem('userInfo'))
+                },
                 mounted() {
-                    this.account=localStorage.getItem("exaccount");
-                    this.phone=localStorage.getItem("exphone");
-                    this.reason=localStorage.getItem("exreason");
-                    this.logintype=localStorage.getItem("type");
-                },    
+                },
                 methods: {
-                    async submitex(){
-                        let res = await sendexplain(this.account,this.phone,this.reason,this.explain)
-                        if (String(res.code) === '1') {
-                            window.location.href='successres.html'
-                        } else {
-                            window.location.href='errores.html'
+                    async init () {
+                        const params = {
+                            page: this.page,
+                            pageSize: this.pageSize,
+                            name: this.input ? this.input : undefined
                         }
+                        await getSportList(params).then(res => {
+                            if (String(res.code) === '1') {
+                                this.sportData = res.data.records|| []
+                                this.counts = res.data.total
+                            }
+                        }).catch(err => {
+                            this.$message.error('请求出错了：' + err)
+                        })
+                    },
+                    async init2(){
+                        this.alllist=[]
+                        this.showlist=[]
+                        await getAllList().then(res => {
+                            if (String(res.code) === '1') {
+                                this.alllist.push(...res.data)
+                                var count=this.alllist.length
+                                var ramnum=Math.floor(Math.random()*count)
+                                this.showlist.push(this.alllist[ramnum])
+                                this.showlist.push(this.alllist[(ramnum+1)%count])
+                                this.showlist.push(this.alllist[(ramnum+2)%count])
+                                this.showlist.push(this.alllist[(ramnum+3)%count])
+                            }
+                        }).catch(err => {
+                            this.$message.error('请求出错了：' + err)
+                        })
+                    },
+                    handleQuery() {
+                        this.page = 1;
+                        this.init();
+                    },
+                    handleCurrentChange (val) {
+                        this.page = val
+                        this.init()
+                    },
+                    refresh(){
+                        this.init2()
+                    },
+                    async submitex(){
                     },
                     goBack() {
                         window.location.href='../../index.html'
@@ -326,15 +463,18 @@
                     handleQuery(){
                         
                     },
+                    addplan(method){
+                        if(method=='select'){
+                            this.sportVisible=true
+                        }else{
+                            this.mysportVisible=true
+                        }
+                    },
                     format(percentage) {
                         return `已完成${percentage}%`;
                     }
                 },
                 destroyed(){
-                    localStorage.removeItem("exaccount");
-                    localStorage.removeItem("exphone");
-                    localStorage.removeItem("exreason");
-                    localStorage.removeItem("type");
                 }
             })
         </script>

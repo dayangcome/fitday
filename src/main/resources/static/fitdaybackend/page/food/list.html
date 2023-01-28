@@ -41,6 +41,12 @@
                 ></i>
             </el-input>
 
+            <el-button
+                    type="primary"
+                    @click="addMemberHandle"
+            >
+                + 添加食材
+            </el-button>
 
         </div>
         <el-table
@@ -89,13 +95,13 @@
 
             <el-table-column label="创建时间" width="90">
                 <template slot-scope="scope">
-                    <span>{{scope.row.create_time.toLocaleString().replace(/T/g, ' ').replace(/\.[\d]{3}Z/, '')}}</span>
+                    <span>{{scope.row.createTime.toLocaleString().replace(/T/g, ' ').replace(/\.[\d]{3}Z/, '')}}</span>
                 </template>
             </el-table-column>
 
             <el-table-column label="修改时间" width="90">
                 <template slot-scope="scope">
-                    <span>{{scope.row.update_time.toLocaleString().replace(/T/g, ' ').replace(/\.[\d]{3}Z/, '')}}</span>
+                    <span>{{scope.row.updateTime.toLocaleString().replace(/T/g, ' ').replace(/\.[\d]{3}Z/, '')}}</span>
                 </template>
             </el-table-column>
 
@@ -227,6 +233,41 @@
             <el-button type="primary" @click="userVisible = false">确 定</el-button>
         </div>
     </el-dialog>
+
+    <!--    添加食材-->
+    <el-dialog title="添加食材" :visible.sync="addVisible" top="15px">
+        <el-form ref="addform" :model="addform" :rules="registerRules">
+            <el-form-item label="员工账号" :label-width="formLabelWidth" prop="account">
+                <el-input v-model="addform.account" autocomplete="off" style="width: 400px"></el-input>
+            </el-form-item>
+            <el-form-item label="员工密码" :label-width="formLabelWidth" prop="password">
+                <el-input show-password v-model="addform.password" autocomplete="off" style="width: 400px"></el-input>
+            </el-form-item>
+            <el-form-item label="确认密码" :label-width="formLabelWidth" prop="againpassword">
+                <el-input show-password v-model="addform.againpassword" autocomplete="off" style="width: 400px"></el-input>
+            </el-form-item>
+            <el-form-item label="员工昵称" :label-width="formLabelWidth" prop="name">
+                <el-input v-model="addform.name" autocomplete="off" style="width: 400px"></el-input>
+            </el-form-item>
+            <el-form-item label="员工手机号" :label-width="formLabelWidth" prop="phone">
+                <el-input v-model="addform.phone" autocomplete="off" style="width: 400px"></el-input>
+            </el-form-item>
+            <el-form-item label="员工角色" :label-width="formLabelWidth" prop="rolenum">
+                <el-select v-model="addform.rolenum" placeholder="请选择员工角色">
+                    <el-option label="甲类员工" value="1"></el-option>
+                    <el-option label="乙类员工" value="2"></el-option>
+                    <el-option label="丙类员工" value="3"></el-option>
+                    <el-option label="丁类员工" value="4"></el-option>
+                    <el-option label="其他员工" value="5"></el-option>
+                </el-select>
+            </el-form-item>
+        </el-form>
+        <div slot="footer" class="dialog-footer">
+            <el-button type="primary" @click="addemp">添 加</el-button>
+            <el-button @click="addVisible = false">取 消</el-button>
+        </div>
+    </el-dialog>
+
 </div>
 <!-- 开发环境版本，包含了有帮助的命令行警告 -->
 <script src="../../../public/plugins/vue/vue.js"></script>
@@ -235,7 +276,7 @@
 <!-- 引入axios -->
 <script src="../../../public/plugins/axios/axios.min.js"></script>
 <script src="../../../public/js/request.js"></script>
-<script src="../../myapi/users.js"></script>
+<script src="../../myapi/emps.js"></script>
 <script>
     new Vue({
         el: '#member-app',
@@ -248,8 +289,18 @@
                 tableData : [],
                 id : '',
                 status : '',
-                userVisible:false,
-                userinfo:{}
+
+                userinfo:{},
+                addVisible:false,
+                addform:{
+                    account:'',
+                    password:'',
+                    againpassword:'',
+                    name:'',
+                    phone:'',
+                    rolenum:''
+                },
+                formLabelWidth: '120px'
             }
         },
         computed: {},
@@ -279,11 +330,29 @@
                 this.page = 1;
                 this.init();
             },
+
             // 添加
-            userdetail (st) {
-                this.userVisible = true;
-                console.log(st);
-                this.userinfo=st;
+            addMemberHandle () {
+                this.addVisible=true
+                console.log(this.addform)
+            },
+            async addemp(){
+                this.$refs.addform.validate(async (valid) => {
+                    if (valid) {
+                        let res = await registerempApi(this.addform)
+                        if (String(res.code) === '1') {
+                            this.$message({
+                                type:'success',
+                                message: '食材添加成功！',
+                                duration: 5000,
+                            })
+                            this.addVisible=false
+                            this.handleQuery()
+                        } else {
+                            this.$message.error(res.msg)
+                        }
+                    }
+                })
             },
             //状态修改
             statusHandle (row) {
@@ -323,20 +392,7 @@
                 var second = value.substr(17,2)
                 return year + "-" + month + "-" + day + " " + hour + ":" + min + ":"+second
             },
-            rolenumFormatter(row, column){
-                const rolenum = row.rolenum
-                if (rolenum == 0) {
-                    return '内测用户'
-                } else if (rolenum == 1) {
-                    return '普通用户'
-                } else if (rolenum == 2) {
-                    return '健身博主'
-                } else if (rolenum == 3) {
-                    return '商家'
-                } else {
-                    return '低信用用户'
-                }
-            }
+
         }
     })
 </script>

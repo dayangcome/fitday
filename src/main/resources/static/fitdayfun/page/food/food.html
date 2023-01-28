@@ -139,42 +139,53 @@
                     </el-input>
                     </div>
                     
-                    <el-card class="box-card" shadow="hover" style="text-align: center;margin-top: 20px;">
+                    <el-card class="box-card" shadow="hover" style="text-align: center;margin-top: 20px; height: 500px;overflow-y:auto">
                         <h4>推荐食物</h4>
                         <el-table
                             :data="foodData"
                             stripe
                             style="width: 100%"
                             :show-header="false"
-                            highlight-current-row="true"
+                            highlight-current-row
                             >
                             <el-table-column
-                              prop="date"
                               width="180">
+                                <template slot-scope="scope">
+                                    <el-image :src="scope.row.picture"/>
+                                </template>
                             </el-table-column>
                             <el-table-column
-                              prop="name"
-                              width="180">
-                            </el-table-column>
-                            <el-table-column
-                              prop="address"
+                              prop="foodName"
                               >
                             </el-table-column>
                             <el-table-column
-                              align="center"
-                              width="160"
+                              prop="foodCategory"
+                              >
+                            </el-table-column>
+                            <el-table-column
+                              align="heat"
+                              width="150"
                             >
                               <template slot-scope="scope">
                                 <el-button
                                   type="text"
                                   class="blueBug"
-                                  @click="userdetail(scope.row)"
+                                  @click="fooddetail(scope.row)"
                                 >
-                                  查看
+                                  查看详情
                                 </el-button>
                               </template>
                             </el-table-column>
                           </el-table>
+                        <el-pagination
+                                small
+                                layout="prev, pager, next"
+                                :total="counts"
+                                :current-page.sync="page"
+                                :page-size="pageSize"
+                                @current-change="handleCurrentChange"
+                        >
+                        </el-pagination>
                       </el-card>
                 </div>
            </div>
@@ -189,19 +200,22 @@
 
         <script src="../../../public/plugins/axios/axios.min.js"></script>
         <script src="../../../public/js/request.js"></script>
-        <script src="../../myapi/explain.js"></script>
+        <script src="../../myapi/food.js"></script>
         <script>
             new Vue({
                 el: '#app',
                 data() {
                     return {
-                      account:'',
-                      phone:'',
-                      reason:'',
-                      explain:'',
+                      counts: 0,
+                      input:'',
+                      circleUrl:'https://s1.ax1x.com/2023/01/28/pSUh3Js.jpg',
+                      page: 1,
                       logintype:0,
                       finish:0,
                       consume:0,
+                      pageSize:5,
+                      foodData:[],
+                      userInfo:{},
                       year :new Date().getFullYear(),
                       month :new Date().getMonth() + 1,
                       day:new Date().getDate(),
@@ -233,36 +247,47 @@
                         value2: '',
                     }
                 },
+                created(){
+                    this.init()
+                    this.userInfo = JSON.parse(localStorage.getItem('userInfo'))
+                },
                 mounted() {
-                    this.account=localStorage.getItem("exaccount");
-                    this.phone=localStorage.getItem("exphone");
-                    this.reason=localStorage.getItem("exreason");
-                    this.logintype=localStorage.getItem("type");
                 },    
                 methods: {
-                    async submitex(){
-                        let res = await sendexplain(this.account,this.phone,this.reason,this.explain)
-                        if (String(res.code) === '1') {
-                            window.location.href='successres.html'
-                        } else {
-                            window.location.href='errores.html'
+                    async init () {
+                        const params = {
+                            page: this.page,
+                            pageSize: this.pageSize,
+                            name: this.input ? this.input : undefined
                         }
+                        await getFoodList(params).then(res => {
+                            if (String(res.code) === '1') {
+                                this.foodData = res.data.records|| []
+                                this.counts = res.data.total
+                            }
+                        }).catch(err => {
+                            this.$message.error('请求出错了：' + err)
+                        })
+                    },
+                    handleQuery() {
+                        this.page = 1;
+                        this.init();
+                    },
+                    handleCurrentChange (val) {
+                        this.page = val
+                        this.init()
+                    },
+                    async submitex(){
+
                     },
                     goBack() {
                         window.location.href='../../index.html'
-                    },
-                    handleQuery(){
-                        
                     },
                     format(percentage) {
                         return percentage === 100 ? '今日已摄入完毕' : `${percentage}%`;
                     }
                 },
                 destroyed(){
-                    localStorage.removeItem("exaccount");
-                    localStorage.removeItem("exphone");
-                    localStorage.removeItem("exreason");
-                    localStorage.removeItem("type");
                 }
             })
         </script>
