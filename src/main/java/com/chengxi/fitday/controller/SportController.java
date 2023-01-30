@@ -6,16 +6,20 @@ import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.chengxi.fitday.common.R;
 import com.chengxi.fitday.entity.Food;
 import com.chengxi.fitday.entity.Sport;
+import com.chengxi.fitday.entity.SportsPlan;
 import com.chengxi.fitday.service.IFoodService;
 import com.chengxi.fitday.service.ISportService;
+import com.chengxi.fitday.service.ISportsPlanService;
 import org.apache.commons.lang.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.*;
 
-import org.springframework.web.bind.annotation.RestController;
-
+import java.time.LocalDate;
+import java.time.LocalDateTime;
+import java.time.LocalTime;
+import java.time.ZoneOffset;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 /**
@@ -33,6 +37,9 @@ public class SportController {
     @Autowired
     private ISportService sportService;
 
+    @Autowired
+    private ISportsPlanService sportsPlanService;
+
     //运动信息分页查询
     @GetMapping("/page")
     public R<Page> page(int page, int pageSize, String name){
@@ -48,6 +55,36 @@ public class SportController {
     public R<List<Sport>> getAll(){
         List <Sport> arr=sportService.list();
         return R.success(arr);
+    }
+
+    //查询运动计划
+    @GetMapping("plan/{uid}/{mydate}")
+    public R<List<SportsPlan>> getplan(@PathVariable Long uid,@PathVariable int mydate){
+
+        LambdaQueryWrapper<SportsPlan> queryWrapper=new LambdaQueryWrapper<>();
+        queryWrapper.eq(SportsPlan::getUserid,uid);
+        queryWrapper.ge(SportsPlan::getDate,LocalDateTime.of(LocalDate.now(), LocalTime.MIN));
+        queryWrapper.le(SportsPlan::getDate,LocalDateTime.now());
+        List<SportsPlan> arr=sportsPlanService.list(queryWrapper);
+        return R.success(arr);
+    }
+
+    //添加运动计划
+    @GetMapping("addplan/{uid}/{context}")
+    public R<String> addplan(@PathVariable Long uid,@PathVariable String context){
+        SportsPlan sportsPlan=new SportsPlan();
+        sportsPlan.setContent(context);
+        sportsPlan.setUserid(uid);
+        sportsPlan.setDate(LocalDateTime.now());
+        sportsPlanService.save(sportsPlan);
+        return R.success("添加成功");
+    }
+
+    //删除某运动计划
+    @GetMapping("/delplan/{id}")
+    public R<String> delemp(@PathVariable Long id){
+        sportsPlanService.removeById(id);     //删除运动计划信息
+        return R.success("成功删除");
     }
 }
 

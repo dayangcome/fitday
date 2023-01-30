@@ -105,7 +105,7 @@ public class UserController {
         user.setPassword(DigestUtils.md5DigestAsHex(registerinfodto.getMypassword().getBytes()));
         user.setUsername(registerinfodto.getMyname());
         //设置默认头像
-        user.setAvatar("https://cube.elemecdn.com/3/7c/3ea6beec64369c2642b92c6726f1epng.png");
+        user.setAvatar("https://s1.ax1x.com/2023/01/30/pSwEhpF.jpg");
         user.setStatus(1);
         user.setExp(0);
         user.setLevel(1);

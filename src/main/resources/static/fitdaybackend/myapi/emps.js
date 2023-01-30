@@ -19,6 +19,7 @@ function delfreezeemp (eid) {
         method: 'get'
     })
 }
+
 function registerempApi (data) {
     return $axios({
         'url': '/employee/register',

@@ -72,7 +72,7 @@
                       name="cIframe"
                       :src="iframeUrl"
                       width="100%"
-                      :height="frameheight+'px'" 
+                      height="1180px"
                       frameborder="0"
                       scrolling="no"
                     ></iframe>
@@ -104,7 +104,6 @@
                         userInfo:{},
                         iframeUrl: './page/home/home.html',
                         headTitle: '用户管理',
-                        frameheight:1080,
                         circleUrl:'https://cube.elemecdn.com/e/fd/0fc7d20532fdaf769a25683617711png.png'
                     }
                 },
@@ -113,7 +112,6 @@
                     userInfo = JSON.parse(userInfo)
                     this.userInfo=userInfo
                     this.circleUrl=userInfo.avatar
-                    this.frameheight= document.documentElement.scrollHeight
                 },
                 methods: {
                     selectMenu(key, keyPath) {

@@ -8,6 +8,9 @@
             body{
                 padding-right: 0 !important;
             }
+            .el-table::before{
+                height: 0px;
+            }
             .myflex{
                 display:flex;
             }
@@ -39,7 +42,7 @@
             }
             .mainright{
                 width: 42%;
-                padding: 0 60px;
+                padding: 0 31px;
             }
             .el-progress--circle .el-progress__text, .el-progress--dashboard .el-progress__text{
                 top: 36%;
@@ -103,50 +106,46 @@
                         <div class="mainpart">
                             <div class="mainleft">
                                 <h3>运动计划</h3>
-                                <el-card class="box-card" shadow="hover">
+                                <el-card class="box-card" shadow="hover" :key="mykey">
                                     <el-table
-                                        :data="mysportplan"
+                                        :data="planlist"
                                         stripe
-                                        style="width: 100%;margin-bottom: 20px;"
+                                        style="width: 100%;margin-bottom: 20px;height: 220px;overflow-y:auto"
                                         :show-header="false"
                                         highlight-current-row
                                         >
                                         <el-table-column
-                                          prop="date"
+                                          prop="content"
                                           >
                                         </el-table-column>
-                                        <el-table-column
-                                          prop="name"
-                                          >
-                                        </el-table-column>
-                                        <el-table-column
-                                          prop="address"
-                                          >
-                                        </el-table-column>
-                                        <el-table-column
-                                          align="center"
-                                        >
+                                        <el-table-column>
                                           <template slot-scope="scope">
                                             <el-button
-                                              type="success" 
-                                              icon="el-icon-check" 
-                                              circle
+                                              type="success"
+                                              size="medium"
+                                              icon="el-icon-check"
+                                              :disabled="daymove!=0"
                                               @click="userdetail(scope.row)"
                                             >
+                                                完成
                                             </el-button>
                                             <el-button
-                                              type="danger" 
-                                              icon="el-icon-delete" 
-                                              circle
-                                              @click="userdetail(scope.row)"
+                                              type="danger"
+                                              size="medium"
+                                              icon="el-icon-delete"
+                                              :disabled="daymove!=0"
+                                              @click="mydel(scope.row)"
+
                                             >
+                                                删除
                                             </el-button>
                                           </template>
                                         </el-table-column>
                                       </el-table>
-                                      <el-button type="primary" plain @click="addplan('select')">+ 添加计划</el-button>
-                                      <el-button type="info" plain @click="addplan('write')">+ 自定义计划</el-button>
-                                      <el-button type="danger" plain>清空计划</el-button>
+                                      <el-button type="success" plain @click="addplan('select')" :disabled="daymove!=0">+ 添加计划</el-button>
+                                      <el-button type="info" plain @click="addplan('write')" :disabled="daymove!=0">+ 自定义计划</el-button>
+                                      <el-button type="danger" plain @click="delall" :disabled="daymove!=0">清空计划</el-button>
+                                     <el-button type="primary" plain @click="ymfresh">刷新</el-button>
                                 </el-card>
                                 
                                 <el-dialog title="制定运动计划" :visible.sync="sportVisible" width="40%">
@@ -157,7 +156,7 @@
                                           v-model="startTime"
                                           :picker-options="{
                                             start: '05:00',
-                                            step: '00:10',
+                                            step: '00:15',
                                             end: '23:30'
                                           }">
                                         </el-time-select>
@@ -165,9 +164,9 @@
                                           placeholder="结束时间"
                                           v-model="endTime"
                                           :picker-options="{
-                                            start: '05:10',
-                                            step: '00:10',
-                                            end: '23:40',
+                                            start: '05:15',
+                                            step: '00:15',
+                                            end: '23:45',
                                             minTime: startTime
                                           }">
                                         </el-time-select>
@@ -185,43 +184,46 @@
                                   </el-form>
                                   <div slot="footer" class="dialog-footer">
                                     <el-button @click="sportVisible = false">取 消</el-button>
-                                    <el-button type="primary" @click="sportVisible = false">确 定</el-button>
+                                    <el-button type="primary" @click="sportchoose('select')">确 定</el-button>
                                   </div>
                                 </el-dialog>
                                 
                                 <el-dialog title="自定义运动计划" :visible.sync="mysportVisible" width="40%">
                                   <el-form>
                                     <el-form-item label="运动时间" label-width="80px">
-                                       
-                                      <el-time-picker
-                                          placeholder="起始时间"
-                                          v-model="value3"
-                                          :picker-options="{
-                                            selectableRange: '00:00:00 - 23:59:59'
-                                          }"
-                                          >
-                                        </el-time-picker>
-                                        <el-time-picker
-                                          placeholder="结束时间"
-                                          v-model="value4"
-                                          :picker-options="{
-                                            selectableRange: '00:00:00 - 23:59:59'
-                                          }"
-                                          >
-                                        </el-time-picker>
+
+                                        <el-time-select
+                                                placeholder="起始时间"
+                                                v-model="value3"
+                                                :picker-options="{
+                                            start: '05:00',
+                                            step: '00:15',
+                                            end: '23:30'
+                                          }">
+                                        </el-time-select>
+                                        <el-time-select
+                                                placeholder="结束时间"
+                                                v-model="value4"
+                                                :picker-options="{
+                                            start: '05:15',
+                                            step: '00:15',
+                                            end: '23:45',
+                                            minTime: startTime
+                                          }">
+                                        </el-time-select>
                                     </el-form-item>
                                     <el-form-item label="运动内容" label-width="80px">
                                     <el-input
                                       type="textarea"
                                       :rows="2"
                                       placeholder="请输入运动内容"
-                                      v-model="textarea">
+                                      v-model="myssport">
                                     </el-input>
                                   </el-form-item>
                                   </el-form>
                                   <div slot="footer" class="dialog-footer">
                                     <el-button @click="mysportVisible = false">取 消</el-button>
-                                    <el-button type="primary" @click="mysportVisible = false">确 定</el-button>
+                                    <el-button type="primary" @click="sportchoose('my')">确 定</el-button>
                                   </div>
                                 </el-dialog>
                                 
@@ -229,7 +231,7 @@
                             <div class="mainright">
                                 <h3 style="margin-bottom: 0px;">完成情况</h3>
                                 <div style="display: flex;justify-content: space-around">
-                                    <el-progress type="circle" :format="format" :percentage="50" width="170" style="margin-top: 70px;"></el-progress>
+                                    <el-progress type="circle" :format="format" :percentage="50" :width="170" style="margin-top: 70px;"></el-progress>
                                     <div style="display: flex;flex-direction: column;padding-left: 40px;">
                                         <div style="height: 100px;width: 100px;border:5px solid rgb(0, 255, 121);border-radius: 50%;text-align: center;padding: 15px;margin-bottom: 40px;">
                                         已消耗 <h4>{{finish}}</h4> 卡路里
@@ -243,9 +245,9 @@
                             </div>
                         </div> 
                         <div class="mydate" style="text-align: center;font-size: 18px;">
-                            <i class="el-icon-arrow-left" style="cursor:pointer"></i>
+                            <i class="el-icon-arrow-left" style="cursor:pointer" @click="subday"></i>
                             <time class="time">{{ year }}/{{month}}/{{day}}</time>
-                            <i class="el-icon-arrow-right" style="cursor:pointer"></i>
+                            <i class="el-icon-arrow-right" style="cursor:pointer" @click="addday"></i>
                         </div>
                          
                     </div>
@@ -356,6 +358,7 @@
                         page: 1,
                         pageSize:5,
                         name:'',
+                        mykey: 0,
                         sportData:[],
                         alllist:[],
                         showlist:[],
@@ -401,17 +404,87 @@
                         },
                         value2: '',
                         value3: '',
-                        value4: ''
+                        value4: '',
+                        daymove:0,
+                        myssport:'',
+                        planlist:[]
                     }
                 },
                 created(){
+                    this.userInfo = JSON.parse(localStorage.getItem('userInfo'))
                     this.init()
                     this.init2()
-                    this.userInfo = JSON.parse(localStorage.getItem('userInfo'))
+                    this.init3()
                 },
                 mounted() {
                 },
                 methods: {
+                    subday(){
+                      this.daymove--;
+                      console.log(this.daymove)
+                        this.value.setTime(this.value.getTime() - 3600 * 1000 * 24);
+                        this.year=this.value.getFullYear()
+                        this.month=this.value.getMonth()+1
+                        this.day=this.value.getDate()
+                    },
+                    addday(){
+                        this.daymove++;
+                        console.log(this.daymove)
+                        this.value.setTime(this.value.getTime() + 3600 * 1000 * 24);
+                        this.year=this.value.getFullYear()
+                        this.month=this.value.getMonth()+1
+                        this.day=this.value.getDate()
+                    },
+                    async mydel(st){
+                        myplandel(st.sportPlanId).then(res => {
+                            if (String(res.code) === '1') {
+
+                                this.init3()
+                                this.$message.warning('成功删除计划！')
+                            }
+                        }).catch(err => {
+                            this.$message.error('请求出错了：' + err)
+                        })
+                    },
+                    delall(){
+                        for (let i = 0; i < this.planlist.length; i++) {
+                            this.mydel(this.planlist[i])
+                        }
+                        this.init3()
+                    },
+                    ymfresh(){
+                        location.reload()
+                    },
+                    async sportchoose(data){
+                        if(data == 'select'){
+                            this.sportVisible = false
+                            var context=`${this.startTime} - ${this.endTime}   ${this.value2}`
+                            await addplanList(this.userInfo.uid,context).then(res => {
+                                if (String(res.code) === '1') {
+
+                                    this.init3()
+                                    this.mykey++
+                                    this.$message.success('成功添加计划，若未显示请刷新页面！')
+                                }
+                            }).catch(err => {
+                                this.$message.error('请求出错了：' + err)
+                            })
+                        }else{
+                            this.mysportVisible = false
+                            var context=`${this.value3} - ${this.value4}   ${this.myssport}`
+                            await addplanList(this.userInfo.uid,context).then(res => {
+                                if (String(res.code) === '1') {
+
+                                    this.init3()
+                                    this.mykey++
+                                    this.$message.success('成功添加计划，若未显示请刷新页面！')
+                                }
+                            }).catch(err => {
+                                this.$message.error('请求出错了：' + err)
+                            })
+                        }
+
+                    },
                     async init () {
                         const params = {
                             page: this.page,
@@ -439,6 +512,17 @@
                                 this.showlist.push(this.alllist[(ramnum+1)%count])
                                 this.showlist.push(this.alllist[(ramnum+2)%count])
                                 this.showlist.push(this.alllist[(ramnum+3)%count])
+                            }
+                        }).catch(err => {
+                            this.$message.error('请求出错了：' + err)
+                        })
+                    },
+                    async init3 () {
+                        await getplanList(this.userInfo.uid,this.daymove).then(res => {
+                            if (String(res.code) === '1') {
+                                this.planlist=res.data
+                            }else {
+                                console.log("not")
                             }
                         }).catch(err => {
                             this.$message.error('请求出错了：' + err)

@@ -12,3 +12,24 @@ function getAllList () {
         method: 'get',
     })
 }
+
+function getplanList (uid,mydate) {
+    return $axios({
+        url: `/sport/plan/${uid}/${mydate}`,
+        method: 'get',
+    })
+}
+
+function addplanList (uid,context) {
+    return $axios({
+        url: `/sport/addplan/${uid}/${context}`,
+        method: 'get'
+    })
+}
+
+function myplandel (id) {
+    return $axios({
+        url: `/sport/delplan/${id}`,
+        method: 'get'
+    })
+}
