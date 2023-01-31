@@ -10,6 +10,32 @@
     <link rel="stylesheet" href="../../../public/styles/common2.css" />
     <link rel="stylesheet" href="../../../public/styles/page.css" />
     <style>
+        .avatar-uploader .el-upload {
+            border: 1px dashed #d9d9d9;
+            border-radius: 6px;
+            cursor: pointer;
+            position: relative;
+            overflow: hidden;
+        }
+        .avatar-uploader .el-upload:hover {
+            border-color: #409EFF;
+        }
+        .avatar-uploader-icon {
+            font-size: 28px;
+            color: #8c939d;
+            width: 178px;
+            height: 178px;
+            line-height: 178px;
+            text-align: center;
+        }
+        .avatar {
+            width: 178px;
+            height: 178px;
+            display: block;
+        }
+        .avatar-uploader{
+            text-align: center;
+        }
         #member-app  .notAdmin::after{
             border: 0 !important;
         }
@@ -40,7 +66,12 @@
                         @click="handleQuery"
                 ></i>
             </el-input>
-
+            <el-button
+                    type="primary"
+                    @click="addMemberHandle"
+            >
+                + 添加食谱
+            </el-button>
 
         </div>
         <el-table
@@ -216,6 +247,74 @@
             <el-button type="primary" @click="userVisible = false">确 定</el-button>
         </div>
     </el-dialog>
+
+    <!--    添加食谱-->
+    <el-dialog title="添加食谱" :visible.sync="addVisible" top="15px">
+        <el-form ref="addform" :model="addform" :rules="registerRules">
+
+            <div class="info" style="margin:0 30px">
+                <h3>封面图片</h3>
+                <div style="display: flex;margin: 20px;">
+                    <el-avatar :size="180" :src="circleUrl"></el-avatar>
+                    <el-button type="success" round style="margin-left: 50px; margin-top: 100px;height: 42px;" @click="changeVisible = true">添加封面</el-button>
+                </div>
+
+                <el-dialog
+                        title="上传封面图片"
+                        :visible.sync="changeVisible"
+                        width="30%"
+                >
+                    <el-upload
+                            class="avatar-uploader"
+                            action="/common/upload"
+                            :show-file-list="false"
+                            :on-success="handleAvatarSuccess"
+                            :before-upload="beforeAvatarUpload"
+                    >
+                        <img v-if="imageUrl" :src="imageUrl" class="avatar">
+                        <i v-else class="el-icon-plus avatar-uploader-icon"></i>
+                    </el-upload>
+
+                    <span slot="footer" class="dialog-footer">
+                                <el-button type="primary" @click="changeavatar">确 定</el-button>
+                                <el-button @click="changeVisible = false">取 消</el-button>
+                              </span>
+                </el-dialog>
+
+                <el-form-item label="食谱ID" :label-width="formLabelWidth" prop="diet_id">
+                    <el-input v-model="addform.diet_id" autocomplete="off" style="width: 400px"></el-input>
+                </el-form-item>
+                <el-form-item label="食谱标题" :label-width="formLabelWidth" prop="diet_title">
+                    <el-input show-password v-model="addform.password" autocomplete="off" style="width: 400px"></el-input>
+                </el-form-item>
+                <el-form-item label="食谱类别ID" :label-width="formLabelWidth" prop="diet_category_id">
+                    <el-select v-model="addform.food_category" placeholder="请选择食谱类别id">
+                        <el-option label="1" value="1"></el-option>
+                        <el-option label="2" value="2"></el-option>
+                        <el-option label="3" value="3"></el-option>
+                    </el-select>
+                </el-form-item>
+
+                <el-form-item label="烹饪方法" :label-width="formLabelWidth" prop="cooking_method">
+                    <el-input v-model="addform.cooking_method" autocomplete="off" style="width: 400px"></el-input>
+                </el-form-item>
+                <el-form-item label="食谱热量 " :label-width="formLabelWidth" prop="diet_heat">
+                    <el-input v-model="addform.diet_heat" autocomplete="off" style="width: 400px"></el-input>
+                </el-form-item>
+                <el-form-item label="价格" :label-width="formLabelWidth" prop="price">
+                    <el-input v-model="addform.price" autocomplete="off" style="width: 400px"></el-input>
+                </el-form-item>
+                <el-form-item label="适宜人群" :label-width="formLabelWidth" prop="suitable_person">
+                    <el-input v-model="addform.suitable_person" autocomplete="off" style="width: 400px"></el-input>
+                </el-form-item>
+                </div>
+        </el-form>
+        <div slot="footer" class="dialog-footer">
+            <el-button type="primary" @click="addemp">添 加</el-button>
+            <el-button @click="addVisible = false">取 消</el-button>
+        </div>
+    </el-dialog>
+
 </div>
 <!-- 开发环境版本，包含了有帮助的命令行警告 -->
 <script src="../../../public/plugins/vue/vue.js"></script>
@@ -238,7 +337,18 @@
                 id : '',
                 status : '',
                 userVisible:false,
-                userinfo:{}
+                changeVisible:false,
+                userinfo:{},
+                addVisible:false,
+                addform:{
+                    account:'',
+                    password:'',
+                    againpassword:'',
+                    name:'',
+                    phone:'',
+                    rolenum:''
+                },
+                formLabelWidth: '120px'
             }
         },
         computed: {},
@@ -269,10 +379,27 @@
                 this.init();
             },
             // 添加
-            userdetail (st) {
-                this.userVisible = true;
-                console.log(st);
-                this.userinfo=st;
+            addMemberHandle () {
+                this.addVisible=true
+                console.log(this.addform)
+            },
+            async addemp(){
+                this.$refs.addform.validate(async (valid) => {
+                    if (valid) {
+                        let res = await registerempApi(this.addform)
+                        if (String(res.code) === '1') {
+                            this.$message({
+                                type:'success',
+                                message: '食材添加成功！',
+                                duration: 5000,
+                            })
+                            this.addVisible=false
+                            this.handleQuery()
+                        } else {
+                            this.$message.error(res.msg)
+                        }
+                    }
+                })
             },
             //状态修改
             statusHandle (row) {
@@ -302,6 +429,25 @@
                 this.page = val
                 this.init()
             },
+            handleAvatarSuccess(response, file,fileList) {
+                this.imageUrl = `/common/download?name=${response.data}`;
+                this.$forceUpdate() // 触发强制刷新
+            },
+            beforeAvatarUpload(file) {
+                const isJPEG = file.type === 'image/jpeg'
+                const isPNG = file.type === 'image/png'
+                const isJPG = file.type === 'image/jpg'
+                const isLt2M = file.size / 1024 / 1024 < 2;
+                if (!isJPG && !isPNG && !isJPEG) {
+                    this.$message.error('上传图片只能是jpg，png，jpeg格式!');
+                    return false
+                }
+                if (!isLt2M) {
+                    this.$message.error('上传头像图片大小不能超过 2MB!');
+                    return false
+                }
+                return true;
+            },
             // 时间格式化
             dataFormat(value) {
                 var year = value.substr(0, 4)
@@ -312,20 +458,6 @@
                 var second = value.substr(17,2)
                 return year + "-" + month + "-" + day + " " + hour + ":" + min + ":"+second
             },
-            rolenumFormatter(row, column){
-                const rolenum = row.rolenum
-                if (rolenum == 0) {
-                    return '内测用户'
-                } else if (rolenum == 1) {
-                    return '普通用户'
-                } else if (rolenum == 2) {
-                    return '健身博主'
-                } else if (rolenum == 3) {
-                    return '商家'
-                } else {
-                    return '低信用用户'
-                }
-            }
         }
     })
 </script>

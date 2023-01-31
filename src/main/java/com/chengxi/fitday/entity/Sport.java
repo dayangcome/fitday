@@ -1,5 +1,6 @@
 package com.chengxi.fitday.entity;
 
+import com.baomidou.mybatisplus.annotation.IdType;
 import com.baomidou.mybatisplus.annotation.TableId;
 import com.baomidou.mybatisplus.annotation.TableLogic;
 import java.io.Serializable;
@@ -23,7 +24,7 @@ public class Sport implements Serializable {
     /**
      * 运动id
      */
-    @TableId(value = "sport_id")
+    @TableId(value = "sport_id",type = IdType.AUTO)
     private Long sportId;
 
     /**

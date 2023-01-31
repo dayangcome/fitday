@@ -86,5 +86,18 @@ public class SportController {
         sportsPlanService.removeById(id);     //删除运动计划信息
         return R.success("成功删除");
     }
+
+    //添加运动（员工后台）
+    @PostMapping("/addsport")
+    public R<String> addsport(@RequestBody Sport sport){
+        Sport sport1=new Sport();
+        sport1.setSportName(sport.getSportName());
+        sport1.setSportCategory(sport.getSportCategory());
+        sport1.setPicture(sport.getPicture());
+        sport1.setIntensity(sport.getIntensity());
+        sport1.setLinkfoodId(sport.getLinkfoodId());
+        sportService.save(sport1);
+        return R.success("注册成功");
+    }
 }
 
