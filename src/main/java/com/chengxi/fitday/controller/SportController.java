@@ -99,5 +99,25 @@ public class SportController {
         sportService.save(sport1);
         return R.success("注册成功");
     }
+
+    //删除运动信息（员工后台）
+    @GetMapping("/delsport/{id}")
+    public R<String> delsport(@PathVariable Long id){
+        sportService.removeById(id);        //删除运动信息
+        return R.success("成功删除");
+    }
+
+    //修改运动（员工后台）
+    @PostMapping("/changesport")
+    public R<String> changesport(@RequestBody Sport sport){
+        Sport sport1=sportService.getById(sport.getSportId());
+        sport1.setSportName(sport.getSportName());
+        sport1.setSportCategory(sport.getSportCategory());
+        sport1.setPicture(sport.getPicture());
+        sport1.setIntensity(sport.getIntensity());
+        sport1.setLinkfoodId(sport.getLinkfoodId());
+        sportService.updateById(sport1);
+        return R.success("更改成功");
+    }
 }
 

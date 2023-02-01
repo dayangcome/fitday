@@ -13,3 +13,19 @@ function addfoodApi (data) {
         data
     })
 }
+
+function delmyfood (id) {
+    return $axios({
+        url: `/food/delfood/${id}`,
+        method: 'get'
+    })
+}
+
+function changefoodApi (foodId,data) {
+    return $axios({
+        'url': '/food/changefood',
+        'method': 'post',
+        data:{foodId,...data}
+    })
+}
+

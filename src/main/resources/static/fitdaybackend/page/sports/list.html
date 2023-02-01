@@ -46,6 +46,9 @@
         tr{
             height: 26px;
         }
+        .el-popup-parent--hidden{
+            overflow: visible;
+        }
     </style>
 </head>
 <body>
@@ -131,7 +134,7 @@
                             type="text"
                             size="small"
                             class="blueBug"
-                            @click="userdetail(scope.row)"
+                            @click="mychange(scope.row)"
                     >
                         更改
                     </el-button>
@@ -141,7 +144,7 @@
                             type="text"
                             size="small"
                             class="delBut non"
-                            @click="statusHandle(scope.row)"
+                            @click="delsport(scope.row)"
                     >
                         删除
                     </el-button>
@@ -166,33 +169,6 @@
         <el-form ref="addform" :model="addform" :rules="addformrules">
 
             <div class="info" style="margin:0 30px">
-
-<!--                <div style="display: flex;margin: 20px;">-->
-<!--                    <el-avatar :size="180" :src="circleUrl"></el-avatar>-->
-<!--                    <el-button type="success" round style="margin-left: 50px; margin-top: 100px;height: 42px;" @click="changeVisible = true">添加封面</el-button>-->
-<!--                </div>-->
-
-<!--                <el-dialog-->
-<!--                        title="上传封面图片"-->
-<!--                        :visible.sync="changeVisible"-->
-<!--                        width="30%"-->
-<!--                >-->
-<!--                    <el-upload-->
-<!--                            class="avatar-uploader"-->
-<!--                            action="/common/upload"-->
-<!--                            :show-file-list="false"-->
-<!--                            :on-success="handleAvatarSuccess"-->
-<!--                            :before-upload="beforeAvatarUpload"-->
-<!--                    >-->
-<!--                        <img v-if="imageUrl" :src="imageUrl" class="avatar">-->
-<!--                        <i v-else class="el-icon-plus avatar-uploader-icon"></i>-->
-<!--                    </el-upload>-->
-
-<!--                    <span slot="footer" class="dialog-footer">-->
-<!--                                <el-button type="primary" @click="changeavatar">确 定</el-button>-->
-<!--                                <el-button @click="changeVisible = false">取 消</el-button>-->
-<!--                              </span>-->
-<!--                </el-dialog>-->
 
                 <el-form-item label="运动名称" :label-width="formLabelWidth" prop="sportName">
                     <el-input  v-model="addform.sportName" autocomplete="off" style="width: 400px"></el-input>
@@ -223,6 +199,41 @@
         </div>
     </el-dialog>
 
+    <el-dialog title="更改运动" :visible.sync="changeVisible" width="55%" top="15px" :lock-scroll="false">
+        <el-form ref="addform" :model="addform" :rules="addformrules">
+
+            <div class="info" style="margin:0 30px">
+                <el-form-item label="运动ID" :label-width="formLabelWidth" prop="sportID">
+                    <el-input  disabled="true" v-model="id" autocomplete="off" style="width: 400px"></el-input>
+                </el-form-item>
+                <el-form-item label="运动名称" :label-width="formLabelWidth" prop="sportName">
+                    <el-input  v-model="addform.sportName" autocomplete="off" style="width: 400px"></el-input>
+                </el-form-item>
+                <el-form-item label="运动封面链接" :label-width="formLabelWidth" prop="food_id">
+                    <el-input v-model="addform.picture" autocomplete="off" style="width: 400px"></el-input>
+                </el-form-item>
+                <el-form-item label="运动类别" :label-width="formLabelWidth" prop="sportCategory">
+                    <el-select v-model="addform.sportCategory" placeholder="请选择运动类型">
+                        <el-option label="耐力型" value="耐力型"></el-option>
+                        <el-option label="球类" value="球类"></el-option>
+                        <el-input v-model="addform.sportCategory" placeholder="填写其他类别" autocomplete="off" style="width: 320px"></el-input>
+                    </el-select>
+                </el-form-item>
+
+                <el-form-item label="运动强度(千卡/斤/分钟)" :label-width="formLabelWidth" prop="intensity">
+                    <el-input v-model="addform.intensity" autocomplete="off" style="width: 400px"></el-input>
+                </el-form-item>
+
+                <el-form-item label="该运动之后推荐的食物id" :label-width="formLabelWidth" prop="linkfood_id">
+                    <el-input v-model="addform.linkfoodId" autocomplete="off" style="width: 400px"></el-input>
+                </el-form-item>
+            </div>
+        </el-form>
+        <div slot="footer" class="dialog-footer">
+            <el-button type="primary" @click="changesport">更 改</el-button>
+            <el-button @click="changeVisible = false">取 消</el-button>
+        </div>
+    </el-dialog>
 </div>
 <!-- 开发环境版本，包含了有帮助的命令行警告 -->
 <script src="../../../public/plugins/vue/vue.js"></script>
@@ -251,7 +262,6 @@
                 addform:{
                     sportName:'',
                     sportCategory:'',
-                    againpassword:'',
                     intensity:'',
                     linkfoodId:'',
                     picture:''
@@ -321,23 +331,38 @@
                 })
             },
             //状态修改
-            statusHandle (row) {
-                this.id = row.id
-                this.status = row.status
-                this.$confirm('确认调整该账号的状态?', '提示', {
+            delsport (row) {
+                this.$confirm('确认删除该运动吗?', '提示', {
                     'confirmButtonText': '确定',
                     'cancelButtonText': '取消',
                     'type': 'warning'
                 }).then(() => {
-                    enableOrDisableEmployee({ 'id': this.id, 'status': !this.status ? 1 : 0 }).then(res => {
-                        console.log('enableOrDisableEmployee',res)
+                    delmysport(row.sportId).then(res => {
                         if (String(res.code) === '1') {
-                            this.$message.success('账号状态更改成功！')
+                            this.$message.success('已成功删除该运动！')
                             this.handleQuery()
                         }
                     }).catch(err => {
                         this.$message.error('请求出错了：' + err)
                     })
+                })
+            },
+            changesport(){
+                this.$refs.addform.validate(async (valid) => {
+                    if (valid) {
+                        let res = await changesportApi(this.id,this.addform)
+                        if (String(res.code) === '1') {
+                            this.$message({
+                                type:'success',
+                                message: '运动更改成功！',
+                                duration: 5000,
+                            })
+                            this.changeVisible=false
+                            this.handleQuery()
+                        } else {
+                            this.$message.error(res.msg)
+                        }
+                    }
                 })
             },
             handleSizeChange (val) {
@@ -377,6 +402,15 @@
                 var second = value.substr(17,2)
                 return year + "-" + month + "-" + day + " " + hour + ":" + min + ":"+second
             },
+            mychange(row){
+                this.id=row.sportId
+                this.addform.sportName=row.sportName
+                this.addform.picture=row.picture
+                this.addform.sportCategory=row.sportCategory
+                this.addform.intensity=row.intensity
+                this.addform.linkfoodId=row.linkfoodId
+                this.changeVisible=true
+            }
         }
     })
 </script>

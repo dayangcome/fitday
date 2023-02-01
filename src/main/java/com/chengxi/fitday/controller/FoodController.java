@@ -58,5 +58,31 @@ public class FoodController {
         foodService.save(food1);
         return R.success("注册成功");
     }
+
+    //删除食物信息（员工后台）
+    @GetMapping("/delfood/{id}")
+    public R<String> delfood(@PathVariable Long id){
+        foodService.removeById(id);        //删除食物信息
+        return R.success("成功删除");
+    }
+
+    //修改食物（员工后台）
+    @PostMapping("/changefood")
+    public R<String> changefood(@RequestBody Food food){
+        Food food1=foodService.getById(food.getFoodId());
+        food1.setFoodName(food.getFoodName());
+        food1.setHeat(food.getHeat());
+        food1.setFat(food.getFat());
+        food1.setFoodCategory(food.getFoodCategory());
+        food1.setPicture(food.getPicture());
+        food1.setSuitablePerson(food.getSuitablePerson());
+        food1.setDietTaboo(food.getDietTaboo());
+        food1.setCreateTime(LocalDateTime.now());
+        food1.setUpdataeTime(LocalDateTime.now());
+        food1.setProtein(food.getProtein());
+        food1.setCarbohydrate(food.getCarbohydrate());
+        foodService.updateById(food1);
+        return R.success("更改成功");
+    }
 }
 

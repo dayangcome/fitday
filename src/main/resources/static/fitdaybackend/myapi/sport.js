@@ -14,3 +14,18 @@ function addsportApi (data) {
         data
     })
 }
+
+function delmysport (id) {
+    return $axios({
+        url: `/sport/delsport/${id}`,
+        method: 'get'
+    })
+}
+
+function changesportApi (sportId,data) {
+    return $axios({
+        'url': '/sport/changesport',
+        'method': 'post',
+        data:{sportId,...data}
+    })
+}

@@ -123,10 +123,11 @@
                 <div class="right">
                     <div style="width: 100%;text-align: center;">
                         <h3>热量查询</h3>
+
                     <el-input
                       v-model="input"
-                      placeholder="请输入食物名称"
-                      style="display: block;width: 400px;margin-top: 30px;"
+                      placeholder="请输入食物或套餐名称"
+                      style="display: block;width: 420px;margin-top: 30px;"
                       clearable
                        @keyup.enter.native="handleQuery"
                     >
@@ -138,55 +139,129 @@
                       ></i>
                     </el-input>
                     </div>
-                    
-                    <el-card class="box-card" shadow="hover" style="text-align: center;margin-top: 20px; height: 500px;overflow-y:auto">
-                        <h4>推荐食物</h4>
-                        <el-table
-                            :data="foodData"
-                            stripe
-                            style="width: 100%"
-                            :show-header="false"
-                            highlight-current-row
-                            >
-                            <el-table-column
-                              width="180">
-                                <template slot-scope="scope">
-                                    <el-image :src="scope.row.picture"/>
-                                </template>
-                            </el-table-column>
-                            <el-table-column
-                              prop="foodName"
-                              >
-                            </el-table-column>
-                            <el-table-column
-                              prop="foodCategory"
-                              >
-                            </el-table-column>
-                            <el-table-column
-                              align="heat"
-                              width="150"
-                            >
-                              <template slot-scope="scope">
-                                <el-button
-                                  type="text"
-                                  class="blueBug"
-                                  @click="fooddetail(scope.row)"
+                            <el-card class="box-card" shadow="hover" style="text-align: center;margin-top: 20px; height: 500px;overflow-y:auto">
+                                <el-tabs stretch>
+                                <el-tab-pane label="食物">
+                                <h4>推荐食物</h4>
+                                <el-table
+                                        :data="foodData"
+                                        stripe
+                                        style="width: 100%"
+                                        :show-header="false"
+                                        highlight-current-row
                                 >
-                                  查看详情
-                                </el-button>
-                              </template>
-                            </el-table-column>
-                          </el-table>
-                        <el-pagination
-                                small
-                                layout="prev, pager, next"
-                                :total="counts"
-                                :current-page.sync="page"
-                                :page-size="pageSize"
-                                @current-change="handleCurrentChange"
-                        >
-                        </el-pagination>
-                      </el-card>
+                                    <el-table-column
+                                            align="center"
+                                            width="180">
+                                        <template slot-scope="scope">
+                                            <el-image :src="scope.row.picture"/>
+                                        </template>
+                                    </el-table-column>
+                                    <el-table-column
+                                            prop="foodName"
+                                            align="center"
+                                    >
+                                    </el-table-column>
+                                    <el-table-column
+                                            align="center"
+                                            prop="foodCategory"
+                                    >
+                                    </el-table-column>
+                                    <el-table-column
+                                            align="center"
+                                            width="150"
+                                    >
+                                        <template slot-scope="scope">
+                                            {{ scope.row.heat}}千卡/100g
+                                        </template>
+                                    </el-table-column>
+                                    <el-table-column
+                                            align="center"
+
+                                    >
+                                        <template slot-scope="scope">
+                                            <el-button
+                                                    type="text"
+                                                    class="blueBug"
+                                                    @click="fooddetail(scope.row)"
+                                            >
+                                                查看详情
+                                            </el-button>
+                                        </template>
+                                    </el-table-column>
+                                </el-table>
+                                <el-pagination
+                                        small
+                                        layout="prev, pager, next"
+                                        :total="counts"
+                                        :current-page.sync="page"
+                                        :page-size="pageSize"
+                                        @current-change="handleCurrentChange"
+                                >
+                                </el-pagination>
+                        </el-tab-pane>
+                        <el-tab-pane label="套餐">
+                                <h4>推荐套餐</h4>
+                                <el-table
+                                        :data="dietData"
+                                        stripe
+                                        style="width: 100%"
+                                        :show-header="false"
+                                        highlight-current-row
+                                >
+                                    <el-table-column
+                                            align="center"
+                                            width="180">
+                                        <template slot-scope="scope">
+                                            <el-image :src="scope.row.cover"/>
+                                        </template>
+                                    </el-table-column>
+                                    <el-table-column
+                                            prop="dietTitle"
+                                            align="center"
+                                    >
+                                    </el-table-column>
+                                    <el-table-column
+                                            align="center"
+                                    >
+                                        <template slot-scope="scope">
+                                            {{ String(scope.row.dietCategoryId) === '1' ? '素菜' : '肉菜' }}
+                                        </template>
+                                    </el-table-column>
+                                    <el-table-column
+                                            align="center"
+                                            width="150"
+                                    >
+                                        <template slot-scope="scope">
+                                            {{ scope.row.dietHeat}}千卡/100g
+                                        </template>
+                                    </el-table-column>
+                                    <el-table-column
+                                            align="center"
+                                    >
+                                        <template slot-scope="scope">
+                                            <el-button
+                                                    type="text"
+                                                    class="blueBug"
+                                                    @click="fooddetail(scope.row)"
+                                            >
+                                                查看详情
+                                            </el-button>
+                                        </template>
+                                    </el-table-column>
+                                </el-table>
+                                <el-pagination
+                                        small
+                                        layout="prev, pager, next"
+                                        :total="counts"
+                                        :current-page.sync="page"
+                                        :page-size="pageSize"
+                                        @current-change="handleCurrentChange"
+                                >
+                                </el-pagination>
+                            </el-tab-pane>
+                            </el-tabs>
+                        </el-card>
                 </div>
            </div>
             
@@ -201,6 +276,7 @@
         <script src="../../../public/plugins/axios/axios.min.js"></script>
         <script src="../../../public/js/request.js"></script>
         <script src="../../myapi/food.js"></script>
+        <script src="../../myapi/diet.js"></script>
         <script>
             new Vue({
                 el: '#app',
@@ -215,6 +291,7 @@
                       consume:0,
                       pageSize:5,
                       foodData:[],
+                      dietData:[],
                       userInfo:{},
                       year :new Date().getFullYear(),
                       month :new Date().getMonth() + 1,
@@ -263,6 +340,14 @@
                         await getFoodList(params).then(res => {
                             if (String(res.code) === '1') {
                                 this.foodData = res.data.records|| []
+                                this.counts = res.data.total
+                            }
+                        }).catch(err => {
+                            this.$message.error('请求出错了：' + err)
+                        })
+                        await getdietList(params).then(res => {
+                            if (String(res.code) === '1') {
+                                this.dietData = res.data.records|| []
                                 this.counts = res.data.total
                             }
                         }).catch(err => {

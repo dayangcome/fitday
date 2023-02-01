@@ -46,6 +46,9 @@
         tr{
             height: 26px;
         }
+        .el-popup-parent--hidden{
+            overflow: visible;
+        }
     </style>
 </head>
 <body>
@@ -54,7 +57,7 @@
         <div class="tableBar">
             <el-input
                     v-model="input"
-                    placeholder="请输入食谱名称"
+                    placeholder="请输入套餐名称"
                     style="width: 250px"
                     clearable
                     @keyup.enter.native="handleQuery"
@@ -70,7 +73,7 @@
                     type="primary"
                     @click="addMemberHandle"
             >
-                + 添加食谱
+                + 添加套餐
             </el-button>
 
         </div>
@@ -82,60 +85,60 @@
                 :header-cell-style="{ textAlign: 'center' }"
         >
             <el-table-column
-                    prop="diet_id"
-                    label="食谱ID"
+                    prop="dietId"
+                    label="套餐ID"
+                    width="50"
             ></el-table-column>
 
             <el-table-column
-                    prop="diet_title"
-                    label="食谱标题"
+                    prop="dietTitle"
+                    label="套餐名称"
             ></el-table-column>
 
-            <el-table-column
-                    prop="diet_category_id"
-                    label="食谱类别ID"
-                    width="140"
-            >
-
+            <el-table-column label="套餐类别">
+                <template slot-scope="scope">
+              {{ String(scope.row.dietCategoryId) === '1' ? '素菜' : '肉菜' }}
+                </template>
             </el-table-column>
 
-            <el-table-column
-                    prop="cover"
-                    label="封面"
-            ></el-table-column>
+
+            <el-table-column label="封面">
+                <template slot-scope="scope">
+                    <el-popover placement="top-start" title="" trigger="hover">
+                        <img :src="scope.row.cover" alt="" style="width: 250px;height: 250px;">
+                        <img slot="reference" :src="scope.row.cover" style="width: 32px;height: 32px;">
+                    </el-popover>
+                </template>
+            </el-table-column>
 
 
             <el-table-column
-                    prop="cooking_method"
+                    prop="cookingMethod"
                     label="烹饪方法"
+                    width="320"
             ></el-table-column>
 
             <el-table-column
-                    prop="diet_heat"
-                    label="食谱热量"
+                    prop="dietHeat"
+                    label="食谱热量(千卡/100g)"
             ></el-table-column>
 
             <el-table-column
                     prop="price"
-                    label="价格"
+                    label="一般价格(元)"
             ></el-table-column>
-
             <el-table-column
-                    prop="hits"
-                    label="点击数"
-            ></el-table-column>
-
+                prop="hits"
+                label="点击数"
+        ></el-table-column>
             <el-table-column
-                    prop="praise_num"
-                    label="点赞数"
-            ></el-table-column>
-
+                prop="praiseNum"
+                label="点赞数量"
+        ></el-table-column>
             <el-table-column
-                    prop="suitable_person"
-                    label="适宜人群"
-            ></el-table-column>
-
-
+                prop="suitablePerson"
+                label="适宜人群"
+        ></el-table-column>
             <el-table-column
                     label="操作"
                     align="center"
@@ -146,9 +149,9 @@
                             type="text"
                             size="small"
                             class="blueBug"
-                            @click="userdetail(scope.row)"
+                            @click="mychange(scope.row)"
                     >
-                        查看
+                        更改
                     </el-button>
 
 
@@ -156,9 +159,9 @@
                             type="text"
                             size="small"
                             class="delBut non"
-                            @click="statusHandle(scope.row)"
+                            @click="deldiet(scope.row)"
                     >
-                        {{ scope.row.status == '1' ? '冻结' : '启用' }}
+                        删除
                     </el-button>
                 </template>
             </el-table-column>
@@ -175,137 +178,32 @@
                 @current-change="handleCurrentChange"
         ></el-pagination>
     </div>
-    <el-dialog title="用户详情" :visible.sync="userVisible" width="50%" top="15px">
-        <table>
-            <tr>
-                <td class="tdleft">UID</td>
-                <td>{{userinfo.uid}}</td>
-            </tr>
-            <tr>
-                <td class="tdleft">账号</td>
-                <td>{{userinfo.account}}</td>
-            </tr>
-            <tr>
-                <td class="tdleft">昵称</td>
-                <td>{{userinfo.username}}</td>
-            </tr>
-            <tr>
-                <td class="tdleft">绑定的手机号</td>
-                <td>{{ userinfo.phone || '尚未绑定' }}</td>
-            </tr>
-            <tr>
-                <td class="tdleft">性别</td>
-                <td>{{ userinfo.sex=='0'?'男':(userinfo.sex=='1'?'女':(userinfo.sex=='2'?'保密':'尚未填写')) }}</td>
-            </tr>
-            <tr>
-                <td class="tdleft">个性签名</td>
-                <td>{{userinfo.sign|| '尚未填写' }}</td>
-            </tr>
-            <tr>
-                <td class="tdleft">账号状态</td>
-                <td>{{ String(userinfo.status) === '0' ? '已冻结' : '正常' }}</td>
-            </tr>
-            <tr>
-                <td class="tdleft">当前经验</td>
-                <td>{{ userinfo.exp}}</td>
-            </tr>
-            <tr>
-                <td class="tdleft">当前等级</td>
-                <td>{{ userinfo.level}}</td>
-            </tr>
-            <tr>
-                <td class="tdleft">当前VIP等级</td>
-                <td>{{ userinfo.viplevel}}</td>
-            </tr>
-            <tr>
-                <td class="tdleft">当前账户余额</td>
-                <td>{{ userinfo.remain}}&nbsp;元</td>
-            </tr>
-            <tr>
-                <td class="tdleft">用户地址</td>
-                <td>{{ userinfo.address|| '尚未填写' }}</td>
-            </tr>
-            <tr>
-                <td class="tdleft">绑定的微信号</td>
-                <td>{{ userinfo.wxNumber|| '尚未绑定' }}</td>
-            </tr>
-            <tr>
-                <td class="tdleft">账号创建时间</td>
-                <td>
-                    <template>
-                        <span>{{userinfo.createTime}}</span>
-                    </template>
-                </td>
-            </tr>
-            <tr>
-                <td class="tdleft">账号更新时间</td>
-                <td>{{userinfo.updateTime}}</td>
-            </tr>
-        </table>
-        <div slot="footer" class="dialog-footer">
-            <el-button @click="userVisible = false">取 消</el-button>
-            <el-button type="primary" @click="userVisible = false">确 定</el-button>
-        </div>
-    </el-dialog>
 
-    <!--    添加食谱-->
-    <el-dialog title="添加食谱" :visible.sync="addVisible" top="15px">
-        <el-form ref="addform" :model="addform" :rules="registerRules">
+    <!--    添加套餐-->
+    <el-dialog title="添加套餐" :visible.sync="addVisible" width="55%" top="15px" :lock-scroll="false">
+        <el-form ref="addform" :model="addform" :rules="addformrules">
 
             <div class="info" style="margin:0 30px">
-                <h3>封面图片</h3>
-                <div style="display: flex;margin: 20px;">
-                    <el-avatar :size="180" :src="circleUrl"></el-avatar>
-                    <el-button type="success" round style="margin-left: 50px; margin-top: 100px;height: 42px;" @click="changeVisible = true">添加封面</el-button>
-                </div>
 
-                <el-dialog
-                        title="上传封面图片"
-                        :visible.sync="changeVisible"
-                        width="30%"
-                >
-                    <el-upload
-                            class="avatar-uploader"
-                            action="/common/upload"
-                            :show-file-list="false"
-                            :on-success="handleAvatarSuccess"
-                            :before-upload="beforeAvatarUpload"
-                    >
-                        <img v-if="imageUrl" :src="imageUrl" class="avatar">
-                        <i v-else class="el-icon-plus avatar-uploader-icon"></i>
-                    </el-upload>
-
-                    <span slot="footer" class="dialog-footer">
-                                <el-button type="primary" @click="changeavatar">确 定</el-button>
-                                <el-button @click="changeVisible = false">取 消</el-button>
-                              </span>
-                </el-dialog>
-
-                <el-form-item label="食谱ID" :label-width="formLabelWidth" prop="diet_id">
-                    <el-input v-model="addform.diet_id" autocomplete="off" style="width: 400px"></el-input>
+                <el-form-item label="套餐名称" :label-width="formLabelWidth" prop="dietName">
+                    <el-input  v-model="addform.dietName" autocomplete="off" style="width: 400px"></el-input>
                 </el-form-item>
-                <el-form-item label="食谱标题" :label-width="formLabelWidth" prop="diet_title">
-                    <el-input show-password v-model="addform.password" autocomplete="off" style="width: 400px"></el-input>
+                <el-form-item label="套餐封面链接" :label-width="formLabelWidth" prop="food_id">
+                    <el-input v-model="addform.picture" autocomplete="off" style="width: 400px"></el-input>
                 </el-form-item>
-                <el-form-item label="食谱类别ID" :label-width="formLabelWidth" prop="diet_category_id">
-                    <el-select v-model="addform.food_category" placeholder="请选择食谱类别id">
-                        <el-option label="1" value="1"></el-option>
-                        <el-option label="2" value="2"></el-option>
-                        <el-option label="3" value="3"></el-option>
+                <el-form-item label="套餐类别" :label-width="formLabelWidth" prop="dietCategory">
+                    <el-select v-model="addform.dietCategoryID" placeholder="请选择套餐类型">
+                        <el-option label="素菜" value="1"></el-option>
+                        <el-option label="肉菜" value="2"></el-option>
                     </el-select>
                 </el-form-item>
 
-                <el-form-item label="烹饪方法" :label-width="formLabelWidth" prop="cooking_method">
-                    <el-input v-model="addform.cooking_method" autocomplete="off" style="width: 400px"></el-input>
+                <el-form-item label="套餐强度(千卡/斤/分钟)" :label-width="formLabelWidth" prop="intensity">
+                    <el-input v-model="addform.intensity" autocomplete="off" style="width: 400px"></el-input>
                 </el-form-item>
-                <el-form-item label="食谱热量 " :label-width="formLabelWidth" prop="diet_heat">
-                    <el-input v-model="addform.diet_heat" autocomplete="off" style="width: 400px"></el-input>
-                </el-form-item>
-                <el-form-item label="价格" :label-width="formLabelWidth" prop="price">
-                    <el-input v-model="addform.price" autocomplete="off" style="width: 400px"></el-input>
-                </el-form-item>
-                <el-form-item label="适宜人群" :label-width="formLabelWidth" prop="suitable_person">
-                    <el-input v-model="addform.suitable_person" autocomplete="off" style="width: 400px"></el-input>
+
+                <el-form-item label="该套餐之后推荐的食物id" :label-width="formLabelWidth" prop="linkfood_id">
+                    <el-input v-model="addform.linkfoodId" autocomplete="off" style="width: 400px"></el-input>
                 </el-form-item>
                 </div>
         </el-form>
@@ -315,6 +213,41 @@
         </div>
     </el-dialog>
 
+    <el-dialog title="更改套餐" :visible.sync="changeVisible" width="55%" top="15px" :lock-scroll="false">
+        <el-form ref="addform" :model="addform" :rules="addformrules">
+
+            <div class="info" style="margin:0 30px">
+                <el-form-item label="套餐ID" :label-width="formLabelWidth" prop="dietID">
+                    <el-input  disabled="true" v-model="id" autocomplete="off" style="width: 400px"></el-input>
+                </el-form-item>
+                <el-form-item label="套餐名称" :label-width="formLabelWidth" prop="dietName">
+                    <el-input  v-model="addform.dietName" autocomplete="off" style="width: 400px"></el-input>
+                </el-form-item>
+                <el-form-item label="套餐封面链接" :label-width="formLabelWidth" prop="food_id">
+                    <el-input v-model="addform.picture" autocomplete="off" style="width: 400px"></el-input>
+                </el-form-item>
+                <el-form-item label="套餐类别" :label-width="formLabelWidth" prop="dietCategory">
+                    <el-select v-model="addform.dietCategory" placeholder="请选择套餐类型">
+                        <el-option label="耐力型" value="耐力型"></el-option>
+                        <el-option label="球类" value="球类"></el-option>
+                        <el-input v-model="addform.dietCategory" placeholder="填写其他类别" autocomplete="off" style="width: 320px"></el-input>
+                    </el-select>
+                </el-form-item>
+
+                <el-form-item label="套餐强度(千卡/斤/分钟)" :label-width="formLabelWidth" prop="intensity">
+                    <el-input v-model="addform.intensity" autocomplete="off" style="width: 400px"></el-input>
+                </el-form-item>
+
+                <el-form-item label="该套餐之后推荐的食物id" :label-width="formLabelWidth" prop="linkfood_id">
+                    <el-input v-model="addform.linkfoodId" autocomplete="off" style="width: 400px"></el-input>
+                </el-form-item>
+            </div>
+        </el-form>
+        <div slot="footer" class="dialog-footer">
+            <el-button type="primary" @click="changediet">更 改</el-button>
+            <el-button @click="changeVisible = false">取 消</el-button>
+        </div>
+    </el-dialog>
 </div>
 <!-- 开发环境版本，包含了有帮助的命令行警告 -->
 <script src="../../../public/plugins/vue/vue.js"></script>
@@ -323,7 +256,7 @@
 <!-- 引入axios -->
 <script src="../../../public/plugins/axios/axios.min.js"></script>
 <script src="../../../public/js/request.js"></script>
-<script src="../../myapi/users.js"></script>
+<script src="../../myapi/diet.js"></script>
 <script>
     new Vue({
         el: '#member-app',
@@ -341,14 +274,24 @@
                 userinfo:{},
                 addVisible:false,
                 addform:{
-                    account:'',
-                    password:'',
-                    againpassword:'',
-                    name:'',
-                    phone:'',
-                    rolenum:''
+                    dietName:'',
+                    dietCategory:'',
+                    intensity:'',
+                    linkfoodId:'',
+                    picture:''
                 },
-                formLabelWidth: '120px'
+                formLabelWidth: '170px',
+                addformrules: {
+                    dietName: [
+                        { required: true, message: '请输入套餐名称', trigger: 'blur' },
+                    ],
+                    dietCategory: [
+                        { required: true, message: '请选择套餐类别', trigger: 'change' }
+                    ],
+                    intensity: [
+                        { required: true, message: '请输入套餐强度', trigger: 'blur' }
+                    ],
+                }
             }
         },
         computed: {},
@@ -365,7 +308,7 @@
                     pageSize: this.pageSize,
                     name: this.input ? this.input : undefined
                 }
-                await getUserList(params).then(res => {
+                await getdietList(params).then(res => {
                     if (String(res.code) === '1') {
                         this.tableData = res.data.records || []
                         this.counts = res.data.total
@@ -386,11 +329,11 @@
             async addemp(){
                 this.$refs.addform.validate(async (valid) => {
                     if (valid) {
-                        let res = await registerempApi(this.addform)
+                        let res = await adddietApi(this.addform)
                         if (String(res.code) === '1') {
                             this.$message({
                                 type:'success',
-                                message: '食材添加成功！',
+                                message: '套餐添加成功！',
                                 duration: 5000,
                             })
                             this.addVisible=false
@@ -402,23 +345,38 @@
                 })
             },
             //状态修改
-            statusHandle (row) {
-                this.id = row.id
-                this.status = row.status
-                this.$confirm('确认调整该账号的状态?', '提示', {
+            deldiet (row) {
+                this.$confirm('确认删除该套餐吗?', '提示', {
                     'confirmButtonText': '确定',
                     'cancelButtonText': '取消',
                     'type': 'warning'
                 }).then(() => {
-                    enableOrDisableEmployee({ 'id': this.id, 'status': !this.status ? 1 : 0 }).then(res => {
-                        console.log('enableOrDisableEmployee',res)
+                    delmydiet(row.dietId).then(res => {
                         if (String(res.code) === '1') {
-                            this.$message.success('账号状态更改成功！')
+                            this.$message.success('已成功删除该套餐！')
                             this.handleQuery()
                         }
                     }).catch(err => {
                         this.$message.error('请求出错了：' + err)
                     })
+                })
+            },
+            changediet(){
+                this.$refs.addform.validate(async (valid) => {
+                    if (valid) {
+                        let res = await changedietApi(this.id,this.addform)
+                        if (String(res.code) === '1') {
+                            this.$message({
+                                type:'success',
+                                message: '套餐更改成功！',
+                                duration: 5000,
+                            })
+                            this.changeVisible=false
+                            this.handleQuery()
+                        } else {
+                            this.$message.error(res.msg)
+                        }
+                    }
                 })
             },
             handleSizeChange (val) {
@@ -458,6 +416,15 @@
                 var second = value.substr(17,2)
                 return year + "-" + month + "-" + day + " " + hour + ":" + min + ":"+second
             },
+            mychange(row){
+                this.id=row.dietId
+                this.addform.dietName=row.dietName
+                this.addform.picture=row.picture
+                this.addform.dietCategory=row.dietCategory
+                this.addform.intensity=row.intensity
+                this.addform.linkfoodId=row.linkfoodId
+                this.changeVisible=true
+            }
         }
     })
 </script>

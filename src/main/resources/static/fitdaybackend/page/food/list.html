@@ -46,6 +46,9 @@
         tr{
             height: 26px;
         }
+        .el-popup-parent--hidden{
+            overflow: visible;
+        }
     </style>
 </head>
 <body>
@@ -163,7 +166,7 @@
                             type="text"
                             size="small"
                             class="blueBug"
-                            @click="userdetail(scope.row)"
+                            @click="mychange(scope.row)"
                     >
                         更改
                     </el-button>
@@ -173,7 +176,7 @@
                             type="text"
                             size="small"
                             class="delBut non"
-                            @click="statusHandle(scope.row)"
+                            @click="delfood(scope.row)"
                     >
                         删除
                     </el-button>
@@ -198,28 +201,6 @@
         <el-form ref="addform" :model="addform" :rules="addformrules">
             <div class="info" style="margin:0 30px">
 
-
-<!--                <el-dialog-->
-<!--                        title="上传封面图片"-->
-<!--                        :visible.sync="changeVisible"-->
-<!--                        width="30%"-->
-<!--                >-->
-<!--                    <el-upload-->
-<!--                            class="avatar-uploader"-->
-<!--                            action="/common/upload"-->
-<!--                            :show-file-list="false"-->
-<!--                            :on-success="handleAvatarSuccess"-->
-<!--                            :before-upload="beforeAvatarUpload"-->
-<!--                    >-->
-<!--                        <img v-if="imageUrl" :src="imageUrl" class="avatar">-->
-<!--                        <i v-else class="el-icon-plus avatar-uploader-icon"></i>-->
-<!--                    </el-upload>-->
-
-<!--                    <span slot="footer" class="dialog-footer">-->
-<!--                                <el-button type="primary" @click="changeavatar">确 定</el-button>-->
-<!--                                <el-button @click="changeVisible = false">取 消</el-button>-->
-<!--                              </span>-->
-<!--                </el-dialog>-->
 
 
             <el-form-item label="食品名称" :label-width="formLabelWidth" prop="foodName">
@@ -263,6 +244,53 @@
         </div>
     </el-dialog>
 
+    <el-dialog title="更改食材" :visible.sync="changeVisible" width="55%" top="15px" :lock-scroll="false">
+        <el-form ref="addform" :model="addform" :rules="addformrules">
+            <div class="info" style="margin:0 30px">
+
+                <el-form-item label="食品ID" :label-width="formLabelWidth" prop="foodID">
+                    <el-input  disabled="true" v-model="id" autocomplete="off" style="width: 400px"></el-input>
+                </el-form-item>
+                <el-form-item label="食品名称" :label-width="formLabelWidth" prop="foodName">
+                    <el-input  v-model="addform.foodName" autocomplete="off" style="width: 400px"></el-input>
+                </el-form-item>
+                <el-form-item label="食品封面链接" :label-width="formLabelWidth" prop="food_id">
+                    <el-input v-model="addform.picture" autocomplete="off" style="width: 400px"></el-input>
+                </el-form-item>
+                <el-form-item label="食物类别" :label-width="formLabelWidth" prop="foodCategory">
+                    <el-select v-model="addform.foodCategory" placeholder="请选择食物类别">
+                        <el-option label="主食" value="主食"></el-option>
+                        <el-option label="肉蛋奶类" value="肉蛋奶类"></el-option>
+                        <el-option label="蔬菜水果" value="蔬菜水果"></el-option>
+                        <el-input v-model="addform.foodCategory" placeholder="填写其他类别" autocomplete="off" style="width: 320px"></el-input>
+                    </el-select>
+                </el-form-item>
+
+                <el-form-item label="热量(千卡/100g)" :label-width="formLabelWidth" prop="heat">
+                    <el-input v-model="addform.heat" autocomplete="off" style="width: 400px"></el-input>
+                </el-form-item>
+                <el-form-item label="脂肪(g/100g)" :label-width="formLabelWidth" prop="fat">
+                    <el-input v-model="addform.fat" autocomplete="off" style="width: 400px"></el-input>
+                </el-form-item>
+                <el-form-item label="碳水化合物(g/100g)" :label-width="formLabelWidth" prop="carbohydrate">
+                    <el-input v-model="addform.carbohydrate" autocomplete="off" style="width: 400px"></el-input>
+                </el-form-item>
+                <el-form-item label="蛋白质(g/100g)" :label-width="formLabelWidth" prop="protein">
+                    <el-input v-model="addform.protein" autocomplete="off" style="width: 400px"></el-input>
+                </el-form-item>
+                <el-form-item label="适宜人群" :label-width="formLabelWidth" prop="taboo">
+                    <el-input v-model="addform.suitablePerson" autocomplete="off" style="width: 400px"></el-input>
+                </el-form-item>
+                <el-form-item label="饮食禁忌" :label-width="formLabelWidth" prop="taboo">
+                    <el-input v-model="addform.dietTaboo" autocomplete="off" style="width: 400px"></el-input>
+                </el-form-item>
+            </div>
+        </el-form>
+        <div slot="footer" class="dialog-footer">
+            <el-button type="primary" @click="changefood">更 改</el-button>
+            <el-button @click="changeVisible = false">取 消</el-button>
+        </div>
+    </el-dialog>
 </div>
 <!-- 开发环境版本，包含了有帮助的命令行警告 -->
 <script src="../../../public/plugins/vue/vue.js"></script>
@@ -271,7 +299,7 @@
 <!-- 引入axios -->
 <script src="../../../public/plugins/axios/axios.min.js"></script>
 <script src="../../../public/js/request.js"></script>
-<script src="../../myapi/food.js"></script>
+<script src="../../myapi/Food.js"></script>
 <script>
     new Vue({
         el: '#member-app',
@@ -373,19 +401,33 @@
                     }
                 })
             },
-            //状态修改
-            statusHandle (row) {
-                this.id = row.id
-                this.status = row.status
-                this.$confirm('确认调整该账号的状态?', '提示', {
+            async changefood(){
+                this.$refs.addform.validate(async (valid) => {
+                    if (valid) {
+                        let res = await changefoodApi(this.id,this.addform)
+                        if (String(res.code) === '1') {
+                            this.$message({
+                                type:'success',
+                                message: '食材更改成功！',
+                                duration: 5000,
+                            })
+                            this.changeVisible=false
+                            this.handleQuery()
+                        } else {
+                            this.$message.error(res.msg)
+                        }
+                    }
+                })
+            },
+            delfood (row) {
+                this.$confirm('确认删除该食物吗?', '提示', {
                     'confirmButtonText': '确定',
                     'cancelButtonText': '取消',
                     'type': 'warning'
                 }).then(() => {
-                    enableOrDisableEmployee({ 'id': this.id, 'status': !this.status ? 1 : 0 }).then(res => {
-                        console.log('enableOrDisableEmployee',res)
+                    delmyfood(row.foodId).then(res => {
                         if (String(res.code) === '1') {
-                            this.$message.success('账号状态更改成功！')
+                            this.$message.success('已成功删除该食物！')
                             this.handleQuery()
                         }
                     }).catch(err => {
@@ -430,6 +472,20 @@
                 var second = value.substr(17,2)
                 return year + "-" + month + "-" + day + " " + hour + ":" + min + ":"+second
             },
+            mychange(row){
+                this.id=row.foodId
+                this.addform.foodName=row.foodName
+                this.addform.picture=row.picture
+                this.addform.foodCategory=row.foodCategory
+                this.addform.heat=row.heat
+                this.addform.fat=row.fat
+                this.addform.carbohydrate=row.carbohydrate
+                this.addform.protein=row.protein
+                this.addform.suitablePerson=row.suitablePerson
+                this.addform.dietTaboo=row.dietTaboo
+                this.changeVisible=true
+
+            }
 
         }
     })

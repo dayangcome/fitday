@@ -461,10 +461,9 @@
                             var context=`${this.startTime} - ${this.endTime}   ${this.value2}`
                             await addplanList(this.userInfo.uid,context).then(res => {
                                 if (String(res.code) === '1') {
-
                                     this.init3()
                                     this.mykey++
-                                    this.$message.success('成功添加计划，若未显示请刷新页面！')
+                                    this.$message.success('成功添加计划，若未显示请点击刷新按钮！')
                                 }
                             }).catch(err => {
                                 this.$message.error('请求出错了：' + err)
@@ -477,7 +476,7 @@
 
                                     this.init3()
                                     this.mykey++
-                                    this.$message.success('成功添加计划，若未显示请刷新页面！')
+                                    this.$message.success('成功添加计划，若未显示请点击刷新按钮！')
                                 }
                             }).catch(err => {
                                 this.$message.error('请求出错了：' + err)

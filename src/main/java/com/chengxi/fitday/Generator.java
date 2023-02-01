@@ -44,8 +44,10 @@ public class Generator {
 
         //在使用之前，设置数据库生成的表，一定不要填目前已经生成过的，否则会覆盖！！！
         //修改下面这行代码开始使用：
-        strategyConfig.setInclude("填写表名称");
+        strategyConfig.setInclude("请输入要生成的表");
+        //生成后第一时间把里面的字改回来！！！
         //生成后去改实体类为驼峰，去加@Mapper
+
 
 
         //是否启用Rest风格
