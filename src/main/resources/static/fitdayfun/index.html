@@ -72,7 +72,7 @@
                       name="cIframe"
                       :src="iframeUrl"
                       width="100%"
-                      height="1180px"
+                      :height="myheight"
                       frameborder="0"
                       scrolling="no"
                     ></iframe>
@@ -97,14 +97,24 @@
                             './page/food/food.html',
                             './page/sport/sport.html',
                             'page/users/list4.html',
-                            'page/users/list5.html',
-                            'page/users/list6.html',
+                            './page/community/community.html',
+                            './page/mall/course.html',
                             'page/users/list7.html'
+                        ],
+                        heightlist:[
+                          "1180px",
+                          "660px",
+                          "1160px",
+                          "1180px",
+                          "1960px",
+                          "1280px",
+                          "1280px"
                         ],
                         userInfo:{},
                         iframeUrl: './page/home/home.html',
                         headTitle: '用户管理',
-                        circleUrl:'https://cube.elemecdn.com/e/fd/0fc7d20532fdaf769a25683617711png.png'
+                        circleUrl:'https://cube.elemecdn.com/e/fd/0fc7d20532fdaf769a25683617711png.png',
+                        myheight:"1180px"
                     }
                 },
                 mounted(){
@@ -121,6 +131,7 @@
                             this.iframeUrl=this.iframeUrl;
                         }else {
                             this.iframeUrl=this.urlList[key-1];
+                            this.myheight=this.heightlist[key-1];
                         }
                     },
                     handleCommand(command) {

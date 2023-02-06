@@ -309,8 +309,12 @@
             },
             // 添加
             addMemberHandle () {
+                this.addform.sportName=""
+                this.addform.picture=""
+                this.addform.sportCategory=""
+                this.addform.intensity=""
+                this.addform.linkfoodId=""
                 this.addVisible=true
-                console.log(this.addform)
             },
             async addemp(){
                 this.$refs.addform.validate(async (valid) => {

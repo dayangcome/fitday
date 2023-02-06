@@ -185,25 +185,33 @@
 
             <div class="info" style="margin:0 30px">
 
-                <el-form-item label="套餐名称" :label-width="formLabelWidth" prop="dietName">
-                    <el-input  v-model="addform.dietName" autocomplete="off" style="width: 400px"></el-input>
+                <el-form-item label="套餐名称" :label-width="formLabelWidth" prop="dietTitle">
+                    <el-input  v-model="addform.dietTitle" autocomplete="off" style="width: 400px"></el-input>
                 </el-form-item>
                 <el-form-item label="套餐封面链接" :label-width="formLabelWidth" prop="food_id">
-                    <el-input v-model="addform.picture" autocomplete="off" style="width: 400px"></el-input>
+                    <el-input v-model="addform.cover" autocomplete="off" style="width: 400px"></el-input>
                 </el-form-item>
-                <el-form-item label="套餐类别" :label-width="formLabelWidth" prop="dietCategory">
-                    <el-select v-model="addform.dietCategoryID" placeholder="请选择套餐类型">
+                <el-form-item label="套餐类别" :label-width="formLabelWidth" prop="dietCategoryId">
+                    <el-select v-model="addform.dietCategoryId" placeholder="请选择套餐类型">
                         <el-option label="素菜" value="1"></el-option>
                         <el-option label="肉菜" value="2"></el-option>
                     </el-select>
                 </el-form-item>
 
-                <el-form-item label="套餐强度(千卡/斤/分钟)" :label-width="formLabelWidth" prop="intensity">
-                    <el-input v-model="addform.intensity" autocomplete="off" style="width: 400px"></el-input>
+                <el-form-item label="烹饪方法" :label-width="formLabelWidth" prop="cookingMethod">
+                    <el-input :rows="3" type="textarea" v-model="addform.cookingMethod" autocomplete="off" style="width: 400px"></el-input>
                 </el-form-item>
 
-                <el-form-item label="该套餐之后推荐的食物id" :label-width="formLabelWidth" prop="linkfood_id">
-                    <el-input v-model="addform.linkfoodId" autocomplete="off" style="width: 400px"></el-input>
+                <el-form-item label="食谱热量(千卡/100g)" :label-width="formLabelWidth" prop="dietHeat">
+                    <el-input v-model="addform.dietHeat" autocomplete="off" style="width: 400px"></el-input>
+                </el-form-item>
+
+                <el-form-item label="一般价格(元)" :label-width="formLabelWidth" prop="price">
+                    <el-input v-model="addform.price" autocomplete="off" style="width: 400px"></el-input>
+                </el-form-item>
+
+                <el-form-item label="适宜人群" :label-width="formLabelWidth">
+                    <el-input v-model="addform.suitablePerson" autocomplete="off" style="width: 400px"></el-input>
                 </el-form-item>
                 </div>
         </el-form>
@@ -215,31 +223,35 @@
 
     <el-dialog title="更改套餐" :visible.sync="changeVisible" width="55%" top="15px" :lock-scroll="false">
         <el-form ref="addform" :model="addform" :rules="addformrules">
-
             <div class="info" style="margin:0 30px">
-                <el-form-item label="套餐ID" :label-width="formLabelWidth" prop="dietID">
-                    <el-input  disabled="true" v-model="id" autocomplete="off" style="width: 400px"></el-input>
-                </el-form-item>
-                <el-form-item label="套餐名称" :label-width="formLabelWidth" prop="dietName">
-                    <el-input  v-model="addform.dietName" autocomplete="off" style="width: 400px"></el-input>
+
+                <el-form-item label="套餐名称" :label-width="formLabelWidth" prop="dietTitle">
+                    <el-input  v-model="addform.dietTitle" autocomplete="off" style="width: 400px"></el-input>
                 </el-form-item>
                 <el-form-item label="套餐封面链接" :label-width="formLabelWidth" prop="food_id">
-                    <el-input v-model="addform.picture" autocomplete="off" style="width: 400px"></el-input>
+                    <el-input v-model="addform.cover" autocomplete="off" style="width: 400px"></el-input>
                 </el-form-item>
-                <el-form-item label="套餐类别" :label-width="formLabelWidth" prop="dietCategory">
-                    <el-select v-model="addform.dietCategory" placeholder="请选择套餐类型">
-                        <el-option label="耐力型" value="耐力型"></el-option>
-                        <el-option label="球类" value="球类"></el-option>
-                        <el-input v-model="addform.dietCategory" placeholder="填写其他类别" autocomplete="off" style="width: 320px"></el-input>
+                <el-form-item label="套餐类别" :label-width="formLabelWidth" prop="dietCategoryId">
+                    <el-select v-model="addform.dietCategoryId" placeholder="请选择套餐类型">
+                        <el-option label="素菜" value="1"></el-option>
+                        <el-option label="肉菜" value="2"></el-option>
                     </el-select>
                 </el-form-item>
 
-                <el-form-item label="套餐强度(千卡/斤/分钟)" :label-width="formLabelWidth" prop="intensity">
-                    <el-input v-model="addform.intensity" autocomplete="off" style="width: 400px"></el-input>
+                <el-form-item label="烹饪方法" :label-width="formLabelWidth" prop="cookingMethod">
+                    <el-input :rows="3" type="textarea" v-model="addform.cookingMethod" autocomplete="off" style="width: 400px"></el-input>
                 </el-form-item>
 
-                <el-form-item label="该套餐之后推荐的食物id" :label-width="formLabelWidth" prop="linkfood_id">
-                    <el-input v-model="addform.linkfoodId" autocomplete="off" style="width: 400px"></el-input>
+                <el-form-item label="食谱热量(千卡/100g)" :label-width="formLabelWidth" prop="dietHeat">
+                    <el-input v-model="addform.dietHeat" autocomplete="off" style="width: 400px"></el-input>
+                </el-form-item>
+
+                <el-form-item label="一般价格(元)" :label-width="formLabelWidth" prop="price">
+                    <el-input v-model="addform.price" autocomplete="off" style="width: 400px"></el-input>
+                </el-form-item>
+
+                <el-form-item label="适宜人群" :label-width="formLabelWidth">
+                    <el-input v-model="addform.suitablePerson" autocomplete="off" style="width: 400px"></el-input>
                 </el-form-item>
             </div>
         </el-form>
@@ -274,22 +286,30 @@
                 userinfo:{},
                 addVisible:false,
                 addform:{
-                    dietName:'',
-                    dietCategory:'',
-                    intensity:'',
-                    linkfoodId:'',
-                    picture:''
+                    dietTitle:'',
+                    dietCategoryId:'',
+                    cover:'',
+                    cookingMethod:'',
+                    dietHeat:'',
+                    price:'',
+                    suitablePerson:''
                 },
                 formLabelWidth: '170px',
                 addformrules: {
-                    dietName: [
+                    dietTitle: [
                         { required: true, message: '请输入套餐名称', trigger: 'blur' },
                     ],
-                    dietCategory: [
+                    dietCategoryId: [
                         { required: true, message: '请选择套餐类别', trigger: 'change' }
                     ],
-                    intensity: [
-                        { required: true, message: '请输入套餐强度', trigger: 'blur' }
+                    cookingMethod: [
+                        { required: true, message: '请输入套餐烹饪方法', trigger: 'blur' }
+                    ],
+                    dietHeat: [
+                        { required: true, message: '请输入套餐热量', trigger: 'blur' }
+                    ],
+                    price: [
+                        { required: true, message: '请输入套餐价格', trigger: 'blur' }
                     ],
                 }
             }
@@ -323,8 +343,15 @@
             },
             // 添加
             addMemberHandle () {
+                this.addform.dietTitle=""
+                this.addform.dietCategoryId=""
+                this.addform.cover=""
+                this.addform.cookingMethod=""
+                this.addform.dietHeat=""
+                this.addform.price=""
+                this.addform.suitablePerson=""
                 this.addVisible=true
-                console.log(this.addform)
+
             },
             async addemp(){
                 this.$refs.addform.validate(async (valid) => {
@@ -418,11 +445,13 @@
             },
             mychange(row){
                 this.id=row.dietId
-                this.addform.dietName=row.dietName
-                this.addform.picture=row.picture
-                this.addform.dietCategory=row.dietCategory
-                this.addform.intensity=row.intensity
-                this.addform.linkfoodId=row.linkfoodId
+                this.addform.dietTitle=row.dietTitle
+                this.addform.dietCategoryId=row.dietCategoryId
+                this.addform.cover=row.cover
+                this.addform.cookingMethod=row.cookingMethod
+                this.addform.dietHeat=row.dietHeat
+                this.addform.price=row.price
+                this.addform.suitablePerson=row.suitablePerson
                 this.changeVisible=true
             }
         }

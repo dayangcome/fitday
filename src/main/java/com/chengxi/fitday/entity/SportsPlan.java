@@ -41,7 +41,7 @@ public class SportsPlan implements Serializable {
     private String content;
     private Long userid;
     /**
-     * 是否删除
+     * 是否已完成 0：未完成 1：已完成
      */
     private Integer isDelect;
 

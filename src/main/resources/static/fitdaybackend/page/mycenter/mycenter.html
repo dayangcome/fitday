@@ -439,7 +439,7 @@
                         })
                     },
                     delmyaccount(eid){
-                        this.$prompt('账号一旦注销后将永久无法恢复，请输入“YES”进行账号注销确认', '提示', {
+                        this.$prompt('账号一旦注销后将永久无法恢复，请输入“YES”进行账号注销确认！', '提示', {
                           confirmButtonText: '确定',
                           cancelButtonText: '取消'
                         }).then(({ value }) => {
@@ -449,9 +449,12 @@
                                 localStorage.removeItem('empInfo')
                                 this.$message({
                                   type: 'success',
-                                  message: '已成功注销该账号！'
+                                  message: '已成功注销该账号！',
+                                  duration: 2000,
+                                  onClose:()=>{
+                                      window.location.href='../../page/login/login.html'
+                                  }
                                 });
-                                window.location.href='../../page/login/login.html'
                               }
                             }).catch(err => {
                               this.$message.error('请求出错了：' + err)

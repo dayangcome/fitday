@@ -140,6 +140,10 @@ public class EmployeeController {
     //删除员工账号（员工后台）
     @GetMapping("/delemp/{eid}")
     public R<String> delemp(@PathVariable Long eid){
+        Employee employee=employeeService.getById(eid);
+        if(employee==null){
+            return R.error("该账号已注销！");
+        }
         employeeService.removeById(eid);        //删除员工信息
         return R.success("成功删除");
     }

@@ -236,7 +236,11 @@ public class UserController {
     //删除用户账号
     @GetMapping("/deluser/{uid}")
     public R<String> deluser(@PathVariable Long uid){
-        userService.removeById(uid);        //删除员工信息
+        User user=userService.getById(uid);
+        if(user==null){
+            return R.error("该账号已经注销！");
+        }
+        userService.removeById(uid);        //删除用户信息
         return R.success("成功删除");
     }
 }

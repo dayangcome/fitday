@@ -115,17 +115,22 @@
                                         highlight-current-row
                                         >
                                         <el-table-column
-                                          prop="content"
                                           >
+                                            <template slot-scope="scope">
+                                                <span :style="String(scope.row.isDelect) === '1' ? 'color:#06c05f;':'' ">
+                                                  {{  scope.row.content  }}
+                                                    <i class="el-icon-check" v-show="String(scope.row.isDelect) === '1' "></i>
+                                                </span>
+                                            </template>
                                         </el-table-column>
                                         <el-table-column>
                                           <template slot-scope="scope">
                                             <el-button
                                               type="success"
                                               size="medium"
-                                              icon="el-icon-check"
+                                              icon="el-icon-circle-check"
                                               :disabled="daymove!=0"
-                                              @click="userdetail(scope.row)"
+                                              @click="myfinish(scope.row)"
                                             >
                                                 完成
                                             </el-button>
@@ -308,7 +313,7 @@
                 </div>
                 <div class="right">
                     <div class="rightup">
-                        <h3>运动记录</h3>
+                        <h3>运动前后吃点啥</h3>
                         <el-table
                             :data="tableData"
                             stripe
@@ -419,6 +424,17 @@
                 mounted() {
                 },
                 methods: {
+                    myfinish(row){
+                        myfin(row.sportPlanId).then(res => {
+                            if (String(res.code) === '1') {
+
+                                this.init3()
+                                this.$message.success('该计划已完成！')
+                            }
+                        }).catch(err => {
+                            this.$message.error('请求出错了：' + err)
+                        })
+                    },
                     subday(){
                       this.daymove--;
                       console.log(this.daymove)
@@ -426,6 +442,7 @@
                         this.year=this.value.getFullYear()
                         this.month=this.value.getMonth()+1
                         this.day=this.value.getDate()
+                        this.init3()
                     },
                     addday(){
                         this.daymove++;
@@ -434,6 +451,7 @@
                         this.year=this.value.getFullYear()
                         this.month=this.value.getMonth()+1
                         this.day=this.value.getDate()
+                        this.init3()
                     },
                     async mydel(st){
                         myplandel(st.sportPlanId).then(res => {

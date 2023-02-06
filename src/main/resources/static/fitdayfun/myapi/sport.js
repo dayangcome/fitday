@@ -33,3 +33,11 @@ function myplandel (id) {
         method: 'get'
     })
 }
+
+function myfin (id) {
+    return $axios({
+        url: `/sport/finplan/${id}`,
+        method: 'get'
+    })
+}
+

@@ -63,8 +63,19 @@ public class SportController {
 
         LambdaQueryWrapper<SportsPlan> queryWrapper=new LambdaQueryWrapper<>();
         queryWrapper.eq(SportsPlan::getUserid,uid);
-        queryWrapper.ge(SportsPlan::getDate,LocalDateTime.of(LocalDate.now(), LocalTime.MIN));
-        queryWrapper.le(SportsPlan::getDate,LocalDateTime.now());
+        if(mydate==0){
+            queryWrapper.ge(SportsPlan::getDate,LocalDateTime.of(LocalDate.now(), LocalTime.MIN));
+            queryWrapper.le(SportsPlan::getDate,LocalDateTime.now());
+        }else if(mydate<0){
+            mydate=-mydate;
+            LocalDate theday=LocalDate.now().minusDays(mydate);
+            queryWrapper.ge(SportsPlan::getDate,LocalDateTime.of(theday, LocalTime.MIN));
+            queryWrapper.le(SportsPlan::getDate,LocalDateTime.of(theday, LocalTime.MAX));
+        }else {
+            LocalDate theday=LocalDate.now().plusDays(mydate);
+            queryWrapper.ge(SportsPlan::getDate,LocalDateTime.of(theday, LocalTime.MIN));
+            queryWrapper.le(SportsPlan::getDate,LocalDateTime.of(theday, LocalTime.MAX));
+        }
         List<SportsPlan> arr=sportsPlanService.list(queryWrapper);
         return R.success(arr);
     }
@@ -82,11 +93,19 @@ public class SportController {
 
     //删除某运动计划
     @GetMapping("/delplan/{id}")
-    public R<String> delemp(@PathVariable Long id){
+    public R<String> delplan(@PathVariable Long id){
         sportsPlanService.removeById(id);     //删除运动计划信息
         return R.success("成功删除");
     }
 
+    //完成某运动计划
+    @GetMapping("/finplan/{id}")
+    public R<String> finplan(@PathVariable Long id){
+        SportsPlan sportsPlan=sportsPlanService.getById(id);
+        sportsPlan.setIsDelect(1);
+        sportsPlanService.updateById(sportsPlan);
+        return R.success("计划已完成");
+    }
     //添加运动（员工后台）
     @PostMapping("/addsport")
     public R<String> addsport(@RequestBody Sport sport){

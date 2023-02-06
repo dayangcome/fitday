@@ -10,10 +10,9 @@ import com.chengxi.fitday.service.IDietService;
 import com.chengxi.fitday.service.IFoodService;
 import org.apache.commons.lang.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.*;
 
-import org.springframework.web.bind.annotation.RestController;
+import java.time.LocalDateTime;
 
 /**
  * <p>
@@ -37,6 +36,47 @@ public class DietController {
         queryWrapper.like(StringUtils.isNotEmpty(name),Diet::getDietTitle,name);   //模糊查询食物名称
         dietService.page(pageinfo,queryWrapper);
         return R.success(pageinfo);
+    }
+
+    //添加套餐（员工后台）
+    @PostMapping("/adddiet")
+    public R<String> adddiet(@RequestBody Diet diet){
+        Diet diet1=new Diet();
+        diet1.setDietTitle(diet.getDietTitle());
+        diet1.setDietCategoryId(diet.getDietCategoryId());
+        diet1.setCover(diet.getCover());
+        diet1.setCookingMethod(diet.getCookingMethod());
+        diet1.setDietHeat(diet.getDietHeat());
+        diet1.setPrice(diet.getPrice());
+        diet1.setSuitablePerson(diet.getSuitablePerson());
+        diet1.setHits(0);
+        diet1.setPraiseNum(0);
+        dietService.save(diet1);
+        return R.success("添加成功");
+    }
+
+    //删除套餐信息（员工后台）
+    @GetMapping("/deldiet/{id}")
+    public R<String> delfood(@PathVariable Long id){
+        dietService.removeById(id);        //删除套餐信息
+        return R.success("成功删除");
+    }
+
+    //修改套餐（员工后台）
+    @PostMapping("/changediet")
+    public R<String> changediet(@RequestBody Diet diet){
+        Diet diet1 =dietService.getById(diet.getDietId());
+        diet1.setDietTitle(diet.getDietTitle());
+        diet1.setDietCategoryId(diet.getDietCategoryId());
+        diet1.setCover(diet.getCover());
+        diet1.setCookingMethod(diet.getCookingMethod());
+        diet1.setDietHeat(diet.getDietHeat());
+        diet1.setPrice(diet.getPrice());
+        diet1.setSuitablePerson(diet.getSuitablePerson());
+        diet1.setHits(0);
+        diet1.setPraiseNum(0);
+        dietService.updateById(diet1);
+        return R.success("添加成功");
     }
 }
 

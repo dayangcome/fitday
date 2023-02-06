@@ -173,7 +173,7 @@
                                 <el-input prefix-icon="el-icon-user" v-model="loginForm.account" placeholder="请输入账号"></el-input>
                             </el-form-item>
                             <el-form-item prop="password" style="margin-top: 30px;">
-                                <el-input prefix-icon="el-icon-lock" type="password" v-model="loginForm.password" placeholder="请输入密码"></el-input>
+                                <el-input prefix-icon="el-icon-lock" @keyup.enter.native="userLogin" type="password" v-model="loginForm.password" placeholder="请输入密码"></el-input>
                             </el-form-item>
                             <el-form-item style="margin-top: 30px;">
                                 <span>还没有账号？</span><el-button type="text" @click="zcdialogVisible = true">点击注册</el-button>
@@ -198,7 +198,7 @@
                                 <el-input prefix-icon="el-icon-mobile-phone" v-model="phoneloginForm.phone" placeholder="请输入手机号"></el-input>
                             </el-form-item>
                             <el-form-item prop="password" style="margin-top: 30px;">
-                                <el-input prefix-icon="el-icon-lock" type="password" v-model="phoneloginForm.password" placeholder="请输入密码"></el-input>
+                                <el-input prefix-icon="el-icon-lock" @keyup.enter.native="userphoneLogin" type="password" v-model="phoneloginForm.password" placeholder="请输入密码"></el-input>
                             </el-form-item>
                             <el-form-item style="margin-top: 30px;">
                                 <span>还没有账号？</span><el-button type="text" @click="zcdialogVisible = true">点击注册</el-button>

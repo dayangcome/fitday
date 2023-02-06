@@ -1,0 +1,210 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta charset="utf-8" />
+        <title>商城</title>
+        <link rel="stylesheet" href="../../../public/plugins/element-ui/index.css" />
+        <style>
+            .mid{
+                width: 60%;
+                height: 800px;
+            }
+            .right{
+                width: 40%;
+                height: 800px;
+            }
+            .green{
+                color: green;
+            }
+            h2{
+                text-align: center;
+            }
+            .image {
+                width: 100%;
+                height: 102px;
+                display: block;
+            }
+            h5{
+                color: red;
+            }
+            .mysubmit:hover{
+                background-color: rgba(235, 238, 245, 0.86);
+                cursor: pointer;
+            }
+            .el-image__inner{
+                width: 150px;
+                height: 82px;
+            }
+        </style>
+    </head>
+    <body>
+        <div id="app" style="display:flex">
+            <el-menu
+                  default-active="3"
+                  class="el-menu-vertical-demo"
+                  @select="handleSelect"
+                  style="width:200px">
+                  <el-menu-item index="1">
+                    <i class="el-icon-data-board"></i>
+                    <span slot="title">课程</span>
+                  </el-menu-item>
+                  <el-menu-item index="2">
+                    <i class="el-icon-soccer"></i>
+                    <span slot="title">健身器材</span>
+                  </el-menu-item>
+                  <el-menu-item index="3">
+                    <i class="el-icon-food"></i>
+                    <span slot="title">健康食品</span>
+                  </el-menu-item>
+                  <el-menu-item index="4">
+                    <i class="el-icon-setting"></i>
+                    <span slot="title">其他</span>
+                  </el-menu-item>
+                </el-menu>
+                   
+                <div class="mid">
+                <div>
+                    <h2><span class="green">* </span> 推荐健康食品 <span class="green"> *</span></h2>
+                    <div style="display: flex;">
+                        <div v-for="(o, index) in 4" :key="o" :offset="index > 0 ? 4 : 0" style="width: 180px;margin:0 10px;">
+                            <el-card :body-style="{ padding: '0px' }" shadow="hover">
+                                <img src="../../assets/img/portfolio/6.jpg" class="image">
+                                <div style="padding: 14px;">
+                                    <span>食品{{o}}</span>
+                                    <div class="bottom clearfix">
+                                        <h5>售价：￥43</h5>
+                                    </div>
+                                    <el-button type="text" class="button">查看详情</el-button>
+                                </div>
+                            </el-card>
+                        </div>
+                    </div>
+                    <div style="display: flex;margin-top: 40px;">
+                        <div v-for="(o, index) in 4" :key="o" :offset="index > 0 ? 4 : 0" style="width: 180px;margin:0 10px;">
+                            <el-card :body-style="{ padding: '0px' }" shadow="hover">
+                                <img src="../../assets/img/portfolio/model2-2.jpg" class="image">
+                                <div style="padding: 14px;">
+                                    <span>食品{{o}}</span>
+                                    <div class="bottom clearfix">
+                                        <h5>售价：￥22</h5>
+                                    </div>
+                                    <el-button type="text" class="button">查看详情</el-button>
+                                </div>
+                            </el-card>
+                        </div>
+                    </div>
+                    <el-button style="margin: 20px 25px;width: 94%"><strong>浏览更多食品</strong></el-button>
+                </div>
+        </div>
+                <div class="right">
+                    <h3>热门课程</h3>
+                    <el-table
+                            :data="courseData"
+                            stripe
+                            style="width: 100%"
+                            :show-header="false"
+                            highlight-current-row
+                    >
+                        <el-table-column
+                                align="center"
+                                width="180">
+                            <template slot-scope="scope">
+                                <el-image :src="scope.row.productPicture"/>
+                            </template>
+                        </el-table-column>
+                        <el-table-column
+                                prop="productName"
+                                align="center"
+                        >
+                        </el-table-column>
+                    </el-table>
+
+                    <h3>优秀名师</h3>
+                    <el-table
+                            :data="teacherData"
+                            stripe
+                            style="width: 100%"
+                            :show-header="false"
+                            highlight-current-row
+                    >
+                        <el-table-column
+                                align="center"
+                            >
+                            <template slot-scope="scope">
+                                <el-image :src="scope.row.avatar"/>
+                            </template>
+                        </el-table-column>
+                        <el-table-column
+                                prop="username"
+                                align="center"
+                        >
+                        </el-table-column>
+                    </el-table>
+                    <div class="mysubmit" style="text-align: center;border-bottom: 1px solid #EBEEF5;" >
+                   <el-button type="text" style="color: rgb(18,157,105);font-weight: bold;font-size: 16px;">申请成为名师</el-button>
+                    </div>
+                </div> 
+        </div>
+        <script src="../../../public/plugins/vue/mystyle.js"></script>
+        <!-- 开发环境版本，包含了有帮助的命令行警告 -->
+        <script src="../../../public/plugins/vue/vue.js"></script>
+        <!-- 引入组件库 -->
+        <script src="../../../public/plugins/element-ui/index.js"></script>
+        <script src="../../../public/plugins/axios/axios.min.js"></script>
+        <script src="../../../public/js/request.js"></script>
+        <script src="../../myapi/usercenter.js"></script>
+        <script>
+            new Vue({
+                el: '#app',
+                data() {
+                    return {
+                        courseData:[
+                            {
+                                productName:"D-Day Online 前端前沿技术实践(第二场)",
+                                productPicture:"../../assets/img/portfolio/model2-3.jpg"
+                            },
+                            {
+                                productName:"Python Web 在线学习视频网站搭建攻略",
+                                productPicture:"../../assets/img/portfolio/model3-1.jpg"
+                            },
+                            {
+                                productName:"企业级 React 高级技术与实践",
+                                productPicture:"../../assets/img/portfolio/model3-2.jpg"
+                            },
+                            {
+                                productName:"SpringBoot2.3 微服务支付系统实战",
+                                productPicture:"../../assets/img/portfolio/model3-3.jpg"
+                            },
+                            {
+                                productName:"简明CSS教程",
+                                productPicture:"../../assets/img/portfolio/model3-4.jpg"
+                            }
+                        ],
+                        teacherData:[
+                            {
+                                username:"卡颂"
+                            }
+                        ]
+                    }
+                },
+
+                mounted() {
+                  
+                },
+                methods: {
+                   handleSelect(key, keyPath) {
+                       if(key==1){
+                           window.location.href = "./course.html"
+                       }
+                       if(key==2){
+                           window.location.href = "./tools.html"
+                       }
+                       if(key==3){
+                           window.location.href = "./healthyfood.html"
+                       }
+                    }
+                }
+            })
+        </script>
+    </body>
+</html>
