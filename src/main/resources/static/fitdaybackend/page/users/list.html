@@ -98,7 +98,7 @@
           </template>
         </el-table-column>
 
-        <el-table-column label="修改时间" width="90">
+        <el-table-column label="上次登录时间" width="90">
           <template slot-scope="scope">
             <span>{{scope.row.updateTime.toLocaleString().replace(/T/g, ' ').replace(/\.[\d]{3}Z/, '')}}</span>
           </template>
@@ -231,7 +231,7 @@
           </td>
         </tr>
         <tr>
-          <td class="tdleft">账号更新时间</td>
+          <td class="tdleft">上次登录时间</td>
           <td>{{userinfo.updateTime}}</td>
         </tr>
       </table>

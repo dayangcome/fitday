@@ -12,3 +12,4 @@ function changeuserinfo (uid,avatar,username,phone,sex,wxNumber) {
         data: {uid,avatar,username,phone,sex,wxNumber}
     })
 }
+

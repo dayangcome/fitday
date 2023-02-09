@@ -9,8 +9,10 @@ import com.chengxi.fitday.dto.Registerinfodto;
 import com.chengxi.fitday.entity.Employee;
 import com.chengxi.fitday.entity.Freeze;
 import com.chengxi.fitday.entity.User;
+import com.chengxi.fitday.entity.Userinfo;
 import com.chengxi.fitday.service.IFreezeService;
 import com.chengxi.fitday.service.IUserService;
+import com.chengxi.fitday.service.IUserinfoService;
 import org.apache.commons.lang.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.util.DigestUtils;
@@ -40,6 +42,9 @@ public class UserController {
     @Autowired
     private IFreezeService freezeService;
 
+    @Autowired
+    private IUserinfoService userinfoService;
+
     //用户账号登录
     @PostMapping("/login")
     public R<User> login(HttpServletRequest request, @RequestBody User user){
@@ -58,6 +63,9 @@ public class UserController {
         if(user1.getStatus()==0){
             return R.error("freeze"); //账号封禁，后端接收
         }
+
+
+        user1.setUpdateTime(LocalDateTime.now());  //最近登录时间
         request.getSession().setAttribute("useruid",user1.getUid());
         return R.success(user1);
     }
@@ -80,8 +88,25 @@ public class UserController {
         if(user1.getStatus()==0){
             return R.error("freeze");   //账号封禁，后端接收
         }
+
+
+
+        user1.setUpdateTime(LocalDateTime.now());  //最近登录时间
         request.getSession().setAttribute("useruid",user1.getUid());
         return R.success(user1);
+    }
+
+    //获得用户信息
+    @GetMapping("/userinfo/{uid}")
+    public R<Userinfo> userinfo(@PathVariable Long uid){
+        LambdaQueryWrapper<Userinfo> queryWrapper=new LambdaQueryWrapper<>(); //获得用户的体重等信息
+        queryWrapper.eq(Userinfo::getUserId,uid);
+        Userinfo userinfo=userinfoService.getOne(queryWrapper);
+        if(userinfo==null){
+            return R.error("用户未设置");
+        }else {
+            return R.success(userinfo);
+        }
     }
 
     //注册账号
@@ -111,7 +136,7 @@ public class UserController {
         user.setLevel(1);
         user.setViplevel(0);
         user.setCreateTime(LocalDateTime.now());
-        user.setUpdateTime(LocalDateTime.now());
+        user.setUpdateTime(LocalDateTime.of(1970, 1, 1, 0, 0,0));
         user.setRemain(new BigDecimal("0"));
         user.setRolenum(1);
         user.setSex(2);
@@ -242,6 +267,23 @@ public class UserController {
         }
         userService.removeById(uid);        //删除用户信息
         return R.success("成功删除");
+    }
+
+    //用户填写了信息
+    @PostMapping("/updatemyinfo")
+    public R<Userinfo> updatemyinfo(@RequestBody Userinfo userinfo){
+        Userinfo userinfo1=new Userinfo();
+        userinfo1.setAttention(0);
+        userinfo1.setBlack(0);
+        userinfo1.setCreateTime(LocalDateTime.now());
+        userinfo1.setUserId(userinfo.getUserId());
+        userinfo1.setHeight(userinfo.getHeight());
+        userinfo1.setWeight(userinfo.getWeight());
+        userinfo1.setFans(0);
+        userinfo1.setBmi(userinfo.getWeight()/userinfo.getHeight()/userinfo.getHeight()*10000);
+        userinfo1.setStage(1);
+        userinfoService.save(userinfo1);
+        return R.success(userinfo1);
     }
 }
 

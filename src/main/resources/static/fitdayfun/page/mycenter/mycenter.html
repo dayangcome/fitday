@@ -269,7 +269,7 @@
                             </div>
 
                             <div class="myrow">
-                                <h3>账号更新时间</h3>
+                                <h3>上次登录时间</h3>
                                 {{userInfo.updateTime}}
                             </div>
                             <el-button type="danger" style="margin: 20px;" @click="delmyaccount(userInfo.uid)">注销账号</el-button>
@@ -281,7 +281,7 @@
 
                             <div class="myrow">
                                 <h3>我的身高</h3>
-                                {{userInfo.eid}}
+                                {{userInfo2.height}}
                                 cm
                                 <el-button
                                         size="medium"
@@ -291,7 +291,7 @@
 
                             <div class="myrow">
                                 <h3>最新体重</h3>
-                                {{userInfo.account}}
+                                {{userInfo2.weight}}
                                 kg
                                 <el-button
                                         size="medium"
@@ -301,26 +301,26 @@
 
                             <div class="myrow">
                                 <h3>最新BMI</h3>
-                                {{userInfo.phone}}
-                                 16
-                                <el-progress :text-inside="true" :stroke-width="26" :stroke-length="20" :percentage="23" :color="customColorMethod" :format="ss"></el-progress>
+                                {{userInfo2.bmi}}
+
+                                <el-progress :text-inside="true" :stroke-width="26" :stroke-length="20" :percentage="mybmi" :color="customColorMethod" :format="ss"></el-progress>
                             </div>
 
                             <div class="myrow">
                                 <h3>基础代谢</h3>
-                                {{userInfo.wxNumber}}
+                                {{userInfo2.wxNumber}}
 
                             </div>
 
                             <div class="myrow">
                                 <h3>体重目标</h3>
-                                {{userInfo.rolenum}}
+                                {{userInfo2.prepare}}
                                 kg
                                 <el-button
                                         size="medium"
                                         @click="handleEdit(scope.$index, scope.row)" style="margin-left: 10px">编辑</el-button>
                                 <h3 style="margin-left: 5px">达成时间</h3>
-                                {{userInfo.rolenum}}
+                                {{userInfo2.prepare}}
                                 天
                                 <el-button
                                         size="medium"
@@ -329,8 +329,7 @@
 
                             <div class="myrow">
                                 <h3>热量预算</h3>
-                                鉴于您需要在147天减去7kg,热量预算
-                                {{userInfo.createTime}}
+                                鉴于您需要在147天减去7kg，热量预算
                                 <el-tag type="success">1824千卡</el-tag>
                             </div>
 
@@ -447,11 +446,13 @@
                         input: "Hello Element UI!",
                         currentDate: new Date(),
                         userInfo: {},
+                        userInfo2:{},
                         username:"",
                         phone:"",
                         sex:"",
                         wxNumber:"",
                         changeVisible:false,
+                        mybmi:0,
                         circleUrl:'https://cube.elemecdn.com/e/fd/0fc7d20532fdaf769a25683617711png.png',
                         imageUrl: '',
                         formLabelAlign: {
@@ -473,6 +474,10 @@
                   this.wxNumber=userInfo.wxNumber
                   userInfo.createTime=userInfo.createTime.replace(/T/g, '  ').replace(/.[\d]{3}Z/, '  ')
                   userInfo.updateTime=userInfo.updateTime.replace(/T/g, '  ').replace(/.[\d]{3}Z/, '  ')
+                  var userInfo2 = window.localStorage.getItem('userInfo2')
+                  userInfo2 = JSON.parse(userInfo2)
+                  this.userInfo2=userInfo2
+                  this.mybmi=userInfo2.bmi
                 },
                 methods: {
                     customColorMethod(percentage) {

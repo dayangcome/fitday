@@ -96,6 +96,10 @@
               .rightup{
                   height: 450px;
               }
+            .tdleft{
+                font-weight: bold;
+                width: 200px;
+            }
         </style>
     </head>
     <body>
@@ -123,27 +127,33 @@
                                                 </span>
                                             </template>
                                         </el-table-column>
-                                        <el-table-column>
+                                        <el-table-column
+                                        width="250">
                                           <template slot-scope="scope">
+
+                                              <el-button
+                                               type="danger"
+                                               size="medium"
+                                               icon="el-icon-delete"
+                                               :disabled="daymove!=0"
+                                               @click="mydel(scope.row)"
+                                               style="float: right;margin-left: 12px;"
+                                              >
+                                                  删除
+                                              </el-button>
+
                                             <el-button
+                                              v-show="String(scope.row.isDelect) === '0'"
                                               type="success"
                                               size="medium"
                                               icon="el-icon-circle-check"
                                               :disabled="daymove!=0"
                                               @click="myfinish(scope.row)"
+                                              style="float: right"
                                             >
                                                 完成
                                             </el-button>
-                                            <el-button
-                                              type="danger"
-                                              size="medium"
-                                              icon="el-icon-delete"
-                                              :disabled="daymove!=0"
-                                              @click="mydel(scope.row)"
 
-                                            >
-                                                删除
-                                            </el-button>
                                           </template>
                                         </el-table-column>
                                       </el-table>
@@ -235,14 +245,15 @@
                             </div> 
                             <div class="mainright">
                                 <h3 style="margin-bottom: 0px;">完成情况</h3>
+                                <div v-if="notwrite" style="color: red">由于您尚未填写体重信息，我们暂时无法为您提供该服务！</div>
                                 <div style="display: flex;justify-content: space-around">
-                                    <el-progress type="circle" :format="format" :percentage="50" :width="170" style="margin-top: 70px;"></el-progress>
+                                    <el-progress type="circle" :format="format" :percentage="mypercent" :width="170" style="margin-top: 70px;"></el-progress>
                                     <div style="display: flex;flex-direction: column;padding-left: 40px;">
                                         <div style="height: 100px;width: 100px;border:5px solid rgb(0, 255, 121);border-radius: 50%;text-align: center;padding: 15px;margin-bottom: 40px;">
                                         已消耗 <h4>{{finish}}</h4> 卡路里
                                         </div>
                                         <div style="height: 100px;width: 100px;border:5px solid rgb(225, 48, 48);border-radius: 50%;text-align: center;padding: 15px;">
-                                        待消耗 <h4>{{finish}}</h4> 卡路里
+                                        待消耗 <h4>{{consume}}</h4>卡路里
                                         </div>
                                     </div>
                                 </div>
@@ -299,38 +310,94 @@
                                   <div style="padding: 14px;">
                                     <span>{{item.sportName}}</span>
                                     <div class="bottom clearfix">
-                                      <el-button type="text" class="button">查看详情</el-button>
+                                      <el-button type="text" class="button" @click="detail(item)">查看详情</el-button>
                                     </div>
                                   </div>
                                 </el-card>
                               </div>
                         </div>
                         <br>
-                        <el-button type="info" plain style="display: block;float: right;margin-right: 50px;">更多</el-button>
+                        <el-button type="info" plain style="display: block;float: right;margin-right: 50px;" @click="showmore">更多</el-button>
                         <el-button type="primary" plain style="display: block;float: right;margin-right: 50px;" @click="refresh">刷新</el-button>
 
+                        <el-dialog
+                                title="查看更多"
+                                :visible.sync="moreVisible"
+                                width="58%"
+                                top="500px"
+                        >
+                            <div class="mydivflex" style="display: flex;flex-wrap: wrap;justify-content: center;">
+                                <div v-for="(item,index) in alllist" :key="index" style="width: 220px;margin:10px 25px;">
+                                    <el-card :body-style="{ padding: '0px' }" shadow="hover" style="width: 189px">
+                                        <img :src="item.picture" class="image">
+                                        <div style="padding: 14px;">
+                                            <span>{{item.sportName}}</span>
+                                            <div class="bottom clearfix">
+                                                <el-button type="text" class="button" @click="detail(item)">查看详情</el-button>
+                                            </div>
+                                        </div>
+                                    </el-card>
+                                </div>
+                            </div>
+                            <span slot="footer" class="dialog-footer">
+                                <el-button @click="moreVisible = false">取 消</el-button>
+                                <el-button type="primary" @click="moreVisible = false">确 定</el-button>
+                            </span>
+                        </el-dialog>
+
+                        <el-dialog title="运动详情" :visible.sync="ydVisible" width="30%" top="500px">
+                                <div >
+                            <img :src="listinfo.picture" class="image" style="margin:20px auto;">
+                            <table style="margin:0px auto;font-size: 15px;">
+                                <tr>
+                                    <td class="tdleft">运动名称</td>
+                                    <td>{{listinfo.sportName}}</td>
+                                </tr>
+                                <tr>
+                                    <td class="tdleft">运动类别</td>
+                                    <td>{{listinfo.sportCategory}}</td>
+                                </tr>
+                                <tr>
+                                    <td class="tdleft">该运动的强度(千卡/斤/分钟)</td>
+                                    <td>{{listinfo.intensity}}</td>
+                                </tr>
+
+                            </table>
+                                </div>
+                                <div slot="footer" class="dialog-footer">
+                                    <el-button @click="ydVisible = false">取 消</el-button>
+                                    <el-button type="primary" @click="ydVisible = false">确 定</el-button>
+                                </div>
+                        </el-dialog>
                     </div>
                 </div>
                 <div class="right">
                     <div class="rightup">
-                        <h3>运动前后吃点啥</h3>
+                        <h3>运动后吃点啥</h3>
                         <el-table
                             :data="tableData"
                             stripe
                             style="width: 100%">
                             <el-table-column
-                              prop="date"
-                              label="日期"
+                              label="运动"
                               >
+                                <template slot-scope="scope">
+                                    {{ scope.row.content.slice(14)}}
+                                </template>
                             </el-table-column>
                             <el-table-column
-                              prop="name"
-                              label="运动类型"
+                              label="运动时间"
                               >
+                                <template slot-scope="scope">
+                                    {{ scope.row.content.slice(0,13)}}
+                                </template>
                             </el-table-column>
                             <el-table-column
-                              prop="address"
-                              label="完成情况">
+                              label="推荐食物"
+                              >
+                                <template slot-scope="scope">
+                                    {{ scope.row.date}}
+                                </template>
                             </el-table-column>
                           </el-table>
                       </div>
@@ -370,13 +437,18 @@
                         userInfo:{},
                         tableData:[],
                         mysportplan:[],
+
                         index:0,
+                        listinfo:{},
+                        ydVisible:false,
                         sportVisible:false,
                         mysportVisible:false,
                         startTime: '',
                         endTime: '',
+                        mypercent:0,
                       logintype:0,
                       finish:0,
+                      allheat:0,
                       consume:0,
                       year :new Date().getFullYear(),
                       month :new Date().getMonth() + 1,
@@ -412,7 +484,10 @@
                         value4: '',
                         daymove:0,
                         myssport:'',
-                        planlist:[]
+                        planlist:[],
+                        userInfo2: {},
+                        notwrite:false,
+                        moreVisible:false,
                     }
                 },
                 created(){
@@ -420,20 +495,28 @@
                     this.init()
                     this.init2()
                     this.init3()
+
                 },
                 mounted() {
+                    this.userInfo2 = JSON.parse(localStorage.getItem('userInfo2'))
+                    if(this.userInfo2.weight>0){
+                        this.allheat=this.userInfo2.weight*7
+                    }else {
+                        this.allheat=0
+                        this.notwrite=true
+                    }
                 },
                 methods: {
                     myfinish(row){
                         myfin(row.sportPlanId).then(res => {
                             if (String(res.code) === '1') {
-
                                 this.init3()
                                 this.$message.success('该计划已完成！')
                             }
                         }).catch(err => {
                             this.$message.error('请求出错了：' + err)
                         })
+
                     },
                     subday(){
                       this.daymove--;
@@ -453,6 +536,12 @@
                         this.day=this.value.getDate()
                         this.init3()
                     },
+                    detail(item){
+                       this.listinfo=item
+                        console.log(this.listinfo)
+                       this.ydVisible=true
+
+                    },
                     async mydel(st){
                         myplandel(st.sportPlanId).then(res => {
                             if (String(res.code) === '1') {
@@ -469,6 +558,9 @@
                             this.mydel(this.planlist[i])
                         }
                         this.init3()
+                    },
+                    showmore(){
+                        this.moreVisible=true
                     },
                     ymfresh(){
                         location.reload()
@@ -538,12 +630,59 @@
                         await getplanList(this.userInfo.uid,this.daymove).then(res => {
                             if (String(res.code) === '1') {
                                 this.planlist=res.data
+                                this.init4()
+                                this.init5()
                             }else {
                                 console.log("not")
                             }
                         }).catch(err => {
                             this.$message.error('请求出错了：' + err)
                         })
+                    },
+                    async init4 () {
+                        await getheat(this.planlist).then(res => {
+                            if (String(res.code) === '1') {
+                                this.finish=res.data
+                                if(this.notwrite){
+                                    this.finish=0
+                                }else {
+                                    this.finish=this.finish*this.userInfo2.weight*2
+                                    this.consume=this.allheat-this.finish
+                                }
+                                this.finish=this.finish.toFixed(2)
+                                if(this.consume<0){
+                                    this.consume=0
+                                }
+                                this.consume=this.consume.toFixed(2)
+                                this.mypercent=(this.allheat-this.consume)*100/this.allheat
+                                this.mypercent=this.mypercent.toFixed(0)
+                            }else {
+                                console.log("not")
+                            }
+                        }).catch(err => {
+                            this.$message.error('请求出错了：' + err)
+                        })
+                    },
+                    async init5 () {
+                        this.tableData=[]
+                        for (let i = 0; i < this.planlist.length; i++) {
+                            if(this.planlist[i].isDelect==1){
+                                let temp=this.planlist[i]
+                                let thesport=this.planlist[i].content.slice(14)
+                                getrecom(thesport).then(res => {
+                                    if (String(res.code) === '1') {
+                                        console.log(res.data)
+                                        temp.date=res.data
+                                    }else {
+                                        console.log(res)
+                                        temp.date='无'
+                                    }
+                                }).catch(err => {
+                                    this.$message.error('请求出错了：' + err)
+                                })
+                                this.tableData.push(temp)
+                            }
+                        }
                     },
                     handleQuery() {
                         this.page = 1;
@@ -573,7 +712,8 @@
                     },
                     format(percentage) {
                         return `已完成${percentage}%`;
-                    }
+                    },
+
                 },
                 destroyed(){
                 }

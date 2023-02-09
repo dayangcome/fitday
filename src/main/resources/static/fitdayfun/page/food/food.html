@@ -50,6 +50,15 @@
             font-size: 17px;
             font-weight: bold;
         }
+        .tdleft{
+            font-weight: bold;
+            width: 200px;
+        }
+        .image {
+            width: 189px;
+            height: 142px;
+            display: block;
+        }
     </style>
 </head>
 <body>
@@ -62,7 +71,7 @@
                 </div>
                 <div style="margin: 12px 0;text-align: center;">
                     <time class="time">{{ year }}/{{month}}/{{day}}</time><br>
-                    今日需要摄入<strong>{{finish}}</strong>千卡热量
+                    今日需要摄入<strong>{{allheat}}</strong>千卡热量
                 </div>
                 <div style="display: flex;">
                     <div style="width: 30%;">
@@ -358,7 +367,7 @@
                         >
                             <el-table-column
                                     align="center"
-                                    width="180">
+                                    width="140">
                                 <template slot-scope="scope">
                                     <el-image :src="scope.row.picture"/>
                                 </template>
@@ -406,6 +415,9 @@
                         >
                         </el-pagination>
                     </el-tab-pane>
+
+
+
                     <el-tab-pane label="套餐">
                         <h4>推荐套餐</h4>
                         <el-table
@@ -417,7 +429,7 @@
                         >
                             <el-table-column
                                     align="center"
-                                    width="180">
+                                    width="140">
                                 <template slot-scope="scope">
                                     <el-image :src="scope.row.cover"/>
                                 </template>
@@ -449,7 +461,7 @@
                                     <el-button
                                             type="text"
                                             class="blueBug"
-                                            @click="fooddetail(scope.row)"
+                                            @click="detail(scope.row)"
                                     >
                                         查看详情
                                     </el-button>
@@ -468,6 +480,89 @@
                     </el-tab-pane>
                 </el-tabs>
             </el-card>
+
+            <el-dialog title="食物详情" :visible.sync="ydVisible" width="35%" top="20px" :lock-scroll="false">
+                <div >
+                    <img :src="listinfo.picture" class="image" style="margin:20px auto;">
+                    <table style="margin:0px auto;font-size: 15px;">
+                        <tr>
+                            <td class="tdleft">食物名称</td>
+                            <td>{{listinfo.foodName}}</td>
+                        </tr>
+                        <tr>
+                            <td class="tdleft">食物类别</td>
+                            <td>{{listinfo.foodCategory}}</td>
+                        </tr>
+                        <tr>
+                            <td class="tdleft">热量(千卡/100g)</td>
+                            <td>{{listinfo.heat}}</td>
+                        </tr>
+                        <tr>
+                            <td class="tdleft">脂肪(g/100g)</td>
+                            <td>{{listinfo.fat}}</td>
+                        </tr>
+                        <tr>
+                            <td class="tdleft">碳水化合物(g/100g)</td>
+                            <td>{{listinfo.carbohydrate}}</td>
+                        </tr>
+                        <tr>
+                            <td class="tdleft">蛋白质(g/100g)</td>
+                            <td>{{listinfo.protein}}</td>
+                        </tr>
+                        <tr>
+                            <td class="tdleft">适宜人群</td>
+                            <td>{{listinfo.suitablePerson}}</td>
+                        </tr>
+                        <tr>
+                            <td class="tdleft">饮食禁忌</td>
+                            <td>{{listinfo.dietTaboo}}</td>
+                        </tr>
+                    </table>
+                </div>
+                <div slot="footer" class="dialog-footer">
+                    <el-button @click="ydVisible = false">取 消</el-button>
+                    <el-button type="primary" @click="ydVisible = false">确 定</el-button>
+                </div>
+            </el-dialog>
+
+            <el-dialog title="套餐详情" :visible.sync="ydVisible2" width="35%" top="20px" :lock-scroll="false">
+                <div >
+                    <img :src="listinfo.cover" class="image" style="margin:20px auto;">
+                    <table style="margin:0px auto;font-size: 15px;">
+                        <tr>
+                            <td class="tdleft">套餐名称</td>
+                            <td>{{listinfo.dietTitle}}</td>
+                        </tr>
+                        <tr>
+                            <td class="tdleft">套餐类别</td>
+                            <td>{{ String(listinfo.dietCategoryId) === '1' ? '素菜' : '肉菜' }}</td>
+                        </tr>
+                        <tr>
+                            <td class="tdleft">烹饪方法</td>
+                            <td>{{listinfo.cookingMethod}}</td>
+                        </tr>
+                        <tr>
+                            <td class="tdleft">食谱热量(千卡/100g)</td>
+                            <td>{{listinfo.dietHeat}}</td>
+                        </tr>
+
+                        <tr>
+                            <td class="tdleft">一般价格(元)</td>
+                            <td>{{listinfo.price}}</td>
+                        </tr>
+
+                        <tr>
+                            <td class="tdleft">适宜人群</td>
+                            <td>{{listinfo.suitablePerson}}</td>
+                        </tr>
+
+                    </table>
+                </div>
+                <div slot="footer" class="dialog-footer">
+                    <el-button @click="ydVisible2 = false">取 消</el-button>
+                    <el-button type="primary" @click="ydVisible2 = false">确 定</el-button>
+                </div>
+            </el-dialog>
         </div>
     </div>
 
@@ -483,6 +578,7 @@
 <script src="../../../public/js/request.js"></script>
 <script src="../../myapi/food.js"></script>
 <script src="../../myapi/diet.js"></script>
+<script src="../../myapi/sport.js"></script>
 <script>
     new Vue({
         el: '#app',
@@ -500,7 +596,11 @@
                 pageSize:5,
                 foodData:[],
                 dietData:[],
+                planlist:[],
                 userInfo:{},
+                listinfo:{},
+                allheat:0,
+                notwrite:false,
                 year :new Date().getFullYear(),
                 month :new Date().getMonth() + 1,
                 day:new Date().getDate(),
@@ -530,7 +630,8 @@
                     }]
                 },
                 value2: '',
-
+                ydVisible:false,
+                ydVisible2:false,
                 breakfastVisible: false,
                 breakfastinnerVisible: false,
                 breakeditVisible:false,
@@ -567,6 +668,24 @@
         created(){
             this.init()
             this.userInfo = JSON.parse(localStorage.getItem('userInfo'))
+            this.userInfo2 = JSON.parse(localStorage.getItem('userInfo2'))
+            if(this.userInfo2.weight>0){
+                console.log(this.userInfo2.age)
+                if(this.userInfo2.age>0&&this.userInfo2.weight>0&&this.userInfo2.height>0){
+                    this.allheat=10*this.userInfo2.weight+6.25*this.userInfo2.height-5*age
+                    if (this.userInfo.sex==0){
+                        this.allheat=this.allheat+5
+                    }else if(this.userInfo.sex==1){
+                        this.allheat=this.allheat-161
+                    }
+                }else{
+                    this.allheat=16*this.userInfo2.weight*2
+                }
+            }else {
+                this.allheat=0
+                this.notwrite=true
+            }
+            this.init2()
         },
         mounted() {
         },
@@ -678,7 +797,16 @@
                 })
 
             },
-
+            fooddetail(item){
+                this.listinfo=item
+                console.log(this.listinfo)
+                this.ydVisible=true
+            },
+            detail(item){
+                this.listinfo=item
+                console.log(this.listinfo)
+                this.ydVisible2=true
+            },
             insertAction2(){
                 this.$refs["editForm"].validate((valid) =>{
                     if(valid){
@@ -821,6 +949,37 @@
                     if (String(res.code) === '1') {
                         this.dietData = res.data.records|| []
                         this.counts2 = res.data.total
+                    }
+                }).catch(err => {
+                    this.$message.error('请求出错了：' + err)
+                })
+
+
+            },
+            async init2 () {
+                await getplanList(this.userInfo.uid,0).then(res => {
+                    if (String(res.code) === '1') {
+                        this.planlist=res.data
+                        this.init3()
+                    }else {
+                        console.log("not")
+                    }
+                }).catch(err => {
+                    this.$message.error('请求出错了：' + err)
+                })
+            },
+            async init3 () {
+                await getheat(this.planlist).then(res => {
+                    if (String(res.code) === '1') {
+                        this.consume=res.data
+                        if(this.notwrite){
+                            this.consume=0
+                        }else {
+                            this.consume=this.consume*this.userInfo2.weight*2
+                        }
+                        this.consume=this.consume.toFixed(2)
+                    }else {
+                        console.log("not")
                     }
                 }).catch(err => {
                     this.$message.error('请求出错了：' + err)

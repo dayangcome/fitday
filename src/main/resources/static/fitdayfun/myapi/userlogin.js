@@ -47,3 +47,18 @@ function userlogoutApi(){
         'method': 'post',
     })
 }
+
+function getuserinfo(uid){
+    return $axios({
+        'url': `/user/userinfo/${uid}`,
+        'method': 'get'
+    })
+}
+
+function updatemyinfo(userId,height,weight){
+    return $axios({
+        'url': '/user/updatemyinfo',
+        'method': 'post',
+        data:{userId,height,weight}
+    })
+}

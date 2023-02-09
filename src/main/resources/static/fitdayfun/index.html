@@ -63,7 +63,23 @@
                 </el-header>
                 
             </el-container>
-                
+
+            <el-dialog title="填写详细信息" :visible.sync="userinfoVisible" width="35%">
+                用户您好！您可能是首次登录，还未填写自己的身体情况！填写后fitday将会为您提供更加方便的服务！
+                <el-form style="margin-top: 30px">
+                    <el-form-item label="您的身高(cm)" :label-width="formLabelWidth">
+                        <el-input v-model="nowheight" autocomplete="off" style="width: 300px"></el-input>
+                    </el-form-item>
+                    <el-form-item label="您的体重(kg)" :label-width="formLabelWidth">
+                        <el-input v-model="nowweight" autocomplete="off"  style="width: 300px"></el-input>
+                    </el-form-item>
+                </el-form>
+                <div slot="footer" class="dialog-footer">
+                    <el-button type="primary" @click="updateinfo">确定</el-button>
+                    <el-button  @click="userinfoVisible = false">下次再填写</el-button>
+                </div>
+            </el-dialog>
+
             <el-container>
                 <el-main>
                     <iframe
@@ -102,7 +118,7 @@
                             'page/users/list7.html'
                         ],
                         heightlist:[
-                          "1180px",
+                          "1580px",
                           "660px",
                           "1160px",
                           "1180px",
@@ -111,10 +127,15 @@
                           "1280px"
                         ],
                         userInfo:{},
+                        userinfo2:{},
                         iframeUrl: './page/home/home.html',
                         headTitle: '用户管理',
                         circleUrl:'https://cube.elemecdn.com/e/fd/0fc7d20532fdaf769a25683617711png.png',
-                        myheight:"1180px"
+                        myheight:"1580px",
+                        userinfoVisible:false,
+                        formLabelWidth: '120px',
+                        nowheight:'',
+                        nowweight:''
                     }
                 },
                 mounted(){
@@ -122,8 +143,22 @@
                     userInfo = JSON.parse(userInfo)
                     this.userInfo=userInfo
                     this.circleUrl=userInfo.avatar
+                    this.init()
                 },
                 methods: {
+                    async init () {
+                        await getuserinfo(this.userInfo.uid).then(res => {
+                            if (String(res.code) === '1') {
+
+                                this.userInfo2=res.data
+                                localStorage.setItem('userInfo2',JSON.stringify(res.data))
+                            }else{
+                                this.userinfoVisible=true
+                            }
+                        }).catch(err => {
+                            this.$message.error('请求出错了：' + err)
+                        })
+                    },
                     selectMenu(key, keyPath) {
                         if(key==0){
                             this.iframeUrl=this.urlList[0];
@@ -133,6 +168,15 @@
                             this.iframeUrl=this.urlList[key-1];
                             this.myheight=this.heightlist[key-1];
                         }
+                    },
+                    updateinfo(){
+                        updatemyinfo(this.userInfo.uid,this.nowheight,this.nowweight).then((res)=>{
+                            if(res.code === 1){
+                               this.init()
+                               this.$message.success("填写成功！您可以享受fitday产品的定制服务！")
+                            }
+                        })
+                        this.userinfoVisible=false
                     },
                     handleCommand(command) {
                         if(command=='a'){
@@ -145,6 +189,7 @@
                         userlogoutApi().then((res)=>{
                             if(res.code === 1){
                                 localStorage.removeItem('userInfo')
+                                localStorage.removeItem('userInfo2')
                                 window.location.href = './page/login/login.html'
                             }
                         })

@@ -4,6 +4,7 @@
         <meta charset="utf-8" />
         <title>首页</title>
         <link rel="stylesheet" href="../../../public/plugins/element-ui/index.css" />
+		
         <style type="text/css">
               .el-carousel-item img{
                 width: 100%;
@@ -11,37 +12,67 @@
               }
               .bannerimg{
                 width: 100%;
-                height: inherit;
+                height: 100%;
+				
               }
               .myflex{
                 display:flex;
                 margin:5px;
-                background-color:#550000;
+				 background-color: #efe6ef;
+background-image: linear-gradient(45deg, #efe6ef 14%, #c7e9eb 83%, #ffffff 100%);
+
+
+				  /*background-image:url("../../assets/img/portfolio/FFFFFFFF (2).jpg");*/
+				  
+
+
+				  /*background-color: #85ffc2;
+background-image: linear-gradient(236deg, #85ffc2 0%, #fff07d 82%, #ffffff 100%);
+				  opacity: 0.8;*/
+
               }
+			
+			/*body{
+				background-color: #85ffc2;
+				
+background-image: linear-gradient(236deg, #85ffc2 0%, #fff07d 82%, #ffffff 100%);
+
+			} */
+			
               .left{
                   width:52%;
-                  height:800px;
-                  background-color:#fff;
+                  height:1200px;
+                  border-right:solid #7A7272 1px ;
+
+
               }
               .right{
                   width:48%;
                   margin-left:2px;
-                  height:800px;
-                  background-color:#fff;
+                  height:1200px;
+                 
               }
               .left-up{
-                  height: 50%;
+                  height: 30%;
+				  border-style: solid;
+				  border-radius: 25px;
+				  
+
+					  
+
+
               }
               .left-down{
                   display: flex;
                   flex-wrap: wrap;
-                  border-top: #550000 solid 2px;
+                  
                   margin-top: 2px;
                   height: 50%;
               }
               .mybanner{
-                  background-color:#ecfdd1;
-                  margin-top: 60px;
+                  
+
+                  margin-top: 30px;
                   height: 120px;
                   text-align: center;
               }
@@ -49,16 +80,21 @@
                   margin: 30px 0 0 10px;
               }
               .search{
-                  margin: 60px 0 0 50px;
+                 margin: 100px 50px 0 50px;
+                  height: 10%;
                   
               }
               .hotsearch{
-                   margin: 60px 50px 0 50px;
-                   border: #550000 solid 1px;
+                   margin: 20px 50px 100px 50px;
+                   border-style: solid;
+				   border-radius: 10px;
+				   
+				
               }
               .tools{
-                  margin: 60px 50px 0 50px;
-                  border: #550000 solid 1px;
+                  margin: 70px 0px 0 0px;
+				  border-top:solid #7A7272 1px ;
+                  
               }
               .search .el-input{
                   font-size: 18px;
@@ -90,16 +126,86 @@
               h2{
                   display: inline-block;
                   margin-top: 20px;
+				  
+
               }
               h3{
                   display: inline-block;
-                  margin: 20px 0 0 20px;
+                  margin: 50px 0 0 0px;
               }
+			h4{
+                  display: inline-block;
+                  margin: 20px 0 0 40px;
+				font-size:20px;
+              }
+			h5{
+				display: inline-block;
+                  margin: 20px 0 0 20px;
+				font-size:20px;
+			}
+			h6{
+				display: inline-block;
+				font-size:15px;
+				color: #000000;
+				
+			}
+			
               ul li{
                   list-style: none;
                   height: 30px;
                   margin-top: 10px;
+			}
+			.bottom {
+                margin-top: 13px;
+                line-height: 12px;
               }
+            
+              .button {
+                padding: 0;
+                float: right;
+              }
+            
+              .image {
+                width: 100%;
+                display: block;
+              }
+            
+              .clearfix:before,
+              .clearfix:after {
+                  display: table;
+                  content: "";
+              }
+              
+              .clearfix:after {
+                  clear: both
+              }
+			.text {
+    font-size: 14px;
+  }
+
+  .item {
+    padding: 18px 0;
+  }
+
+  .box-card {
+    width: 400px;
+  }
+			.change-icon{
+    font-size:100px;
+	color:#12C5B4;
+	margin: auto;
+}
+			.content-1{
+				margin: 10px 80px 60px 70px;
+			}
+			.fasong{
+				margin: 10px 100px 0px 350px;
+			}
+			
+			
+
+
+
         </style>
     </head>
     <body>
@@ -116,9 +222,9 @@
                 <div class="left">
                     <div class="left-up">
                         <div class="mybanner">
-                            <h2>欢迎您<br>fitday大家庭的大洋！</h2>
+                            <h2>欢迎您<br>fitday大家庭的{{userInfo.username}}！</h2>
                         </div> 
-                        <h3>我的标签</h3>
+                        <h3>&nbsp;&nbsp;&nbsp;又是全新的一天，定义今天的自己享受生活吧！</h3>
                         <div class="mytags">
                             <el-tag
                               :key="tag"
@@ -139,27 +245,69 @@
                             >
                             </el-input>
                             <el-button v-else class="button-new-tag" size="small" @click="showInput">+ 新标签</el-button>
+							
+							<div class="fasong">
+							<el-button type="success" round>打卡</el-button>
+							</div>
+							
                         </div>
                         
                     </div>
                     
                     <div class="left-down">
-                        <div style="width: 50%;">
+                        <div style="width: 40%;">
                             <h3>今日答题</h3>
-                        </div>
-                        <div style="width: 50%;">
-                            <h3>热门答题</h3>
+							<br>
+							<br>
+							<div v-for="(o, index) in 1" :key="o" :offset="index > 0 ? 1 : 0" style="width: 220px;margin-right: 50px;">
+                                <el-card :body-style="{ padding: '0px' }">
+                                  <img src="../../assets/img/portfolio/model6-4.jpg" class="image">
+                                  <div style="padding: 14px;">
+                                    <span>题目{{o}}</span>
+                                    <div class="bottom clearfix">
+                                      <el-button type="text" class="button">查看详情</el-button>
+                                    </div>
+                                  </div>
+                                </el-card>
+                              </div>
+						
+						</div>
+                        <div style="width: 60%;">
+                            <h3>今日榜单</h3>
+							<br>
+							<br>
+							<el-card class="box-card">
+                            <div v-for="o in 4" :key="o" class="text item">
+                                 {{'列表内容 ' + o }}
+                            </div>
+                            </el-card>
                         </div>
                         <div style="width: 100%;">
-                            <h3>今日榜单</h3>
+                            <h3>热门答题</h3>
+							<br>
+							<br>
+							<div style="display: flex;">
+							<div v-for="(o, index) in 4" :key="o" :offset="index > 0 ? 4 : 0" style="width: 220px;margin-right: 50px;">
+                                <el-card :body-style="{ padding: '0px' }">
+                                  <img src="../../assets/img/portfolio/model6-4.jpg" class="image">
+                                  <div style="padding: 14px;">
+                                    <span>题目{{o}}</span>
+                                    <div class="bottom clearfix">
+                                      <el-button type="text" class="button">查看详情</el-button>
+                                    </div>
+                                  </div>
+                                </el-card>
+                              </div>
                         </div>
                     
                     </div>
                     
                 </div> 
+				</div>
                 <div class="right">
                     <div class="search">
-                        <el-input placeholder="请输入" class="myinput" v-model="keyword"  >
+						
+                        <el-input placeholder="感兴趣的搜一搜" class="myinput" v-model="keyword"  >
                                 <i
                                   slot="suffix"
                                   class="el-input__icon el-icon-search"
@@ -169,22 +317,93 @@
                         </el-input>
                     </div>
                     <div class="hotsearch">
-                        <h3>今日热搜</h3>
-                        <ol>
-                        	<li v-for="item in hotlist">
-                        		<strong>{{item}}</strong>
-                        	</li>
-                        </ol>
+                        <el-table
+      :data="tableData"
+								
+      style="width: 100%"
+                            
+                          
+      >
+      <el-table-column
+        prop="hot"
+		label="今日热搜"
+        width="180">
+      </el-table-column>
+      
+    </el-table>
                     </div>
                     <div class="tools">
-                        <div style="text-align: center;">
-                            <h3>健康工具</h3>
-                        </div>
-                        <ul>
+                        
+                            <h4>健康工具</h4>
+                        
+                        <!--<ul>
                         	<li v-for="item in toollist">
                         		<strong>{{item}}</strong>
                         	</li>
-                        </ul>
+                        </ul>-->
+						<div style="display: flex;">
+							<div class="content-1">
+								<div class="change-icon">
+   						<i class="el-icon-s-platform" ></i>
+								</div>
+								
+								<el-link href="https://www.boohee.com/assessment/calory" target="_blank" type="primary">&nbsp;<h6>卡路里计算器</h6></el-link>
+								
+								
+							</div>
+						
+						 
+							<div class="content-1">
+								<div class="change-icon">
+   						<i class="el-icon-s-data" ></i>
+								</div>
+								
+								<el-link href="https://www.boohee.com/assessment/bmi" target="_blank" type="primary">&nbsp;<h6>身体质量指数</h6></el-link>
+								
+							</div>
+						 
+							<div class="content-1">
+								<div class="change-icon">
+   						<i class="el-icon-edit" ></i>
+								</div>
+								
+								<el-link href="https://www.boohee.com/assessment/standard_weight" target="_blank" type="primary">&nbsp;&nbsp;<h6>标准体重计算</h6></el-link>
+								
+							</div>
+						 
+						</div>
+						<div style="display: flex;">
+							<div class="content-1">
+								<div class="change-icon">
+   						<i class="el-icon-coffee" ></i>
+								</div>
+								
+								<el-link href="https://www.boohee.com/assessment/bmr" target="_blank" type="primary">&nbsp;<h6>基础代谢计算</h6></el-link>
+								
+								
+							</div>
+						
+						 
+							<div class="content-1">
+								<div class="change-icon">
+   						<i class="el-icon-c-scale-to-original" ></i>
+								</div>
+								
+								<el-link href="https://www.boohee.com/assessment/heart_rate" target="_blank" type="primary">&nbsp;<h6>燃脂运动计算</h6> </el-link>
+								
+							</div>
+						 
+							<div class="content-1">
+								<div class="change-icon">
+   						<i class="el-icon-potato-strips" ></i>
+								</div>
+								
+								<el-link href="https://www.boohee.com/assessment/health_weight" target="_blank" type="primary">&nbsp;&nbsp;<h6>健康体重范围</h6></el-link>
+								
+							</div>
+						 
+						</div>
+
                     </div>
                 </div>
             </div> 
@@ -196,7 +415,10 @@
 
         <script src="../../../public/plugins/axios/axios.min.js"></script>
         <script src="../../../public/js/request.js"></script>
+		<script src="../../myapi/explain.js"></script>
+		
         <script>
+			
             new Vue({
                 el: '#app',
                 data() {
@@ -212,8 +434,26 @@
                       hotlist:[
                           "哎对对对",
                           "内网渗透",
-                          "鸡你太美"
+                          "鸡你太美",
+						  "好啊好啊",
+						  "可以可以",
+						  "不错不错"
                       ],
+						tableData: [{
+							hot: '1.哎对对对'},
+									{
+									hot:"2.内网舌头"
+									},
+									{
+									hot:"3.bushi很糊主义"
+									},
+									{
+										hot:"4.too so so so"
+									
+				
+            
+         
+          }],
                       toollist:[
                           "身体质量指数(BMI)",
                           "标准体重计算",
@@ -223,14 +463,18 @@
                       ],
                       dynamicTags: ['标签一', '标签二', '标签三'],
                       inputVisible: false,
-                      inputValue: ''
+                      inputValue: '',
+                      userInfo:[]
                     }
+                },
+                created(){
+                    this.userInfo = JSON.parse(localStorage.getItem('userInfo'))
                 },
                 mounted() {
                     this.setSize();
                     window.addEventListener('resize', ()=>{
                         this.setSize();
-                    },false);  
+                    },false);
                 },    
                 methods: {
                     setSize(){

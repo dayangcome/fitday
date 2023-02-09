@@ -41,3 +41,20 @@ function myfin (id) {
     })
 }
 
+function getheat (plans) {
+    return $axios({
+        url: '/sport/getheat',
+        method: 'post',
+        dataType:"json",
+        contentType:"application/json", // 指定这个协议很重要
+        data:JSON.stringify(plans) //只有这一个参数，json格式，后台解析为实体，后台可以直接用
+    })
+}
+
+function getrecom (sport) {
+    return $axios({
+        url: `/sport/getrecom/${sport}`,
+        method: 'get'
+    })
+}
+

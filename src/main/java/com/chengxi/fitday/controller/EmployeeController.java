@@ -54,6 +54,7 @@ public class EmployeeController {
         if(emp.getStatus()==0){
             return R.error("账号已被封禁！请联系超级管理员！");
         }
+        employee.setUpdateTime(LocalDateTime.now());    //设置登录时间
         request.getSession().setAttribute("empeid",emp.getEid());
         return R.success(emp);
     }
@@ -128,7 +129,7 @@ public class EmployeeController {
         employee.setAvatar("https://cube.elemecdn.com/3/7c/3ea6beec64369c2642b92c6726f1epng.png");
         employee.setStatus(1);
         employee.setCreateTime(LocalDateTime.now());
-        employee.setUpdateTime(LocalDateTime.now());
+        employee.setUpdateTime(LocalDateTime.of(1970, 1, 1, 0, 0,0));
         employee.setRolenum(empregisterdto.getRolenum());
         employee.setSex(2);
 //        System.out.println(employee);

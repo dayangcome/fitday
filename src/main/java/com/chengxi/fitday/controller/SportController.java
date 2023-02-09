@@ -7,6 +7,7 @@ import com.chengxi.fitday.common.R;
 import com.chengxi.fitday.entity.Food;
 import com.chengxi.fitday.entity.Sport;
 import com.chengxi.fitday.entity.SportsPlan;
+import com.chengxi.fitday.entity.User;
 import com.chengxi.fitday.service.IFoodService;
 import com.chengxi.fitday.service.ISportService;
 import com.chengxi.fitday.service.ISportsPlanService;
@@ -40,6 +41,9 @@ public class SportController {
     @Autowired
     private ISportsPlanService sportsPlanService;
 
+    @Autowired
+    private IFoodService foodService;
+
     //运动信息分页查询
     @GetMapping("/page")
     public R<Page> page(int page, int pageSize, String name){
@@ -60,7 +64,6 @@ public class SportController {
     //查询运动计划
     @GetMapping("plan/{uid}/{mydate}")
     public R<List<SportsPlan>> getplan(@PathVariable Long uid,@PathVariable int mydate){
-
         LambdaQueryWrapper<SportsPlan> queryWrapper=new LambdaQueryWrapper<>();
         queryWrapper.eq(SportsPlan::getUserid,uid);
         if(mydate==0){
@@ -137,6 +140,59 @@ public class SportController {
         sport1.setLinkfoodId(sport.getLinkfoodId());
         sportService.updateById(sport1);
         return R.success("更改成功");
+    }
+
+    //通过运动计划得到消耗的热量
+    @PostMapping("/getheat")
+    public R<Double> getheat(@RequestBody List<SportsPlan> plans){
+        double sumheat=0;
+        for(SportsPlan sp:plans){
+            if(sp.getIsDelect()==1){
+                String content=sp.getContent();
+                int shour=Integer.parseInt(content.substring(0,2));
+                int smin=Integer.parseInt(content.substring(3,5));
+                int ehour=Integer.parseInt(content.substring(8,10));
+                int emin=Integer.parseInt(content.substring(11,13));
+                int sportime=ehour*60+emin-shour*60-smin;
+                if(sportime<0){
+                    sportime=0;
+                }
+
+                String name=content.substring(16);
+                LambdaQueryWrapper<Sport> queryWrapper=new LambdaQueryWrapper<>();
+                queryWrapper.eq(Sport::getSportName,name);   //查询运动
+                Sport sport=sportService.getOne(queryWrapper);
+
+                double intense=0;   //运动强度
+                if (sport==null){
+                    intense=0.05;   //自定义的运动强度暂时按0.05算
+                }else {
+                    intense=sport.getIntensity();
+                }
+                sumheat+=intense*sportime;
+            }
+        }
+        return R.success(sumheat);
+    }
+
+    //获取推荐食物
+    @GetMapping("/getrecom/{sport}")
+    public R<String> getrecom(@PathVariable String sport){
+        System.out.println(sport);
+        LambdaQueryWrapper<Sport> queryWrapper=new LambdaQueryWrapper<>();
+        queryWrapper.eq(Sport::getSportName,sport.trim());
+        Sport sport1=sportService.getOne(queryWrapper);
+        if(sport1==null){
+            return R.error("没找到1");
+        }
+        if(sport1.getLinkfoodId()==null){
+            return R.error("没找到2");
+        }
+        Food food=foodService.getById(sport1.getLinkfoodId());
+        if(food==null){
+            return R.error("没找到3");
+        }
+        return R.success(food.getFoodName());
     }
 }
 
