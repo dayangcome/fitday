@@ -5,16 +5,21 @@ import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.chengxi.fitday.common.R;
 import com.chengxi.fitday.dto.Empregisterdto;
-import com.chengxi.fitday.entity.Employee;
-import com.chengxi.fitday.entity.Food;
-import com.chengxi.fitday.entity.User;
+import com.chengxi.fitday.dto.Fooddto;
+import com.chengxi.fitday.dto.Foodplandto;
+import com.chengxi.fitday.entity.*;
+import com.chengxi.fitday.service.IDietPlanService;
 import com.chengxi.fitday.service.IFoodService;
 import org.apache.commons.lang.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.util.DigestUtils;
 import org.springframework.web.bind.annotation.*;
 
+import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.time.LocalTime;
+import java.time.format.DateTimeFormatter;
+import java.util.List;
 
 /**
  * <p>
@@ -29,6 +34,9 @@ import java.time.LocalDateTime;
 public class FoodController {
     @Autowired
     private IFoodService foodService;
+
+    @Autowired
+    private IDietPlanService dietPlanService;
 
     //食物信息分页查询
     @GetMapping("/page")
@@ -83,6 +91,199 @@ public class FoodController {
         food1.setCarbohydrate(food.getCarbohydrate());
         foodService.updateById(food1);
         return R.success("更改成功");
+    }
+
+    //查询所有食物信息
+    @GetMapping("/getall")
+    public R<List<Food>> getAll(){
+        List <Food> arr=foodService.list();
+        return R.success(arr);
+    }
+
+    //添加早餐计划信息
+    @PostMapping("/breakfast")
+    public R<String> mybreakfast(@RequestBody Foodplandto foodplandto){
+        LambdaQueryWrapper<DietPlan> queryWrapper=new LambdaQueryWrapper<>();
+        System.out.println("???"+foodplandto.getUserid());
+        queryWrapper.eq(DietPlan::getUserid,foodplandto.getUserid());
+        queryWrapper.ge(DietPlan::getDate,LocalDateTime.of(LocalDate.now(), LocalTime.MIN));
+        queryWrapper.le(DietPlan::getDate,LocalDateTime.now());
+        DietPlan dietPlan=dietPlanService.getOne(queryWrapper);
+        if(dietPlan==null){
+            DietPlan dietPlan1=new DietPlan();
+            List<Fooddto> foods=foodplandto.getFoods();
+            String breakfast="";
+            for (Fooddto myfood:foods){
+                breakfast+=myfood.getFood();
+                breakfast+="  ";
+                breakfast+=myfood.getIntake();
+                breakfast+="g   \n";
+            }
+            System.out.println(breakfast);
+            dietPlan1.setDate(LocalDateTime.now());
+            dietPlan1.setUserid(foodplandto.getUserid());
+            dietPlan1.setBreakfast(breakfast);
+            dietPlanService.save(dietPlan1);
+        }else {
+            List<Fooddto> foods=foodplandto.getFoods();
+            String breakfast="";
+            for (Fooddto myfood:foods){
+                breakfast+=myfood.getFood();
+                breakfast+="  ";
+                breakfast+=myfood.getIntake();
+                breakfast+="g   \n";
+            }
+            System.out.println(breakfast);
+            dietPlan.setDate(LocalDateTime.now());
+            dietPlan.setUserid(foodplandto.getUserid());
+            dietPlan.setBreakfast(breakfast);
+            dietPlanService.updateById(dietPlan);
+        }
+        return R.success("成功");
+    }
+
+    //添加午餐计划信息
+    @PostMapping("/lunch")
+    public R<String> mylunch(@RequestBody Foodplandto foodplandto){
+        LambdaQueryWrapper<DietPlan> queryWrapper=new LambdaQueryWrapper<>();
+        queryWrapper.eq(DietPlan::getUserid,foodplandto.getUserid());
+        queryWrapper.ge(DietPlan::getDate,LocalDateTime.of(LocalDate.now(), LocalTime.MIN));
+        queryWrapper.le(DietPlan::getDate,LocalDateTime.now());
+        DietPlan dietPlan=dietPlanService.getOne(queryWrapper);
+        if(dietPlan==null){
+            DietPlan dietPlan1=new DietPlan();
+            List<Fooddto> foods=foodplandto.getFoods();
+            String lunch="";
+            for (Fooddto myfood:foods){
+                lunch+=myfood.getFood();
+                lunch+="  ";
+                lunch+=myfood.getIntake();
+                lunch+="g   \n";
+            }
+            System.out.println(lunch);
+            dietPlan1.setDate(LocalDateTime.now());
+            dietPlan1.setUserid(foodplandto.getUserid());
+            dietPlan1.setBreakfast(lunch);
+            dietPlanService.save(dietPlan1);
+        }else {
+            List<Fooddto> foods=foodplandto.getFoods();
+            String lunch="";
+            for (Fooddto myfood:foods){
+                lunch+=myfood.getFood();
+                lunch+="  ";
+                lunch+=myfood.getIntake();
+                lunch+="g   \n";
+            }
+            System.out.println(lunch);
+            dietPlan.setDate(LocalDateTime.now());
+            dietPlan.setUserid(foodplandto.getUserid());
+            dietPlan.setLunch(lunch);
+            dietPlanService.updateById(dietPlan);
+        }
+        return R.success("成功");
+    }
+
+    //添加晚餐计划信息
+    @PostMapping("/dinner")
+    public R<String> mydinner(@RequestBody Foodplandto foodplandto){
+        LambdaQueryWrapper<DietPlan> queryWrapper=new LambdaQueryWrapper<>();
+        queryWrapper.eq(DietPlan::getUserid,foodplandto.getUserid());
+        queryWrapper.ge(DietPlan::getDate,LocalDateTime.of(LocalDate.now(), LocalTime.MIN));
+        queryWrapper.le(DietPlan::getDate,LocalDateTime.now());
+        DietPlan dietPlan=dietPlanService.getOne(queryWrapper);
+        if(dietPlan==null){
+            DietPlan dietPlan1=new DietPlan();
+            List<Fooddto> foods=foodplandto.getFoods();
+            String dinner="";
+            for (Fooddto myfood:foods){
+                dinner+=myfood.getFood();
+                dinner+="  ";
+                dinner+=myfood.getIntake();
+                dinner+="g   \n";
+            }
+            System.out.println(dinner);
+            dietPlan1.setDate(LocalDateTime.now());
+            dietPlan1.setUserid(foodplandto.getUserid());
+            dietPlan1.setBreakfast(dinner);
+            dietPlanService.save(dietPlan1);
+        }else {
+            List<Fooddto> foods=foodplandto.getFoods();
+            String dinner="";
+            for (Fooddto myfood:foods){
+                dinner+=myfood.getFood();
+                dinner+="  ";
+                dinner+=myfood.getIntake();
+                dinner+="g   \n";
+            }
+            System.out.println(dinner);
+            dietPlan.setDate(LocalDateTime.now());
+            dietPlan.setUserid(foodplandto.getUserid());
+            dietPlan.setDinner(dinner);
+            dietPlanService.updateById(dietPlan);
+        }
+        return R.success("成功");
+    }
+
+    //添加加餐计划信息
+    @PostMapping("/adddiet")
+    public R<String> myadddiet(@RequestBody Foodplandto foodplandto){
+        LambdaQueryWrapper<DietPlan> queryWrapper=new LambdaQueryWrapper<>();
+        queryWrapper.eq(DietPlan::getUserid,foodplandto.getUserid());
+        queryWrapper.ge(DietPlan::getDate,LocalDateTime.of(LocalDate.now(), LocalTime.MIN));
+        queryWrapper.le(DietPlan::getDate,LocalDateTime.now());
+        DietPlan dietPlan=dietPlanService.getOne(queryWrapper);
+        if(dietPlan==null){
+            DietPlan dietPlan1=new DietPlan();
+            List<Fooddto> foods=foodplandto.getFoods();
+            String adddiet="";
+            for (Fooddto myfood:foods){
+                adddiet+=myfood.getFood();
+                adddiet+="  ";
+                adddiet+=myfood.getIntake();
+                adddiet+="g   \n";
+            }
+            System.out.println(adddiet);
+            dietPlan1.setDate(LocalDateTime.now());
+            dietPlan1.setUserid(foodplandto.getUserid());
+            dietPlan1.setBreakfast(adddiet);
+            dietPlanService.save(dietPlan1);
+        }else {
+            List<Fooddto> foods=foodplandto.getFoods();
+            String adddiet="";
+            for (Fooddto myfood:foods){
+                adddiet+=myfood.getFood();
+                adddiet+="  ";
+                adddiet+=myfood.getIntake();
+                adddiet+="g   \n";
+            }
+            System.out.println(adddiet);
+            dietPlan.setDate(LocalDateTime.now());
+            dietPlan.setUserid(foodplandto.getUserid());
+            dietPlan.setAdddiet(adddiet);
+            dietPlanService.updateById(dietPlan);
+        }
+        return R.success("成功");
+    }
+
+    //查询饮食计划
+    @GetMapping("geteatplan/{uid}/{value2}")
+    public R<DietPlan> geteatplan(@PathVariable Long uid,@PathVariable String value2){
+        if(value2.length()==9){
+            StringBuilder stringBuilder=new StringBuilder(value2);
+            stringBuilder.insert(5,'0');
+            value2=stringBuilder.toString();
+        }
+        LocalDate res = LocalDate.parse(value2, DateTimeFormatter.ofPattern("yyyy-MM-dd"));
+
+        LambdaQueryWrapper<DietPlan> queryWrapper=new LambdaQueryWrapper<>();
+        queryWrapper.eq(DietPlan::getUserid,uid);
+        queryWrapper.ge(DietPlan::getDate,LocalDateTime.of(res, LocalTime.MIN));
+        queryWrapper.le(DietPlan::getDate,LocalDateTime.of(res, LocalTime.MAX));
+        DietPlan dietPlan=dietPlanService.getOne(queryWrapper);
+        if (dietPlan==null){
+            return R.error("没有设置饮食计划");
+        }
+        return R.success(dietPlan);
     }
 }
 

@@ -5,3 +5,10 @@ function getdietList (params) {
         params
     })
 }
+
+function getalldietList () {
+    return $axios({
+        url: '/diet/getall',
+        method: 'get',
+    })
+}

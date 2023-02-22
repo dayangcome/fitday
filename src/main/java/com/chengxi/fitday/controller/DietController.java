@@ -13,6 +13,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
 import java.time.LocalDateTime;
+import java.util.List;
 
 /**
  * <p>
@@ -77,6 +78,13 @@ public class DietController {
         diet1.setPraiseNum(0);
         dietService.updateById(diet1);
         return R.success("添加成功");
+    }
+
+    //查询所有食物信息
+    @GetMapping("getall")
+    public R<List<Diet>> getAll(){
+        List <Diet> arr=dietService.list();
+        return R.success(arr);
     }
 }
 

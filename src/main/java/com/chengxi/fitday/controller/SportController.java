@@ -4,11 +4,9 @@ package com.chengxi.fitday.controller;
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.chengxi.fitday.common.R;
-import com.chengxi.fitday.entity.Food;
-import com.chengxi.fitday.entity.Sport;
-import com.chengxi.fitday.entity.SportsPlan;
-import com.chengxi.fitday.entity.User;
+import com.chengxi.fitday.entity.*;
 import com.chengxi.fitday.service.IFoodService;
+import com.chengxi.fitday.service.IPlanformService;
 import com.chengxi.fitday.service.ISportService;
 import com.chengxi.fitday.service.ISportsPlanService;
 import org.apache.commons.lang.StringUtils;
@@ -44,6 +42,9 @@ public class SportController {
     @Autowired
     private IFoodService foodService;
 
+    @Autowired
+    private IPlanformService planformService;
+
     //运动信息分页查询
     @GetMapping("/page")
     public R<Page> page(int page, int pageSize, String name){
@@ -58,6 +59,13 @@ public class SportController {
     @GetMapping("all")
     public R<List<Sport>> getAll(){
         List <Sport> arr=sportService.list();
+        return R.success(arr);
+    }
+
+    //查询所有运动计划表信息
+    @GetMapping("all2")
+    public R<List<Planform>> getAll2(){
+        List <Planform> arr=planformService.list();
         return R.success(arr);
     }
 

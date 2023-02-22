@@ -74,13 +74,13 @@
                     今日需要摄入<strong>{{allheat}}</strong>千卡热量
                 </div>
                 <div style="display: flex;">
-                    <div style="width: 30%;">
+                    <div style="width: 30%;text-align: center;">
                         已摄入 <h4>{{finish}}</h4> 千卡
                     </div>
                     <div style="width: 40%;">
                         <el-progress type="circle" :format="format" :percentage="50"></el-progress>
                     </div>
-                    <div style="width: 30%;">
+                    <div style="width: 30%;text-align: center;">
                         运动消耗 <h4>{{consume}}</h4> 千卡
                     </div>
 
@@ -94,7 +94,7 @@
                     <h3>饮食记录</h3>
                 </div>
                 <div style="margin-top: 20px;">
-                    <div class="block" style="display: inline-block;"><el-avatar :size="50" :src="circleUrl"></el-avatar><br><el-button type="text" style="color:blue" @click="breakfastDialog">+ 早餐</el-button>
+                    <div class="block" style="display: inline-block;"><el-avatar v-if="breakfastData.length!=0" :size="50" :src="circleUrl2"></el-avatar><el-avatar v-if="breakfastData.length==0" :size="50" :src="circleUrl"></el-avatar><br><el-button type="text" style="color:blue" @click="breakfastDialog">+ 早餐</el-button>
                         <el-dialog title="早餐" :visible.sync="breakfastVisible" width="50%"
                                    :center="true">
                             <!-- append-to-body为true可以在弹框内部加上一个弹框 -->
@@ -102,10 +102,15 @@
                                 <!-- label-width决定label的宽度，默认为行宽。 -->
                                 <el-form :model="editForm" ref="editForm" label-width="100px"  :rules="rules">
                                     <el-form-item label="食物/套餐：" prop="food">
-                                        <el-input v-model="editForm.food" ></el-input>
+                                        <el-autocomplete
+                                                class="inline-input"
+                                                v-model="editForm.food"
+                                                :fetch-suggestions="querySearch"
+                                                placeholder="请输入或选择食物/套餐"
+                                        ></el-autocomplete>
                                     </el-form-item>
                                     <el-form-item label="摄入量(g)：" prop="intake">
-                                        <el-input v-model="editForm.intake" ></el-input>
+                                        <el-input v-model="editForm.intake" style="width: 350px"></el-input>
                                     </el-form-item>
                                 </el-form>
                                 <!-- 弹框底部按钮 -->
@@ -142,24 +147,29 @@
                             <!-- 弹框底部按钮 -->
                             <span slot="footer" class="dialog-footer">
                                         <el-button type="danger" @click="showAdd">新增</el-button>
-                                        <el-button @click="breakfastVisible = false">返回</el-button>
+                                        <el-button type="primary" @click="breakfast">确定</el-button>
                                     </span>
                         </el-dialog>
                     </div>
 
-                    <div class="block" style="display: inline-block;"><el-avatar :size="50" :src="circleUrl"></el-avatar><br><el-button type="text" style="color:green" @click="lunchDialog">+ 午餐</el-button>
+                    <div class="block" style="display: inline-block;"><el-avatar v-if="lunchData.length!=0" :size="50" :src="circleUrl2"></el-avatar><el-avatar v-if="lunchData.length==0" :size="50" :src="circleUrl"></el-avatar><br><el-button type="text" style="color:green" @click="lunchDialog">+ 午餐</el-button>
                         <el-dialog title="午餐" :visible.sync="lunchVisible" width="50%"
                                    :center="true">
                             <!-- append-to-body为true可以在弹框内部加上一个弹框 -->
                             <el-dialog title="午餐"  :append-to-body='true' :visible.sync="lunchinnerVisible" :center="true" >
                                 <!-- label-width决定label的宽度，默认为行宽。 -->
                                 <el-form :model="editForm" ref="editForm" label-width="100px"  :rules="rules">
-                                    <el-form-item label="食物/套餐：" prop="food">
-                                        <el-input v-model="editForm.food" ></el-input>
-                                    </el-form-item>
-                                    <el-form-item label="摄入量(g)：" prop="intake">
-                                        <el-input v-model="editForm.intake" ></el-input>
-                                    </el-form-item>
+                                        <el-form-item label="食物/套餐：" prop="food">
+                                            <el-autocomplete
+                                                    class="inline-input"
+                                                    v-model="editForm.food"
+                                                    :fetch-suggestions="querySearch"
+                                                    placeholder="请输入或选择食物/套餐"
+                                            ></el-autocomplete>
+                                        </el-form-item>
+                                        <el-form-item label="摄入量(g)：" prop="intake">
+                                            <el-input v-model="editForm.intake" style="width: 350px"></el-input>
+                                        </el-form-item>
                                 </el-form>
                                 <!-- 弹框底部按钮 -->
                                 <span slot="footer" class="dialog-footer">
@@ -195,12 +205,12 @@
                             <!-- 弹框底部按钮 -->
                             <span slot="footer" class="dialog-footer">
                                         <el-button type="danger" @click="showAdd2">新增</el-button>
-                                        <el-button @click="lunchVisible = false">返回</el-button>
+                                        <el-button type="primary" @click="lunch">确定</el-button>
                                     </span>
                         </el-dialog>
                     </div>
 
-                    <div class="block" style="display: inline-block;"><el-avatar :size="50" :src="circleUrl"></el-avatar><br><el-button type="text" style="color:black" @click="dinnerDialog">+ 晚餐</el-button>
+                    <div class="block" style="display: inline-block;"><el-avatar v-if="dinnerData.length!=0" :size="50" :src="circleUrl2"></el-avatar><el-avatar v-if="dinnerData.length==0" :size="50" :src="circleUrl"></el-avatar><br><el-button type="text" style="color:black" @click="dinnerDialog">+ 晚餐</el-button>
                         <el-dialog title="晚餐" :visible.sync="dinnerVisible" width="50%"
                                    :center="true">
                             <!-- append-to-body为true可以在弹框内部加上一个弹框 -->
@@ -208,10 +218,15 @@
                                 <!-- label-width决定label的宽度，默认为行宽。 -->
                                 <el-form :model="editForm" ref="editForm" label-width="100px"  :rules="rules">
                                     <el-form-item label="食物/套餐：" prop="food">
-                                        <el-input v-model="editForm.food" ></el-input>
+                                        <el-autocomplete
+                                                class="inline-input"
+                                                v-model="editForm.food"
+                                                :fetch-suggestions="querySearch"
+                                                placeholder="请输入或选择食物/套餐"
+                                        ></el-autocomplete>
                                     </el-form-item>
                                     <el-form-item label="摄入量(g)：" prop="intake">
-                                        <el-input v-model="editForm.intake" ></el-input>
+                                        <el-input v-model="editForm.intake" style="width: 350px"></el-input>
                                     </el-form-item>
                                 </el-form>
                                 <!-- 弹框底部按钮 -->
@@ -248,12 +263,12 @@
                             <!-- 弹框底部按钮 -->
                             <span slot="footer" class="dialog-footer">
                                         <el-button type="danger" @click="showAdd3">新增</el-button>
-                                        <el-button @click="dinnerVisible = false">返回</el-button>
+                                        <el-button type="primary" @click="dinner">确定</el-button>
                                     </span>
                         </el-dialog>
                     </div>
 
-                    <div class="block" style="display: inline-block;"><el-avatar :size="50" :src="circleUrl"></el-avatar><br><el-button type="text" style="color:deeppink" @click="addDialog">+ 加餐</el-button>
+                    <div class="block" style="display: inline-block;"><el-avatar v-if="dinnerData.length!=0" :size="50" :src="circleUrl2"></el-avatar><el-avatar v-if="dinnerData.length==0" :size="50" :src="circleUrl"></el-avatar><br><el-button type="text" style="color:deeppink" @click="addDialog">+ 加餐</el-button>
                         <el-dialog title="加餐" :visible.sync="addVisible" width="50%"
                                    :center="true">
                             <!-- append-to-body为true可以在弹框内部加上一个弹框 -->
@@ -261,10 +276,15 @@
                                 <!-- label-width决定label的宽度，默认为行宽。 -->
                                 <el-form :model="editForm" ref="editForm" label-width="100px"  :rules="rules">
                                     <el-form-item label="食物/套餐：" prop="food">
-                                        <el-input v-model="editForm.food" ></el-input>
+                                        <el-autocomplete
+                                                class="inline-input"
+                                                v-model="editForm.food"
+                                                :fetch-suggestions="querySearch"
+                                                placeholder="请输入或选择食物/套餐"
+                                        ></el-autocomplete>
                                     </el-form-item>
                                     <el-form-item label="摄入量(g)：" prop="intake">
-                                        <el-input v-model="editForm.intake" ></el-input>
+                                        <el-input v-model="editForm.intake" style="width: 350px"></el-input>
                                     </el-form-item>
                                 </el-form>
                                 <!-- 弹框底部按钮 -->
@@ -301,7 +321,7 @@
                             <!-- 弹框底部按钮 -->
                             <span slot="footer" class="dialog-footer">
                                         <el-button type="danger" @click="showAdd4">新增</el-button>
-                                        <el-button @click="addVisible = false">返回</el-button>
+                                        <el-button type="primary" @click="addd">确定</el-button>
                                     </span>
                         </el-dialog>
                     </div>
@@ -320,16 +340,29 @@
                                 align="right"
                                 type="date"
                                 placeholder="选择日期"
+                                value-format="yyyy-MM-dd"
                                 :picker-options="pickerOptions">
                         </el-date-picker>
                     </div>
 
                     <div style="margin-left: 40px;">
-                        <el-tabs type="border-card" stretch style="width: 380px;">
-                            <el-tab-pane label="早餐">早餐</el-tab-pane>
-                            <el-tab-pane label="午餐">午餐</el-tab-pane>
-                            <el-tab-pane label="晚餐">晚餐</el-tab-pane>
-                            <el-tab-pane label="加餐">加餐</el-tab-pane>
+                        <el-tabs type="border-card" stretch style="width: 380px;height:250px;overflow-y:auto;">
+                            <el-tab-pane label="早餐">
+                                <p v-if="breakfastData.length==0">尚未设置计划</p>
+                                <p v-for="item in breakfastData">{{item.food}}&nbsp;&nbsp;&nbsp;&nbsp;{{item.intake}}g</p>
+                            </el-tab-pane>
+                            <el-tab-pane label="午餐">
+                                <p v-if="lunchData.length==0">尚未设置计划</p>
+                                <p v-for="item in lunchData">{{item.food}}&nbsp;&nbsp;&nbsp;&nbsp;{{item.intake}}g</p>
+                            </el-tab-pane>
+                            <el-tab-pane label="晚餐">
+                                <p v-if="dinnerData.length==0">尚未设置计划</p>
+                                <p v-for="item in dinnerData">{{item.food}}&nbsp;&nbsp;&nbsp;&nbsp;{{item.intake}}g</p>
+                            </el-tab-pane>
+                            <el-tab-pane label="加餐">
+                                <p v-if="addData.length==0">尚未设置计划</p>
+                                <p v-for="item in addData">{{item.food}}&nbsp;&nbsp;&nbsp;&nbsp;{{item.intake}}g</p>
+                            </el-tab-pane>
                         </el-tabs>
                     </div>
                 </div>
@@ -588,6 +621,7 @@
                 counts2: 0,
                 input:'',
                 circleUrl:'https://s1.ax1x.com/2023/01/28/pSUh3Js.jpg',
+                circleUrl2:'https://s1.ax1x.com/2023/02/22/pSv0Bse.jpg',
                 page: 1,
                 page2:1,
                 logintype:0,
@@ -596,6 +630,8 @@
                 pageSize:5,
                 foodData:[],
                 dietData:[],
+                allfoodData:[],
+                alldietData:[],
                 planlist:[],
                 userInfo:{},
                 listinfo:{},
@@ -604,6 +640,8 @@
                 year :new Date().getFullYear(),
                 month :new Date().getMonth() + 1,
                 day:new Date().getDate(),
+                choices:[],
+
                 pickerOptions: {
                     disabledDate(time) {
                         return time.getTime() > Date.now();
@@ -629,7 +667,7 @@
                         }
                     }]
                 },
-                value2: '',
+                value2: new Date().toLocaleDateString().replace(/\//g,"-"),
                 ydVisible:false,
                 ydVisible2:false,
                 breakfastVisible: false,
@@ -637,11 +675,12 @@
                 breakeditVisible:false,
                 breakinsertVisible:false,
                 breakfastData: [
-                    {food: '食物1', intake: '100' },
-                    {food: '食物2', intake: '200' },
-                    {food: '食物3', intake: '300' },
-                    {food: '食物4', intake: '400' },
-                    {food: '食物5', intake: '500' }
+                ],
+                lunchData: [
+                ],
+                dinnerData: [
+                ],
+                addData: [
                 ],
                 editForm: {},
                 editIndex:-1,
@@ -665,12 +704,16 @@
 
             }
         },
+        watch:{
+            value2(){
+                this.init5()
+            }
+        },
         created(){
             this.init()
             this.userInfo = JSON.parse(localStorage.getItem('userInfo'))
             this.userInfo2 = JSON.parse(localStorage.getItem('userInfo2'))
             if(this.userInfo2.weight>0){
-                console.log(this.userInfo2.age)
                 if(this.userInfo2.age>0&&this.userInfo2.weight>0&&this.userInfo2.height>0){
                     this.allheat=10*this.userInfo2.weight+6.25*this.userInfo2.height-5*age
                     if (this.userInfo.sex==0){
@@ -686,10 +729,23 @@
                 this.notwrite=true
             }
             this.init2()
+            this.init4 ()
+            this.init5 ()
         },
         mounted() {
         },
         methods: {
+            querySearch(queryString, cb) {
+                var choices = this.choices;
+                var results = queryString ? choices.filter(this.createFilter(queryString)) : choices;
+                // 调用 callback 返回建议列表的数据
+                cb(results);
+            },
+            createFilter(queryString) {
+                return (res) => {
+                    return (res.value.toLowerCase().indexOf(queryString.toLowerCase()) === 0);
+                };
+            },
             //主页面-打开表格页面按钮钩子
             breakfastDialog() {
                 this.breakfastVisible = true
@@ -796,6 +852,66 @@
                     }
                 })
 
+            },
+            async breakfast(){
+                await breakfastplan(this.userInfo.uid,this.breakfastData).then(res => {
+                    if (String(res.code) === '1') {
+                        this.$message({
+                            type:'success',
+                            message: '设置成功！',
+                            duration: 3000
+                        })
+                        this.init5()
+                    }
+                }).catch(err => {
+                    this.$message.error('请求出错了：' + err)
+                })
+                this.breakfastVisible=false
+            },
+            async lunch(){
+                await lunchplan(this.userInfo.uid,this.lunchData).then(res => {
+                    if (String(res.code) === '1') {
+                        this.$message({
+                            type:'success',
+                            message: '设置成功！',
+                            duration: 3000
+                        })
+                        this.init5()
+                    }
+                }).catch(err => {
+                    this.$message.error('请求出错了：' + err)
+                })
+                this.lunchVisible=false
+            },
+            async dinner(){
+                await dinnerplan(this.userInfo.uid,this.dinnerData).then(res => {
+                    if (String(res.code) === '1') {
+                        this.$message({
+                            type:'success',
+                            message: '设置成功！',
+                            duration: 3000
+                        })
+                        this.init5()
+                    }
+                }).catch(err => {
+                    this.$message.error('请求出错了：' + err)
+                })
+                this.dinnerVisible=false
+            },
+            async addd(){
+                await adddietplan(this.userInfo.uid,this.addData).then(res => {
+                    if (String(res.code) === '1') {
+                        this.$message({
+                            type:'success',
+                            message: '设置成功！',
+                            duration: 3000
+                        })
+                        this.init5()
+                    }
+                }).catch(err => {
+                    this.$message.error('请求出错了：' + err)
+                })
+                this.addVisible=false
             },
             fooddetail(item){
                 this.listinfo=item
@@ -953,8 +1069,6 @@
                 }).catch(err => {
                     this.$message.error('请求出错了：' + err)
                 })
-
-
             },
             async init2 () {
                 await getplanList(this.userInfo.uid,0).then(res => {
@@ -980,6 +1094,90 @@
                         this.consume=this.consume.toFixed(2)
                     }else {
                         console.log("not")
+                    }
+                }).catch(err => {
+                    this.$message.error('请求出错了：' + err)
+                })
+            },
+            async init4 () {
+                await getallFoodList().then(res => {
+                    if (String(res.code) === '1') {
+                        this.allfoodData = res.data
+                    }
+                }).catch(err => {
+                    this.$message.error('请求出错了：' + err)
+                })
+                await getalldietList().then(res => {
+                    if (String(res.code) === '1') {
+                        this.alldietData = res.data
+                    }
+                }).catch(err => {
+                    this.$message.error('请求出错了：' + err)
+                })
+                this.choices=[...this.allfoodData,...this.alldietData]
+                for (var i = 0; i < this.choices.length; i++) {
+                    if(this.choices[i].foodName!=undefined){
+                        this.choices[i].value = this.choices[i].foodName;
+                    }
+                    if(this.choices[i].dietTitle!=undefined){
+                        this.choices[i].value = this.choices[i].dietTitle;
+                    }
+
+                }
+            },
+            async init5 () {
+                await geteatplan(this.userInfo.uid,this.value2).then(res => {
+                    if (String(res.code) === '1') {
+                        let arr = res.data.breakfast.split("\n")
+                        this.breakfastData=[]
+                        for(let i=0;i<arr.length;i++){
+                            let arr2=arr[i].split("  ")
+                            if(arr2.length==3){
+                                let myfood={}
+                                myfood.food=arr2[0]
+                                myfood.intake=arr2[1].replace("g","")
+                                this.breakfastData.push(myfood)
+                            }
+                        }
+                        arr = res.data.lunch.split("\n")
+                        this.lunchData=[]
+                        for(let i=0;i<arr.length;i++){
+                            let arr2=arr[i].split("  ")
+                            if(arr2.length==3){
+                                let myfood={}
+                                myfood.food=arr2[0]
+                                myfood.intake=arr2[1].replace("g","")
+                                this.lunchData.push(myfood)
+                            }
+                        }
+
+                        arr = res.data.dinner.split("\n")
+                        this.dinnerData=[]
+                        for(let i=0;i<arr.length;i++){
+                            let arr2=arr[i].split("  ")
+                            if(arr2.length==3){
+                                let myfood={}
+                                myfood.food=arr2[0]
+                                myfood.intake=arr2[1].replace("g","")
+                                this.dinnerData.push(myfood)
+                            }
+                        }
+                        console.log(res.data)
+                        arr = res.data.adddiet.split("\n")
+                        this.addData=[]
+                        for(let i=0;i<arr.length;i++){
+                            let arr2=arr[i].split("  ")
+                            if(arr2.length==3){
+                                let myfood={}
+                                myfood.food=arr2[0]
+                                myfood.intake=arr2[1].replace("g","")
+                                this.addData.push(myfood)
+                            }
+                        }
+
+
+                    }else {
+                        console.log("error")
                     }
                 }).catch(err => {
                     this.$message.error('请求出错了：' + err)
