@@ -69,6 +69,24 @@ public class SportController {
         return R.success(arr);
     }
 
+    //查询部分运动信息
+    @GetMapping("name/{name}")
+    public R<List<Sport>> getname(@PathVariable String name){
+        LambdaQueryWrapper<Sport> queryWrapper=new LambdaQueryWrapper<>();
+        queryWrapper.like(StringUtils.isNotEmpty(name),Sport::getSportName,name);
+        List <Sport> arr=sportService.list(queryWrapper);
+        return R.success(arr);
+    }
+
+    //查询部分运动计划表信息
+    @GetMapping("name2/{name}")
+    public R<List<Planform>> getname2(@PathVariable String name){
+        LambdaQueryWrapper<Planform> queryWrapper=new LambdaQueryWrapper<>();
+        queryWrapper.like(StringUtils.isNotEmpty(name),Planform::getTitle,name);
+        List <Planform> arr=planformService.list(queryWrapper);
+        return R.success(arr);
+    }
+
     //查询运动计划
     @GetMapping("plan/{uid}/{mydate}")
     public R<List<SportsPlan>> getplan(@PathVariable Long uid,@PathVariable int mydate){

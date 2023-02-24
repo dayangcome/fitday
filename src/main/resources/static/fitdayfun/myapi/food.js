@@ -51,3 +51,14 @@ function geteatplan (uid,value2) {
         method: 'get',
     })
 }
+
+function getmyheat (breakfast,lunch,dinner,adddiet) {
+    return $axios({
+        url: '/food/getmyheat',
+        method: 'post',
+        dataType:"json",
+        contentType:"application/json", // 指定这个协议很重要
+        data:JSON.stringify([...breakfast,...lunch,...dinner,...adddiet]) //只有这一个参数，json格式，后台解析为实体，后台可以直接用
+    })
+    console.log([...breakfast,...lunch,...dinner,...adddiet])
+}

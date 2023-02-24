@@ -268,11 +268,6 @@ public class FoodController {
     //查询饮食计划
     @GetMapping("geteatplan/{uid}/{value2}")
     public R<DietPlan> geteatplan(@PathVariable Long uid,@PathVariable String value2){
-        if(value2.length()==9){
-            StringBuilder stringBuilder=new StringBuilder(value2);
-            stringBuilder.insert(5,'0');
-            value2=stringBuilder.toString();
-        }
         LocalDate res = LocalDate.parse(value2, DateTimeFormatter.ofPattern("yyyy-MM-dd"));
 
         LambdaQueryWrapper<DietPlan> queryWrapper=new LambdaQueryWrapper<>();
@@ -284,6 +279,31 @@ public class FoodController {
             return R.error("没有设置饮食计划");
         }
         return R.success(dietPlan);
+    }
+
+    //通过食物获得的热量
+    @PostMapping("/getmyheat")
+    public R<Double> getmyheat(@RequestBody List<Fooddto> plans){
+        double sumheat=0;
+        for(Fooddto fooddto:plans){
+            String name=fooddto.getFood();
+            LambdaQueryWrapper<Food> queryWrapper=new LambdaQueryWrapper<>();
+            queryWrapper.eq(Food::getFoodName,name);   //查询食物热量
+            Food food=foodService.getOne(queryWrapper);
+            double heat=0;
+            try {
+                if(food==null){
+                    heat=100;       //查不到则默认值为100
+                }else{
+                    System.out.println("heat的值为"+heat);
+                    heat=Double.parseDouble(food.getHeat());
+                }
+                sumheat += Double.parseDouble(fooddto.getIntake())*heat/100;
+            }catch (Exception e){
+                return R.error("请检查摄入量是否输入的是数字！");
+            }
+        }
+        return R.success(sumheat);
     }
 }
 

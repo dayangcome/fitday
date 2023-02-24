@@ -78,7 +78,7 @@
                         已摄入 <h4>{{finish}}</h4> 千卡
                     </div>
                     <div style="width: 40%;">
-                        <el-progress type="circle" :format="format" :percentage="50"></el-progress>
+                        <el-progress type="circle" :format="format" :percentage="mypercent"></el-progress>
                     </div>
                     <div style="width: 30%;text-align: center;">
                         运动消耗 <h4>{{consume}}</h4> 千卡
@@ -92,6 +92,9 @@
             <div class="log">
                 <div style="width: 100%;text-align: center;">
                     <h3>饮食记录</h3>
+                </div>
+                <div style="width: 100%;text-align: center;">
+                   <h4>{{value2}}</h4>
                 </div>
                 <div style="margin-top: 20px;">
                     <div class="block" style="display: inline-block;"><el-avatar v-if="breakfastData.length!=0" :size="50" :src="circleUrl2"></el-avatar><el-avatar v-if="breakfastData.length==0" :size="50" :src="circleUrl"></el-avatar><br><el-button type="text" style="color:blue" @click="breakfastDialog">+ 早餐</el-button>
@@ -116,8 +119,8 @@
                                 <!-- 弹框底部按钮 -->
                                 <span slot="footer" class="dialog-footer">
                                         <el-button @click="cancelAction">取消</el-button>
-                                        <el-button type="danger" v-if="breakeditVisible" @click="editAction">修改</el-button>
-                                        <el-button type="danger" v-if="breakinsertVisible" @click="insertAction">新增</el-button>
+                                        <el-button type="danger" v-if="breakeditVisible"  @click="editAction">修改</el-button>
+                                        <el-button type="danger" v-if="breakinsertVisible"  @click="insertAction">新增</el-button>
                                         </span>
                             </el-dialog>
                             <!-- :data可以table自动遍历数组数据 -->
@@ -127,7 +130,7 @@
                                 <el-table-column fixed="right" label="操作">
                                     <!-- slot-scope="scope"+scope.row可以获取当前行的数据 -->
                                     <template slot-scope="scope">
-                                        <el-button type="warning" size="small" @click="editData(scope.$index,scope.row)" plain>编辑</el-button>
+                                        <el-button type="warning" size="small" @click="editData(scope.$index,scope.row)" :disabled="value2!=value3" plain>编辑</el-button>
                                         <!-- 提示弹框信息 @confirm和@cancel分别为确认和取消的点击按钮事件 -->
                                         <el-popconfirm
                                                 icon="el-icon-info"
@@ -136,7 +139,7 @@
                                                 @confirm="deleteAction(scope.$index)"
                                                 @cancel="cancel(scope.$index)"
                                         >
-                                            <el-button type="danger"  slot="reference" size="small" plain>删除</el-button>
+                                            <el-button type="danger"  slot="reference" size="small" :disabled="value2!=value3" plain>删除</el-button>
                                         </el-popconfirm>
                                     </template>
                                 </el-table-column>
@@ -146,9 +149,10 @@
 
                             <!-- 弹框底部按钮 -->
                             <span slot="footer" class="dialog-footer">
-                                        <el-button type="danger" @click="showAdd">新增</el-button>
-                                        <el-button type="primary" @click="breakfast">确定</el-button>
-                                    </span>
+                                        <el-button type="danger" @click="showAdd" v-show="value2==value3">新增</el-button>
+                                        <el-button type="primary" @click="breakfast" v-show="value2==value3">确定</el-button>
+                                    <el-button  v-show="value2!=value3" @click="breakfastVisible=false">取消</el-button>
+                            </span>
                         </el-dialog>
                     </div>
 
@@ -174,8 +178,8 @@
                                 <!-- 弹框底部按钮 -->
                                 <span slot="footer" class="dialog-footer">
                                         <el-button @click="cancelAction2">取消</el-button>
-                                        <el-button type="danger" v-if="luncheditVisible" @click="editAction2">修改</el-button>
-                                        <el-button type="danger" v-if="lunchinsertVisible" @click="insertAction2">新增</el-button>
+                                        <el-button type="danger" v-if="luncheditVisible"  @click="editAction2">修改</el-button>
+                                        <el-button type="danger" v-if="lunchinsertVisible"  @click="insertAction2">新增</el-button>
                                         </span>
                             </el-dialog>
                             <!-- :data可以table自动遍历数组数据 -->
@@ -185,7 +189,7 @@
                                 <el-table-column fixed="right" label="操作">
                                     <!-- slot-scope="scope"+scope.row可以获取当前行的数据 -->
                                     <template slot-scope="scope">
-                                        <el-button type="warning" size="small" @click="editData2(scope.$index,scope.row)" plain>编辑</el-button>
+                                        <el-button type="warning" size="small" @click="editData2(scope.$index,scope.row)" :disabled="value2!=value3" plain>编辑</el-button>
                                         <!-- 提示弹框信息 @confirm和@cancel分别为确认和取消的点击按钮事件 -->
                                         <el-popconfirm
                                                 icon="el-icon-info"
@@ -194,7 +198,7 @@
                                                 @confirm="deleteAction2(scope.$index)"
                                                 @cancel="cancel(scope.$index)"
                                         >
-                                            <el-button type="danger"  slot="reference" size="small" plain>删除</el-button>
+                                            <el-button type="danger"  slot="reference" size="small" :disabled="value2!=value3" plain>删除</el-button>
                                         </el-popconfirm>
                                     </template>
                                 </el-table-column>
@@ -204,8 +208,9 @@
 
                             <!-- 弹框底部按钮 -->
                             <span slot="footer" class="dialog-footer">
-                                        <el-button type="danger" @click="showAdd2">新增</el-button>
-                                        <el-button type="primary" @click="lunch">确定</el-button>
+                                        <el-button type="danger" v-show="value2==value3" @click="showAdd2">新增</el-button>
+                                        <el-button type="primary" v-show="value2==value3" @click="lunch">确定</el-button>
+                                        <el-button  v-show="value2!=value3" @click="lunchVisible=false">取消</el-button>
                                     </span>
                         </el-dialog>
                     </div>
@@ -232,8 +237,8 @@
                                 <!-- 弹框底部按钮 -->
                                 <span slot="footer" class="dialog-footer">
                                         <el-button @click="cancelAction3">取消</el-button>
-                                        <el-button type="danger" v-if="dinnereditVisible" @click="editAction3">修改</el-button>
-                                        <el-button type="danger" v-if="dinnerinsertVisible" @click="insertAction3">新增</el-button>
+                                        <el-button type="danger" v-if="dinnereditVisible"  @click="editAction3">修改</el-button>
+                                        <el-button type="danger" v-if="dinnerinsertVisible"  @click="insertAction3">新增</el-button>
                                         </span>
                             </el-dialog>
                             <!-- :data可以table自动遍历数组数据 -->
@@ -243,7 +248,7 @@
                                 <el-table-column fixed="right" label="操作">
                                     <!-- slot-scope="scope"+scope.row可以获取当前行的数据 -->
                                     <template slot-scope="scope">
-                                        <el-button type="warning" size="small" @click="editData3(scope.$index,scope.row)" plain>编辑</el-button>
+                                        <el-button type="warning" size="small" @click="editData3(scope.$index,scope.row)" :disabled="value2!=value3" plain>编辑</el-button>
                                         <!-- 提示弹框信息 @confirm和@cancel分别为确认和取消的点击按钮事件 -->
                                         <el-popconfirm
                                                 icon="el-icon-info"
@@ -252,7 +257,7 @@
                                                 @confirm="deleteAction3(scope.$index)"
                                                 @cancel="cancel(scope.$index)"
                                         >
-                                            <el-button type="danger"  slot="reference" size="small" plain>删除</el-button>
+                                            <el-button type="danger"  slot="reference" size="small" :disabled="value2!=value3" plain>删除</el-button>
                                         </el-popconfirm>
                                     </template>
                                 </el-table-column>
@@ -262,13 +267,14 @@
 
                             <!-- 弹框底部按钮 -->
                             <span slot="footer" class="dialog-footer">
-                                        <el-button type="danger" @click="showAdd3">新增</el-button>
-                                        <el-button type="primary" @click="dinner">确定</el-button>
+                                        <el-button type="danger" v-show="value2==value3" @click="showAdd3">新增</el-button>
+                                        <el-button type="primary" v-show="value2==value3" @click="dinner">确定</el-button>
+                                        <el-button  v-show="value2!=value3" @click="dinnerVisible=false">取消</el-button>
                                     </span>
                         </el-dialog>
                     </div>
 
-                    <div class="block" style="display: inline-block;"><el-avatar v-if="dinnerData.length!=0" :size="50" :src="circleUrl2"></el-avatar><el-avatar v-if="dinnerData.length==0" :size="50" :src="circleUrl"></el-avatar><br><el-button type="text" style="color:deeppink" @click="addDialog">+ 加餐</el-button>
+                    <div class="block" style="display: inline-block;"><el-avatar v-if="addData.length!=0" :size="50" :src="circleUrl2"></el-avatar><el-avatar v-if="addData.length==0" :size="50" :src="circleUrl"></el-avatar><br><el-button type="text" style="color:deeppink" @click="addDialog">+ 加餐</el-button>
                         <el-dialog title="加餐" :visible.sync="addVisible" width="50%"
                                    :center="true">
                             <!-- append-to-body为true可以在弹框内部加上一个弹框 -->
@@ -290,8 +296,8 @@
                                 <!-- 弹框底部按钮 -->
                                 <span slot="footer" class="dialog-footer">
                                         <el-button @click="cancelAction4">取消</el-button>
-                                        <el-button type="danger" v-if="addeditVisible" @click="editAction4">修改</el-button>
-                                        <el-button type="danger" v-if="addinsertVisible" @click="insertAction4">新增</el-button>
+                                        <el-button type="danger" v-if="addeditVisible"  @click="editAction4">修改</el-button>
+                                        <el-button type="danger" v-if="addinsertVisible"  @click="insertAction4">新增</el-button>
                                         </span>
                             </el-dialog>
                             <!-- :data可以table自动遍历数组数据 -->
@@ -301,7 +307,7 @@
                                 <el-table-column fixed="right" label="操作">
                                     <!-- slot-scope="scope"+scope.row可以获取当前行的数据 -->
                                     <template slot-scope="scope">
-                                        <el-button type="warning" size="small" @click="editData4(scope.$index,scope.row)" plain>编辑</el-button>
+                                        <el-button type="warning" size="small" @click="editData4(scope.$index,scope.row)" :disabled="value2!=value3" plain>编辑</el-button>
                                         <!-- 提示弹框信息 @confirm和@cancel分别为确认和取消的点击按钮事件 -->
                                         <el-popconfirm
                                                 icon="el-icon-info"
@@ -310,7 +316,7 @@
                                                 @confirm="deleteAction4(scope.$index)"
                                                 @cancel="cancel(scope.$index)"
                                         >
-                                            <el-button type="danger"  slot="reference" size="small" plain>删除</el-button>
+                                            <el-button type="danger"  slot="reference" size="small" :disabled="value2!=value3" plain>删除</el-button>
                                         </el-popconfirm>
                                     </template>
                                 </el-table-column>
@@ -320,8 +326,9 @@
 
                             <!-- 弹框底部按钮 -->
                             <span slot="footer" class="dialog-footer">
-                                        <el-button type="danger" @click="showAdd4">新增</el-button>
-                                        <el-button type="primary" @click="addd">确定</el-button>
+                                        <el-button type="danger" v-show="value2==value3" @click="showAdd4">新增</el-button>
+                                        <el-button type="primary" v-show="value2==value3" @click="addd">确定</el-button>
+                                        <el-button  v-show="value2!=value3" @click="addVisible=false">取消</el-button>
                                     </span>
                         </el-dialog>
                     </div>
@@ -339,6 +346,7 @@
                                 v-model="value2"
                                 align="right"
                                 type="date"
+                                clearable="false"
                                 placeholder="选择日期"
                                 value-format="yyyy-MM-dd"
                                 :picker-options="pickerOptions">
@@ -628,6 +636,7 @@
                 finish:0,
                 consume:0,
                 pageSize:5,
+                mypercent:0,
                 foodData:[],
                 dietData:[],
                 allfoodData:[],
@@ -667,7 +676,8 @@
                         }
                     }]
                 },
-                value2: new Date().toLocaleDateString().replace(/\//g,"-"),
+                value2: new Date().toLocaleDateString().replace(/\//g,"-").slice(0,5)+'0'+new Date().toLocaleDateString().replace(/\//g,"-").slice(5),
+                value3: new Date().toLocaleDateString().replace(/\//g,"-").slice(0,5)+'0'+new Date().toLocaleDateString().replace(/\//g,"-").slice(5),
                 ydVisible:false,
                 ydVisible2:false,
                 breakfastVisible: false,
@@ -701,11 +711,13 @@
                 addinnerVisible: false,
                 addeditVisible:false,
                 addinsertVisible:false,
+                notchange:false
 
             }
         },
         watch:{
             value2(){
+                this.notchange=true
                 this.init5()
             }
         },
@@ -856,11 +868,7 @@
             async breakfast(){
                 await breakfastplan(this.userInfo.uid,this.breakfastData).then(res => {
                     if (String(res.code) === '1') {
-                        this.$message({
-                            type:'success',
-                            message: '设置成功！',
-                            duration: 3000
-                        })
+                        this.$message.success("设置成功！")
                         this.init5()
                     }
                 }).catch(err => {
@@ -871,11 +879,7 @@
             async lunch(){
                 await lunchplan(this.userInfo.uid,this.lunchData).then(res => {
                     if (String(res.code) === '1') {
-                        this.$message({
-                            type:'success',
-                            message: '设置成功！',
-                            duration: 3000
-                        })
+                        this.$message.success("设置成功！")
                         this.init5()
                     }
                 }).catch(err => {
@@ -886,11 +890,7 @@
             async dinner(){
                 await dinnerplan(this.userInfo.uid,this.dinnerData).then(res => {
                     if (String(res.code) === '1') {
-                        this.$message({
-                            type:'success',
-                            message: '设置成功！',
-                            duration: 3000
-                        })
+                        this.$message.success("设置成功！")
                         this.init5()
                     }
                 }).catch(err => {
@@ -901,11 +901,7 @@
             async addd(){
                 await adddietplan(this.userInfo.uid,this.addData).then(res => {
                     if (String(res.code) === '1') {
-                        this.$message({
-                            type:'success',
-                            message: '设置成功！',
-                            duration: 3000
-                        })
+                        this.$message.success("设置成功！")
                         this.init5()
                     }
                 }).catch(err => {
@@ -1162,7 +1158,6 @@
                                 this.dinnerData.push(myfood)
                             }
                         }
-                        console.log(res.data)
                         arr = res.data.adddiet.split("\n")
                         this.addData=[]
                         for(let i=0;i<arr.length;i++){
@@ -1174,10 +1169,28 @@
                                 this.addData.push(myfood)
                             }
                         }
-
-
+                        if(this.notchange==false){
+                            getmyheat(this.breakfastData,this.lunchData,this.dinnerData,this.addData).then(res => {
+                                if (String(res.code) === '1') {
+                                    this.finish=res.data
+                                    this.finish=this.finish.toFixed(2)
+                                    this.mypercent=this.finish*100/this.allheat
+                                    if(this.mypercent>100){
+                                        this.mypercent=100
+                                    }
+                                    this.mypercent=this.mypercent.toFixed(0)
+                                }else {
+                                    this.$message.error(res.msg)
+                                }
+                            }).catch(err => {
+                                this.$message.error('请求出错了：' + err)
+                            })
+                        }
                     }else {
-                        console.log("error")
+                        this.breakfastData=[]
+                        this.lunchData=[]
+                        this.dinnerData=[]
+                        this.addData=[]
                     }
                 }).catch(err => {
                     this.$message.error('请求出错了：' + err)

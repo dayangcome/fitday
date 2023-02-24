@@ -272,22 +272,42 @@
                     </div>
                     
                     <div class="recommend">
-                        
-                        <h3>推荐计划</h3>
+
+                        <h3>运动科普</h3>
                         <el-input
-                          v-model="input"
-                          placeholder="搜索"
-                          style="float: right;width: 350px;margin: 10px 50px 0 0;"
-                          clearable
-                           @keyup.enter.native="handleQuery"
+                                v-model="input"
+                                placeholder="搜索"
+                                style="float: right;width: 350px;margin: 10px 50px 0 0;"
+                                clearable
+                                @keyup.enter.native="getnamelist(input)"
                         >
-                          <i
-                            slot="suffix"
-                            class="el-input__icon el-icon-search"
-                            style="cursor: pointer;font-size: 17px;"
-                            @click="handleQuery"
-                          ></i>
+                            <i
+                                    slot="suffix"
+                                    class="el-input__icon el-icon-search"
+                                    style="cursor: pointer;font-size: 17px;"
+                                    @click="getnamelist(input)"
+                            ></i>
                         </el-input>
+                        <div style="display: flex;">
+                            <div v-for="(item,index) in showlist" :key="index" style="width: 220px;margin-right: 50px;">
+                                <el-card :body-style="{ padding: '0px' }" shadow="hover">
+                                    <img :src="item.picture" class="image">
+                                    <div style="padding: 14px;">
+                                        <span>{{item.sportName}}</span>
+                                        <div class="bottom clearfix">
+                                            <el-button type="text" class="button" @click="detail(item)">查看详情</el-button>
+                                        </div>
+                                    </div>
+                                </el-card>
+                            </div>
+                        </div>
+                        <div style="height: 200px" v-if="showlist.length==0"><p>尚未搜索到相关运动</p></div>
+                        <br>
+                        <el-button type="info" plain style="display: block;float: right;margin-right: 50px;" @click="showmore">更多</el-button>
+                        <el-button type="primary" plain style="display: block;float: right;margin-right: 50px;" @click="refresh">刷新</el-button>
+
+                        <h3>推荐计划</h3>
+
                         <div style="display: flex;">
                             <div v-for="(item,index) in showlist2" :key="index" style="width: 220px;margin-right: 50px;">
                                 <el-card :body-style="{ padding: '0px' }" shadow="hover">
@@ -301,33 +321,16 @@
                                 </el-card>
                             </div>
                         </div>
+                        <div style="height: 200px" v-if="showlist2.length==0"><p>尚未搜索到相关计划</p></div>
                         <br>
                         <el-button type="info" plain style="display: block;float: right;margin-right: 50px;" @click="showmore2">更多</el-button>
                         <el-button type="primary" plain style="display: block;float: right;margin:0 50px 30px 0;" @click="refresh2">刷新</el-button>
-
-                        <h3>运动科普</h3>
-                        <div style="display: flex;">
-                            <div v-for="(item,index) in showlist" :key="index" style="width: 220px;margin-right: 50px;">
-                                <el-card :body-style="{ padding: '0px' }" shadow="hover">
-                                  <img :src="item.picture" class="image">
-                                  <div style="padding: 14px;">
-                                    <span>{{item.sportName}}</span>
-                                    <div class="bottom clearfix">
-                                      <el-button type="text" class="button" @click="detail(item)">查看详情</el-button>
-                                    </div>
-                                  </div>
-                                </el-card>
-                              </div>
-                        </div>
-                        <br>
-                        <el-button type="info" plain style="display: block;float: right;margin-right: 50px;" @click="showmore">更多</el-button>
-                        <el-button type="primary" plain style="display: block;float: right;margin-right: 50px;" @click="refresh">刷新</el-button>
 
                         <el-dialog
                                 title="查看更多"
                                 :visible.sync="moreVisible"
                                 width="58%"
-                                top="500px"
+                                top="400px"
                         >
                             <div class="mydivflex" style="display: flex;flex-wrap: wrap;justify-content: center;">
                                 <div v-for="(item,index) in alllist" :key="index" style="width: 220px;margin:10px 25px;">
@@ -352,7 +355,7 @@
                                 title="查看更多"
                                 :visible.sync="moreVisible2"
                                 width="58%"
-                                top="300px"
+                                top="500px"
                         >
                             <div class="mydivflex" style="display: flex;flex-wrap: wrap;justify-content: center;">
                                 <div v-for="(item,index) in alllist2" :key="index" style="width: 220px;margin:10px 25px;">
@@ -373,7 +376,7 @@
                             </span>
                         </el-dialog>
 
-                        <el-dialog title="运动详情" :visible.sync="ydVisible" width="30%" top="500px">
+                        <el-dialog title="运动详情" :visible.sync="ydVisible" width="30%" top="300px">
                                 <div >
                             <img :src="listinfo.picture" class="image" style="margin:20px auto;">
                             <table style="margin:0px auto;font-size: 15px;">
@@ -398,7 +401,7 @@
                                 </div>
                         </el-dialog>
 
-                        <el-dialog title="计划详情" :visible.sync="ydVisible2" width="30%" top="300px">
+                        <el-dialog title="计划详情" :visible.sync="ydVisible2" width="30%" top="500px">
                             <div >
                                 <img :src="listinfo.des" class="image" style="margin:20px auto;">
                                 <table style="margin:0px auto;font-size: 15px;">
@@ -775,6 +778,55 @@
                             this.$message.error('请求出错了：' + err)
                         })
                     },
+                    async getnamelist(name){
+                        if(name==''){
+                            this.init2()
+                            this.init6()
+                        }else{
+                            await getAllListname(name).then(res => {
+                                if (String(res.code) === '1') {
+                                    console.log(res.data)
+                                    if(res.data.length>4){
+                                        this.showlist=[]
+                                        var count=res.data.length
+                                        var ramnum=Math.floor(Math.random()*count)
+                                        this.showlist.push(res.data[ramnum])
+                                        this.showlist.push(res.data[(ramnum+1)%count])
+                                        this.showlist.push(res.data[(ramnum+2)%count])
+                                        this.showlist.push(res.data[(ramnum+3)%count])
+                                    }else{
+                                        this.showlist=[]
+                                        for(let i=0;i<res.data.length;i++){
+                                            this.showlist.push(res.data[i]);
+                                        }
+                                    }
+                                }
+                            }).catch(err => {
+                                this.$message.error('请求出错了：' + err)
+                            })
+                            await getAllListname2(name).then(res => {
+                                if (String(res.code) === '1') {
+                                    console.log(res.data)
+                                    if(res.data.length>4){
+                                        this.showlist2=[]
+                                        var count=res.data.length
+                                        var ramnum=Math.floor(Math.random()*count)
+                                        this.showlist2.push(res.data[ramnum])
+                                        this.showlist2.push(res.data[(ramnum+1)%count])
+                                        this.showlist2.push(res.data[(ramnum+2)%count])
+                                        this.showlist2.push(res.data[(ramnum+3)%count])
+                                    }else{
+                                        this.showlist2=[]
+                                        for(let i=0;i<res.data.length;i++){
+                                            this.showlist2.push(res.data[i]);
+                                        }
+                                    }
+                                }
+                            }).catch(err => {
+                                this.$message.error('请求出错了：' + err)
+                            })
+                        }
+                    },
                     handleQuery() {
                         this.page = 1;
                         this.init();
@@ -793,9 +845,6 @@
                     },
                     goBack() {
                         window.location.href='../../index.html'
-                    },
-                    handleQuery(){
-                        
                     },
                     addplan(method){
                         if(method=='select'){

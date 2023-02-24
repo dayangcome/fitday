@@ -13,12 +13,28 @@ function getAllList () {
     })
 }
 
+function getAllListname (name) {
+    return $axios({
+        url: `/sport/name/${name}`,
+        method: 'get',
+    })
+}
+
+
 function getAllList2() {
     return $axios({
         url: '/sport/all2',
         method: 'get',
     })
 }
+
+function getAllListname2 (name) {
+    return $axios({
+        url: `/sport/name2/${name}`,
+        method: 'get',
+    })
+}
+
 
 function getplanList (uid,mydate) {
     return $axios({
