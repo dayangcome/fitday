@@ -1124,51 +1124,62 @@
             async init5 () {
                 await geteatplan(this.userInfo.uid,this.value2).then(res => {
                     if (String(res.code) === '1') {
-                        let arr = res.data.breakfast.split("\n")
-                        this.breakfastData=[]
-                        for(let i=0;i<arr.length;i++){
-                            let arr2=arr[i].split("  ")
-                            if(arr2.length==3){
-                                let myfood={}
-                                myfood.food=arr2[0]
-                                myfood.intake=arr2[1].replace("g","")
-                                this.breakfastData.push(myfood)
+                        if(res.data.breakfast){
+                            let arr = res.data.breakfast.split("\n")
+                            this.breakfastData=[]
+                            for(let i=0;i<arr.length;i++){
+                                let arr2=arr[i].split("  ")
+                                if(arr2.length==3){
+                                    let myfood={}
+                                    myfood.food=arr2[0]
+                                    myfood.intake=arr2[1].replace("g","")
+                                    this.breakfastData.push(myfood)
+                                }
                             }
                         }
-                        arr = res.data.lunch.split("\n")
-                        this.lunchData=[]
-                        for(let i=0;i<arr.length;i++){
-                            let arr2=arr[i].split("  ")
-                            if(arr2.length==3){
-                                let myfood={}
-                                myfood.food=arr2[0]
-                                myfood.intake=arr2[1].replace("g","")
-                                this.lunchData.push(myfood)
+                        if(res.data.lunch){
+                            let arr = res.data.lunch.split("\n")
+                            this.lunchData=[]
+                            for(let i=0;i<arr.length;i++){
+                                let arr2=arr[i].split("  ")
+                                if(arr2.length==3){
+                                    let myfood={}
+                                    myfood.food=arr2[0]
+                                    myfood.intake=arr2[1].replace("g","")
+                                    this.lunchData.push(myfood)
+                                }
                             }
                         }
 
-                        arr = res.data.dinner.split("\n")
-                        this.dinnerData=[]
-                        for(let i=0;i<arr.length;i++){
-                            let arr2=arr[i].split("  ")
-                            if(arr2.length==3){
-                                let myfood={}
-                                myfood.food=arr2[0]
-                                myfood.intake=arr2[1].replace("g","")
-                                this.dinnerData.push(myfood)
+                        if(res.data.dinner){
+                            let arr = res.data.dinner.split("\n")
+                            this.dinnerData=[]
+                            for(let i=0;i<arr.length;i++){
+                                let arr2=arr[i].split("  ")
+                                if(arr2.length==3){
+                                    let myfood={}
+                                    myfood.food=arr2[0]
+                                    myfood.intake=arr2[1].replace("g","")
+                                    this.dinnerData.push(myfood)
+                                }
                             }
                         }
-                        arr = res.data.adddiet.split("\n")
-                        this.addData=[]
-                        for(let i=0;i<arr.length;i++){
-                            let arr2=arr[i].split("  ")
-                            if(arr2.length==3){
-                                let myfood={}
-                                myfood.food=arr2[0]
-                                myfood.intake=arr2[1].replace("g","")
-                                this.addData.push(myfood)
+
+                        if(res.data.adddiet){
+                            let arr = res.data.adddiet.split("\n")
+                            this.addData=[]
+                            for(let i=0;i<arr.length;i++){
+                                let arr2=arr[i].split("  ")
+                                if(arr2.length==3){
+                                    let myfood={}
+                                    myfood.food=arr2[0]
+                                    myfood.intake=arr2[1].replace("g","")
+                                    this.addData.push(myfood)
+                                }
                             }
                         }
+
+
                         if(this.notchange==false){
                             getmyheat(this.breakfastData,this.lunchData,this.dinnerData,this.addData).then(res => {
                                 if (String(res.code) === '1') {

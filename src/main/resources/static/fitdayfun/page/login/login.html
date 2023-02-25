@@ -183,7 +183,7 @@
                                <span>忘记密码？</span><el-button type="text" @click="GetbackdialogVisible = true">点击找回</el-button>
                             </el-form-item>
                             <el-form-item>
-                                <el-button type="primary" @click="userLogin">登录</el-button>
+                                <el-button type="primary" :loading="isloading" @click="userLogin">登录</el-button>
                                 <el-button @click="dialogVisible = false">取消</el-button>
                             </el-form-item>
                             <!-- 登录协议 -->
@@ -208,7 +208,7 @@
                                <span>忘记密码？</span><el-button type="text" @click="GetbackdialogVisible = true">点击找回</el-button>
                             </el-form-item>
                             <el-form-item>
-                                <el-button type="primary" @click="userphoneLogin">登录</el-button>
+                                <el-button type="primary" :loading="isloading" @click="userphoneLogin">登录</el-button>
                                 <el-button @click="dialogVisible = false">取消</el-button>
                             </el-form-item>
                             <!-- 登录协议 -->
@@ -1023,7 +1023,8 @@
                         bmi:0,
                         printbmi0:"",
                         printbmi1:"",
-                        logintype:0
+                        logintype:0,
+                        isloading:false
                     };
                 },
                 mounted () {
@@ -1178,6 +1179,7 @@
                     async userLogin(){
                         this.$refs.loginForm.validate(async (valid) => {
                             if (valid) {
+                                this.isloading=true
                                 let res = await loginApi(this.loginForm)
                                 if (String(res.code) === '1') {
                                     this.$message({
@@ -1188,6 +1190,7 @@
                                     localStorage.setItem('userInfo',JSON.stringify(res.data))
                                     window.location.href= '/fitdayfun/index.html'
                                 } else if(res.msg=='freeze'){
+                                    this.isloading=false
                                     let res2 = await getfreezeInfo(this.loginForm.account)
                                     if (String(res2.code) === '1'){
                                         this.freezeInfo=res2.data
@@ -1196,6 +1199,7 @@
                                         this.logintype=1
                                     }
                                 }else{
+                                    this.isloading=false
                                     this.$message.error(res.msg)
                                 }
                             }
@@ -1204,6 +1208,7 @@
                     async userphoneLogin(){
                         this.$refs.phoneloginForm.validate(async (valid) => {
                             if (valid) {
+                                this.isloading=true
                                 let res = await phoneloginApi(this.phoneloginForm)
                                 if (String(res.code) === '1') {
                                     this.$message({
@@ -1214,6 +1219,7 @@
                                     localStorage.setItem('userInfo',JSON.stringify(res.data))
                                     window.location.href= '/fitdayfun/index.html'
                                 }else if(res.msg=='freeze'){
+                                    this.isloading=false
                                     let res2 = await phonegetfreezeInfo(this.phoneloginForm.phone)
                                     if (String(res2.code) === '1'){
                                         this.freezeInfo=res2.data
@@ -1222,6 +1228,7 @@
                                         this.logintype=2
                                     }
                                 }else{
+                                    this.isloading=false
                                     this.$message.error(res.msg)
                                 }
                             }
