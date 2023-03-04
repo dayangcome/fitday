@@ -104,6 +104,9 @@
                 font-weight: bold;
                 width: 150px;
             }
+            .el-message-box__wrapper{
+                bottom: 680px;
+            }
         </style>
     </head>
     <body>
@@ -617,21 +620,40 @@
 
                     },
                     async mydel(st){
-                        myplandel(st.sportPlanId).then(res => {
-                            if (String(res.code) === '1') {
-
-                                this.init3()
-                                this.$message.warning('成功删除计划！')
-                            }
-                        }).catch(err => {
-                            this.$message.error('请求出错了：' + err)
+                        this.$confirm('确定要删除该计划吗?', '提示', {
+                            confirmButtonText: '确定',
+                            cancelButtonText: '取消',
+                            type: 'warning'
+                        }).then(() => {
+                            myplandel(st.sportPlanId).then(res => {
+                                if (String(res.code) === '1') {
+                                    this.init3()
+                                    this.$message.warning('成功删除计划！')
+                                }
+                            }).catch(err => {
+                                this.$message.error('请求出错了：' + err)
+                            })
                         })
+
                     },
                     delall(){
-                        for (let i = 0; i < this.planlist.length; i++) {
-                            this.mydel(this.planlist[i])
-                        }
-                        this.init3()
+                        this.$confirm('确定要清空所有计划吗?', '提示', {
+                            confirmButtonText: '确定',
+                            cancelButtonText: '取消',
+                            type: 'warning'
+                        }).then(() => {
+                            for (let i = 0; i < this.planlist.length; i++) {
+                                myplandel(this.planlist[i].sportPlanId).then(res => {
+                                    if (String(res.code) === '1') {
+                                        this.init3()
+                                    }
+                                }).catch(err => {
+                                    this.$message.error('请求出错了：' + err)
+                                })
+                            }
+                            this.$message.warning('成功清空计划！')
+                            this.init3()
+                        })
                     },
                     showmore(){
                         this.moreVisible=true
