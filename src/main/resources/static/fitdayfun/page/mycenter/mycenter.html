@@ -3,6 +3,7 @@
     <head>
         <meta charset="utf-8" />
         <title>个人中心</title>
+        <link rel="shortcut icon" href="../public/favicon.ico">
         <link rel="stylesheet" href="../../../public/plugins/element-ui/index.css" />
         <style>
             body, html {
@@ -40,15 +41,22 @@
           }
           h3{
               display: inline-block;
-              width: 130px;
+              width: 140px;
+          }
+          #supervise h3{
+              display: inline-block;
+              width: 100px;
           }
           .myrow{
               margin-top: 10px;
           }
+          .el-input__inner{
+              font-size: 16px;
+          }
           .el-tabs__item{
               font-size: 18px;
               font-weight: bold;
-              
+
           }
           .time {
               font-size: 13px;
@@ -80,14 +88,18 @@
               width: 1500px;
               height: 400px;
               float: inherit;
-              margin-left: 350px;
+              margin-left: 250px;
           }
-
+            .el-form-item__label{
+                font-size: 18px;
+            }
           .right{
               margin-top: 80px;
               height: 400px;
           }
-
+            .el-tabs__content{
+                padding-left: 80px;
+            }
            .el-tag + .el-tag {
                margin-left: 10px;
            }
@@ -129,9 +141,9 @@
             
             <h1 style="text-align: center;">个人中心</h1>
             
-            <div class="main" style="padding: 0 40px;font-size: 18px;">
+            <div class="main" style="font-size: 18px;">
                <div class="left">
-                <el-tabs tab-position="left" >
+                <el-tabs tab-position="left" border-card>
                     <el-tab-pane label="基本信息" style="margin:0 20px">
                         <div class="info" style="margin:0 30px">
                             <h3>当前头像</h3>
@@ -221,13 +233,13 @@
                     <el-tab-pane label="修改密码">
                         <el-form label-position="top" label-width="80px" :model="formLabelAlign" style="margin:0 30px;">
                           <el-form-item label="请输入原密码">
-                            <el-input v-model="formLabelAlign.code" style="width: 250px;"></el-input>
+                            <el-input type="password" v-model="formLabelAlign.code" style="width: 250px;"></el-input>
                           </el-form-item>
                           <el-form-item label="请输入新密码">
-                            <el-input v-model="formLabelAlign.newcode" style="width: 250px;"></el-input>
+                            <el-input type="password" v-model="formLabelAlign.newcode" style="width: 250px;"></el-input>
                           </el-form-item>
                           <el-form-item label="请再次输入新密码进行确认">
-                            <el-input v-model="formLabelAlign.newcodeagagin" style="width: 250px;"></el-input>
+                            <el-input type="password" v-model="formLabelAlign.newcodeagagin" style="width: 250px;"></el-input>
                           </el-form-item>
                           <el-form-item>
                             <el-button type="primary" @click="changecode">修改密码</el-button>
@@ -275,33 +287,55 @@
                             <el-button type="danger" style="margin: 20px;" @click="delmyaccount(userInfo.uid)">注销账号</el-button>
                         </div>
                     </el-tab-pane>
-                    <el-tab-pane label="体重监管">
-                        <el-card :body-style="{ padding: '20x' }" style="background-color: #bcbebf; margin-right: 750px">
-                        <div style="margin:0 30px;">
+                    <el-tab-pane label="体重监管" >
+                        <el-card  style="background-color: rgba(235,238,245,0.45); margin-right: 750px">
+                        <div style="margin:0 30px;" id="supervise">
 
                             <div class="myrow">
                                 <h3>我的身高</h3>
-                                {{userInfo2.height}}
+                                <span v-if="!heightedit">{{userInfo2.height}}</span>
+                                <el-input v-if="heightedit" style="width: 64px;font-size: 18px" @keyup.enter.native="changeinfo(1)" v-model="newheight"></el-input>
                                 cm
                                 <el-button
+                                        v-if="!heightedit"
                                         size="medium"
-                                        @click="handleEdit(scope.$index, scope.row)" style="margin-left: 10px">编辑</el-button>
+                                        type="primary"
+                                        plain
+                                        @click="handleEdit(1)" style="margin-left: 10px">编辑</el-button>
+
+                                <el-button
+                                        v-if="heightedit"
+                                        type="success"
+                                        size="medium"
+                                        plain
+                                        @click="changeinfo(1)" style="margin-left: 10px">确定</el-button>
 
                             </div>
 
                             <div class="myrow">
                                 <h3>最新体重</h3>
-                                {{userInfo2.weight}}
+                                <span v-if="!weightedit">{{userInfo2.weight}}</span>
+                                <el-input v-if="weightedit" style="width: 64px;font-size: 18px" @keyup.enter.native="changeinfo(2)" v-model="newweight"></el-input>
                                 kg
                                 <el-button
+                                        v-if="!weightedit"
                                         size="medium"
-                                        @click="handleEdit(scope.$index, scope.row)" style="margin-left: 10px">编辑</el-button>
+                                        type="primary"
+                                        plain
+                                        @click="handleEdit(2)" style="margin-left: 10px">编辑</el-button>
 
-                            </div>
+                                <el-button
+                                        v-if="weightedit"
+                                        type="success"
+                                        plain
+                                        size="medium"
+                                        @click="changeinfo(2)" style="margin-left: 10px">确定</el-button>
+
+                        </div>
 
                             <div class="myrow">
                                 <h3>最新BMI</h3>
-                                {{userInfo2.bmi}}
+                                {{userInfo2.bmi.toFixed(2)}}
 
                                 <el-progress :text-inside="true" :stroke-width="26" :stroke-length="20" :percentage="mybmi" :color="customColorMethod" :format="ss"></el-progress>
                             </div>
@@ -314,23 +348,45 @@
 
                             <div class="myrow">
                                 <h3>体重目标</h3>
-                                {{userInfo2.prepare}}
+                                <span v-if="!goalwedit">{{userInfo2.fatRate}}</span>
+                                <el-input v-if="goalwedit" style="width: 64px;font-size: 18px" @keyup.enter.native="changeinfo(3)" v-model="newgoalweight"></el-input>
                                 kg
                                 <el-button
+                                        v-if="!goalwedit"
                                         size="medium"
-                                        @click="handleEdit(scope.$index, scope.row)" style="margin-left: 10px">编辑</el-button>
+                                        type="primary"
+                                        plain
+                                        @click="handleEdit(3)" style="margin-left: 10px">编辑</el-button>
+
+                                <el-button
+                                        v-if="goalwedit"
+                                        type="success"
+                                        size="medium"
+                                        plain
+                                        @click="changeinfo(3)" style="margin-left: 10px">确定</el-button>
                                 <h3 style="margin-left: 5px">达成时间</h3>
-                                {{userInfo2.prepare}}
+                                <span v-if="!goaldayedit">{{userInfo2.prepare}}</span>
+                                <el-input v-if="goaldayedit" style="width: 64px;font-size: 18px" @keyup.enter.native="changeinfo(4)" v-model="newgoalday"></el-input>
                                 天
                                 <el-button
+                                        v-if="!goaldayedit"
                                         size="medium"
-                                        @click="handleEdit(scope.$index, scope.row)" style="margin-left: 10px">编辑</el-button>
+                                        type="primary"
+                                        plain
+                                        @click="handleEdit(4)" style="margin-left: 10px">编辑</el-button>
+
+                                <el-button
+                                        v-if="goaldayedit"
+                                        type="success"
+                                        size="medium"
+                                        plain
+                                        @click="changeinfo(4)" style="margin-left: 10px">确定</el-button>
                             </div>
 
                             <div class="myrow">
                                 <h3>热量预算</h3>
-                                鉴于您需要在147天减去7kg，热量预算
-                                <el-tag type="success">1824千卡</el-tag>
+                                鉴于您需要在{{userInfo2.prepare}}天减去{{userInfo2.weight-userInfo2.fatRate}}kg，热量预算
+                                <el-tag type="success">{{calres}}千卡</el-tag>
                             </div>
 
                         </div>
@@ -404,7 +460,6 @@
                                         </div>
 
                                         <time class="time">{{ currentDate }}</time>
-                                        <el-button type="text" class="button">操作按钮</el-button>
                                     </div>
                                 </el-card>
                             </el-col>
@@ -440,6 +495,7 @@
                 data() {
                     return {
                         like: true,
+                        calres:0,
                         value1: 4154.564,
                         value2: 2222,
                         title: "今年的增长",
@@ -452,9 +508,13 @@
                         sex:"",
                         wxNumber:"",
                         heightedit:false,
+                        newheight:'',
                         weightedit:false,
+                        newweight:'',
                         goalwedit:false,
+                        newgoalweight:'',
                         goaldayedit:false,
+                        newgoalday:'',
                         changeVisible:false,
                         mybmi:0,
                         circleUrl:'https://cube.elemecdn.com/e/fd/0fc7d20532fdaf769a25683617711png.png',
@@ -482,6 +542,17 @@
                   userInfo2 = JSON.parse(userInfo2)
                   this.userInfo2=userInfo2
                   this.mybmi=userInfo2.bmi
+                  this.newheight=userInfo2.height
+                  this.newweight=userInfo2.weight
+                  this.newgoalweight=userInfo2.fatRate
+                  this.newgoalday=userInfo2.prepare
+                  if(userInfo.sex=='0'){
+                      this.calres=(userInfo2.weight-userInfo2.fatRate)*22.3
+                  }else if(userInfo.sex=='1'){
+                      this.calres=(userInfo2.weight-userInfo2.fatRate)*21.2
+                  }else {
+                      this.calres=(userInfo2.weight-userInfo2.fatRate)*22
+                  }
                 },
                 methods: {
                     customColorMethod(percentage) {
@@ -508,8 +579,103 @@
                             return '很胖';
                         }
                     },
-                    handleEdit(index, row) {
-                        console.log(index, row);
+                    handleEdit(row) {
+
+                        if(row==1){
+                            this.heightedit=true
+                        }
+                        if(row==2){
+                            this.weightedit=true
+                        }
+                        if(row==3){
+                            this.goalwedit=true
+                        }
+                        if(row==4){
+                            this.goaldayedit=true
+                        }
+                    },
+                    async changeinfo(row){
+                        if(row==1){
+                            if(this.newheight==''){
+                                this.$message.error('请输入正确的信息')
+                            }else{
+                                await questchange(this.userInfo2.userId,1,this.newheight).then(res => {
+                                    if (String(res.code) === '1') {
+                                        this.userInfo2=res.data
+                                        this.mybmi=this.userInfo2.bmi
+                                        this.$message.success("修改成功")
+                                    }else {
+                                        console.log("not")
+                                    }
+                                }).catch(err => {
+                                    this.$message.error('请求出错了：' + err)
+                                })
+
+                            }
+                            this.heightedit=false
+
+                        }
+                        if(row==2){
+                            if(this.newweight==''){
+                                this.$message.error('请输入正确的信息')
+                            }else{
+                                await questchange(this.userInfo2.userId,2,this.newweight).then(res => {
+                                    if (String(res.code) === '1') {
+                                        this.userInfo2=res.data
+                                        this.mybmi=this.userInfo2.bmi
+                                        this.$message.success("修改成功")
+                                    }else {
+                                        console.log("not")
+                                    }
+                                }).catch(err => {
+                                    this.$message.error('请求出错了：' + err)
+                                })
+                            }
+                            this.weightedit=false
+
+                        }
+                        if(row==3){
+                            if(this.newgoalweight==''){
+                                this.$message.error('请输入正确的信息')
+                            }else {
+                                await questchange(this.userInfo2.userId,3,this.newgoalweight).then(res => {
+                                    if (String(res.code) === '1') {
+                                        this.userInfo2=res.data
+                                        this.$message.success("修改成功")
+                                    }else {
+                                        console.log("not")
+                                    }
+                                }).catch(err => {
+                                    this.$message.error('请求出错了：' + err)
+                                })
+                            }
+                            this.goalwedit=false
+
+                        }
+                        if(row==4){
+                            if(this.newgoalday==''){
+                                this.$message.error('请输入正确的信息')
+                            }else{
+                                await questchange(this.userInfo2.userId,4,this.newgoalday).then(res => {
+                                    if (String(res.code) === '1') {
+                                        this.userInfo2=res.data
+                                        this.$message.success("修改成功")
+                                    }else {
+                                        console.log("not")
+                                    }
+                                }).catch(err => {
+                                    this.$message.error('请求出错了：' + err)
+                                })
+                            }
+                            this.goaldayedit=false
+                        }
+                        if(userInfo.sex=='0'){
+                            this.calres=(userInfo2.weight-userInfo2.fatRate)*22.3
+                        }else if(userInfo.sex=='1'){
+                            this.calres=(userInfo2.weight-userInfo2.fatRate)*21.2
+                        }else {
+                            this.calres=(userInfo2.weight-userInfo2.fatRate)*22
+                        }
                     },
                     handleDelete(index, row) {
                         console.log(index, row);
@@ -567,6 +733,8 @@
                                     this.wxNumber=wxNumber
                                     localStorage.setItem('userInfo',JSON.stringify(this.userInfo))
                                     this.$message.success('已成功修改个人信息！')
+                                }else{
+                                    this.$message.error(res.msg)
                                 }
                             }).catch(err => {
                                 this.$message.error('请求出错了：' + err)

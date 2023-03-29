@@ -15,6 +15,26 @@
         .el-avatar{
             background:#FFFFFF;
         }
+        body{
+            /*background-image: url("assets/img/2ciyuan.png");*/
+            background-image: linear-gradient(45deg, #efe6ef 14%, #d8ffe0 83%, #ffffff 100%);
+        }
+        .el-header{
+            padding: 0 7px;
+        }
+        .el-dropdown{
+           color: white;
+
+        }
+        .el-menu-item i{
+            color: white;
+        }
+        .search{
+            height: 60px;
+            background-color: rgba(0, 0, 15, 0.47);
+            display: inline-block;
+            padding: 0 85.4px;
+        }
         </style>
     </head>
     <body>
@@ -27,8 +47,10 @@
                     class="el-menu-demo" 
                     mode="horizontal" 
                     @select="selectMenu"
-                    text-color="#000000"
-                    active-text-color="#003bff"
+                    text-color="#fff"
+                    active-text-color="#8dd9cc"
+                    background-color="#00000f78"
+
                     >
                       <el-menu-item index="0" style="border-bottom: none;text-decoration: none;">
                           <div>
@@ -42,7 +64,17 @@
                       <el-menu-item index="5">社区</el-menu-item>
                       <el-menu-item index="6">商城</el-menu-item>
                       <el-menu-item index="7">心理咨询</el-menu-item>
+                            <div class="search" >
+                                <el-input placeholder="感兴趣的搜一搜"  v-model="keyword"  style="width: 350px;margin-top: 10px">
+                                    <i
+                                            slot="suffix"
+                                            class="el-input__icon el-icon-search"
+                                            style="cursor: pointer;font-size: 28px;"
+                                    ></i>
+                                </el-input>
+                            </div>
                         <el-menu-item id="user" index="8" style="border-bottom: none;text-decoration: none;">
+
                           <div>
                               <el-dropdown @command="handleCommand">
                                 <span style="cursor: pointer;">
@@ -52,7 +84,10 @@
                                 </span>
                                 <el-dropdown-menu slot="dropdown">
                                 <el-dropdown-item icon="el-icon-user-solid" command="a"> 个人中心 </el-dropdown-item>
-                                <el-dropdown-item icon="el-icon-message-solid" command="b"> 查看消息 </el-dropdown-item>
+                                    <el-dropdown-item icon="el-icon-message-solid" command="b"> 查看消息 <el-badge class="mark" :value="12" :max="99"/></el-dropdown-item>
+                                    <el-dropdown-item icon="el-icon-s-finance" command="d"> 余额充值 </el-dropdown-item>
+                                    <el-dropdown-item icon="el-icon-star-on" command="e"> 推荐服务 </el-dropdown-item>
+                                    <el-dropdown-item icon="el-icon-s-promotion" command="f"> 我的社交 </el-dropdown-item>
                                 <el-dropdown-item icon="el-icon-switch-button" divided command="c"> 退出登录 </el-dropdown-item>
                               </el-dropdown-menu>
                             </el-dropdown>  
@@ -115,7 +150,7 @@
                             'page/users/list4.html',
                             './page/community/community.html',
                             './page/mall/course.html',
-                            'page/users/list7.html'
+                            'page/psychology/psychology.html'
                         ],
                         heightlist:[
                           "1580px",
@@ -135,7 +170,8 @@
                         userinfoVisible:false,
                         formLabelWidth: '120px',
                         nowheight:'',
-                        nowweight:''
+                        nowweight:'',
+                        keyword:''
                     }
                 },
                 mounted(){
@@ -183,6 +219,18 @@
                             window.location.href = './page/mycenter/mycenter.html';
                         }else if(command=='c'){
                             this.logout()
+                        }else if(command=='d'){
+                            window.location.href = './page/Addmoney/Addmoney.html';
+                        }else if(command=='b'){
+                            window.location.href = './page/message/回复我的.html';
+                        }else if(command=='e'){
+                            "客服中心"
+                            "意见反馈"
+                            "申请认证"
+                        }else if(command=='f'){
+                            "我的关注"
+                            "我的粉丝"
+                            "我的黑名单"
                         }
                     },
                     logout() {

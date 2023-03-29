@@ -1,0 +1,394 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta charset="utf-8" />
+        <title>视频详情</title>
+        <link rel="stylesheet" href="../../../public/plugins/element-ui/index.css" />
+        <style>
+            .main{
+                display: flex;
+                flex-wrap: wrap;
+                width: 100%;
+                height: 100%;
+                margin: 0 140px;
+            }
+            .myleft{
+                display: flex;
+                flex-direction: column;
+                width:57%;
+                margin-right: 30px;
+            }
+            .myright{
+                display: flex;
+                flex-direction: column;
+                width: 40%;
+            }
+            .vdata{
+                display: flex;
+                flex-direction: column;
+            }
+            .thefont{
+                display: inline-block;
+                color: rgb(167,163,170);
+                margin-right: 10px;
+            }
+            .smallicon{
+                width: 20px;
+            }
+            .myvideo{
+
+            }
+            .mv{
+                width: 668px;
+                height: 376px;
+            }
+            .interact{
+                display: flex;
+                margin: 15px 0;
+            }
+            i{
+                font-size: 20px;
+            }
+            .onetab{
+                margin-right: 5px;
+            }
+            .comment{
+                display: flex;
+                flex-direction: column;
+            }
+            .comminfo{
+                display: flex;
+                margin-bottom: 10px;
+            }
+            .mycomment{
+                display: flex;
+            }
+            .myinput{
+                width: 500px;
+                margin: 0 20px ;
+            }
+            .image2 {
+                width: 180px;
+                height: 100%;
+                border-radius: 10px;
+            }
+            .card-video .card {
+                display: flex;
+                width: 350px;
+                height: 110px;
+                margin: 10px 10px;
+                border-radius: 10px;
+                color: #000000;
+                font-size: 20px;
+                font-weight: 700;
+                letter-spacing: 4px;
+                cursor: pointer;
+            }
+            .image2:hover {
+                transition: transform .2s, box-shadow .2s;
+                transform: translateY(-4px);
+                box-shadow: 4px 4px 8px rgba(0, 0, 0, .1), -4px -4px 8px rgba(0, 0, 0, .1);
+            }
+            .morevid{
+                margin: 10px 30px;
+            }
+            .author{
+                margin-top: 5px;
+                font-size: 13px;
+                color: #3e3e3e;
+            }
+            .card-video{
+                display: flex;
+                flex-direction: column;
+            }
+            .mycolo{
+                display: flex;
+                flex-direction: column;
+                margin: 0 20px;
+            }
+            .theup{
+                display: inline-block;
+                margin: 5px 6px;
+                font-size: 18px;
+                font-weight: 700;
+            }
+            .myinfo:hover{
+                color: rgb(107, 196, 240);
+            }
+            .author:hover{
+                color: rgb(107, 196, 240);
+            }
+            .sendmss{
+                display: inline-block;
+            }
+            .sendmss:hover{
+                color: rgb(107, 196, 240);
+                cursor: pointer;
+            }
+            .midicon{
+                width: 30px;
+            }
+            .midicon:hover{
+                cursor: pointer;
+            }
+            .el-tag.el-tag--info:hover{
+                cursor: pointer;
+                background-color: #66b1ff;
+                color: white;
+            }
+            .orig:hover{
+                color: dodgerblue;
+            }
+        </style>
+    </head>
+    <body>
+        <div id="app" style="display:flex;flex-wrap: wrap;">
+
+            <div class="main">
+
+
+                <div class="myleft">
+                    <div style="margin: 10px 0;font-size: 18px;margin-left: -100px;">
+                        <span @click="navto" class="orig" style="font-weight: bold;cursor: pointer">首页</span>
+                        <span>></span>
+                        <span>视频详情</span>
+                    </div>
+                    <div class="videoinfo">
+                        <h2 style="margin: 20px 0 5px 0">视频1</h2>
+                        <div class="vdata">
+                            <div class="watchs">
+                                <img src="../../../public/styles/icon/view.svg" class="smallicon" alt="">
+                                <span class="thefont">3456</span>
+                                <img src="../../../public/styles/icon/uptime.svg" class="smallicon" alt="">
+                                <span class="thefont">2023-03-08 16:55:07</span>
+                                <span class="thefont">未经作者授权，禁止转载</span>
+                            </div>
+                            <div class="myvideo">
+                                <video class="mv"  :src="mvurl" controls="controls"> </video>
+                            </div>
+                            <div class="interact">
+                                <img src="../../../public/styles/icon/like.svg" class="midicon" alt="">
+                                <span class="thefont">1433</span>
+
+                                <img src="../../../public/styles/icon/collect.svg" class="midicon" alt="">
+                                <span class="thefont">233</span>
+
+                                <img src="../../../public/styles/icon/share.svg" class="midicon" alt="">
+                                <span class="thefont">26</span>
+                            </div>
+                            <div class="mytab">
+                                <el-tag type="info" class="onetab">跑步</el-tag>
+                                <el-tag type="info" class="onetab">校园</el-tag>
+                                <el-tag type="info" class="onetab">篮球</el-tag>
+                                <el-tag type="info" class="onetab">UP今天吃什么</el-tag>
+                                <el-tag type="info" class="onetab">饮食</el-tag>
+                                <el-tag type="info" class="onetab">游戏</el-tag>
+                            </div>
+                        </div>
+                        <el-divider></el-divider>
+                    </div>
+                    <div class="comment">
+                        <div class="comminfo">
+                            <h4 style="margin: 0 5px">评论</h4>
+                            <span class="thefont">157 </span>
+                            <el-button type="text" style="padding: 0 5px;">最热</el-button>
+                            <el-divider direction="vertical"></el-divider>
+                            <el-button type="text" style="color: #9d9c9c;padding: 0 5px;">最新</el-button>
+                        </div>
+                        <div class="mycomment">
+                            <el-avatar :size="50" src="https://s1.ax1x.com/2023/03/24/ppBJaQ0.png"></el-avatar>
+                            <el-input
+                                    type="textarea"
+                                    :rows="2"
+                                    placeholder="请输入内容"
+                                    v-model="textarea"
+                                    class="myinput">
+                            </el-input>
+                            <el-button type="primary">发布</el-button>
+                        </div>
+                        <div style="margin: 10px 0;">
+
+                                <div v-for="item in hotcom" style="margin: 10px 0;">
+                                    <el-avatar :size="50" :src="item.avatarUrl"></el-avatar>
+                                    <strong>{{item.nickname}}</strong>
+                                    <br><span style="color:rgb(14,16,16)">{{item.content}}</span><br>
+                                    <span id="time">{{item.timeStr}}</span>
+                                    <br>
+                                </div>
+
+                        </div>
+
+
+
+                    </div>
+                </div>
+                <div class="myright">
+                    <div style="display: flex">
+                        <div style="margin: 15px 20px">
+                            <el-avatar :size="50" src="https://s1.ax1x.com/2023/03/24/ppBJDwF.png"></el-avatar>
+                        </div>
+                        <div style="display: flex;flex-direction: column;margin: 10px 5px;">
+                            <div>
+                                <span class="theup">春风桃李花开夜</span>
+                                <div class="sendmss">
+                                    <i class="el-icon-message-solid"></i>
+                                    <span class="smallicon">发信息</span>
+                                </div>
+                            </div>
+                            <div style="margin:0 0 10px 10px;">
+                                <span class="thefont">欢迎关注新人up主</span>
+                            </div>
+                            <el-button type="primary" style="width: 200px" round>+ 关注 7772</el-button>
+                        </div>
+                    </div>
+
+                    <div class="morevid">
+                        <h3 style="display: inline-block;margin-left: 10px">推荐视频</h3>
+                        <div class="card-video">
+                            <div class="card">
+                                <img src="../../assets/img/portfolio/2.jpg" class="image2">
+                                <div class="mycolo">
+                                    <div class="myinfo">
+                                        视频1
+                                    </div>
+                                    <div class="author">
+                                        UP 徐一鸣
+                                    </div>
+                                    <div class="author">
+
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="card">
+                                <img src="../../assets/img/portfolio/3.jpg" class="image2">
+                                <div class="mycolo">
+                                    <div class="myinfo">
+                                        视频2
+                                    </div>
+                                    <div class="author">
+                                        UP 秦宇阳
+                                    </div>
+                                    <div class="author">
+
+                                    </div>
+                                </div>
+
+                            </div>
+                            <div class="card">
+                                <img src="../../assets/img/portfolio/4.jpg" class="image2">
+                                <div class="mycolo">
+                                    <div class="myinfo">
+                                        视频3
+                                    </div>
+                                    <div class="author">
+                                        UP 懒懒
+                                    </div>
+                                    <div class="author">
+
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="card">
+                                <img src="../../assets/img/portfolio/4.jpg" class="image2">
+                                <div class="mycolo">
+                                    <div class="myinfo">
+                                        视频4
+                                    </div>
+                                    <div class="author">
+                                        UP 摩托姐
+                                    </div>
+                                    <div class="author">
+
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="card">
+                                <img src="../../assets/img/portfolio/4.jpg" class="image2">
+                                <div class="mycolo">
+                                    <div class="myinfo">
+                                        视频5
+                                    </div>
+                                    <div class="author">
+                                        UP 原圆圆原
+                                    </div>
+                                    <div class="author">
+
+                                    </div>
+                                </div>
+
+                            </div>
+                            <div class="card">
+                                <img src="../../assets/img/portfolio/4.jpg" class="image2">
+                                <div class="mycolo">
+                                    <div class="myinfo">
+                                        视频6
+                                    </div>
+                                    <div class="author">
+                                        UP 小白
+                                    </div>
+                                    <div class="author">
+
+                                    </div>
+                                </div>
+                            </div>
+
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+
+        </div>
+        <script src="../../../public/plugins/vue/mystyle.js"></script>
+        <!-- 开发环境版本，包含了有帮助的命令行警告 -->
+        <script src="../../../public/plugins/vue/vue.js"></script>
+        <!-- 引入组件库 -->
+        <script src="../../../public/plugins/element-ui/index.js"></script>
+        <script src="../../../public/plugins/axios/axios.min.js"></script>
+        <script src="../../../public/js/request.js"></script>
+        <script src="../../myapi/usercenter.js"></script>
+        <script>
+            new Vue({
+                el: '#app',
+                data() {
+                    return {
+                        mvurl:"../../assets/testvideo.mp4",
+                        activeName: 'first',
+                        hotcom:[
+                            {
+                                content:"集中精力在圆锥的高上追求高度",
+                                timeStr:"2020-04-25",
+                                avatarUrl:"http://p4.music.126.net/CNcgF_Gy0ZB3qrcgnsq8Og==/109951166040613136.jpg",
+                                nickname:"想再开心一点"
+                            },
+                            {
+                                content:"加油",
+                                timeStr:"2019-04-11",
+                                avatarUrl:"http://p4.music.126.net/Tj4oc57NDiaiwAyzNxZlcw==/109951166452714313.jpg",
+                                nickname:"什么都不懂ddd"
+                            },
+                            {
+                                content:"关注up主谢谢喵",
+                                timeStr:"2022-02-04",
+                                avatarUrl:"http://p3.music.126.net/oP18PaE7dyIOMiOeMSzrJg==/3272146610178852.jpg",
+                                nickname:"什么都不懂ddd"
+                            },
+
+                        ]
+
+                    }
+                },
+
+                mounted() {
+                  
+                },
+                methods: {
+                    navto(){
+                        window.location.href="../home/home.html"
+                    }
+
+                }
+            })
+        </script>
+    </body>
+</html>

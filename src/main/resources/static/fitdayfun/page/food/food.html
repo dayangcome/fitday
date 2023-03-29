@@ -5,6 +5,21 @@
     <title>饮食计划</title>
     <link rel="stylesheet" href="../../../public/plugins/element-ui/index.css" />
     <style type="text/css">
+        body {
+            animation: fadeInAnimation ease 4s;
+            animation-iteration-count: 1;
+            animation-fill-mode: forwards;
+            font-size: 16px;
+        }
+
+        @keyframes fadeInAnimation {
+            0% {
+                opacity: 0;
+            }
+            100% {
+                opacity: 1;
+            }
+        }
         .myflex{
             display:flex;
             background-image: url(../../assets/img/foodblackground.png);
@@ -93,11 +108,13 @@
                 <div style="width: 100%;text-align: center;">
                     <h3>饮食记录</h3>
                 </div>
+
                 <div style="width: 100%;text-align: center;">
                    <h4>{{value2}}</h4>
                 </div>
+                <div v-if="value2!=value3" style="margin-left:106px;font-size:14px;color: red;">下面是历史饮食记录</div>
                 <div style="margin-top: 20px;">
-                    <div class="block" style="display: inline-block;"><el-avatar v-if="breakfastData.length!=0" :size="50" :src="circleUrl2"></el-avatar><el-avatar v-if="breakfastData.length==0" :size="50" :src="circleUrl"></el-avatar><br><el-button type="text" style="color:blue" @click="breakfastDialog">+ 早餐</el-button>
+                    <div class="block" style="display: inline-block;"><el-avatar v-if="breakfastData.length!=0" :size="50" :src="circleUrl2"></el-avatar><el-avatar v-if="breakfastData.length==0" :size="50" :src="circleUrl"></el-avatar><br><el-button type="text" style="color:#000091" @click="breakfastDialog">+ 早餐</el-button>
                         <el-dialog title="早餐" :visible.sync="breakfastVisible" width="50%"
                                    :center="true">
                             <!-- append-to-body为true可以在弹框内部加上一个弹框 -->

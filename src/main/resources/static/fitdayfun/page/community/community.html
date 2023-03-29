@@ -1,361 +1,425 @@
 <!DOCTYPE HTML>
 <html>
 <head>
- <meta charset="utf-8" />
- <title>ç¤¾åŒº</title>
- <link href="../../../public/css/buju.css" rel="stylesheet">
- <link href="../../../public/css/index.css" rel="stylesheet">
- <script type="text/javascript" src="../../../public/js/jquery.min.js"></script>
- <script type="text/javascript" src="../../../public/js/sliders.js"></script>
+	<meta charset="gb2312">
+	<title>ÉçÇø</title>
+	<meta name="?????" content="">
+	<link rel="stylesheet" href="../../../public/plugins/element-ui/index.css" />
+	<link href="../../../public/css/buju.css" rel="stylesheet">
+	<link href="../../../public/css/index.css" rel="stylesheet">
+	<script type="text/javascript" src="../../../public/js/jquery.min.js"></script>
+	<script type="text/javascript" src="../../../public/js/sliders.js"></script>
 </head>
 <body>
-  <header>
-    <div class="logo f_l">
-	   <a href="#">
-	      <img src="../../assets/images/fitdaylogo.png">
-	   </a>
-	 </div>
-	 <div id="topnav" class="f_r">
-	     <ul>
-		     <a href="#" target="_blank" id="topnav_current">Fitç¤¾åŒº</a>
-			  <a href="#" target="_blank">æˆ‘çš„åŠ¨æ€</a>
-			  <a href="add.html" target="_blank">å‘å¸ƒæ—¥å¸¸</a>
-			  <a href="#" target="_blank">è¾¾äººä¸“åŒº</a>
-		 </ul>
-	 </div>
-  </header>
-  <article>
-    <div class="l_box f_l">
-	  <div class="banner">
-	    <div id="slide-holder">
-		   <div id="slide-runner">
-		     <a href="/" target="_blank">
-			     <img id="slide-img-1" src="../../assets/images/b1.jpg" alt style>
-			  </a>
-			  <a href="/" target="_blank">
-			     <img id="slide-img-2" src="../../assets/images/b2.jpg" alt style>
-			  </a>
-			  <a href="/" target="_blank">
-			     <img id="slide-img-3" src="../../assets/images/b3.jpg" alt style>
-			  </a>
-			  <a href="/" target="_blank">
-			     <img id="slide-img-4" src="../../assets/images/b4.jpg" alt style>
-			  </a>
-			  <div id="slide-controls" style="display:block;">
-			    <p id="slide-client" class="text">
-				    <strong></strong>
-					 <span></span>
-				 </p>
-              <p id="slide-desc" class="text"></p> 	
-              <p id="slide-nav"></p>		     			  
-			  </div>
-		   </div> 
-		 </div>
-	  </div>
-	  <script>
-	     if(!window.slider){
-		     var slider={};
-		 }
-		 slider.data=[
-		 {
-		     "id":"slide-img-1",
-			 "client":"å¥èº«æ‰“å¡",
-			 "desc":"åˆ†äº«å¥èº«æ‰“å¡åŠ¨æ€æˆ–è§†é¢‘,æ¯å¤©å……æ»¡åŠ¨åŠ›"     //??????????????
-		 },
-		 {
-		     "id":"slide-img-2", 
-			 "client":"å­¦ä¹ å€Ÿé‰´ä»–äºº",
-			 "desc":"æµè§ˆä»–äººåˆ†äº«çš„å¥èº«æ—¥å¸¸,è·å¾—ç»éªŒ"
-		 },
-		 {
-		     "id":"slide-img-3", 
-			 "client":"é£Ÿè°±åˆ†äº«",
-			 "desc":"åˆ†äº«è‡ªå·±çš„æ—¥å¸¸é£Ÿè°±,å­¦ä¹ å€Ÿé‰´ä»–äººçš„é¥®é£Ÿ"
-		 },
-		 {
-		     "id":"slide-img-4", 
-			 "client":"ç˜¦èº«å¥½æ–‡",
-			 "desc":"ä¸ºä½ æ¨é€å½“ä¸‹æµè¡Œçš„ç˜¦èº«å°å¦™æ‹›"
-		 }
-		 ];
-	   </script>
-	   <div class="topnews">
-	   <h2>
-	   	   <span>
-	   	    <a href="/" target="_blank">ç‚¹å‡»æ’è¡Œ</a>
-	   		 <a href="/" target="_blank">å¥èº«å¥½æ–‡æ¨è</a>
-	   	   </span>	 
-	   	    ç¤¾åŒºåŠ¨æ€
-	   	   </h2>
-	     <div class="blogs">
-		      <figure>
-			     <img src="../../assets/images/01.jpg">
-			   </figure>
-			   <ul>
-			     <h3><a href="/">åˆ«å‚»äº†ï¼Œæ™šä¸Šä¸åƒé¥­çœŸçš„å‡ä¸äº†è‚¥ï¼</a></h3>
-				  <p>"æˆ‘ä»¥å‰è¯•è¿‡æ™šä¸Šä¸åƒé¥­å‡è‚¥ï¼Œä½†æ˜¯ä½“é‡ä¸å‡åå¢ï¼Œå¥½éƒé—·"</p>
-			     <p class="autor">
-				    <span class="lm f_l">
-					    <a href="/">åº“é‡Œ</a>
-					 </span>
-					 <span class="dtime f_l">2016-02-16</span>
-					 <span class="viewnum f_r">
-					    çœ‹è¿‡<a href="/">666</a></span>
-					 <span class="pingl f_r">	
-					    è¯„è®º<a href="/">60</a></span>
-				  </p>
-			   </ul>
-	       </div>
-		  <div class="blogs">
-		      <figure>
-			     <img src="../../assets/images/02.jpg">
-			   </figure>
-			   <ul>
-			     <h3><a href="/">ç¯æ ¡è·‘ç¬¬äºŒå¤©ï¼ŒåŠ æ²¹ï¼</a></h3>
-				  <p>"?????????????????????????????????????????????????????????????????????????????????????????????????????????????????????????????????????..."</p>
-			     <p class="autor">
-				    <span class="lm f_l">
-					    <a href="/">???????</a>
-					 </span>
-					 <span class="dtime f_l">2016-02-16</span>
-					 <span class="viewnum f_r">
-					    ?????<a href="/">666</a>??</span>
-					 <span class="pingl f_r">	
-					    ?????<a href="/">60</a>??</span>
-				  </p>
-			   </ul>
-	       </div>
-		  <div class="blogs">
-		     <figure>
-			     <img src="../../assets/images/03.jpg">
-			   </figure>
-			   <ul>
-			     <h3><a href="/">?????16??????Ğ¡????????99.999%????????</a></h3>
-				  <p>"????????????????Ğ±???????????????12593+?ç»°????=????e????????Ğº?????????Ğ¡????????????????????????????????????..."</p>
-			     <p class="autor">
-				    <span class="lm f_l">
-					    <a href="/">???????</a>
-					 </span>
-					 <span class="dtime f_l">2016-02-16</span>
-					 <span class="viewnum f_r">
-					    ?????<a href="/">666</a>??</span>
-					 <span class="pingl f_r">	
-					    ?????<a href="/">60</a>??</span>
-				  </p>
-			   </ul>
-	       </div>
-	     <div class="blogs">
-		     <figure>
-			     <img src="../../assets/images/04.jpg">
-			   </figure>
-			   <ul>
-			     <h3><a href="/">????????????????????</a></h3>
-				  <p>"??????????????????????Ã³????????????????ç»°?????Ğ½???????????????????????????????????ï¿¡?1????Ğ¡???2???????????QQ..."</p>
-			     <p class="autor">
-				    <span class="lm f_l">
-					    <a href="/">???????</a>
-					 </span>
-					 <span class="dtime f_l">2016-02-16</span>
-					 <span class="viewnum f_r">
-					    ?????<a href="/">666</a>??</span>
-					 <span class="pingl f_r">	
-					    ?????<a href="/">60</a>??</span>
-				  </p>
-			   </ul>
-	       </div>
-		  <div class="blogs">
-		       <figure>
-			     <img src="../../assets/images/05.jpg">
-			   </figure>
-			   <ul>
-			     <h3><a href="/">????????????????????</a></h3>
-			   				  <p>"??????????????????????Ã³????????????????ç»°?????Ğ½???????????????????????????????????ï¿¡?1????Ğ¡???2???????????QQ..."</p>
-			     <p class="autor">
-			   				    <span class="lm f_l">
-			   					    <a href="/">???????</a>
-			   					 </span>
-			   					 <span class="dtime f_l">2016-02-16</span>
-			   					 <span class="viewnum f_r">
-			   					    ?????<a href="/">666</a>??</span>
-			   					 <span class="pingl f_r">	
-			   					    ?????<a href="/">60</a>??</span>
-			   				  </p>
-			   </ul>
-	        </div>
-		  <div class="blogs">
-		       <figure>
-			     <img src="../../assets/images/06.jpg">
-			   </figure>
-			   <ul>
-			     <h3><a href="/">????????????????????</a></h3>
-			   				  <p>"??????????????????????Ã³????????????????ç»°?????Ğ½???????????????????????????????????ï¿¡?1????Ğ¡???2???????????QQ..."</p>
-			     <p class="autor">
-			   				    <span class="lm f_l">
-			   					    <a href="/">???????</a>
-			   					 </span>
-			   					 <span class="dtime f_l">2016-02-16</span>
-			   					 <span class="viewnum f_r">
-			   					    ?????<a href="/">666</a>??</span>
-			   					 <span class="pingl f_r">	
-			   					    ?????<a href="/">60</a>??</span>
-			   				  </p>
-			   </ul>
-	        </div>
-		  <div class="blogs">
-		      <figure>
-			     <img src="../../assets/images/04.jpg">
-			   </figure>
-			   <ul>
-			     <h3><a href="/">????????????????????</a></h3>
-			   				  <p>"??????????????????????Ã³????????????????ç»°?????Ğ½???????????????????????????????????ï¿¡?1????Ğ¡???2???????????QQ..."</p>
-			     <p class="autor">
-			   				    <span class="lm f_l">
-			   					    <a href="/">???????</a>
-			   					 </span>
-			   					 <span class="dtime f_l">2016-02-16</span>
-			   					 <span class="viewnum f_r">
-			   					    ?????<a href="/">666</a>??</span>
-			   					 <span class="pingl f_r">	
-			   					    ?????<a href="/">60</a>??</span>
-			   				  </p>
-			   </ul>
-	       </div>
-	   </div>
-	 </div>  
-    <div class="r_box f_r">
-	   <div class="tit01">
-         <h3>?????</h3>
-		  <div class="gzwm">
-		    <ul>
-			   <li><a class="xlwb" href="#" target="_blank">???????</a></li>
-			   <li><a class="txwb" href="#" target="_blank">??????</a></li>
-			   <li><a class="rss" href="#" target="_blank">RSS</a></li>
-			   <li><a class="wx" href="#" target="_blank">????</a></li>
+<div id="app">
+	<header>
+		<div class="logo f_l">
+			<a href="#">
+				<img src="../../assets/images/fitdaylogo.png">
+			</a>
+		</div>
+
+		<div id="topnav" class="f_r">
+			<ul>
+				<a href="#" target="_blank" id="topnav_current">FitÉçÇø</a>
+				<a href="./me.html" target="_blank">ÎÒµÄ¶¯Ì¬</a>
+				<a href="./add2.html" target="_blank">·¢²¼ÈÕ³£</a>
+				<a href="#" target="_blank">´ïÈË×¨Çø</a>
 			</ul>
-		  </div>
-       </div> 
-	   <div class="ad300x100">
-	       <img src="../../assets/images/wh.jpg">
-	   </div>
-	   <div class="tab" id="lp_right_select">
-	     <script>
-		     window.onload=function()
-			 {
-			     var oLi=document.getElementById("tb").getElementsByTagName("li");
-				 var oUl=document.getElementById("tb-main").getElementsByTagName("div");
-				 for(var i=0;i<oLi.length;i++)
-				 {
-				     oLi[i].index=i;
-					 oLi[i].onmouseover=function()
-					 {
-					    for(var n=0;n<oLi.length;n++)
-						    oLi[n].className="";
-							this.className="cur";
-						for(var n=0;n<oUl.length;n++)
-                            oUl[n].style.display="none";
-                            oUl[this.index].style.display="block";							
-					 }
-				 }
-			 }
-		  </script>
-	     <div class="tab-top">
-	     		      <ul class="hd" id="tb">
-	     			       <li class="cur"><a href="/">ç‚¹å‡»æ’è¡Œ</a></li>
-	     				   <li><a href="/">ç˜¦èº«å¥½æ–‡æ¨è</a></li>
-	     				   <li><a href="/">ç˜¦èº«tip</a></li>
-	     			  </ul>
-	     		  </div>
-	     		  <div class="tab-main" id="tb-main">
-	     		      <div class="bd bd-news" style="display:block;"><ul>
-	     			      <li><a href="/" target="_blank">é˜³åº·åé¥®é£Ÿåº”æ³¨æ„å“ªäº›</a></li>
-	     				   <li><a href="/" target="_blank">å‡è‚¥ä¸æ˜¯å•é å°‘åƒï¼ï¼ï¼</a></li>
-	     				   <li><a href="/" target="_blank">ä¸‰åˆ†ç»ƒï¼Œä¸ƒåˆ†åƒ</a></li>
-	     				   <li><a href="/" target="_blank">123</a></li>
-	     				   <li><a href="/" target="_blank">123</a></li>
-	     				   <li><a href="/" target="_blank">123</a></li>
-	     			  </ul></div>
-	     			   <div class="bd bd-news" ><ul>
-	     			      <li><a href="/" target="_blank">é˜³åº·åé¥®é£Ÿåº”æ³¨æ„å“ªäº›</a></li>
-	     				   <li><a href="/" target="_blank">å‡è‚¥ä¸æ˜¯å•é å°‘åƒï¼ï¼ï¼</a></li>
-	     				   <li><a href="/" target="_blank">ä¸‰åˆ†ç»ƒï¼Œä¸ƒåˆ†åƒ</a></li>
-	     				   <li><a href="/" target="_blank">è¤ç´ æ­é…ï¼Œåƒå‡ºå¥åº·</a></li>
-	     				   <li><a href="/" target="_blank">123</a></li>
-	     				   <li><a href="/" target="_blank">123</a></li>
-	     			  </ul></div>
-	     			   <div class="bd bd-news" ><ul>
-	     			      <li><a href="/" target="_blank">?????16??????Ğ¡????????99.999%????????</a></li>
-	     				   <li><a href="/" target="_blank">????????????????????</a></li>
-	     				   <li><a href="/" target="_blank">?????????????</a></li>
-	     				   <li><a href="/" target="_blank">??????????????! ??????????????????</a></li>
-	     				   <li><a href="/" target="_blank">????????????????????</a></li>
-	     				   <li><a href="/" target="_blank">??????????????????????????????????...</a></li>
-	     			  </ul></div>
-	     		  </div>
-	     	   </div>
-	     	   <div class="cloud">
-	     	     <h3>?????</h3>
-	     		  <ul>
-	     		    <li><a href="/">???????</a></li>
-	     			 <li><a href="/">web????</a></li>
-	     			 <li><a href="/">??????</a></li>
-	     			 <li><a href="/">Html</a></li>
-	     			 <li><a href="/">CSS3</a></li>
-	     			 <li><a href="/">CSS3+HTML5</a></li>
-	     			 <li><a href="/">???</a></li>
-	     			 <li><a href="/">JavaScript</a></li>
-	     			 <li><a href="/">C/C++</a></li>
-	     			 <li><a href="/">ASP.NET</a></li>
-	     			 <li><a href="/">IOS????</a></li>
-	     			 <li><a href="/">Android????</a></li>
-	     			 <li><a href="/">PHP</a></li>
-	     			 <li><a href="/">VS</a></li>
-	     		  </ul>
-	     	   </div>
-	   <div class="tuwen">
-	     <h3>??????</h3>
-		 <ul>
-		   <li><a href="/"><img src="../../assets/images/01.jpg"><b>?????????????</b></a>
-		      <p>
-			      <span class="tulanum"><a href="/">??????</a></span>
-				   <span class="tutime">2016-02-16</span>
-			   </p>
-		   </li>
-		   <li><a href="/"><img src="../../assets/images/02.jpg"><b>????????????????????dd</b></a>
-		      <p>
-			      <span class="tulanum"><a href="/">??????</a></span>
-				   <span class="tutime">2016-02-16</span>
-			   </p></li>
-		   <li><a href="/"><img src="../../assets/images/03.jpg"><b>?????16??????dd????????99.999%????????</b></a>
-		      <p>
-			      <span class="tulanum"><a href="/">??????</a></span>
-				   <span class="tutime">2016-02-16</span>
-			   </p></li>
-		   <li><a href="/"><img src="../../assets/images/06.jpg"><b>??????????????????????????????????...</b></a>
-		      <p>
-			      <span class="tulanum"><a href="/">??????</a></span>
-				   <span class="tutime">2016-02-16</span>
-			   </p></li>
-		   <li><a href="/"><img src="../../assets/images/04.jpg"><b>??????????????! ??????????????????</b></a>
-		      <p>
-			      <span class="tulanum"><a href="/">??????</a></span>
-				   <span class="tutime">2016-02-16</span>
-			   </p></li>
-		 </ul>
-	   </div>
-	   <div class="ad"><img src="../../assets/images/03.jpg"></div>
-	   <div class="links">
-	     <h3><span><a href="/">????????????</a></span>????????</h3>
-		 <ul>
-		   <li><a href="/">?????????????</a></li>
-		    <li><a href="/">???????</a></li>
-			 <li><a href="/">?aa????</a></li>
-			  <li><a href="/">??????</a></li>
-			   <li><a href="/">?????</a></li>
-			    <li><a href="/">360????</a></li>
-				 <li><a href="/">????dd?????</a></li>
-		 </ul>
-	   </div>
-	 </div>
-  </article>
+		</div>
+	</header>
+	<article>
+		<div class="l_box f_l">
+			<div class="banner">
+				<div id="slide-holder">
+					<div id="slide-runner">
+						<a href="/" target="_blank">
+							<img id="slide-img-1" src="../../assets/images/b1.jpg" alt style>
+						</a>
+						<a href="/" target="_blank">
+							<img id="slide-img-2" src="../../assets/images/b2.jpg" alt style>
+						</a>
+						<a href="/" target="_blank">
+							<img id="slide-img-3" src="../../assets/images/b3.jpg" alt style>
+						</a>
+						<a href="/" target="_blank">
+							<img id="slide-img-4" src="../../assets/images/b4.jpg" alt style>
+						</a>
+						<div id="slide-controls" style="display:block;">
+							<p id="slide-client" class="text">
+								<strong></strong>
+								<span></span>
+							</p>
+							<p id="slide-desc" class="text"></p>
+							<p id="slide-nav"></p>
+						</div>
+					</div>
+				</div>
+			</div>
+			<script>
+				if(!window.slider){
+					var slider={};
+				}
+				slider.data=[
+					{
+						"id":"slide-img-1",
+						"client":"½¡Éí´ò¿¨",
+						"desc":"·ÖÏí½¡Éí´ò¿¨¶¯Ì¬»òÊÓÆµ,Ã¿Ìì³äÂú¶¯Á¦"     //??????????????
+					},
+					{
+						"id":"slide-img-2",
+						"client":"Ñ§Ï°½è¼øËûÈË",
+						"desc":"ä¯ÀÀËûÈË·ÖÏíµÄ½¡ÉíÈÕ³£,»ñµÃ¾­Ñé"
+					},
+					{
+						"id":"slide-img-3",
+						"client":"Ê³Æ×·ÖÏí",
+						"desc":"·ÖÏí×Ô¼ºµÄÈÕ³£Ê³Æ×,Ñ§Ï°½è¼øËûÈËµÄÒûÊ³"
+					},
+					{
+						"id":"slide-img-4",
+						"client":"ÊİÉíºÃÎÄ",
+						"desc":"ÎªÄãÍÆËÍµ±ÏÂÁ÷ĞĞµÄÊİÉíĞ¡ÃîÕĞ"
+					}
+				];
+			</script>
+			<div class="topnews">
+				<h2>
+	   <span>
+	    <a href="/" target="_blank">µã»÷ÅÅĞĞ</a>
+		 <a href="/" target="_blank">½¡ÉíºÃÎÄÍÆ¼ö</a>
+	   </span>
+					ÉçÇø¶¯Ì¬
+				</h2>
+				<div class="blogs">
+					<figure>
+						<img src="../../assets/images/01.jpg">
+					</figure>
+					<ul>
+						<h3><a href="/">±ğÉµÁË£¬ÍíÉÏ²»³Ô·¹ÕæµÄ¼õ²»ÁË·Ê£¡</a></h3>
+						<p>"ÎÒÒÔÇ°ÊÔ¹ıÍíÉÏ²»³Ô·¹¼õ·Ê£¬µ«ÊÇÌåÖØ²»¼õ·´Ôö£¬ºÃÓôÃÆ"</p>
+						<p class="autor">
+				    <span class="lm f_l">
+					    <a href="/">¿âÀï</a>
+					 </span>
+							<span class="dtime f_l">2016-02-16</span>
+							<span class="viewnum f_r">
+					    ¿´¹ı<a href="/">666</a></span>
+							<span class="pingl f_r">
+					    ÆÀÂÛ<a href="/">60</a></span>
+						</p>
+					</ul>
+				</div>
+				<div class="blogs">
+					<figure>
+						<img src="../../assets/images/02.jpg">
+					</figure>
+					<ul>
+						<h3><a href="/">»·Ğ£ÅÜµÚ¶şÌì£¬¼ÓÓÍ£¡</a></h3>
+						<p>"?????????????????????????????????????????????????????????????????????????????????????????????????????????????????????????????????????..."</p>
+						<p class="autor">
+				    <span class="lm f_l">
+					    <a href="/">ÇØÓîÑô</a>
+					 </span>
+							<span class="dtime f_l">2016-02-16</span>
+							<span class="viewnum f_r">
+					    ¿´¹ı<a href="/">666</a></span>
+							<span class="pingl f_r">
+					    ÆÀÂÛ<a href="/">60</a></span>
+						</p>
+					</ul>
+				</div>
+				<div class="blogs">
+					<figure>
+						<img src="../../assets/images/03.jpg">
+					</figure>
+					<ul>
+						<h3><a href="/">123</a></h3>
+						<p>"??????????????????????????????????QQ????????§µ????????????????????????????????????????????????,???????????????????????????..."</p>
+						<p class="autor">
+				    <span class="lm f_l">
+					    <a href="/">³õÒôÎ´À´</a>
+					 </span>
+							<span class="dtime f_l">2016-02-16</span>
+							<span class="viewnum f_r">
+					    ¿´¹ı<a href="/">666</a></span>
+							<span class="pingl f_r">
+					    ÆÀÂÛ<a href="/">60</a></span>
+						</p>
+					</ul>
+				</div>
+				<div class="blogs">
+					<figure>
+						<img src="../../assets/images/04.jpg">
+					</figure>
+					<ul>
+						<h3><a href="/">123</a></h3>
+						<p>"????????????????§Ò???????????????12593+?´Â????=????e????????§Ü?????????§³????????????????????????????????????..."</p>
+						<p class="autor">
+				    <span class="lm f_l">
+					    <a href="/">ÔÆ¶ä</a>
+					 </span>
+							<span class="dtime f_l">2016-02-16</span>
+							<span class="viewnum f_r">
+					    ¿´¹ı<a href="/">666</a></span>
+							<span class="pingl f_r">
+					    ÆÀÂÛ<a href="/">60</a></span>
+						</p>
+					</ul>
+				</div>
+				<div class="blogs">
+					<figure>
+						<img src="../../assets/images/05.jpg">
+					</figure>
+					<ul>
+						<h3><a href="/">123</a></h3>
+						<p>"??????????????????????¨®????????????????´Â?????§ß???????????????????????????????????¡ê?1????§³???2???????????QQ..."</p>
+						<p class="autor">
+				    <span class="lm f_l">
+					    <a href="/">ikun</a>
+					 </span>
+							<span class="dtime f_l">2016-02-16</span>
+							<span class="viewnum f_r">
+					    ¿´¹ı<a href="/">666</a></span>
+							<span class="pingl f_r">
+					    ÆÀÂÛ<a href="/">60</a></span>
+						</p>
+					</ul>
+				</div>
+				<div class="blogs">
+					<figure>
+						<img src="../../assets/images/06.jpg">
+					</figure>
+					<ul>
+						<h3><a href="/">123</a></h3>
+						<p>"??????????????§³????????????????????????????????????????????????????????????????????????????????????????????????????Tag Heuer?? ??????????????????Modelabs????????????????????????????????????????????????..."</p>
+						<p class="autor">
+				    <span class="lm f_l">
+					    <a href="/">Ò»Î»¹ÊÈË</a>
+					 </span>
+							<span class="dtime f_l">2016-02-16</span>
+							<span class="viewnum f_r">
+					    ¿´¹ı<a href="/">666</a></span>
+							<span class="pingl f_r">
+					    ÆÀÂÛ<a href="/">60</a></span>
+						</p>
+					</ul>
+				</div>
+				<div class="blogs">
+					<figure>
+						<img src="../../assets/images/04.jpg">
+					</figure>
+					<ul>
+						<h3><a href="/">123</a></h3>
+						<p>"????????????????§Ò???????????????12593+?´Â????=????e????????§Ü?????????§³????????????????????????????????????..."</p>
+						<p class="autor">
+				    <span class="lm f_l">
+					    <a href="/">Áõ»ªÇ¿</a>
+					 </span>
+							<span class="dtime f_l">2016-02-16</span>
+							<span class="viewnum f_r">
+					    ¿´¹ı<a href="/">666</a></span>
+							<span class="pingl f_r">
+					    ÆÀÂÛ<a href="/">60</a></span>
+						</p>
+					</ul>
+				</div>
+			</div>
+		</div>
+		<div class="r_box f_r">
+			<div class="tit01">
+				<h3>ÎÒµÄÉçÇø</h3>
+				<div class="gzwm">
+					<ul>
+						<li><a class="xlwb" href="#" target="_blank">ÎÒµÄ¹Ø×¢</a></li>
+						<li><a class="txwb" href="../´ïÈË/news.html" target="_blank">ä¯ÀÀÀúÊ·</a></li>
+						<li><a class="rss" href="#" target="_blank">ÎÒµÄÊÕ²Ø</a></li>
+						<li><a class="wx" href="#" target="_blank">ÎÒµÄÏûÏ¢</a></li>
+					</ul>
+				</div>
+			</div>
+			<div class="ad300x100">
+				<a href="/">
+					<img src="../../assets/images/storys.jpg">
+				</a>
+			</div>
+			<div class="tab" id="lp_right_select">
+				<script>
+					window.onload=function()
+					{
+						var oLi=document.getElementById("tb").getElementsByTagName("li");
+						var oUl=document.getElementById("tb-main").getElementsByTagName("div");
+						for(var i=0;i<oLi.length;i++)
+						{
+							oLi[i].index=i;
+							oLi[i].onmouseover=function()
+							{
+								for(var n=0;n<oLi.length;n++)
+									oLi[n].className="";
+								this.className="cur";
+								for(var n=0;n<oUl.length;n++)
+									oUl[n].style.display="none";
+								oUl[this.index].style.display="block";
+							}
+						}
+					}
+				</script>
+				<div class="tab-top">
+					<ul class="hd" id="tb">
+						<li class="cur"><a href="/">µã»÷ÅÅĞĞ</a></li>
+						<li><a href="/">ÊİÉíºÃÎÄÍÆ¼ö</a></li>
+						<li><a href="/">ÊİÉítip</a></li>
+					</ul>
+				</div>
+				<div class="tab-main" id="tb-main">
+					<div class="bd bd-news" style="display:block;"><ul>
+						<li><a href="/" target="_blank">Ñô¿µºóÒûÊ³Ó¦×¢ÒâÄÄĞ©</a></li>
+						<li><a href="/" target="_blank">¼õ·Ê²»ÊÇµ¥¿¿ÉÙ³Ô£¡£¡£¡</a></li>
+						<li><a href="/" target="_blank">Èı·ÖÁ·£¬Æß·Ö³Ô</a></li>
+						<li><a href="/" target="_blank">123</a></li>
+						<li><a href="/" target="_blank">123</a></li>
+						<li><a href="/" target="_blank">123</a></li>
+					</ul></div>
+					<div class="bd bd-news" ><ul>
+						<li><a href="/" target="_blank">Ñô¿µºóÒûÊ³Ó¦×¢ÒâÄÄĞ©</a></li>
+						<li><a href="/" target="_blank">¼õ·Ê²»ÊÇµ¥¿¿ÉÙ³Ô£¡£¡£¡</a></li>
+						<li><a href="/" target="_blank">Èı·ÖÁ·£¬Æß·Ö³Ô</a></li>
+						<li><a href="/" target="_blank">»çËØ´îÅä£¬³Ô³ö½¡¿µ</a></li>
+						<li><a href="/" target="_blank">123</a></li>
+						<li><a href="/" target="_blank">123</a></li>
+					</ul></div>
+					<div class="bd bd-news" ><ul>
+						<li><a href="/" target="_blank">?????16??????§³????????99.999%????????</a></li>
+						<li><a href="/" target="_blank">????????????????????</a></li>
+						<li><a href="/" target="_blank">?????????????</a></li>
+						<li><a href="/" target="_blank">??????????????! ??????????????????</a></li>
+						<li><a href="/" target="_blank">????????????????????</a></li>
+						<li><a href="/" target="_blank">??????????????????????????????????...</a></li>
+					</ul></div>
+				</div>
+			</div>
+			<div class="cloud">
+				<h3>Ö÷Ìâ»î¶¯</h3>
+				<ul>
+					<li><a href="/">¼õÖØÌôÕ½Èü</a></li>
+					<li><a href="/">½¡¿µÉú»îvlog´óÈü</a></li>
+					<li><a href="/">¼õÖ¬ÌôÕ½Èü</a></li>
+					<li><a href="/">Fit½²×ù</a></li>
+					<li><a href="/">ÔË¶¯´ò¿¨ÌôÕ½</a></li>
+					<li><a href="/">ÊİÉíÎóÇø±Ü¿ÓÖ¸ÄÏ</a></li>
+					<li><a href="/">¼õ·ÊÄÜ³ÔXXXÂğ</a></li>
+
+				</ul>
+			</div>
+			<div class="tuwen">
+				<h3>¿ÉÄÜÊÊºÏÄãµÄ</h3>
+				<ul>
+					<li><a href="/"><img src="../../assets/images/01.jpg"><b>?????????????</b></a>
+						<p>
+							<span class="tulanum"><a href="/">??????</a></span>
+							<span class="tutime">2016-02-16</span>
+						</p>
+					</li>
+					<li><a href="/"><img src="../../assets/images/02.jpg"><b>????????????????????´Â</b></a>
+						<p>
+							<span class="tulanum"><a href="/">??????</a></span>
+							<span class="tutime">2016-02-16</span>
+						</p></li>
+					<li><a href="/"><img src="../../assets/images/03.jpg"><b>?????16??????§³????????99.999%????????</b></a>
+						<p>
+							<span class="tulanum"><a href="/">??????</a></span>
+							<span class="tutime">2016-02-16</span>
+						</p></li>
+					<li><a href="/"><img src="../../assets/images/06.jpg"><b>??????????????????????????????????...</b></a>
+						<p>
+							<span class="tulanum"><a href="/">??????</a></span>
+							<span class="tutime">2016-02-16</span>
+						</p></li>
+					<li><a href="/"><img src="../../assets/images/04.jpg"><b>??????????????! ??????????????????</b></a>
+						<p>
+							<span class="tulanum"><a href="/">??????</a></span>
+							<span class="tutime">2016-02-16</span>
+						</p></li>
+				</ul>
+			</div>
+
+			<el-dialog
+					title="Fitday BMI×Ô²â"
+					:visible.sync="bmiFormVisible"
+					width="60%"
+					top="15px"
+			>
+				<div class="mytop">
+					<p>»¶Ó­À´µ½FitdayBMI×Ô²â½çÃæ£¡&#128512;ÉíÌåÖÊÁ¿Ö¸Êı£¬ÊÇBMIÖ¸Êı£¬¼ò³ÆÌåÖÊÖ¸Êı£¬ÊÇ¹ú¼ÊÉÏ³£ÓÃµÄºâÁ¿ÈËÌåÅÖÊİ³Ì¶ÈÒÔ¼°ÊÇ·ñ½¡¿µµÄÒ»¸ö±ê×¼¡£</p>
+				</div>
+				<div class="main">
+					<div class="left">
+						<h4>¼ÆËãÄãµÄÉíÌåÖÊÁ¿Ö¸Êı (BMI)</h4>
+						<p><span class="printbmi">{{printbmi0}}</span>&nbsp;&nbsp;&nbsp;<span class="printbmi">{{printbmi1}}</span></p>
+						<div>ÎÒµÄÉí¸ß£º<input type="text" class="heht" placeholder="ÇëÊäÈëÉí¸ß" v-model="hv"> µ¥Î»£ºÀåÃ× cm</div>
+						<div>ÎÒµÄÌåÖØ£º<input type="text" class="weht" placeholder="ÇëÊäÈëÌåÖØ" v-model="wv"> µ¥Î»£ºÇ§¿Ë kg</div>
+						<div>BMI±ê×¼£º<input type="text" value="ÖĞ¹ú±ê×¼"></div>
+						<div class="end"><input type="submit" value="¼ÆËãBMI" @click="onbmi"></div>
+					</div>
+					<div class="right">
+						<p style="color: brown; font-weight: bold;">BMIÖĞ¹ú±ê×¼</p>
+						<table border="0px" cellspacing="0" cellpadding="0">
+							<tr style="background-color: chartreuse;">
+								<th>·ÖÀà</th>
+								<th>BMI·¶Î§</th>
+							</tr>
+							<tr style="background-color: hotpink;">
+								<th>Æ«Êİ</th>
+								<th><= 18.4</th>
+							</tr>
+							<tr style="background-color: cyan;">
+								<th>Õı³£</th>
+								<th>18.5 ~ 23.9</th>
+							</tr>
+							<tr style="background-color: slateblue;">
+								<th>¹ıÖØ</th>
+								<th>24.0 ~ 27.9</th>
+							</tr>
+							<tr style="background-color: purple;">
+								<th>·ÊÅÖ</th>
+								<th>28~32</th>
+							</tr>
+							<tr style="background-color: royalblue;">
+								<th>ÑÏÖØ·ÊÅÖ</th>
+								<th>> 32.0</th>
+							</tr>
+						</table>
+					</div>
+				</div>
+				<span slot="footer" class="dialog-footer">
+            <el-button @click="bmiFormVisible = false">È¡ Ïû</el-button>
+          </span>
+			</el-dialog>
+
+			<div class="ad"><img src="../../assets/images/03.jpg"></div>
+
+		</div>
+	</article>
+	<style>
+		.copyrights{text-indent:-9999px;height:0;line-height:0;font-size:0;overflow:hidden;}
+	</style>
+
+</div>
+<!-- VueºÍelement-uiÒÔ¼°axiosµÄJS-->
+<script src="../../../public/plugins/vue/vue.js"></script>
+<!-- ÒıÈë×é¼ş¿â -->
+<script src="../../../public/plugins/element-ui/index.js"></script>
+<script src="../../../public/plugins/axios/axios.min.js"></script>
+<script src="../../../public/js/request.js"></script>
+
+<script>
+	new Vue({
+		el: "#app",
+		data(){
+			return{}
+		},
+		method:{}
+	})
+</script>
 </body>
 </html>

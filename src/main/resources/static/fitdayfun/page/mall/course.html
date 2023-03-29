@@ -5,6 +5,27 @@
         <title>商城</title>
         <link rel="stylesheet" href="../../../public/plugins/element-ui/index.css" />
         <style>
+            body {
+                animation: fadeInAnimation ease 2s;
+                animation-iteration-count: 1;
+                animation-fill-mode: forwards;
+            }
+            .el-card:hover {
+                transition: transform .2s, box-shadow .2s;
+                transform: translateY(-4px);
+                box-shadow: 4px 4px 8px rgba(0, 0, 0, .1), -4px -4px 8px rgba(0, 0, 0, .1);
+            }
+            .el-table th, .el-table tr{
+                cursor: pointer;
+            }
+            @keyframes fadeInAnimation {
+                0% {
+                    opacity: 0;
+                }
+                100% {
+                    opacity: 1;
+                }
+            }
             .mid{
                 width: 60%;
                 height: 800px;
@@ -39,6 +60,15 @@
                 width: 80px;
                 height: 80px;
             }
+            .el-card__body:hover{
+                cursor: pointer;
+            }
+            .cell:hover{
+                color: blue;
+            }
+            .el-table__row:hover{
+                cursor: pointer;
+            }
         </style>
     </head>
     <body>
@@ -70,8 +100,8 @@
                     <div style="margin-bottom: 40px">
                     <h2><span class="green">* </span> 推荐课程 <span class="green"> *</span></h2>
                     <div style="display: flex;">
-                        <div v-for="(o, index) in 3" :key="o" :offset="index > 0 ? 3 : 0" style="width: 220px;margin:0 20px;">
-                            <el-card :body-style="{ padding: '0px' }" shadow="hover">
+                        <div v-for="(o, index) in 3" :key="o" :offset="index > 0 ? 3 : 0" style="width: 220px;margin:0 20px;" @click="navto(o)">
+                            <el-card :body-style="{ padding: '0px' }" shadow="hover" >
                                 <img src="../../assets/img/portfolio/2.jpg" class="image">
                                 <div style="padding: 14px;">
                                     <span>课程{{o}}</span>
@@ -200,7 +230,7 @@
                     return {
                         courseData:[
                             {
-                                productName:"D-Day Online 前端前沿技术实践(第二场)",
+                                productName:"Java6个月速成",
                                 productPicture:"../../assets/img/portfolio/model2-3.jpg"
                             },
                             {
@@ -249,6 +279,10 @@
                   
                 },
                 methods: {
+                    navto(num){
+                        window.location.href = "./coursedetails.html"
+                        console.log(num)
+                    },
                    handleSelect(key, keyPath) {
                         if(key==1){
                             window.location.href = "./course.html"

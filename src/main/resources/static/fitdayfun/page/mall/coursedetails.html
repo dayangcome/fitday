@@ -1,0 +1,278 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta charset="utf-8" />
+        <title>课程详情</title>
+        <link rel="stylesheet" href="../../../public/plugins/element-ui/index.css" />
+        <style>
+            .orig:hover{
+                color: dodgerblue;
+            }
+            .mytop{
+                display: flex;
+                flex-direction: column;
+                height: 420px;
+                width: 100%;
+                margin: 0 150px;
+            }
+            .myvideo{
+                margin-right: 90px;
+            }
+            .cell:hover{
+                color: blue;
+            }
+            .el-table__row:hover{
+                cursor: pointer;
+            }
+            .mv{
+                width: 600px;
+                height: 348px;
+            }
+            .viedointro{
+                display: flex;
+                flex-direction: column;
+                margin-top: 8px;
+            }
+            h5{
+                display: inline-block;
+                color: red;
+            }
+            .mybottom{
+                display: flex;
+                margin: 10px 150px;
+            }
+            .left{
+                width: 60%;
+                margin-right: 50px;
+            }
+            .right{
+                width: 37%;
+                margin-right: 20px;
+            }
+            .myimage{
+                width: 150px;
+                height: 82px;
+            }
+            .intoduce{
+                padding:20px;
+                border-radius: 10px;
+                width: 550px;
+                background-color: #e2e2e2;
+            }
+        </style>
+    </head>
+    <body>
+        <div id="app" style="display:flex;flex-wrap: wrap;">
+
+            <div class="mytop">
+                <div style="margin-top: 10px;font-size: 16px">
+                    <span @click="navto" class="orig" style="font-weight: bold;cursor: pointer">课程</span>
+                    <span>></span>
+                    <span>课程详情</span>
+                </div>
+                <div style="display: flex">
+                    <div class="myvideo">
+                        <video class="mv"  :src="mvurl" controls="controls"> </video>
+                    </div>
+                    <div class="viedointro">
+                        <div><h2>Java6个月速成</h2></div>
+                        <div class="intoduce">
+                            这里是视频简单介绍 <br>
+                            关注视频内容谢谢喵 <br>
+                            关注视频内容谢谢喵 <br>
+                            这里是视频简单介绍 <br>
+                            <p style="float: right;font-size: 14px;color: black">已有2992人购买</p>
+                        </div>
+                        <div>
+                            <h5>售价：￥333</h5>
+                        </div>
+                        <el-button type="success" style="width: 200px">
+                            立刻购买
+                        </el-button>
+                    </div>
+                </div>
+            </div>
+            <div class="mybottom">
+                <div class="left">
+                    <el-tabs v-model="activeName" @tab-click="handleClick" style="width: 750px;">
+                        <el-tab-pane label="课程详情" name="first">
+                            <h4>课程概述</h4>
+                            <p>
+                                课程面向信息对抗技术、信息安全、计算机科学与技术、人工智能、数据科学与大数据、软件工程、电子信息类等专业，面向网络空间安全、密码学、计算机科学与技术、信息与通信工程、软件工程等相关学科。
+                            </p>
+                            <p>
+                                课程主要内容包括：大数据分析基础认知、核心架构、计算模式，大数据与信息安全对抗，大数据与自然语言处理，大数据与生物信息处理等。即见树木又见森林，重点引导培养有竞争力的数据与计算能力：综合运用计算机和数学知识分析处理大规模数据集的能力，从复杂数据中快速得到信息和发现关系的能力，现实世界具体问题的建模能力等。深入先进地培养学生的跨界整合与全球思维及科学创造与发现精神。同时，注重其间接效果，融入人文素养的培养，教学过程中同时讨论算法的可用性、道德、隐私、法律、知识产权保护、经济和社会影响等。
+
+                                本课程中所有中国地图审图号为审图号：GS（2016）1609号。
+                            </p>
+                            <h4>授课目标</h4>
+                            <p>
+                                使学生理解掌握大数据领域基础认知、核心架构、计算模式，能利用其知识分析多领域大数据分析问题，能够从复杂数据中发现关系并获取信息，具备解决大数据领域涉及到的复杂工程问题的能力。同时强调跨界整合与全球思维以及科学创造与发现精神。
+                            </p>
+                            <p>
+                                使学生理解掌握大数据思维与技术原理，能够动手完成其创新工程与技术竞赛并能得到预期结论。
+
+
+
+                                使学生能够了解相关标准规范、法律法规、系统工程和科学研究、知识产权保护、经济和社会影响等，助力大数据领域内复杂问题的分析与解决。
+
+
+
+                                服务于国家大数据战略，推进我国大数据发展和应用，加快建设数据强国，推动数据资源开放共享！
+                            </p>
+                            <h4>课程大纲</h4>
+                            <h4>第一单元：大数据思维与技术认知</h4>
+                            <p>
+                                学生能力及学习方法论 <br>
+
+                                大数据分析基础认知<br>
+
+                                大数据分析主要应用<br>
+
+                                大数据分析的问题<br>
+
+                                大数据分析核心架构<br>
+
+                                大数据分析计算模式<br>
+
+                                第一单元测试<br>
+
+                                第一单元作业<br>
+                            </p>
+                        </el-tab-pane>
+                        <el-tab-pane label="课程评价(111)" name="second">
+                            <div>
+                                好评如潮
+                            </div>
+                        </el-tab-pane>
+                    </el-tabs>
+                </div>
+                <div class="right">
+                    <div class="teachers">
+                        <h4>4位授课老师</h4>
+                        <el-table
+                                :data="teacherData"
+                                stripe
+                                style="width: 100%"
+                                :show-header="false"
+                                highlight-current-row
+                        >
+                            <el-table-column
+                                    width="110"
+                                    align="center"
+                            >
+                                <template slot-scope="scope">
+                                    <el-avatar :size="60" :src="scope.row.avatar"></el-avatar>
+                                </template>
+                            </el-table-column>
+                            <el-table-column
+                            >
+                                <template slot-scope="scope">
+                                    <div style="display: flex;flex-direction: column;">
+                                        <strong>{{scope.row.username}}</strong>
+                                        {{scope.row.sign}}
+                                    </div>
+                                </template>
+                            </el-table-column>
+                        </el-table>
+                    </div>
+                    <div class="more">
+                        <h3>相关课程</h3>
+                        <el-table
+                                :data="courseData"
+                                stripe
+                                style="width: 100%"
+                                :show-header="false"
+                                highlight-current-row
+                        >
+                            <el-table-column
+                                    align="center"
+                                    width="180">
+                                <template slot-scope="scope">
+                                    <el-image class="myimage" :src="scope.row.productPicture"/>
+                                </template>
+                            </el-table-column>
+                            <el-table-column
+                                    prop="productName"
+                            >
+                            </el-table-column>
+                        </el-table>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <script src="../../../public/plugins/vue/mystyle.js"></script>
+        <!-- 开发环境版本，包含了有帮助的命令行警告 -->
+        <script src="../../../public/plugins/vue/vue.js"></script>
+        <!-- 引入组件库 -->
+        <script src="../../../public/plugins/element-ui/index.js"></script>
+        <script src="../../../public/plugins/axios/axios.min.js"></script>
+        <script src="../../../public/js/request.js"></script>
+        <script src="../../myapi/usercenter.js"></script>
+        <script>
+            new Vue({
+                el: '#app',
+                data() {
+                    return {
+                        mvurl:"../../assets/testvideo.mp4",
+                        activeName: 'first',
+                        teacherData:[
+                            {
+                                username:"卡颂",
+                                avatar:"../../assets/img/portfolio/b1.jpg",
+                                sign:"奇舞团前端开发高级工程师，开源React源码电子书《React技术揭秘》作者"
+                            },
+                            {
+                                username:"王顶",
+                                avatar:"../../assets/img/portfolio/b2.jpg",
+                                sign:"河北经贸大学讲师、企业研究生导师《C语言与程序设 计大学教程》作者"
+                            },
+                            {
+                                username:"Jrainlau",
+                                avatar:"../../assets/img/portfolio/b3.jpg",
+                                sign:"BAT前端高级工程师，曾就职于招联消费金融有限公司，担任前端工程师一职"
+                            },
+                            {
+                                username:"刘忠旭",
+                                avatar:"../../assets/img/portfolio/b4.jpg",
+                                sign:"滴滴出行高级专家工程师&橙心优选营销体系负责人，“spring boot”课程作者"
+                            },
+                        ],
+                        courseData:[
+                            {
+                                productName:"Java从入门到入土",
+                                productPicture:"../../assets/img/portfolio/model2-3.jpg"
+                            },
+                            {
+                                productName:"Python Web 在线学习视频网站搭建攻略",
+                                productPicture:"../../assets/img/portfolio/model3-1.jpg"
+                            },
+                            {
+                                productName:"企业级 React 高级技术与实践",
+                                productPicture:"../../assets/img/portfolio/model3-2.jpg"
+                            },
+                            {
+                                productName:"SpringBoot2.3 微服务支付系统实战",
+                                productPicture:"../../assets/img/portfolio/model3-3.jpg"
+                            },
+                            {
+                                productName:"简明CSS教程",
+                                productPicture:"../../assets/img/portfolio/model3-4.jpg"
+                            }
+                        ]
+                    }
+                },
+
+                mounted() {
+                  
+                },
+                methods: {
+                    navto(){
+                        window.location.href="./course.html"
+                    }
+
+                }
+            })
+        </script>
+    </body>
+</html>

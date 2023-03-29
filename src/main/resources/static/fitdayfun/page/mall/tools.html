@@ -5,6 +5,31 @@
         <title>商城</title>
         <link rel="stylesheet" href="../../../public/plugins/element-ui/index.css" />
         <style>
+            body {
+                animation: fadeInAnimation ease 2s;
+                animation-iteration-count: 1;
+                animation-fill-mode: forwards;
+            }
+            .el-card:hover {
+                transition: transform .2s, box-shadow .2s;
+                transform: translateY(-4px);
+                box-shadow: 4px 4px 8px rgba(0, 0, 0, .1), -4px -4px 8px rgba(0, 0, 0, .1);
+            }
+            .el-card__body:hover{
+                cursor: pointer;
+            }
+            .el-table__row:hover{
+                background-color: #f0c78a;
+                cursor: pointer;
+            }
+            @keyframes fadeInAnimation {
+                0% {
+                    opacity: 0;
+                }
+                100% {
+                    opacity: 1;
+                }
+            }
             .mid{
                 width: 60%;
                 height: 800px;

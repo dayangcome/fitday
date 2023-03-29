@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta charset="utf-8" />
+        <title>首页</title>
+        <link rel="stylesheet" href="../../../public/plugins/element-ui/index.css" />
+        <style type="text/css">
+        #user{
+            float: right;
+        }
+        .el-page-header__left .el-icon-back{
+            font-size: 30px;
+            margin-right: 15px;
+        }
+        .el-page-header__title{
+            font-size: 18px;
+        }
+        .smallicon{
+            width: 50px;  
+        }
+        svg{
+            fill: #67C23A;
+        }
+        #second{
+            display: inline-block;
+            margin: 0 5px;
+            color: red;
+            font-size: 20px;
+        }
+        </style>
+    </head>
+    <body>
+        <div id="app">
+           <div class="banner" style="height: 120px; display: flex; background-image: url(../../assets/img/222.jpg);">
+               <img src="../../assets/img/fitdaylogo.png" alt="" style="height:100px ;width:300px;margin:0 80px;">
+               <span class="myfont" style="color: azure;
+               font-size: 40px;
+               line-height: 120px;
+               margin-left: 100px;">吃好，练好，拥有好心态，轻装上阵！</span>
+           </div>
+           <div style="text-align: center;margin-top: 80px;">
+               <svg viewBox="0 0 48 48" xmlns="http://www.w3.org/2000/svg" class="icon-success" width="100" height="100">
+                   <path d="M24,4 C35.045695,4 44,12.954305 44,24 C44,35.045695 35.045695,44 24,44 C12.954305,44 4,35.045695 4,24 C4,12.954305 12.954305,4 24,4 Z M34.5548098,16.4485711 C33.9612228,15.8504763 32.9988282,15.8504763 32.4052412,16.4485711 L32.4052412,16.4485711 L21.413757,27.5805811 L21.413757,27.5805811 L21.4034642,27.590855 C21.0097542,27.9781674 20.3766105,27.9729811 19.9892981,27.5792711 L19.9892981,27.5792711 L15.5947588,23.1121428 C15.0011718,22.514048 14.0387772,22.514048 13.4451902,23.1121428 C12.8516033,23.7102376 12.8516033,24.6799409 13.4451902,25.2780357 L13.4451902,25.2780357 L19.6260786,31.5514289 C20.2196656,32.1495237 21.1820602,32.1495237 21.7756472,31.5514289 L21.7756472,31.5514289 L34.5548098,18.614464 C35.1483967,18.0163692 35.1483967,17.0466659 34.5548098,16.4485711 Z"></path>
+               </svg>
+               <h1>充值成功</h1>
+               <h2>您已成功充值{{crash}}元!</h2>
+               <div style="font-size: 18px;margin: 25px 0;"><span id="second">10</span>秒后将自动返回充值页面</div> 
+               <el-button type=primary @click="navto">返回充值页面</el-button>
+           </div>
+        </div>
+        <!-- 开发环境版本，包含了有帮助的命令行警告 -->
+        <script src="../../../public/plugins/vue/vue.js"></script>
+        <!-- 引入组件库 -->
+        <script src="../../../public/plugins/element-ui/index.js"></script>
+        <script>
+            new Vue({
+                el: '#app',
+                data() {
+                    return{
+                        crash:0
+                    }
+                },
+                created() {
+                    this.crash = localStorage.getItem('crash');
+                    localStorage.removeItem('crash')
+                    let i=9;
+                    timer=setInterval(function(){
+                        document.querySelector("#second").innerText=i;
+                        i--;
+                        if(i==-1){
+                            clearInterval(timer);
+                            setTimeout(function(){
+                                window.location.href="./Addmoney.html"
+                            },1)
+                        }
+                    },1000)
+                },
+                methods: {
+                    navto(){
+                        window.location.href="./Addmoney.html"
+                    },
+                    goBack() {
+                        window.location.href='../login/login.html'
+                    }
+                }
+            })
+        </script>
+    </body>
+</html>

@@ -1,0 +1,176 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="UTF-8">
+	<link rel="stylesheet" href="../../../public/plugins/element-ui/index.css" />
+	<script src="../../../public/plugins/vue/vue.js"></script>
+	<!-- 引入组件库 -->
+	<script src="../../../public/plugins/element-ui/index.js"></script>
+	<style>
+	  
+	  .el-carousel__item h3 {
+	    color: #475669;
+	    font-size: 14px;
+	    opacity: 0.75;
+	    line-height: 150px;
+	    margin: 0;
+	  }
+
+	
+	  .el-carousel__item:nth-child(2n) {
+	     background-color: #99a9bf;
+	  }
+	  
+	  .el-carousel__item:nth-child(2n+1) {
+	     background-color: #d3dce6;
+	  }
+	  .el-row {
+	      margin-bottom: 30px;
+		  margin-top: 30px;
+		  align-content: center;
+	    }
+	    .el-col {
+	      border-radius: 4px;
+		  height: 150px;
+	    }
+	    .bg-purple-dark {
+	      background: #99a9bf;
+	    }
+	    .bg-purple {
+	      background: #d3dce6;
+	    }
+	    .bg-purple-light {
+	      background: #e5e9f2;
+	    }
+	    .grid-content {
+	      border-radius: 4px;
+	      min-height: 150px;
+	    }
+		.grid-input{
+			border-radius: 4px;
+		}
+	    .row-bg {
+	      padding: 10px 0;
+	      background-color: #f9fafc;
+	    }
+		
+	</style>
+</head>
+
+<body>
+    <div id="app" style="margin-left: 150px;margin-right: 150px;">
+        <div id="carousel">
+			<div class="block">
+			    <el-carousel height="500px">
+				  <el-carousel-item v-for="item in photolist" :key="item">
+				    <img style="object-fit: fill;;width: 100%;height: 100%;" :src="item" class="bannerimg"/>
+			      </el-carousel-item>
+			    </el-carousel>
+			  </div>
+		</div>
+
+		<div id="writeinfo">
+			<div style="margin: 20px 0;"></div>
+			<span class="captial" style=" align-content: center; font-size: larger;">心理咨询咨询师1V1定制方案</span>
+			
+			<el-row :gutter="20">
+			  <el-col :span="8" style="height: 50px;"><div class="grid-input">
+				  <el-input
+				  type="text1"
+				  placeholder="请输入姓名"
+				  v-model="text1"
+				  maxlength="10"
+				  show-word-limit
+				></el-input>
+			  </div></el-col>
+			  <el-col :span="8" style="height: 50px;"><div class="grid-input">
+				  <el-input
+				  type="text2"
+				  placeholder="请输入电话号码"
+				  v-model="text2"
+				  maxlength="11"
+				  show-word-limit
+				></el-input>
+			  </div></el-col>
+			  <el-col :span="8" style="height: 50px;">
+				<el-button type="primary" round>点击预约</el-button>
+			  </el-col>
+			</el-row>
+		</div>
+		
+		<div id="cooprate-show">
+			<span class="captial" style=" align-content: center; font-size: larger;">合作单位</span>
+			<el-row :gutter="50">
+			  <el-col :span="6" v-for="item in cooprate" :key="item" >
+				  <div class="cooprateitem" style="height: 150px; border: 1px solid; border-radius: 8px;">
+					  <img style="object-fit: fill;;width: 100%;height: 100%;border-radius: 8px;" :src="item"/>
+				  </div>
+			  </el-col>
+			</el-row>
+		</div>
+		
+		<div id="doctor-show">
+			<span class="captial" style=" font-size: larger;">金牌医生</span>
+			<el-row :gutter="30">
+			  <el-col :span="8" v-for="item in doctor" :key="item" style="height: 250px;">
+				  <div class="doctoritem" style="height: 250px; border: 1px solid; border-radius: 8px;">
+					  <img style="object-fit: fill;;width: 100%;height: 100%;border-radius: 8px;" :src="item"/>
+				  </div>
+			  </el-col>
+			</el-row>
+			<el-button type="text" style="float: right;">>>更多优秀咨询师</el-button>
+		</div>
+		
+		
+    </div>
+	
+</body>
+<script>
+    new Vue({
+        el: '#app',
+        data() {
+            return {
+				visible: false,
+					photolist:[
+						"../../assets/img/portfolio/photo1.jpg",
+						"../../assets/img/portfolio/photo2.jpg",
+						"../../assets/img/portfolio/photo3.jpg",
+					],
+					cooprate:[
+						"../../assets/img/portfolio/cop1.jpg",
+						"../../assets/img/portfolio/cop2.jpg",
+						"../../assets/img/portfolio/cop3.jpg",
+						"../../assets/img/portfolio/cop4.jpg",
+					],
+					doctor:[
+						"../../assets/img/portfolio/doc1.jpg",
+						"../../assets/img/portfolio/doc2.jpg",
+						"../../assets/img/portfolio/doc3.jpg",
+					],
+					tableData: [{
+							  article:'正确认识自我否定'
+					        }, {
+					          article:'如何做一个快乐的人'
+					        }, {
+					          article:'战胜自卑的五个小妙招'
+					        },
+					],
+					text: '',
+					textarea: '',
+			}
+        },
+		mounted() {
+		    this.setSize();
+		    window.addEventListener('resize', ()=>{
+		        this.setSize();
+		    },false);
+		},    
+		methods: {
+		    setSize(){
+		        this.bannerHeight = document.body.clientWidth / 4
+		    },
+		},
+    })
+</script>
+</html>

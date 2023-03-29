@@ -13,3 +13,9 @@ function changeuserinfo (uid,avatar,username,phone,sex,wxNumber) {
     })
 }
 
+function questchange (uid,number,info) {
+    return $axios({
+        url: `user/quest/${uid}/${number}/${info}`,
+        method: 'get',
+    })
+}

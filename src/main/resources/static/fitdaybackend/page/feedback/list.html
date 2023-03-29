@@ -1,409 +1,409 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <meta http-equiv="X-UA-Compatible" content="IE=edge">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Document</title>
-  <!-- 引入样式 -->
-  <link rel="stylesheet" href="../../../public/plugins/element-ui/index.css" />
-  <link rel="stylesheet" href="../../../public/styles/common2.css" />
-  <link rel="stylesheet" href="../../../public/styles/page.css" />
-  <style>
-    #member-app  .notAdmin::after{
-      border: 0 !important;
-    }
-    .tdleft{
-      font-weight: bold;
-      width: 200px;
-    }
-    tr{
-      height: 26px;
-    }
-  </style>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <!-- 引入样式 -->
+    <link rel="stylesheet" href="../../../public/plugins/element-ui/index.css" />
+    <link rel="stylesheet" href="../../../public/styles/common2.css" />
+    <link rel="stylesheet" href="../../../public/styles/page.css" />
+    <style>
+        #member-app  .notAdmin::after{
+            border: 0 !important;
+        }
+        .tdleft{
+            font-weight: bold;
+            width: 200px;
+        }
+        tr{
+            height: 26px;
+        }
+    </style>
 </head>
 <body>
-  <div class="dashboard-container" id="member-app">
+<div class="dashboard-container" id="member-app">
     <div class="container">
-      <div class="tableBar">
-        <el-input
-          v-model="input"
-          placeholder="请输入反馈者昵称"
-          style="width: 250px"
-          clearable
-           @keyup.enter.native="handleQuery"
+        <div class="tableBar">
+            <el-input
+                    v-model="input"
+                    placeholder="请输入反馈者昵称"
+                    style="width: 250px"
+                    clearable
+                    @keyup.enter.native="handleQuery"
+            >
+                <i
+                        slot="prefix"
+                        class="el-input__icon el-icon-search"
+                        style="cursor: pointer"
+                        @click="handleQuery"
+                ></i>
+            </el-input>
+        </div>
+        <el-table
+                :data="tableData"
+                stripe
+                class="tableBox"
+                :cell-style="{ textAlign: 'center' }"
+                :header-cell-style="{ textAlign: 'center' }"
         >
-          <i
-            slot="prefix"
-            class="el-input__icon el-icon-search"
-            style="cursor: pointer"
-            @click="handleQuery"
-          ></i>
-        </el-input>
-      </div>
-      <el-table
-        :data="tableData"
-        stripe
-        class="tableBox"
-        :cell-style="{ textAlign: 'center' }"
-        :header-cell-style="{ textAlign: 'center' }"
-      >
-        <el-table-column
-          prop="type"
-          label="反馈类型"
-          :formatter="typeFormatter"
-          :show-overflow-tooltip="true"
-        >
-        </el-table-column>
+            <el-table-column
+                    prop="type"
+                    label="反馈类型"
+                    :formatter="typeFormatter"
+                    :show-overflow-tooltip="true"
+            >
+            </el-table-column>
 
-        <el-table-column
-          prop="useruid"
-          label="反馈者UID"
-        >
-          <template slot-scope="{row}">
-            {{ row.useruid || '游客反馈' }}
-          </template>
-        </el-table-column>
+            <el-table-column
+                    prop="useruid"
+                    label="反馈者UID"
+            >
+                <template slot-scope="{row}">
+                    {{ row.useruid || '游客反馈' }}
+                </template>
+            </el-table-column>
 
-        <el-table-column
-          prop="name"
-          label="反馈者昵称"
-        ></el-table-column>
+            <el-table-column
+                    prop="name"
+                    label="反馈者昵称"
+            ></el-table-column>
 
-        <el-table-column
-          prop="phone"
-          label="反馈者手机号"
-          width="140"
-        >
-          <template slot-scope="{row}">
-            {{ row.phone || '尚未填写' }}
-          </template>
-        </el-table-column>
+            <el-table-column
+                    prop="phone"
+                    label="反馈者手机号"
+                    width="140"
+            >
+                <template slot-scope="{row}">
+                    {{ row.phone || '尚未填写' }}
+                </template>
+            </el-table-column>
 
-        <el-table-column
-           prop="email"
-           label="反馈者邮箱"
-        >
-          <template slot-scope="{row}">
-            {{ row.email || '尚未填写' }}
-          </template>
-        </el-table-column>
+            <el-table-column
+                    prop="email"
+                    label="反馈者邮箱"
+            >
+                <template slot-scope="{row}">
+                    {{ row.email || '尚未填写' }}
+                </template>
+            </el-table-column>
 
-        <el-table-column
-          prop="message"
-          label="反馈信息"
-          width="340"
-        ></el-table-column>
+            <el-table-column
+                    prop="message"
+                    label="反馈信息"
+                    width="340"
+            ></el-table-column>
 
 
-        <el-table-column label="反馈时间" width="90">
-          <template slot-scope="scope">
-            <span>{{scope.row.createTime.toLocaleString().replace(/T/g, ' ').replace(/\.[\d]{3}Z/, '')}}</span>
-          </template>
-        </el-table-column>
+            <el-table-column label="反馈时间" width="90">
+                <template slot-scope="scope">
+                    <span>{{scope.row.createTime.toLocaleString().replace(/T/g, ' ').replace(/\.[\d]{3}Z/, '')}}</span>
+                </template>
+            </el-table-column>
 
 
-        <el-table-column label="反馈状态">
-          <template slot-scope="scope">
+            <el-table-column label="反馈状态">
+                <template slot-scope="scope">
             <span :style="String(scope.row.status) === '0' ? 'color:red;':(String(scope.row.status) === '1' ? 'color:blue;' :'color:green') ">
               {{ String(scope.row.status) === '0'?'未回复':(String(scope.row.status) === '1'?'已回复':(String(scope.row.status) === '2'?'已解决':'状态异常')) }}
             </span>
-          </template>
-        </el-table-column>
+                </template>
+            </el-table-column>
 
 
 
-        <el-table-column
-          label="操作"
-          width="160"
-          align="center"
-        >
-          <template slot-scope="scope">
-            <el-button
-              type="text"
-              size="small"
-              class="blueBug"
-              @click="feeddetail(scope.row)"
+            <el-table-column
+                    label="操作"
+                    width="160"
+                    align="center"
             >
-              查看
-            </el-button>
-            <el-button
-              type="text"
-              size="small"
-              class="delBut non"
-              @click="statusHandle(scope.row)"
-            >
+                <template slot-scope="scope">
+                    <el-button
+                            type="text"
+                            size="small"
+                            class="blueBug"
+                            @click="feeddetail(scope.row)"
+                    >
+                        查看
+                    </el-button>
+                    <el-button
+                            type="text"
+                            size="small"
+                            class="delBut non"
+                            @click="statusHandle(scope.row)"
+                    >
               <span :style="String(scope.row.status) === '0' ? 'color:red;':(String(scope.row.status) === '1' ? 'color:blue;' :'color:green') ">
                 {{ scope.row.status == '0' ? '回复' : (scope.row.status== '1'?'解决':'---') }}
               </span>
-            </el-button>
-          </template>
-        </el-table-column>
+                    </el-button>
+                </template>
+            </el-table-column>
 
-      </el-table>
-      <el-pagination
-        class="pageList"
-        :page-sizes="[10, 20, 30, 40]"
-        :page-size="pageSize"
-        layout="total, sizes, prev, pager, next, jumper"
-        :total="counts"
-        :current-page.sync="page"
-        @size-change="handleSizeChange"
-        @current-change="handleCurrentChange"
-      ></el-pagination>
+        </el-table>
+        <el-pagination
+                class="pageList"
+                :page-sizes="[10, 20, 30, 40]"
+                :page-size="pageSize"
+                layout="total, sizes, prev, pager, next, jumper"
+                :total="counts"
+                :current-page.sync="page"
+                @size-change="handleSizeChange"
+                @current-change="handleCurrentChange"
+        ></el-pagination>
     </div>
 
     <el-dialog title="反馈详情" :visible.sync="listVisible" width="50%" top="35px">
-      <table>
-        <tr>
-          <td class="tdleft">反馈ID</td>
-          <td>{{listinfo.id}}</td>
-        </tr>
-        <tr>
-          <td class="tdleft">反馈类型</td>
-          <td>{{listinfo.type=='0'?'普通反馈':(listinfo.type=='1'?'用户举报':(listinfo.type=='2'?'账号封禁申诉':'其他反馈'))}}</td>
-        </tr>
-        <tr>
-          <td class="tdleft">反馈者UID</td>
-          <td>{{listinfo.useruid}}</td>
-        </tr>
-        <tr>
-          <td class="tdleft">反馈者昵称</td>
-          <td>{{ listinfo.name}}</td>
-        </tr>
-        <tr>
-          <td class="tdleft">反馈者邮箱</td>
-          <td>{{ listinfo.email}}</td>
-        </tr>
-        <tr>
-          <td class="tdleft">反馈者电话</td>
-          <td>{{ listinfo.phone}}</td>
-        </tr>
-        <tr>
-          <td class="tdleft">反馈信息</td>
-          <td>{{ listinfo.message}}</td>
-        </tr>
-        <tr>
-          <td class="tdleft">反馈状态</td>
-          <td>
+        <table>
+            <tr>
+                <td class="tdleft">反馈ID</td>
+                <td>{{listinfo.id}}</td>
+            </tr>
+            <tr>
+                <td class="tdleft">反馈类型</td>
+                <td>{{listinfo.type=='0'?'普通反馈':(listinfo.type=='1'?'用户举报':(listinfo.type=='2'?'账号封禁申诉':'其他反馈'))}}</td>
+            </tr>
+            <tr>
+                <td class="tdleft">反馈者UID</td>
+                <td>{{listinfo.useruid}}</td>
+            </tr>
+            <tr>
+                <td class="tdleft">反馈者昵称</td>
+                <td>{{ listinfo.name}}</td>
+            </tr>
+            <tr>
+                <td class="tdleft">反馈者邮箱</td>
+                <td>{{ listinfo.email}}</td>
+            </tr>
+            <tr>
+                <td class="tdleft">反馈者电话</td>
+                <td>{{ listinfo.phone}}</td>
+            </tr>
+            <tr>
+                <td class="tdleft">反馈信息</td>
+                <td>{{ listinfo.message}}</td>
+            </tr>
+            <tr>
+                <td class="tdleft">反馈状态</td>
+                <td>
             <span :style="String(listinfo.status) === '0' ? 'color:red;':(String(listinfo.status) === '1' ? 'color:blue;' :'color:green') ">
             {{ listinfo.status=='0'?'未回复':(listinfo.status=='1'?'已回复':(listinfo.status=='2'?'已解决':'状态异常')) }}
             </span>
-          </td>
-        </tr>
+                </td>
+            </tr>
 
-        <tr>
-          <td class="tdleft">反馈提交时间</td>
-          <td>
-            <template>
-              <span>{{listinfo.createTime}}</span>
-            </template>
-          </td>
-        </tr>
+            <tr>
+                <td class="tdleft">反馈提交时间</td>
+                <td>
+                    <template>
+                        <span>{{listinfo.createTime}}</span>
+                    </template>
+                </td>
+            </tr>
 
-      </table>
-      <div slot="footer" class="dialog-footer">
-        <el-button type="danger" @click="delfeed(listinfo.status,listinfo.id)">删 除</el-button>
-        <el-button type="primary" @click="listVisible = false">确 定</el-button>
-        <el-button @click="listVisible = false">取 消</el-button>
+        </table>
+        <div slot="footer" class="dialog-footer">
+            <el-button type="danger" @click="delfeed(listinfo.status,listinfo.id)">删 除</el-button>
+            <el-button type="primary" @click="listVisible = false">确 定</el-button>
+            <el-button @click="listVisible = false">取 消</el-button>
 
-      </div>
+        </div>
     </el-dialog>
-  </div>
-    <!-- 开发环境版本，包含了有帮助的命令行警告 -->
-    <script src="../../../public/plugins/vue/vue.js"></script>
-    <!-- 引入组件库 -->
-    <script src="../../../public/plugins/element-ui/index.js"></script>
-    <!-- 引入axios -->
-    <script src="../../../public/plugins/axios/axios.min.js"></script>
-    <script src="../../../public/js/request.js"></script>
-    <script src="../../myapi/feedback.js"></script>
-    <script>
-      new Vue({
+</div>
+<!-- 开发环境版本，包含了有帮助的命令行警告 -->
+<script src="../../../public/plugins/vue/vue.js"></script>
+<!-- 引入组件库 -->
+<script src="../../../public/plugins/element-ui/index.js"></script>
+<!-- 引入axios -->
+<script src="../../../public/plugins/axios/axios.min.js"></script>
+<script src="../../../public/js/request.js"></script>
+<script src="../../myapi/feedback.js"></script>
+<script>
+    new Vue({
         el: '#member-app',
         data() {
-          return {
-             input: '',
-             counts: 0,
-             page: 1,
-             pageSize: 10,
-             tableData : [],
-             id : '',
-             status : '',
-             listinfo:{},
-             listVisible:false
-          }
+            return {
+                input: '',
+                counts: 0,
+                page: 1,
+                pageSize: 10,
+                tableData : [],
+                id : '',
+                status : '',
+                listinfo:{},
+                listVisible:false
+            }
         },
         computed: {},
         created() {
-          this.init()
-          this.empInfo = JSON.parse(localStorage.getItem('empInfo'))
+            this.init()
+            this.empInfo = JSON.parse(localStorage.getItem('empInfo'))
         },
         mounted() {
         },
         methods: {
-          async init () {
-            const params = {
-              page: this.page,
-              pageSize: this.pageSize,
-              name: this.input ? this.input : undefined
+            async init () {
+                const params = {
+                    page: this.page,
+                    pageSize: this.pageSize,
+                    name: this.input ? this.input : undefined
+                }
+                await getFeedbackList(params).then(res => {
+                    if (String(res.code) === '1') {
+                        this.tableData = res.data.records || []
+                        this.counts = res.data.total
+                    }
+                }).catch(err => {
+                    this.$message.error('请求出错了：' + err)
+                })
+            },
+            handleQuery() {
+                this.page = 1;
+                this.init();
+            },
+            feeddetail(st){
+                this.listVisible = true;
+                this.listinfo=st;
+                this.listinfo.createTime=this.listinfo.createTime.replace(/T/g, '  ').replace(/.[\d]{3}Z/, '  ')
+            },
+            // 添加
+            addMemberHandle (st) {
+                if (st === 'add'){
+                    window.parent.menuHandle({
+                        id: '2',
+                        url: '/backend/page/member/add.html',
+                        name: '添加员工'
+                    },true)
+                } else {
+                    window.parent.menuHandle({
+                        id: '2',
+                        url: '/backend/page/member/add.html?id='+st,
+                        name: '修改员工'
+                    },true)
+                }
+            },
+            //状态修改
+            statusHandle (row) {
+                this.id = row.id
+                this.status = row.status
+                if(row.status==0){
+                    this.$confirm('确认将状态调整为已回复？', '提示', {
+                        'confirmButtonText': '确定',
+                        'cancelButtonText': '取消',
+                        'type': 'warning'
+                    }).then(() => {
+                        changestatus(this.id).then(res => {
+                            if (String(res.code) === '1') {
+                                this.$message.success('已将状态调整为已回复！')
+                                this.handleQuery()
+                            }
+                        }).catch(err => {
+                            this.$message.error('请求出错了：' + err)
+                        })
+                    })
+                }else if(row.status==1){
+                    this.$confirm('确认将状态调整为已解决？', '提示', {
+                        'confirmButtonText': '确定',
+                        'cancelButtonText': '取消',
+                        'type': 'warning'
+                    }).then(() => {
+                        changestatus(this.id).then(res => {
+                            if (String(res.code) === '1') {
+                                this.$message.success('已将状态调整为已解决！')
+                                this.handleQuery()
+                            }
+                        }).catch(err => {
+                            this.$message.error('请求出错了：' + err)
+                        })
+                    })
+                }
+            },
+            handleSizeChange (val) {
+                this.pageSize = val
+                this.init()
+            },
+            handleCurrentChange (val) {
+                this.page = val
+                this.init()
+            },
+            //删除反馈
+            delfeed(status,id){
+                if(status==0){
+                    this.$confirm('当前反馈还尚未回复，确定要删除该反馈吗？', '提示', {
+                        'confirmButtonText': '确定',
+                        'cancelButtonText': '取消',
+                        'type': 'warning'
+                    }).then(() => {
+                        delfeedback(id).then(res => {
+                            if (String(res.code) === '1') {
+                                this.listVisible=false
+                                this.$message.success('已成功删除该反馈！')
+                                this.handleQuery()
+                            }
+                        }).catch(err => {
+                            this.$message.error('请求出错了：' + err)
+                        })
+                    })
+                }else if(status==1){
+                    this.$confirm('当前反馈已回复，但还尚未解决，确定要删除该反馈吗？', '提示', {
+                        'confirmButtonText': '确定',
+                        'cancelButtonText': '取消',
+                        'type': 'warning'
+                    }).then(() => {
+                        delfeedback(id).then(res => {
+                            if (String(res.code) === '1') {
+                                this.listVisible=false
+                                this.$message.success('已成功删除该反馈！')
+                                this.handleQuery()
+                            }
+                        }).catch(err => {
+                            this.$message.error('请求出错了：' + err)
+                        })
+                    })
+                }else{
+                    this.$confirm('确定要删除该反馈吗？', '提示', {
+                        'confirmButtonText': '确定',
+                        'cancelButtonText': '取消',
+                        'type': 'warning'
+                    }).then(() => {
+                        delfeedback(id).then(res => {
+                            if (String(res.code) === '1') {
+                                this.listVisible=false
+                                this.$message.success('已成功删除该反馈！')
+                                this.handleQuery()
+                            }
+                        }).catch(err => {
+                            this.$message.error('请求出错了：' + err)
+                        })
+                    })
+                }
+            },
+            // 时间格式化
+            dataFormat(value) {
+                var year = value.substr(0, 4)
+                var month = value.substr(5, 2)
+                var day = value.substr(8, 2)
+                var hour = value.substr(11, 2)
+                var min = value.substr(14, 2)
+                var second = value.substr(17,2)
+                return year + "-" + month + "-" + day + " " + hour + ":" + min + ":"+second
+            },
+            typeFormatter(row, column){
+                const type = row.type
+                if (type == 0) {
+                    return '普通反馈'
+                } else if (type == 1) {
+                    return '举报用户'
+                } else if (type == 2) {
+                    return '账号封禁申诉'
+                } else if (type == 3) {
+                    return '举报商家'
+                } else {
+                    return '其他反馈'
+                }
             }
-            await getFeedbackList(params).then(res => {
-              if (String(res.code) === '1') {
-                this.tableData = res.data.records || []
-                this.counts = res.data.total
-              }
-            }).catch(err => {
-              this.$message.error('请求出错了：' + err)
-            })
-          },
-          handleQuery() {
-            this.page = 1;
-            this.init();
-          },
-          feeddetail(st){
-            this.listVisible = true;
-            this.listinfo=st;
-            this.listinfo.createTime=this.listinfo.createTime.replace(/T/g, '  ').replace(/.[\d]{3}Z/, '  ')
-          },
-           // 添加
-          addMemberHandle (st) {
-            if (st === 'add'){
-              window.parent.menuHandle({
-                id: '2',
-                url: '/backend/page/member/add.html',
-                name: '添加员工'
-              },true)
-            } else {
-              window.parent.menuHandle({
-                id: '2',
-                url: '/backend/page/member/add.html?id='+st,
-                name: '修改员工'
-              },true)
-            }
-          },
-          //状态修改
-          statusHandle (row) {
-            this.id = row.id
-            this.status = row.status
-            if(row.status==0){
-              this.$confirm('确认将状态调整为已回复？', '提示', {
-                'confirmButtonText': '确定',
-                'cancelButtonText': '取消',
-                'type': 'warning'
-              }).then(() => {
-                changestatus(this.id).then(res => {
-                  if (String(res.code) === '1') {
-                    this.$message.success('已将状态调整为已回复！')
-                    this.handleQuery()
-                  }
-                }).catch(err => {
-                  this.$message.error('请求出错了：' + err)
-                })
-              })
-            }else if(row.status==1){
-              this.$confirm('确认将状态调整为已解决？', '提示', {
-                'confirmButtonText': '确定',
-                'cancelButtonText': '取消',
-                'type': 'warning'
-              }).then(() => {
-                changestatus(this.id).then(res => {
-                  if (String(res.code) === '1') {
-                    this.$message.success('已将状态调整为已解决！')
-                    this.handleQuery()
-                  }
-                }).catch(err => {
-                  this.$message.error('请求出错了：' + err)
-                })
-              })
-            }
-          },
-          handleSizeChange (val) {
-            this.pageSize = val
-            this.init()
-          },
-          handleCurrentChange (val) {
-            this.page = val
-            this.init()
-          },
-          //删除反馈
-          delfeed(status,id){
-            if(status==0){
-              this.$confirm('当前反馈还尚未回复，确定要删除该反馈吗？', '提示', {
-                'confirmButtonText': '确定',
-                'cancelButtonText': '取消',
-                'type': 'warning'
-              }).then(() => {
-                delfeedback(id).then(res => {
-                  if (String(res.code) === '1') {
-                    this.listVisible=false
-                    this.$message.success('已成功删除该反馈！')
-                    this.handleQuery()
-                  }
-                }).catch(err => {
-                  this.$message.error('请求出错了：' + err)
-                })
-              })
-            }else if(status==1){
-              this.$confirm('当前反馈已回复，但还尚未解决，确定要删除该反馈吗？', '提示', {
-                'confirmButtonText': '确定',
-                'cancelButtonText': '取消',
-                'type': 'warning'
-              }).then(() => {
-                delfeedback(id).then(res => {
-                  if (String(res.code) === '1') {
-                    this.listVisible=false
-                    this.$message.success('已成功删除该反馈！')
-                    this.handleQuery()
-                  }
-                }).catch(err => {
-                  this.$message.error('请求出错了：' + err)
-                })
-              })
-            }else{
-              this.$confirm('确定要删除该反馈吗？', '提示', {
-                'confirmButtonText': '确定',
-                'cancelButtonText': '取消',
-                'type': 'warning'
-              }).then(() => {
-                delfeedback(id).then(res => {
-                  if (String(res.code) === '1') {
-                    this.listVisible=false
-                    this.$message.success('已成功删除该反馈！')
-                    this.handleQuery()
-                  }
-                }).catch(err => {
-                  this.$message.error('请求出错了：' + err)
-                })
-              })
-            }
-          },
-          // 时间格式化
-          dataFormat(value) {
-            var year = value.substr(0, 4)
-            var month = value.substr(5, 2)
-            var day = value.substr(8, 2)
-            var hour = value.substr(11, 2)
-            var min = value.substr(14, 2)
-            var second = value.substr(17,2)
-            return year + "-" + month + "-" + day + " " + hour + ":" + min + ":"+second
-          },
-          typeFormatter(row, column){
-          	const type = row.type
-            	if (type == 0) {
-            	return '普通反馈'
-            	} else if (type == 1) {
-            	return '举报用户'
-            	} else if (type == 2) {
-            	return '账号封禁申诉'
-            	} else if (type == 3) {
-          	    return '举报商家'
-            	} else {
-            	return '其他反馈'
-            	}
-          	}
         }
-      })
-    </script>
+    })
+</script>
 </body>
 </html>

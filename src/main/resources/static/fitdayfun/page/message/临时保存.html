@@ -1,0 +1,169 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width,initial-scale=1.0">
+    <title>Document</title>
+    <style>
+        .containor{
+            margin: -8px -8px;
+            width: 1518px;
+            height: 745px;
+            background-image: url(111.jpg);
+        }
+        .space_right_top{
+            width: 853px ;
+            height: 50px; 
+            font-size: 25px;
+            display: inline-block;
+            background-color: white;
+            text-align: center;
+            vertical-align:top;
+            border-radius:5px;
+            /* 改变相对位置也可以 */
+            /* position: absolute;
+            top:0px;
+            left:516px ; */
+        }
+        .space_right_bottom{
+            padding-left: 47px;
+            padding-top:  28px;;
+
+            font-size: 22px;
+            width: 804px;
+            height: 84px;
+            background-color: white;
+            display: inline-block;
+            border-radius:5px;
+            
+            
+            position: absolute;
+            top:66px;
+            left: 439px ; 
+        }
+        .space_left_buttons{
+            font-size: 30px;
+            color: black;
+            text-decoration: none;
+            text-align: center;
+            
+        }
+        .space_left{
+            width: 229px; 
+            height: 692px; 
+            background-color: white; 
+            display: inline-block; 
+            opacity:0.5;
+            border-radius:5px;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="containor" >
+        <div style="width: 200px;  background-color: blue; display: inline-block;">
+            间隔
+        </div>
+
+        <div class="space_left" >
+            <div style="font-size: 32px; text-align: center; ">
+                消息中心
+            </div>
+            
+            <br><br>
+
+            <div style="text-align: center;">
+                <a class="space_left_buttons" href="#" target="_self">● 回复我的</a>
+            </div>
+
+            <br><br>
+
+            <div style="text-align: center;">
+                <a class="space_left_buttons" href="#" target="_self">● @我的人</a>
+            </div>
+
+            <br><br>
+
+            <div style="text-align: center;">
+                <a class="space_left_buttons" href="#" target="_self">● 收到的赞</a>
+            </div>
+
+            <br><br>
+
+            <div style="text-align: center;">
+                <a class="space_left_buttons" href="#" target="_self">● 系统通知</a>
+            </div>
+
+            <br><br>
+
+            <div style="text-align: center;">
+                <a class="space_left_buttons" href="#" target="_self">● 我的消息</a>
+            </div>
+
+            <br><br>
+
+            <div style="text-align: center;">
+                <a class="space_left_buttons" href="#" target="_self">● 我的私信</a>
+            </div>
+
+            <hr style="color: black;">
+
+            <br>
+
+            <div style="text-align: center;">
+                <a class="space_left_buttons" href="#" target="_self">● 消息设置</a>
+            </div>
+            
+        </div>
+
+
+        <div class="space_right_top" >
+            消息设置
+        </div>
+
+        <div style="width: 200px;  background-color: blue; display: inline-block;">
+            间隔
+        </div>
+
+        <div>
+            <div class="space_right_bottom " style="  position: absolute; top:66px; left: 439px ;"  >
+                <span>消息提醒</span><span>（关闭后，消息将不再进行提醒）</span>
+                <div>
+                    <label><input type="radio" name="info_remind" checked>开启</label>
+                    <label><input type="radio" name="info_remind">关闭</label>
+                </div>
+            </div> -->
+            <div class="space_right_bottom " style="  position: absolute; top:183px; left: 439px ; ">
+                <span>是否接收私信</span><span>（关闭后，将关闭所有私信）</span>
+                <div>
+                    <label><input type="radio" name="private" checked>开启</label>
+                    <label><input type="radio" name="private">关闭</label>
+                </div>
+            </div>
+            <div class="space_right_bottom " style="  position: absolute; top: 299px; left: 439px ; ">
+                <span>回复消息提醒</span><span>（关闭后，消息将不再进行提醒）</span>
+                <div>
+                    <label><input type="radio" name="reply" checked>开启</label>
+                    <label><input type="radio" name="reply">关闭</label>
+                </div>
+            </div>
+            <div class="space_right_bottom " style="  position: absolute; top: 416px; left: 439px ; ">
+                <span>@我的消息提醒</span><span>（是否@消息提醒）</span>
+                <div>
+                    <label><input type="radio" name="ai_te" checked>开启</label>
+                    <label><input type="radio" name="ai_te">关闭</label>
+                </div>
+            </div>
+            <div class="space_right_bottom " style="  position: absolute; top: 533px; left: 439px ; ">
+                <span>收到的赞消息提醒</span><span>（是否收到赞消息提醒）</span>
+                <div>
+                    <label><input type="radio" name="ai_te" checked>开启</label>
+                    <label><input type="radio" name="ai_te">关闭</label>
+                </div>
+            </div>
+        </div>
+        
+    </div>
+</body>
+</html>

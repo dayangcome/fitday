@@ -6,407 +6,302 @@
         <link rel="stylesheet" href="../../../public/plugins/element-ui/index.css" />
 		
         <style type="text/css">
-              .el-carousel-item img{
-                width: 100%;
-                height: 100%;
-              }
-              .bannerimg{
-                width: 100%;
-                height: 100%;
-				
-              }
-              .myflex{
-                display:flex;
-                margin:5px;
-				 background-color: #efe6ef;
-background-image: linear-gradient(45deg, #efe6ef 14%, #c7e9eb 83%, #ffffff 100%);
+            * {
+                        margin: 0;
+                        padding: 0;
+                        box-sizing: border-box;
+                    }
+            body {
+                animation: fadeInAnimation ease 4s;
+                animation-iteration-count: 1;
+                animation-fill-mode: forwards;
+                font-size: 18px;
+            }
 
-
-				  /*background-image:url("../../assets/img/portfolio/FFFFFFFF (2).jpg");*/
-				  
-
-
-				  /*background-color: #85ffc2;
-background-image: linear-gradient(236deg, #85ffc2 0%, #fff07d 82%, #ffffff 100%);
-				  opacity: 0.8;*/
-
-              }
-			
-			/*body{
-				background-color: #85ffc2;
-				
-background-image: linear-gradient(236deg, #85ffc2 0%, #fff07d 82%, #ffffff 100%);
-
-			} */
-			
-              .left{
-                  width:52%;
-                  height:1200px;
-                  border-right:solid #7A7272 1px ;
-
-
-              }
-              .right{
-                  width:48%;
-                  margin-left:2px;
-                  height:1200px;
-                 
-              }
-              .left-up{
-                  height: 30%;
-				  border-style: solid;
-				  border-radius: 25px;
-				  
-
-					  
-
-
-              }
-              .left-down{
-                  display: flex;
-                  flex-wrap: wrap;
-                  
-                  margin-top: 2px;
-                  height: 50%;
-              }
-              .mybanner{
-                  
-
-                  margin-top: 30px;
-                  height: 120px;
-                  text-align: center;
-              }
-              .mytags{
-                  margin: 30px 0 0 10px;
-              }
-              .search{
-                 margin: 100px 50px 0 50px;
-                  height: 10%;
-                  
-              }
-              .hotsearch{
-                   margin: 20px 50px 100px 50px;
-                   border-style: solid;
-				   border-radius: 10px;
-				   
-				
-              }
-              .tools{
-                  margin: 70px 0px 0 0px;
-				  border-top:solid #7A7272 1px ;
-                  
-              }
-              .search .el-input{
-                  font-size: 18px;
-              }
-              .search .el-input__inner{
-                 border: 2px solid #ccc;
-                 width: 555px;
-                 height: 60px;
-                 border-radius: 28px;
-              }
-              .search .el-input__suffix{
-                  right: 80px;
-              }
-              .el-tag + .el-tag {
-                  margin-left: 10px;
+            @keyframes fadeInAnimation {
+                0% {
+                    opacity: 0;
                 }
-                .button-new-tag {
-                  margin-left: 10px;
-                  height: 32px;
-                  line-height: 30px;
-                  padding-top: 0;
-                  padding-bottom: 0;
+                100% {
+                    opacity: 1;
                 }
-                .input-new-tag {
-                  width: 90px;
-                  margin-left: 10px;
-                  vertical-align: bottom;
+            }
+                    .card-box {
+                        display: flex;
+                        flex-wrap: wrap;
+                
+                    }
+                    .card-box .card {
+                        transition: transform .2s, box-shadow .2s;
+                        background-color: #fff;
+                        display: flex;
+                        flex-direction: column;
+                        justify-content: center;
+                        align-items: center;
+                        width: 240px;
+                        height: 340px;
+                        margin: 20px 30px;
+                        border-radius: 10px;
+                        border:1px solid #DCDFE6;
+                        color: #3e3e3e;
+                        font-size: 20px;
+                        font-weight: 700;
+                        letter-spacing: 4px;
+                        cursor: pointer;
+                    }
+                    .card-box .card:hover {
+                        transition: transform .2s, box-shadow .2s;
+                        transform: translateY(-4px);
+                        box-shadow: 4px 4px 8px rgba(0, 0, 0, .1), -4px -4px 8px rgba(0, 0, 0, .1);
+                    }
+                    .image2:hover {
+                        transition: transform .2s, box-shadow .2s;
+                        transform: translateY(-4px);
+                        box-shadow: 4px 4px 8px rgba(0, 0, 0, .1), -4px -4px 8px rgba(0, 0, 0, .1);
+                    }
+                .image2 {
+                        margin-top:70px;
+                        width: 100%;
+                        height: 100%;
+                        padding:2px;
+                        border-radius: 10px;
+                        border:1px solid #DCDFE6;
+                        transition: transform .2s, box-shadow .2s;
                 }
-              h2{
-                  display: inline-block;
-                  margin-top: 20px;
-				  
-
-              }
-              h3{
-                  display: inline-block;
-                  margin: 50px 0 0 0px;
-              }
-			h4{
-                  display: inline-block;
-                  margin: 20px 0 0 40px;
-				font-size:20px;
-              }
-			h5{
-				display: inline-block;
-                  margin: 20px 0 0 20px;
-				font-size:20px;
-			}
-			h6{
-				display: inline-block;
-				font-size:15px;
-				color: #000000;
-				
-			}
-			
-              ul li{
-                  list-style: none;
-                  height: 30px;
-                  margin-top: 10px;
-			}
-			.bottom {
-                margin-top: 13px;
-                line-height: 12px;
+                .image {
+                 margin-top:15px;
+                 width: 80%;
+                 height: 80%;
+                 border-radius: 20px;
+             }
+            
+            .el-carousel__item h3 {
+                color: #475669;
+                font-size: 14px;
+                opacity: 0.75;
+                line-height: 150px;
+                margin: 0;
               }
             
-              .button {
-                padding: 0;
-                float: right;
-              }
-            
-              .image {
-                width: 100%;
-                display: block;
-              }
-            
-              .clearfix:before,
-              .clearfix:after {
-                  display: table;
-                  content: "";
+              .el-carousel__item:nth-child(2n) {
+                 background-color: #99a9bf;
               }
               
-              .clearfix:after {
-                  clear: both
+              .el-carousel__item:nth-child(2n+1) {
+                 background-color: #d3dce6;
               }
-			.text {
-    font-size: 14px;
-  }
+              .mycarousel{
+                  margin: 30px 0 30px 30px;
+                  width: 700px;
+                  height: 600px;
+              }
+              .card-video{
+                  
+                  display: flex;
+                  flex-wrap: wrap;
+                  justify-content:center;
+                  margin: 20px;
+                  width: 1264px;
+                  height: 620px;
+              }
+    
+              .card-video .card {
+                  display: flex;
+                  flex-direction: column;
+                  justify-content: center;
+                  width: 230px;
+                  height: 190px;
+                  margin: 0 10px;
+                  border-radius: 10px;
 
-  .item {
-    padding: 18px 0;
-  }
+                  color: #000000;
+                  font-size: 20px;
+                  font-weight: 700;
+                  letter-spacing: 3px;
+                  cursor: pointer;
+              }
+              .author{
+                  margin-top: 5px;
+                  font-size: 13px;
+                  color: #3e3e3e;
+              }
+              .myinfo{
+                  margin-top: 10px;
+              }
+              .myinfo:hover{
+                  color: rgb(107, 196, 240);
+              }
 
-  .box-card {
-    width: 400px;
-  }
-			.change-icon{
-    font-size:100px;
-	color:#12C5B4;
-	margin: auto;
-}
-			.content-1{
-				margin: 10px 80px 60px 70px;
-			}
-			.fasong{
-				margin: 10px 100px 0px 350px;
-			}
-			
-			
+               .author:hover{
+                  color: rgb(107, 196, 240);
+              }
+            .bannerimg{
+                width: 100%;
+                height: 100%;
 
-
-
+            }
         </style>
     </head>
     <body>
         <div id="app">
-           <div class="block">
-               <el-carousel :height="bannerHeight + 'px'">
-                 <el-carousel-item v-for="item in piclist" :key="item">
-                   <img :src="item" class="bannerimg"/>
-                 </el-carousel-item>
-               </el-carousel>
-            </div>
-            
-            <div class="myflex">
-                <div class="left">
-                    <div class="left-up">
-                        <div class="mybanner">
-                            <h2>欢迎您<br>fitday大家庭的{{userInfo.username}}！</h2>
-                        </div> 
-                        <h3>&nbsp;&nbsp;&nbsp;又是全新的一天，定义今天的自己享受生活吧！</h3>
-                        <div class="mytags">
-                            <el-tag
-                              :key="tag"
-                              v-for="tag in dynamicTags"
-                              closable
-                              :disable-transitions="false"
-                              @close="handleClose(tag)">
-                              {{tag}}
-                            </el-tag>
-                            <el-input
-                              class="input-new-tag"
-                              v-if="inputVisible"
-                              v-model="inputValue"
-                              ref="saveTagInput"
-                              size="small"
-                              @keyup.enter.native="handleInputConfirm"
-                              @blur="handleInputConfirm"
-                            >
-                            </el-input>
-                            <el-button v-else class="button-new-tag" size="small" @click="showInput">+ 新标签</el-button>
-							
-							<div class="fasong">
-							<el-button type="success" round>打卡</el-button>
-							</div>
-							
-                        </div>
-                        
-                    </div>
-                    
-                    <div class="left-down">
-                        <div style="width: 40%;">
-                            <h3>今日答题</h3>
-							<br>
-							<br>
-							<div v-for="(o, index) in 1" :key="o" :offset="index > 0 ? 1 : 0" style="width: 220px;margin-right: 50px;">
-                                <el-card :body-style="{ padding: '0px' }">
-                                  <img src="../../assets/img/portfolio/model6-4.jpg" class="image">
-                                  <div style="padding: 14px;">
-                                    <span>题目{{o}}</span>
-                                    <div class="bottom clearfix">
-                                      <el-button type="text" class="button">查看详情</el-button>
-                                    </div>
-                                  </div>
-                                </el-card>
-                              </div>
-						
-						</div>
-                        <div style="width: 60%;">
-                            <h3>今日榜单</h3>
-							<br>
-							<br>
-							<el-card class="box-card">
-                            <div v-for="o in 4" :key="o" class="text item">
-                                 {{'列表内容 ' + o }}
-                            </div>
-                            </el-card>
-                        </div>
-                        <div style="width: 100%;">
-                            <h3>热门答题</h3>
-							<br>
-							<br>
-							<div style="display: flex;">
-							<div v-for="(o, index) in 4" :key="o" :offset="index > 0 ? 4 : 0" style="width: 220px;margin-right: 50px;">
-                                <el-card :body-style="{ padding: '0px' }">
-                                  <img src="../../assets/img/portfolio/model6-4.jpg" class="image">
-                                  <div style="padding: 14px;">
-                                    <span>题目{{o}}</span>
-                                    <div class="bottom clearfix">
-                                      <el-button type="text" class="button">查看详情</el-button>
-                                    </div>
-                                  </div>
-                                </el-card>
-                              </div>
-                        </div>
-                    
-                    </div>
-                    
-                </div> 
-				</div>
-                <div class="right">
-                    <div class="search">
-						
-                        <el-input placeholder="感兴趣的搜一搜" class="myinput" v-model="keyword"  >
-                                <i
-                                  slot="suffix"
-                                  class="el-input__icon el-icon-search"
-                                  style="cursor: pointer;font-size: 28px;line-height: 60px;"
-                                  @click="handleQuery"
-                                ></i>
-                        </el-input>
-                    </div>
-                    <div class="hotsearch">
-                        <el-table
-      :data="tableData"
-								
-      style="width: 100%"
-                            
-                          
-      >
-      <el-table-column
-        prop="hot"
-		label="今日热搜"
-        width="180">
-      </el-table-column>
-      
-    </el-table>
-                    </div>
-                    <div class="tools">
-                        
-                            <h4>健康工具</h4>
-                        
-                        <!--<ul>
-                        	<li v-for="item in toollist">
-                        		<strong>{{item}}</strong>
-                        	</li>
-                        </ul>-->
-						<div style="display: flex;">
-							<div class="content-1">
-								<div class="change-icon">
-   						<i class="el-icon-s-platform" ></i>
-								</div>
-								
-								<el-link href="https://www.boohee.com/assessment/calory" target="_blank" type="primary">&nbsp;<h6>卡路里计算器</h6></el-link>
-								
-								
-							</div>
-						
-						 
-							<div class="content-1">
-								<div class="change-icon">
-   						<i class="el-icon-s-data" ></i>
-								</div>
-								
-								<el-link href="https://www.boohee.com/assessment/bmi" target="_blank" type="primary">&nbsp;<h6>身体质量指数</h6></el-link>
-								
-							</div>
-						 
-							<div class="content-1">
-								<div class="change-icon">
-   						<i class="el-icon-edit" ></i>
-								</div>
-								
-								<el-link href="https://www.boohee.com/assessment/standard_weight" target="_blank" type="primary">&nbsp;&nbsp;<h6>标准体重计算</h6></el-link>
-								
-							</div>
-						 
-						</div>
-						<div style="display: flex;">
-							<div class="content-1">
-								<div class="change-icon">
-   						<i class="el-icon-coffee" ></i>
-								</div>
-								
-								<el-link href="https://www.boohee.com/assessment/bmr" target="_blank" type="primary">&nbsp;<h6>基础代谢计算</h6></el-link>
-								
-								
-							</div>
-						
-						 
-							<div class="content-1">
-								<div class="change-icon">
-   						<i class="el-icon-c-scale-to-original" ></i>
-								</div>
-								
-								<el-link href="https://www.boohee.com/assessment/heart_rate" target="_blank" type="primary">&nbsp;<h6>燃脂运动计算</h6> </el-link>
-								
-							</div>
-						 
-							<div class="content-1">
-								<div class="change-icon">
-   						<i class="el-icon-potato-strips" ></i>
-								</div>
-								
-								<el-link href="https://www.boohee.com/assessment/health_weight" target="_blank" type="primary">&nbsp;&nbsp;<h6>健康体重范围</h6></el-link>
-								
-							</div>
-						 
-						</div>
-
-                    </div>
+            <div id="question" style="display: flex;">
+                <div class="mycarousel">
+                    <el-carousel height="500px" style="border-radius:10px;width: 680px;">
+                        <el-carousel-item v-for="item in piclist" :key="item">
+                            <img :src="item" class="bannerimg"/>
+                        </el-carousel-item>
+                    </el-carousel>
                 </div>
-            </div> 
+                <div class="card-video">
+                    <div class="card" @click="navto(o)">
+                        <img src="../../assets/img/portfolio/2.jpg" class="image2">
+                        <div class="myinfo">
+                            视频1
+                        </div>
+                        <div class="author">
+                           UP 徐一鸣 · 19小时前
+                        </div>
+                   
+                    </div>
+                    <div class="card">
+                        <img src="../../assets/img/portfolio/3.jpg" class="image2">
+                        <div class="myinfo">
+                            视频2
+                        </div>
+                        <div class="author">
+                             UP 赵俊超 · 3-21
+                        </div>
+                      
+                    </div>
+                    <div class="card">
+                        <img src="../../assets/img/portfolio/4.jpg" class="image2">
+                        <div class="myinfo">
+                            视频3
+                        </div>
+                    <div class="author">
+                         UP 摩托车· 3-22
+                    </div>
+                    </div>
+                    <div class="card">
+                        <img src="../../assets/img/portfolio/4.jpg" class="image2">
+                        <div class="myinfo">
+                            视频4
+                        </div>
+                          <div class="author">
+                               UP 大洋· 3-17
+                          </div>
+                    </div>
+                    <div class="card">
+                        <img src="../../assets/img/portfolio/4.jpg" class="image2">
+                        <div class="myinfo">
+                            视频5
+                        </div>
+                        <div class="author">
+                             UP 李哲· 3-14
+                        </div>
+            
+                    </div>
+                    <div class="card">
+                        <img src="../../assets/img/portfolio/4.jpg" class="image2">
+                        <div class="myinfo">
+                            视频6
+                        </div>
+                        <div class="author">
+                             UP 余洋· 3-11
+                        </div>
+                    </div>
+                    
+                </div>
+            </div>
+           <div id="main" style="display: flex;">
+
+               <div class="card-box">
+                       <div class="card">
+                           <img src="../../assets/img/portfolio/2.jpg" class="image">
+                           <el-divider></el-divider>
+                           <div class="myinfo">
+                               内容1
+                           </div>
+                           <el-divider></el-divider>
+                       </div>
+                       <div class="card">
+                           <img src="../../assets/img/portfolio/3.jpg" class="image">
+                           <el-divider></el-divider>
+                           <div class="myinfo">
+                               内容2
+                           </div>
+                           <el-divider></el-divider>
+                       </div>
+                       <div class="card">
+                           <img src="../../assets/img/portfolio/4.jpg" class="image">
+                           <el-divider></el-divider>
+                           <div class="myinfo">
+                               内容3
+                           </div>
+                           <el-divider></el-divider>
+                       </div>
+                       <div class="card">
+                           <img src="../../assets/img/portfolio/5.jpg" class="image">
+                           <el-divider></el-divider>
+                           <div class="myinfo">
+                               内容4
+                           </div>
+                           <el-divider></el-divider>
+                       </div>
+                       <div class="card">
+                           <img src="../../assets/img/portfolio/6.jpg" class="image">
+                           <el-divider></el-divider>
+                           <div class="myinfo">
+                               内容5
+                           </div>
+                           <el-divider></el-divider>
+                       </div>
+                       <div class="card">
+                           <img src="../../assets/img/portfolio/7.jpg" class="image">
+                           <el-divider></el-divider>
+                           <div class="myinfo">
+                               内容6
+                           </div>
+                           <el-divider></el-divider>
+                       </div>
+                       <div class="card">
+                           <img src="../../assets/img/portfolio/model6-1.jpg" class="image">
+                           <el-divider></el-divider>
+                           <div class="myinfo">
+                               内容7
+                           </div>
+
+                           <el-divider></el-divider>
+                       </div>
+                       <div class="card">
+                           <img src="../../assets/img/portfolio/model1-1.png" class="image">
+                           <el-divider></el-divider>
+                           <div class="myinfo">
+                               内容8
+                           </div>
+                           <el-divider></el-divider>
+                       </div>
+                       <div class="card">
+                           <img src="../../assets/img/portfolio/model1-3.jpg" class="image">
+                           <el-divider></el-divider>
+                           <div class="myinfo">
+                               内容9
+                           </div>
+                           <el-divider></el-divider>
+                       </div>
+                       <div class="card">
+                           <img src="../../assets/img/portfolio/model4-2.jpg" class="image">
+                           <el-divider></el-divider>
+                           <div class="myinfo">
+                               内容10
+                           </div>
+                           <el-divider></el-divider>
+                       </div>
+                       
+                   </div>
+
+            
+           </div>
         </div>
         <!-- 开发环境版本，包含了有帮助的命令行警告 -->
         <script src="../../../public/plugins/vue/vue.js"></script>
@@ -423,45 +318,13 @@ background-image: linear-gradient(236deg, #85ffc2 0%, #fff07d 82%, #ffffff 100%)
                 el: '#app',
                 data() {
                     return {
-                      piclist:[
-                          "../../assets/img/portfolio/b1.jpg",
-                          "../../assets/img/portfolio/b2.jpg",
-                          "../../assets/img/portfolio/b3.jpg",
-                          "../../assets/img/portfolio/b4.jpg",
-                      ],
-                      bannerHeight: 500,
+                        piclist:[
+                            "../../assets/img/portfolio/b1.jpg",
+                            "../../assets/img/portfolio/b2.jpg",
+                            "../../assets/img/portfolio/b3.jpg",
+                            "../../assets/img/portfolio/b4.jpg",
+                        ],
                       keyword:"",
-                      hotlist:[
-                          "哎对对对",
-                          "内网渗透",
-                          "鸡你太美",
-						  "好啊好啊",
-						  "可以可以",
-						  "不错不错"
-                      ],
-						tableData: [{
-							hot: '1.哎对对对'},
-									{
-									hot:"2.内网舌头"
-									},
-									{
-									hot:"3.bushi很糊主义"
-									},
-									{
-										hot:"4.too so so so"
-									
-				
-            
-         
-          }],
-                      toollist:[
-                          "身体质量指数(BMI)",
-                          "标准体重计算",
-                          "健康体重范围",
-                          "基础代谢计算",
-                          "燃脂运动计算"
-                      ],
-                      dynamicTags: ['标签一', '标签二', '标签三'],
                       inputVisible: false,
                       inputValue: '',
                       userInfo:[]
@@ -477,6 +340,10 @@ background-image: linear-gradient(236deg, #85ffc2 0%, #fff07d 82%, #ffffff 100%)
                     },false);
                 },    
                 methods: {
+                    navto(num){
+                        window.location.href = "../videodetails/videodetails.html"
+                        console.log(num)
+                    },
                     setSize(){
                         this.bannerHeight = document.body.clientWidth / 4
                     },

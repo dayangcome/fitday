@@ -1,0 +1,211 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <title></title>
+    <link rel="stylesheet" href="../../../public/plugins/element-ui/index.css" />
+    <script type="text/javascript" src="../../../public/js/jquery.min.js"></script>
+    <script type="text/javascript" src="../../../public/js/sliders.js"></script>
+    <style>
+        *{
+            font-size: 16px;
+            margin: 0;
+            padding: 0;
+        }
+        .wrapper{
+            width: 800px;
+            height: 800px;
+            margin: 0 auto;
+        }
+        button{
+            width: 200px;
+            height: 50px;
+            line-height: 50px;
+            border-radius: 10px;
+            font-size: 16px;
+            font-weight: 800;
+            color: white;
+            margin-top: 10px;
+            background-color: green;
+            outline: none;
+        }
+        .content{
+            margin-left: 50px;
+            margin-top: 10px;
+            padding: 10px;
+            width: 500px;
+            height: 500px;
+            border-radius: 20px;
+            border: 1px solid black;
+        }
+        .t1{
+            width: 400px;
+            height: 30px;
+            line-height: 50px;
+            font-size: 16px;
+        }
+        .opt{
+            margin-top: 10px;
+        }
+        .content1{
+            margin-top: 10px;
+            width: 400px;
+            height: 100px;
+            border-radius: 10px;
+            border: 1px solid black;
+        }
+        .cont1{
+            width: 500px;
+            height: 80px;
+            margin-top: 20px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            /* border: 1px solid black; */
+        }
+        img{
+            width: 50px;
+            height: 50px;
+            border-radius: 25px;
+            margin-right: 20px;
+        }
+        .up{
+            margin-top: 30px;
+        }
+        .down{
+            margin-top: 20px;
+        }
+        .cont1>div{
+            display: inline-block;
+            /* border: 1px solid black; */
+        }
+        .cont1 h1{
+            width: 300px;
+            font-size: 20px;
+        }
+        .cont1 p{
+            /* width: 300px; */
+            height: 50px;
+            line-height:50px;
+        }
+    </style>
+</head>
+<body>
+
+<div class="wrapper">
+    <button>我要发布动态</button>
+    <div class="content">
+        <input type="text" placeholder="请输入标题(1-50个字符)" class="t1">
+        <div class="opt">
+            <span>所属模块:</span>
+            <select name="section">
+                <option value="请选择模块" selected>请选择模块</option>
+                <option value="电子书籍">电子书籍</option>
+                <option value="新课来了">新课来了</option>
+                <option value="新手报到">新手报到</option>
+                <option value="职业规划">职业规划</option>
+            </select>
+        </div>
+        <div id="app">
+            <el-input
+                    class="down"
+                    type="textarea"
+                    :rows="2"
+                    placeholder="分享下你的健身与饮食吧..."
+                    v-model="textarea">
+            </el-input>
+
+
+            <el-upload
+                    class="up"
+                    action="https://jsonplaceholder.typicode.com/posts/"
+                    list-type="picture-card"
+                    :on-preview="handlePictureCardPreview"
+                    :on-remove="handleRemove">
+
+                <i class="el-icon-plus">图片</i>
+            </el-upload>
+            <!--<el-dialog :visible.sync="dialogVisible">
+                <img width="100%" :src="dialogImageUrl" alt="">
+            </el-dialog>-->
+            <button>发布</button>
+        </div>
+        <div class="cont">
+
+        </div>
+    </div>
+</div>
+<!-- Vue和element-ui以及axios的JS-->
+<script src="../../../public/plugins/vue/mystyle.js"></script>
+<!-- 开发环境版本，包含了有帮助的命令行警告 -->
+<script src="../../../public/plugins/vue/vue.js"></script>
+<!-- 引入组件库 -->
+<script src="../../../public/plugins/element-ui/index.js"></script>
+<script src="../../../public/plugins/axios/axios.min.js"></script>
+<script src="../../../public/js/request.js"></script>
+<script>
+    new Vue({
+        el: "#app",
+        data() {
+            return {
+                dialogImageUrl: '',
+                dialogVisible: false,
+                textarea: ''
+
+            };
+
+        },
+        methods: {
+            handleRemove(file, fileList) {
+                console.log(file, fileList);
+            },
+            handlePictureCardPreview(file) {
+                this.dialogImageUrl = file.url;
+                this.dialogVisible = true;
+            }
+        }
+    })
+</script>
+<script>
+    var ary=['./img/1.jpeg','./img/2.jpeg','./img/3.jpeg','./img/4.jpeg','./img/5.jpeg']
+    var btns=document.querySelectorAll("button");//我要发贴按钮和发布按钮
+    var inputs=document.querySelectorAll("input");//标题与内容输入框
+    var select=document.querySelector("select");//选择模块
+    var content=document.querySelector(".content")
+    var cont=document.querySelector(".cont");//输出内容
+    btns[0].onclick=function(){
+        inputs[0].value="";
+        inputs[1].value="";
+        // select.value="";
+        content.style.display="block";
+        cont.style.display="none";
+    }
+    btns[1].onclick=function(){
+        if(inputs[0].value==""||inputs[1].value==""||select.value=="请选择模块"){
+            alert("请输入内容!!!");
+            btns[1].style.disabled=true;
+        }else{
+            cont.style.display="block";
+            content.style.display="none";
+            var date=new Date;
+            var cont1=document.createElement("div");
+            cont.append(cont1);
+            var div11=document.createElement("div");
+            cont1.append(div11);
+            var num=Math.floor(Math.random()*4);
+            var h1=document.createElement("h1");
+            var img=document.createElement("img");
+            var p=document.createElement("p");
+            cont1.classList.add("cont1");
+            img.src=ary[num];
+            h1.innerHTML=inputs[0].value;
+            p.innerHTML=select.value;
+            p.innerHTML+=`&emsp;&emsp;发表时间：${date.getMonth()+1}月${date.getDate()}日${date.getHours()}时${date.getMinutes()}分${date.getSeconds()}秒`;
+            div11.before(img);
+            div11.append(h1);
+            div11.append(p);
+        }
+    }
+</script>
+</body>
+</html>

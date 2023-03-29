@@ -22,6 +22,8 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 import java.math.BigDecimal;
 import java.nio.charset.StandardCharsets;
+import java.sql.SQLException;
+import java.sql.SQLIntegrityConstraintViolationException;
 import java.time.LocalDateTime;
 
 /**
@@ -96,7 +98,18 @@ public class UserController {
         return R.success(user1);
     }
 
-    //获得用户信息
+    //获得用户信息1
+    @GetMapping("/getuser/{uid}")
+    public R<User> getuser(@PathVariable Long uid){
+        User user=userService.getById(uid);
+        if(user==null){
+            return R.error("未找到用户");
+        }else {
+            return R.success(user);
+        }
+    }
+
+    //获得用户信息2
     @GetMapping("/userinfo/{uid}")
     public R<Userinfo> userinfo(@PathVariable Long uid){
         LambdaQueryWrapper<Userinfo> queryWrapper=new LambdaQueryWrapper<>(); //获得用户的体重等信息
@@ -254,7 +267,11 @@ public class UserController {
         user1.setAvatar(user.getAvatar());
         user1.setSex(user.getSex());
         user1.setWxNumber(user.getWxNumber());
-        userService.updateById(user1);
+        try{
+            userService.updateById(user1);
+        }catch (Exception e){
+            return R.error("修改失败，可能是由于手机号有重复");
+        }
         return R.success("修改成功");
     }
 
@@ -284,6 +301,58 @@ public class UserController {
         userinfo1.setStage(1);
         userinfoService.save(userinfo1);
         return R.success(userinfo1);
+    }
+
+    //更改账号信息
+    @GetMapping("/quest/{uid}/{number}/{info}")
+    public R<Userinfo> quest(@PathVariable Long uid,@PathVariable int number,@PathVariable String info){
+        LambdaQueryWrapper<Userinfo> queryWrapper=new LambdaQueryWrapper<>();
+        queryWrapper.eq(Userinfo::getUserId,uid);
+        Userinfo userinfo= userinfoService.getOne(queryWrapper);
+        if(userinfo==null){
+            Userinfo userinfo1=new Userinfo();
+            userinfo1.setAttention(0);
+            userinfo1.setBlack(0);
+            userinfo1.setCreateTime(LocalDateTime.now());
+            userinfo1.setUserId(uid);
+            if(number==1){
+                userinfo1.setHeight(Double.parseDouble(info.trim()));
+            }
+            if(number==2){
+                userinfo1.setWeight(Double.parseDouble(info.trim()));
+            }
+            if(number==3){
+                userinfo1.setFatRate(Float.parseFloat(info.trim()));
+            }
+            if(number==4){
+                userinfo1.setPrepare(info);
+            }
+            userinfo1.setFans(0);
+            userinfo1.setStage(1);
+            userinfoService.save(userinfo1);
+            return R.success(userinfo1);
+        }else{
+            if(number==1){
+                userinfo.setHeight(Double.parseDouble(info.trim()));
+                if(userinfo.getWeight()!=null){
+                    userinfo.setBmi(userinfo.getWeight()/userinfo.getHeight()/userinfo.getHeight()*10000);
+                }
+            }
+            if(number==2){
+                userinfo.setWeight(Double.parseDouble(info.trim()));
+                if(userinfo.getHeight()!=null){
+                    userinfo.setBmi(userinfo.getWeight()/userinfo.getHeight()/userinfo.getHeight()*10000);
+                }
+            }
+            if(number==3){
+                userinfo.setFatRate(Float.parseFloat(info.trim()));
+            }
+            if(number==4){
+                userinfo.setPrepare(info.trim());
+            }
+            userinfoService.updateById(userinfo);
+        }
+        return R.success(userinfo);
     }
 }
 

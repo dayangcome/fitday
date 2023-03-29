@@ -3,10 +3,27 @@
     <head>
         <meta charset="utf-8" />
         <title>运动计划</title>
+
         <link rel="stylesheet" href="../../../public/plugins/element-ui/index.css" />
         <style type="text/css">
-            body{
+            body {
+                animation: fadeInAnimation ease 3s;
+                animation-iteration-count: 1;
+                animation-fill-mode: forwards;
+                font-size: 16px;
                 padding-right: 0 !important;
+            }
+
+            @keyframes fadeInAnimation {
+                0% {
+                    opacity: 0;
+                }
+                100% {
+                    opacity: 1;
+                }
+            }
+            .el-button+.el-button{
+                margin-left: 6px;
             }
             .el-table::before{
                 height: 0px;
@@ -471,8 +488,7 @@
                       </div>
                       <div class="rightdown">
                           <h3>运动日历</h3>
-                          <el-calendar v-model="value">
-                          </el-calendar>
+                          <div id="chart" style="width: 450px;height:600px;"></div>
                       </div>
                 </div>
            </div>
@@ -487,8 +503,11 @@
 
         <script src="../../../public/plugins/axios/axios.min.js"></script>
         <script src="../../../public/js/request.js"></script>
+        <script src="../../../public/js/echarts.js"></script>
         <script src="../../myapi/sport.js"></script>
         <script>
+
+
             new Vue({
                 el: '#app',
                 data() {
@@ -516,6 +535,7 @@
                         startTime: '',
                         endTime: '',
                         mypercent:0,
+                        sevenday:[],
                       logintype:0,
                       finish:0,
                       allheat:0,
@@ -567,6 +587,7 @@
                     this.init2()
                     this.init3()
                     this.init6()
+
                 },
                 mounted() {
                     this.userInfo2 = JSON.parse(localStorage.getItem('userInfo2'))
@@ -576,8 +597,79 @@
                         this.allheat=0
                         this.notwrite=true
                     }
+                    this.fun()
+
+
+
                 },
                 methods: {
+                    myechart(){
+                        // 基于准备好的dom，初始化echarts实例
+                        var myChart = echarts.init(document.getElementById('chart'));
+
+                        console.log(this.sevenday[5])
+                        // 指定图表的配置项和数据
+                        var option = {
+                            title: {
+                                text: '运动热量记录'
+                            },
+                            tooltip: {},
+                            legend: {
+                                data: ['卡路里']
+                            },
+                            xAxis: {
+                                data: [` ${new Date(new Date().getTime() - 6*24*60*60*1000).toLocaleDateString().replace(/\//g,"-")} `, ` ${new Date(new Date().getTime() - 5*24*60*60*1000).toLocaleDateString().replace(/\//g,"-")} `, ` ${new Date(new Date().getTime() - 4*24*60*60*1000).toLocaleDateString().replace(/\//g,"-")} `, ` ${new Date(new Date().getTime() -3*24*60*60*1000).toLocaleDateString().replace(/\//g,"-")} `, ` ${new Date(new Date().getTime() - 2*24*60*60*1000).toLocaleDateString().replace(/\//g,"-")} `, ` ${new Date(new Date().getTime() - 24*60*60*1000).toLocaleDateString().replace(/\//g,"-")} `, `${new Date().toLocaleDateString().replace(/\//g,"-")}`],
+                                axisLabel: {
+                                    rotate: 30
+                                }
+                            },
+                            yAxis: {},
+                            series: [
+                                {
+                                    name: '卡路里',
+                                    type: 'bar',
+                                    // data: ["3","4","5","23","45","23","333"]
+                                    data: [...this.sevenday,this.finish]
+                                    //不知道为啥 this.sevenday最后一个数组在echart中显示不出来，只能这样做了
+                                }
+                            ]
+                        };
+                        console.log(option)
+                        // 使用刚指定的配置项和数据显示图表。
+                        myChart.setOption(option);
+                    },
+                    async fun(){
+                        for(let i=-7;i++;i<1){
+                            await getplanList(this.userInfo.uid,i).then(res => {
+                                if (String(res.code) === '1') {
+                                    this.planlist=res.data
+                                    //使用planlist数组
+                                    getheat(this.planlist).then(res => {
+                                        if (String(res.code) === '1') {
+                                            let temp=res.data
+                                            if(this.notwrite){
+                                                temp=0
+                                            }else {
+                                                temp=temp*this.userInfo2.weight*2
+                                            }
+                                            temp=temp.toFixed(2)
+                                            this.sevenday.push(parseFloat(temp))
+                                        }else {
+                                            console.log("not")
+                                        }
+                                    }).catch(err => {
+                                        this.$message.error('请求出错了：' + err)
+                                    })
+                                }else {
+                                    console.log("not")
+                                }
+                            }).catch(err => {
+                            })
+                        }
+                        console.log(this.sevenday)
+                        this.myechart()
+                    },
+
                     myfinish(row){
                         myfin(row.sportPlanId).then(res => {
                             if (String(res.code) === '1') {
@@ -591,7 +683,6 @@
                     },
                     subday(){
                       this.daymove--;
-                      console.log(this.daymove)
                         this.value.setTime(this.value.getTime() - 3600 * 1000 * 24);
                         this.year=this.value.getFullYear()
                         this.month=this.value.getMonth()+1
@@ -600,7 +691,7 @@
                     },
                     addday(){
                         this.daymove++;
-                        console.log(this.daymove)
+
                         this.value.setTime(this.value.getTime() + 3600 * 1000 * 24);
                         this.year=this.value.getFullYear()
                         this.month=this.value.getMonth()+1
@@ -755,6 +846,7 @@
                                 this.consume=this.consume.toFixed(2)
                                 this.mypercent=(this.allheat-this.consume)*100/this.allheat
                                 this.mypercent=this.mypercent.toFixed(0)
+                                this.myechart()
                             }else {
                                 console.log("not")
                             }
@@ -770,7 +862,6 @@
                                 let thesport=this.planlist[i].content.slice(14)
                                 getrecom(thesport).then(res => {
                                     if (String(res.code) === '1') {
-                                        console.log(res.data)
                                         temp.date=res.data
                                     }else {
                                         console.log(res)
