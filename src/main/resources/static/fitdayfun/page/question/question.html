@@ -1,0 +1,200 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="UTF-8">
+	<link rel="stylesheet" href="../../../public/plugins/element-ui/index.css" />
+	<script src="../../../public/plugins/vue/vue.js"></script>
+	<!-- 引入组件库 -->
+	<script src="../../../public/plugins/element-ui/index.js"></script>
+    <script src="../../../public/plugins/axios/axios.min.js"></script>
+    <script src="../../../public/js/request.js"></script>
+    <script src="../../myapi/question.js"></script>
+	<style>
+     body{
+         background-color: white;
+         margin: 0px 8px;
+     }
+	  .a1{
+          color:#a6a4a4;
+          font-size: 18px;
+      }
+      .a11{
+          font-size: 18px;
+          display: inline-block;
+          margin-right: 50px;
+      }
+      .a3{
+          display: flex;
+          flex-direction: column;
+          margin-bottom: 15px;
+      }
+     .el-radio, .el-radio--medium.is-bordered .el-radio__label{
+         font-size: 16px;
+         font-weight: 550;
+     }
+     .el-dialog__body{
+         font-size: 16px;
+     }
+      .el-radio{
+          margin: 15px 0;
+          width: 600px;
+      }
+      .el-radio.is-bordered+.el-radio.is-bordered{
+          margin-left: 0px;
+      }
+      .el-button--primary:focus {
+          background-color: #409EFF;
+          border-color: #409EFF;
+          color: #FFF;
+      }
+
+      .el-button--primary:hover {
+          background: #66b1ff;
+          border-color: #66b1ff;
+          color: #FFF;
+      }
+
+      .el-button--primary.is-active, .el-button--primary:active {
+          background: #3a8ee6;
+          border-color: #3a8ee6;
+          color: #FFF;
+      }
+		
+	</style>
+</head>
+
+<body>
+    <div id="app" style="margin:0px 380px;">
+
+        <el-dialog title="答题挑战" :visible.sync="userinfoVisible" width="35%">
+            欢迎来到答题挑战，在这里你将有<strong>90秒</strong>的时间回答我们精选的<strong>10道</strong>题目，答对<strong>6道</strong>及以上将会有奖品！
+            点击开始答题即可开始！
+            <div slot="footer" class="dialog-footer">
+                <el-button type="primary" @click="begin">开始答题</el-button>
+                <el-button  @click="back">返回主页</el-button>
+            </div>
+        </el-dialog>
+
+        <h1 style="text-align: center;">答题挑战</h1>
+        <div style="display: flex;justify-content: space-between">
+            <div class="a1">
+               第{{index}}题
+            </div>
+            <div class="a11">
+                剩余时间：<span id="second" style="display:inline-block;color: red;margin-right:5px">90</span>秒
+            </div>
+        </div>
+		<div class="a2">
+		    <h3>{{title}}</h3>
+		</div>
+        <div class="a3">
+            <el-radio v-model="radio1" label="A" border>A.{{ansa}}</el-radio>
+            <el-radio v-model="radio1" label="B" border>B.{{ansb}}</el-radio>
+            <el-radio v-model="radio1" label="C" border>C.{{ansc}}</el-radio>
+            <el-radio v-model="radio1" label="D" border>D.{{ansd}}</el-radio>
+        </div>
+        <div>
+                <el-button :disabled="index==1" @click="last"  type="primary" icon="el-icon-arrow-left">上一题</el-button>
+                <el-button :disabled="index==10" @click="next"   type="primary" style="margin-left: 50px">下一题<i class="el-icon-arrow-right el-icon--right"></i></el-button>
+                <el-button :disabled="index!=10" @click="submit"  type="success" style="margin-left: 50px">提交</el-button>
+        </div>
+    </div>
+
+</body>
+<script>
+    new Vue({
+        el: '#app',
+        data() {
+            return {
+				questions:[],
+                selectedque:[],
+                myans:[],
+                index:1,
+                title:'',
+                ansa:'',
+                ansb:'',
+                ansc:'',
+                ansd:'',
+                score:0,
+                radio1: '1',
+                userinfoVisible:true,
+                errlist:[]
+			}
+        },
+		mounted() {
+            window.parent.postMessage(document.body.clientHeight-100,'*')
+		    this.init()
+		},    
+		methods: {
+		    async init(){
+                await getquesList().then(res => {
+                    if (String(res.code) === '1') {
+                       this.questions=res.data
+                        for(let i=0;i<10;i++){
+                            let len=this.questions.length
+                            let thenum=Math.floor(Math.random()*len)
+                            this.selectedque.push(this.questions[thenum])
+                            this.questions.splice(thenum,1)
+                        }
+                        this.getque(1)
+                    }
+                }).catch(err => {
+                    this.$message.error('请求出错了：' + err)
+                })
+            },
+            begin(){
+                this.userinfoVisible = false
+                let i=89
+                timer=setInterval(function(){
+                    document.querySelector("#second").innerText=i;
+                    i--;
+                    if(i==-1){
+                        clearInterval(timer);
+                        setTimeout(function(){
+                            console.log("到技术已经")
+                        },1)
+                    }
+                },1000)
+            },
+            back(){
+                window.location.href="../../page/home/home.html"
+            },
+            getque(mynum){
+                this.title=this.selectedque[mynum-1].title
+                this.ansa=this.selectedque[mynum-1].ansa
+                this.ansb=this.selectedque[mynum-1].ansb
+                this.ansc=this.selectedque[mynum-1].ansc
+                this.ansd=this.selectedque[mynum-1].ansd
+            },
+            next(){
+                this.myans[this.index-1]=this.radio1
+                this.index=this.index+1
+                this.getque(this.index)
+                this.radio1=this.myans[this.index-1]
+            },
+            last(){
+                this.myans[this.index-1]=this.radio1
+                this.index=this.index-1
+                this.getque(this.index)
+                this.radio1=this.myans[this.index-1]
+            },
+            submit(){
+              this.myans[9]=this.radio1
+                let right=0
+                console.log(this.selectedque)
+              for(let i=0;i<10;i++){
+                  if(this.myans[i]==this.selectedque[i].rightans){
+                      right+=1
+                  }else{
+                    this.errlist.push(this.selectedque[i])
+                  }
+              }
+              window.localStorage.setItem("right",right)
+                window.localStorage.setItem("errlist",JSON.stringify(this.errlist))
+                window.location.href="./ans.html"
+            }
+		},
+    })
+</script>
+</html>

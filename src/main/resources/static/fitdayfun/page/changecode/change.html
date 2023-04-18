@@ -1,0 +1,339 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="utf-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
+        <meta name="description" content="" />
+        <meta name="author" content="" />
+        <title>FitDay运动瘦身,饮食推荐</title>
+
+        <!-- 引入图标 -->
+        <link rel="icon" type="image/x-icon" href="assets/favicon.ico" />
+
+        <style>
+          .backbutton{
+            color: black;
+            text-decoration: none;
+            font-size: 25px;
+          }
+          .IDwhole{
+            line-height: 20px;
+            font-size: 20px;
+            width: 372px;
+            height: 400px;
+            /* background-color: rosybrown; */
+            margin: auto auto;
+          }
+          .emailbutton{
+            color: skyblue;
+            text-decoration: none;
+            font-size: 25px;
+            /* text-align: right; */
+            margin: 12px ;
+          }
+
+          h4 {
+            display: flex;
+            flex-direction: row;
+            }
+          h4:before,
+          h4:after{
+            content: "";
+            flex: 1 1;
+            border-bottom: 2px solid #000;
+            margin: auto;
+          }
+
+
+
+        </style>
+        
+    </head>
+
+
+    <body id="page-top">     
+        <div class="banner" style="height: 120px; display: flex; background-image: url(222.jpg);">
+            <img src="fitdaylogo.png" alt="" style="height:100px ;width:300px;margin:0 80px;">
+                <span class="myfont" style="color: azure;
+                font-size: 40px;
+                line-height: 120px;
+                margin-left: 100px;">吃好，练好，拥有好心态，轻装上阵！</span>
+        </div>
+        <!-- <h1 style="text-align: center;">忘记密码</h1> -->
+
+
+    <header >
+        <div>
+
+          <div>
+            <a class="backbutton" href="#" target="_blank"></a>
+          </div>
+
+          <br><br><br>
+
+          <div style="text-align: center; font-size:40px;">
+            FitDay
+          </div>
+
+          <br>
+
+          <div class="IDwhole" >
+            <div style="text-align: left; font-size:20px;" >
+              修改密码
+            </div>
+            <br>
+
+            <div>
+              <input type="text"  style="width: 367px; height: 47px; border-radius:5px;" placeholder="请输入新的密码">
+            </div>
+
+            <br><br>
+            
+            <div>
+              <input type="text"  style="width: 367px; height: 47px; border-radius:5px;" placeholder="请再次输入密码">
+            </div>
+
+            <br><br>
+
+            <div style="text-align: center;">
+              <input type="button" value="下一步" style="width: 107px; border-radius:5px; height: 50px; background-color:rgb(246, 247, 248);">
+            </div>
+          </div>
+        </div>
+    </header>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<!-- 引入JS文件-->
+
+        <!-- Bootstrap的JS-->
+        <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js"></script>
+        <script src="https://cdn.startbootstrap.com/sb-forms-latest.js"></script>
+        <script src="js/scripts.js"></script>
+
+        <!-- Vue和element-ui以及axios的JS-->
+        <script src="plugins/vue/vue.js"></script>
+        <script src="plugins/axios/axios.min.js"></script>
+        <script src="plugins/element-ui/index.js"></script>
+
+        <!-- 发送请求的JS，里面有$axios，要在vue和axios引入后再引入-->
+        <script src="js/request.js"></script>
+
+        <!-- 自己的JS-->
+        <script src="myapi/userlogin.js"></script>
+
+
+        <script>
+            new Vue({
+                el: "#app",
+                data() {
+                    return {
+                        // 手机验证码
+                        phonemodForm:{
+                            phone:"",
+                            idencode:""
+                        },
+                        // 手机验证码
+                        // 修改密码
+                        modifyPassform:{
+                            password:"",
+                            passwordagain:""
+                        },
+                        // 修改密码
+                        // 邮箱验证码
+                        mailboxmodForm:{
+                            mailboxnum:"",
+                            idencode:""
+                        },
+                        // 邮箱验证码
+                        registerForm: {
+                            myaccount:"",
+                            mypassword:"",
+                            myagainpassword:"",
+                            myname:"",
+                            code:""
+                        },
+                        dialogVisible: false,
+                        zcdialogVisible: false,
+                        // 修改密码对话框
+                        GetbackdialogVisible: false,
+                        GetbackMailboxdialogVisible: false,
+                        modifypassworddialogVisible: false,
+                        // 修改密码对话框
+                        // 登录协议
+                        serviceItemdialogVisible:false,
+                        privacyPolicydialogVisible:false,
+                        // 登录协议
+                        activeName: 'first',
+                        imageURL:'/identifyImage'
+                    };
+                },
+                mounted () {
+                },
+                computed: {
+                  loginRules() {
+                    const validateAccount = (rule, value, callback) => {
+                      if (value.length < 6 ) {
+                        callback(new Error('请输入正确的账号'))
+                      } else {
+                        callback()
+                      }
+                    }
+                    const validatePassword = (rule, value, callback) => {
+                      if (value.length < 6) {
+                        callback(new Error('密码必须在6位及以上'))
+                      } else {
+                        callback()
+                      }
+                    }
+                    return {
+                      'account': [{ 'validator': validateAccount, 'trigger': 'blur' }],
+                      'password': [{ 'validator': validatePassword, 'trigger': 'blur' }]
+                    }
+                  },
+                  phoneloginRules() {
+                    const validatePhone = (rule, value, callback) => {
+                      if (value.length != 11 ) {
+                        callback(new Error('请输入正确的手机号'))
+                      } else {
+                        callback()
+                      }
+                    }
+                    const validatephonePassword = (rule, value, callback) => {
+                      if (value.length < 6) {
+                        callback(new Error('密码必须在6位以上'))
+                      } else {
+                        callback()
+                      }
+                    }
+                    return {
+                      'phone': [{ 'validator': validatePhone, 'trigger': 'blur' }],
+                      'phonepassword': [{ 'validator': validatephonePassword, 'trigger': 'blur' }]
+                    }
+                  },
+                  registerRules() {
+                    const validatemyaccount = (rule, value, callback) => {
+                        for(let i=0;i<value.length;i++){
+                            if(!(value.charAt(i)>='0'&&value.charAt(i)<='9'||value.charAt(i)>='a'&&value.charAt(i)<='z'||value.charAt(i)>='A'&&value.charAt(i)<='Z')){
+                                callback(new Error('账号必须由字母和数字组成'))
+                            }
+                        }
+                      if (value.length < 6 ) {
+                        callback(new Error('账号需要设置6个字符及以上'))
+                      }else if(value.length > 24){
+                          new Error('账号需要设置24个字符及以下')
+                      } else {
+                        callback()
+                      }
+                    }
+                    const validatemypassword = (rule, value, callback) => {
+                      let containnum=0
+                      let containalp=0
+                      for(let i=0;i<value.length;i++){
+                          if(value.charAt(i)>='0'&&value.charAt(i)<='9'){
+                              containnum=1
+                          }
+                          if(value.charAt(i)>='a'&&value.charAt(i)<='z'||value.charAt(i)>='A'&&value.charAt(i)<='Z'){
+                              containalp=1
+                          }
+                      }
+                      if (value.length < 8) {
+                        callback(new Error('密码必须设置在8位及以上'))
+                      }else if(value.length > 16){
+                          new Error('密码必须设置在16位及以下')
+                      } else if(containalp==0||containnum==0){
+                        callback(new Error('密码必须包含字母和数字'))
+                      }else{
+                          callback()
+                      }
+                    }
+                    const validatemyagainpassword = (rule, value, callback) => {
+                      let containnum=0
+                      let containalp=0
+                      for(let i=0;i<value.length;i++){
+                          if(value.charAt(i)>='0'&&value.charAt(i)<='9'){
+                              containnum=1
+                          }
+                          if(value.charAt(i)>='a'&&value.charAt(i)<='z'||value.charAt(i)>='A'&&value.charAt(i)<='Z'){
+                              containalp=1
+                          }
+                      }
+                      if (value.length < 8) {
+                        callback(new Error('密码必须设置在8位及以上'))
+                      } else if(value.length > 16){
+                          new Error('密码必须设置在16位及以下')
+                      }else if(containalp==0||containnum==0){
+                        callback(new Error('密码必须包含字母和数字'))
+                      }else{
+                          callback()
+                      }
+                    }
+                    const validatemyname = (rule, value, callback) => {
+                      if (value.length < 1) {
+                        callback(new Error('请输入您设置的用户名'))
+                      } else if(value.length > 30){
+                          new Error('用户名必须设置在30个字符及以下')
+                      }else {
+                        callback()
+                      }
+                    }
+                    const validatecode = (rule, value, callback) => {
+                      if (value.length < 1) {
+                        callback(new Error('请输入验证码'))
+                      } else {
+                        callback()
+                      }
+                    }
+                    return {
+                      'myaccount': [{ 'validator': validatemyaccount, 'trigger': 'blur' }],
+                      'mypassword': [{ 'validator': validatemypassword, 'trigger': 'blur' }],
+                      'myagainpassword': [{ 'validator': validatemyagainpassword, 'trigger': 'blur' }],
+                      'myname': [{ 'validator': validatemyname, 'trigger': 'blur' }],
+                      'code': [{ 'validator': validatecode, 'trigger': 'blur' }]
+                    }
+                  }
+                },
+                methods: {
+                    async userLogin(){
+                        this.$refs.loginForm.validate(async (valid) => {
+                            if (valid) {
+                                let res = await loginApi(this.loginForm)
+                                if (String(res.code) === '1') {
+                                    localStorage.setItem('userInfo',JSON.stringify(res.data))
+                                    window.location.href= 'https://www.bilibili.com/'
+                                } else {
+                                    this.$message.error(res.msg)
+                                }
+                            }
+                        })
+                    },
+                    async userphoneLogin(){
+                        
+                    },
+                    handleClick(tab, event) {
+                        console.log(tab, event);
+                    },
+                    changeCode(){
+                        this.imageURL='/identifyImage?'+Math.random()
+                    }
+                   
+                }
+            })
+        </script>
+
+
+
+
+  </body>
+</html>

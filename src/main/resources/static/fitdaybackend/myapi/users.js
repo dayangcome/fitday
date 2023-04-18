@@ -6,6 +6,13 @@ function getUserList (params) {
     })
 }
 
+function getmyuser(uid) {
+    return $axios({
+        'url': `/user/getuser/${uid}`,
+        'method': 'get'
+    })
+}
+
 function freezeuserApi (reason,des,id,eid) {
     return $axios({
         url: '/user/freeze',

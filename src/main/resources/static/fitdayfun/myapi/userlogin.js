@@ -5,6 +5,7 @@ function loginApi(data) {
         data
     })
 }
+
 function registerApi(data) {
     return $axios({
         'url': '/user/register',

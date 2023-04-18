@@ -51,20 +51,34 @@
                 :header-cell-style="{ textAlign: 'center' }"
         >
             <el-table-column
-                    prop="video_id"
+                    prop="videoId"
                     label="视频ID"
             ></el-table-column>
 
             <el-table-column
-                    prop="user_id"
-                    label="投稿用户的id"
+                    prop="title"
+                    label="视频标题"
+                    width="260"
             ></el-table-column>
 
             <el-table-column
-                    prop="videolink"
-                    label="视频链接"
-                    width="140"
-            >
+                    prop="account"
+                    label="投稿用户的账号"
+            ></el-table-column>
+
+            <el-table-column
+                    prop="account"
+                    label="投稿用户的昵称"
+            ></el-table-column>
+
+            <el-table-column label="视频封面">
+                <template slot-scope="scope">
+                    <el-popover placement="top-start" title="" trigger="hover">
+                        <img :src="scope.row.picture" alt="" style="width: 350px;height: 250px;">
+                        <img slot="reference" :src="scope.row.picture" style="width: 45px;height: 32px;">
+                    </el-popover>
+                </template>
+            </el-table-column>
 
             </el-table-column>
 
@@ -80,7 +94,7 @@
             ></el-table-column>
 
             <el-table-column
-                    prop="disliakes"
+                    prop="dislikes"
                     label="点踩量"
             ></el-table-column>
 
@@ -90,13 +104,13 @@
             ></el-table-column>
 
             <el-table-column
-                    prop="category"
+                    prop="categroy"
                     label="视频分类"
             ></el-table-column>
 
             <el-table-column
                     prop="introduction"
-                    label="简介"
+                    label="视频简介"
             ></el-table-column>
 
             <el-table-column
@@ -110,15 +124,11 @@
                 </template>
             </el-table-column>
 
-            <el-table-column label="上一次修改时间" width="90">
-                <template slot-scope="scope">
-                    <span>{{scope.row.modifytime.toLocaleString().replace(/T/g, ' ').replace(/\.[\d]{3}Z/, '')}}</span>
-                </template>
-            </el-table-column>
+
 
             <el-table-column
                     prop="rank"
-                    label="视频排名"
+                    label="视频热度排名"
             ></el-table-column>
 
             <el-table-column
@@ -158,7 +168,7 @@
                             class="delBut non"
                             @click="statusHandle(scope.row)"
                     >
-                        {{ scope.row.status == '1' ? '冻结' : '启用' }}
+                        {{ scope.row.status == '1' ? '下架' : '启用' }}
                     </el-button>
                 </template>
             </el-table-column>
@@ -175,78 +185,7 @@
                 @current-change="handleCurrentChange"
         ></el-pagination>
     </div>
-    <el-dialog title="用户详情" :visible.sync="userVisible" width="50%" top="15px">
-        <table>
-            <tr>
-                <td class="tdleft">UID</td>
-                <td>{{userinfo.uid}}</td>
-            </tr>
-            <tr>
-                <td class="tdleft">账号</td>
-                <td>{{userinfo.account}}</td>
-            </tr>
-            <tr>
-                <td class="tdleft">昵称</td>
-                <td>{{userinfo.username}}</td>
-            </tr>
-            <tr>
-                <td class="tdleft">绑定的手机号</td>
-                <td>{{ userinfo.phone || '尚未绑定' }}</td>
-            </tr>
-            <tr>
-                <td class="tdleft">性别</td>
-                <td>{{ userinfo.sex=='0'?'男':(userinfo.sex=='1'?'女':(userinfo.sex=='2'?'保密':'尚未填写')) }}</td>
-            </tr>
-            <tr>
-                <td class="tdleft">个性签名</td>
-                <td>{{userinfo.sign|| '尚未填写' }}</td>
-            </tr>
-            <tr>
-                <td class="tdleft">账号状态</td>
-                <td>{{ String(userinfo.status) === '0' ? '已冻结' : '正常' }}</td>
-            </tr>
-            <tr>
-                <td class="tdleft">当前经验</td>
-                <td>{{ userinfo.exp}}</td>
-            </tr>
-            <tr>
-                <td class="tdleft">当前等级</td>
-                <td>{{ userinfo.level}}</td>
-            </tr>
-            <tr>
-                <td class="tdleft">当前VIP等级</td>
-                <td>{{ userinfo.viplevel}}</td>
-            </tr>
-            <tr>
-                <td class="tdleft">当前账户余额</td>
-                <td>{{ userinfo.remain}}&nbsp;元</td>
-            </tr>
-            <tr>
-                <td class="tdleft">用户地址</td>
-                <td>{{ userinfo.address|| '尚未填写' }}</td>
-            </tr>
-            <tr>
-                <td class="tdleft">绑定的微信号</td>
-                <td>{{ userinfo.wxNumber|| '尚未绑定' }}</td>
-            </tr>
-            <tr>
-                <td class="tdleft">账号创建时间</td>
-                <td>
-                    <template>
-                        <span>{{userinfo.createTime}}</span>
-                    </template>
-                </td>
-            </tr>
-            <tr>
-                <td class="tdleft">账号更新时间</td>
-                <td>{{userinfo.updateTime}}</td>
-            </tr>
-        </table>
-        <div slot="footer" class="dialog-footer">
-            <el-button @click="userVisible = false">取 消</el-button>
-            <el-button type="primary" @click="userVisible = false">确 定</el-button>
-        </div>
-    </el-dialog>
+
 </div>
 <!-- 开发环境版本，包含了有帮助的命令行警告 -->
 <script src="../../../public/plugins/vue/vue.js"></script>
@@ -255,7 +194,7 @@
 <!-- 引入axios -->
 <script src="../../../public/plugins/axios/axios.min.js"></script>
 <script src="../../../public/js/request.js"></script>
-<script src="../../myapi/users.js"></script>
+<script src="../../myapi/video.js"></script>
 <script>
     new Vue({
         el: '#member-app',
@@ -268,7 +207,6 @@
                 tableData : [],
                 id : '',
                 status : '',
-                userVisible:false,
                 userinfo:{}
             }
         },
@@ -286,10 +224,11 @@
                     pageSize: this.pageSize,
                     name: this.input ? this.input : undefined
                 }
-                await getUserList(params).then(res => {
+                await getVideoList(params).then(res => {
                     if (String(res.code) === '1') {
                         this.tableData = res.data.records || []
                         this.counts = res.data.total
+                        console.log(res.data)
                     }
                 }).catch(err => {
                     this.$message.error('请求出错了：' + err)

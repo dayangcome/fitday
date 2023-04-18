@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <title>
+        feedback_app
+    </title>
+    <link rel="stylesheet" href="../../../public/plugins/element-ui/index.css" />
+    <style>
+        .dashboard-container{
+            text-align: center;
+            width: 600px
+        }
+    </style>
+</head>
+
+<body>
+<div class="dashboard-container" id="feedback_app" v-loading="loading" >
+    <el-input
+        placeholder="请输入内容"
+        v-model="textarea1"
+        style="width:300px"
+    ></el-input>
+    <div style="margin: 20px 0;"></div>
+    <el-input
+        type="textarea"
+        :autosize="{ minRows: 6, maxRows: 12}"
+        placeholder="请输入内容"
+        v-model="textarea2">
+    </el-input>
+</div>
+
+<script src="../../../public/plugins/vue/vue.js"></script>
+<!-- 引入组件库 -->
+<script src="../../../public/plugins/element-ui/index.js"></script>
+<!-- 引入axios -->
+<script src="../../../public/plugins/axios/axios.min.js"></script>
+<script src="../../../public/js/request.js"></script>
+<script src="../../../public/api/order.js"></script>
+<script>
+    new Vue ({
+        el: '#feedback_app',
+        data() {
+            return {
+                textarea1: '',
+                textarea2: ''
+            }
+        }
+    })
+</script>
+
+</body>
+</html>

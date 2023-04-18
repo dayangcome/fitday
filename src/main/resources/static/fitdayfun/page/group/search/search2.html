@@ -1,0 +1,294 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width,initial-scale=1.0">
+    <title>Document</title>
+    <style>
+        .whole_containor{
+            margin: -8px -8px;
+            width: 1518px;
+            height: 745px;
+            background-color: #f5f5f5;
+        }
+        .contain{
+            width: 992px;
+            height:729px;
+            background-color: grey;
+            display: inline-block;
+            border: 1px solid rgb(171, 167, 167);
+        }
+        .top_option{
+            width:992px;
+            height:80px;
+            background-color: rgb(53, 141, 219);
+            display: inline-block;
+        }
+        .input_text{
+            width:992px;
+            height:92px;
+            background-color: rgb(198, 224, 247);
+            display: inline-block;
+        }
+        .comment{
+            display: inline-block; 
+            width: 520px; 
+            height: 30px; 
+            margin-left: 5px; 
+            margin-top: 5px; 
+            resize: none; 
+            border-color: aqua;
+        }
+        .rank_option{
+            width: 992px; 
+            height: 40px; 
+            background-color: gainsboro;
+        }
+        .grouplist{
+            width:992px;
+            height:524px;
+            background-color: white;
+            overflow:auto;
+        }
+        .grouplist_item{
+            width:310px;
+            height:230px;
+            background-color: white;
+            border: 1px solid rgb(224, 221, 221);
+            display: inline-block;
+            margin-top: 12px;
+            margin-left: 8px;
+        }
+        .person_picture_site{
+            vertical-align: top;
+            width: 66px; 
+            height: 66px; 
+            display: inline-block;
+             margin-left: 5px;
+             margin-top: 5px; 
+        }
+        .mark_area{
+            width:300px;
+            height:113px;
+            margin-left: 4px;
+        }
+        .grouplist_item_bottom{
+            background-color: gainsboro;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="whole_containor">
+        <div style="width: 250px;  background-color: blue; display: inline-block;">
+            间隔
+        </div>
+        <div class="contain">
+            <div class="top_option">
+                <div style="text-align: center; margin-top: 10px;">
+                    <span>小组推荐</span>
+                </div>
+            </div>
+            <div class="input_text">
+                <div style="margin-left: 180px; margin-top: 20px;">
+                    <textarea type="text" class="comment"   placeholder="你喜欢什么类型的小组？"></textarea>
+                    <div style="display: inline-block; width: 90px; height: 40px; margin-left: 2px; margin-top: 3px;"><input style=" width: 85px; height: 37px;margin-left: 2px; margin-top: 3px; vertical-align: 85%;" type="button" value="搜索"></div>
+                </div>
+            </div>
+            <div class="rank_option">
+                <div style="display: inline-block; width: 300px; height: 40px;">当前搜索词为**,共搜索到10个小组</div>
+                <a style="color: black; text-decoration: none; font-size: 18px; margin-left: 420px;" href="search1.html" target="_self" >默认</a>
+                <a style="color: black; text-decoration: none; font-size: 18px; margin-left: 42px;" href="#" target="_self" >人数</a>  
+                <a style="color: black; text-decoration: none; font-size: 18px; margin-left: 42px;" href="search3.html" target="_self" >活跃度</a>
+            </div>
+            <div class="grouplist">
+                <div class="grouplist_item" >
+                    <div>
+                        <div class="person_picture_site" ><img style="width: 66px; height: 66px;" src="OIP-C.jpg" alt="" title=""></div>
+                        <div style="display: inline-block; ">
+                            <div style=" font-size: 15px; margin-top: 4px;">组39</div>
+                            <div style=" font-size: 15px; margin-top: 4px;">58/79</div>
+                            <div style=" font-size: 15px; margin-top: 4px;">棒球 保龄球</div>
+                        </div>
+                    </div>
+                    <div class="mark_area">
+                        只有启程，才会到达理想和目的地，只有拼搏，才会获得辉煌的成功，只有播种，才会有收获。
+                    </div>
+                    <div class="grouplist_item_bottom">
+                        <div style="display: inline-block; width: 90px; height: 40px; margin-left: 218px; margin-top: 3px;"><input style=" width: 74px; height: 29px;margin-left: 2px; margin-top: 3px; vertical-align: 100%;" type="button" value="加入小组"></div>
+                    </div>
+                </div>
+
+                <div class="grouplist_item" >
+                    <div>
+                        <div class="person_picture_site" ><img style="width: 66px; height: 66px;" src="R-C.jpg" alt="" title=""></div>
+                        <div style="display: inline-block; ">
+                            <div style=" font-size: 15px; margin-top: 4px;">组378</div>
+                            <div style=" font-size: 15px; margin-top: 4px;">58/79</div>
+                            <div style=" font-size: 15px; margin-top: 4px;">足球 篮球 </div>
+                        </div>
+                    </div>
+                    <div class="mark_area">
+                        毅力，是千里大堤一沙一石的凝聚，一点点地累积，才有前不见头后不见尾的壮丽;毅力，是春蚕吐丝一缕一缕的环绕，一丝丝地坚持，才有破茧而出重见光明的辉煌
+                    </div>
+                    <div class="grouplist_item_bottom">
+                        <div style="display: inline-block; width: 90px; height: 40px; margin-left: 218px; margin-top: 3px;"><input style=" width: 74px; height: 29px;margin-left: 2px; margin-top: 3px; vertical-align: 100%;" type="button" value="加入小组"></div>
+                    </div>
+                </div>
+
+                <div class="grouplist_item" >
+                    <div>
+                        <div class="person_picture_site" ><img style="width: 66px; height: 66px;" src="43.jpg" alt="" title=""></div>
+                        <div style="display: inline-block; ">
+                            <div style=" font-size: 15px; margin-top: 4px;">组563</div>
+                            <div style=" font-size: 15px; margin-top: 4px;">58/79</div>
+                            <div style=" font-size: 15px; margin-top: 4px;">瑜伽 跑步</div>
+                        </div>
+                    </div>
+                    <div class="mark_area">
+                        如果说友谊是一颗常青树，那么，浇灌它的必定是出自心田的清泉;如果说友谊是一朵开不败的鲜花
+                    </div>
+                    <div class="grouplist_item_bottom">
+                        <div style="display: inline-block; width: 90px; height: 40px; margin-left: 218px; margin-top: 3px;"><input style=" width: 74px; height: 29px;margin-left: 2px; margin-top: 3px; vertical-align: 100%;" type="button" value="加入小组"></div>
+                    </div>
+                </div>
+
+                <div class="grouplist_item" >
+                    <div>
+                        <div class="person_picture_site" ><img style="width: 66px; height: 66px;" src="R-C (1).jpg" alt="" title=""></div>
+                        <div style="display: inline-block; ">
+                            <div style=" font-size: 15px; margin-top: 4px;">组89</div>
+                            <div style=" font-size: 15px; margin-top: 4px;">58/79</div>
+                            <div style=" font-size: 15px; margin-top: 4px;">跳神 跑步</div>
+                        </div>
+                    </div>
+                    <div class="mark_area">
+                        如果说生命是一座庄严的城堡，如果说生命是一株苍茂的大树，如果说生命是一只飞翔的海鸟。那么，信念就是那穹顶的梁柱，就是那深扎的树根，就是那扇动的翅膀
+                    </div>
+                    <div class="grouplist_item_bottom">
+                        <div style="display: inline-block; width: 90px; height: 40px; margin-left: 218px; margin-top: 3px;"><input style=" width: 74px; height: 29px;margin-left: 2px; margin-top: 3px; vertical-align: 100%;" type="button" value="加入小组"></div>
+                    </div>
+                </div>
+
+                <div class="grouplist_item" >
+                    <div>
+                        <div class="person_picture_site" ><img style="width: 66px; height: 66px;" src="R-C.jpg" alt="" title=""></div>
+                        <div style="display: inline-block; ">
+                            <div style=" font-size: 15px; margin-top: 4px;">组3</div>
+                            <div style=" font-size: 15px; margin-top: 4px;">8/79</div>
+                            <div style=" font-size: 15px; margin-top: 4px;">足球 篮球 </div>
+                        </div>
+                    </div>
+                    <div class="mark_area">
+                        今日天有晴，阳光灿烂;今日地有情，花团锦簇;今日海有情，浪迭千重;今日人有情，欢聚一堂!
+                    </div>
+                    <div class="grouplist_item_bottom">
+                        <div style="display: inline-block; width: 90px; height: 40px; margin-left: 218px; margin-top: 3px;"><input style=" width: 74px; height: 29px;margin-left: 2px; margin-top: 3px; vertical-align: 100%;" type="button" value="加入小组"></div>
+                    </div>
+                </div>
+
+                <div class="grouplist_item" >
+                    <div>
+                        <div class="person_picture_site" ><img style="width: 66px; height: 66px;" src="R-C (1).jpg" alt="" title=""></div>
+                        <div style="display: inline-block; ">
+                            <div style=" font-size: 15px; margin-top: 4px;">组78</div>
+                            <div style=" font-size: 15px; margin-top: 4px;">58/79</div>
+                            <div style=" font-size: 15px; margin-top: 4px;">羽毛球 乒乓球</div>
+                        </div>
+                    </div>
+                    <div class="mark_area">
+                        这个世界没有陌生的人，只有还没有来得及认识的朋友，真诚的友谊来自不断地自我介绍
+                    </div>
+                    <div class="grouplist_item_bottom">
+                        <div style="display: inline-block; width: 90px; height: 40px; margin-left: 218px; margin-top: 3px;"><input style=" width: 74px; height: 29px;margin-left: 2px; margin-top: 3px; vertical-align: 100%;" type="button" value="加入小组"></div>
+                    </div>
+                </div>
+
+                
+
+                <div class="grouplist_item" >
+                    <div>
+                        <div class="person_picture_site" ><img style="width: 66px; height: 66px;" src="234.jpg" alt="" title=""></div>
+                        <div style="display: inline-block; ">
+                            <div style=" font-size: 15px; margin-top: 4px;">组33</div>
+                            <div style=" font-size: 15px; margin-top: 4px;">58/79</div>
+                            <div style=" font-size: 15px; margin-top: 4px;">橄榄球 体操</div>
+                        </div>
+                    </div>
+                    <div class="mark_area">
+                        如果说友谊是一颗常青树，那么，浇灌它的必定是出自心田的清泉;如果说友谊是一朵开不败的鲜花
+                    </div>
+                    <div class="grouplist_item_bottom"> 
+                        <div style="display: inline-block; width: 90px; height: 40px; margin-left: 218px; margin-top: 3px;"><input style=" width: 74px; height: 29px;margin-left: 2px; margin-top: 3px; vertical-align: 100%;" type="button" value="加入小组"></div>
+                    </div>
+                </div>
+
+                
+
+
+                <div class="grouplist_item" >
+                    <div>
+                        <div class="person_picture_site" ><img style="width: 66px; height: 66px;" src="OIP-C.jpg" alt="" title=""></div>
+                        <div style="display: inline-block; ">
+                            <div style=" font-size: 15px; margin-top: 4px;">组92</div>
+                            <div style=" font-size: 15px; margin-top: 4px;">58/79</div>
+                            <div style=" font-size: 15px; margin-top: 4px;">健美操 跑步</div>
+                        </div>
+                    </div>
+                    <div class="mark_area">
+                        生命不是一篇"文摘"，不接受平淡，只收藏精彩
+                    </div>
+                    <div class="grouplist_item_bottom">
+                        <div style="display: inline-block; width: 90px; height: 40px; margin-left: 218px; margin-top: 3px;"><input style=" width: 74px; height: 29px;margin-left: 2px; margin-top: 3px; vertical-align: 100%;" type="button" value="加入小组"></div>
+                    </div>
+                </div>
+
+                <div class="grouplist_item" >
+                    <div>
+                        <div class="person_picture_site" ><img style="width: 66px; height: 66px;" src="234.jpg" alt="" title=""></div>
+                        <div style="display: inline-block; ">
+                            <div style=" font-size: 15px; margin-top: 4px;">组72</div>
+                            <div style=" font-size: 15px; margin-top: 4px;">58/79</div>
+                            <div style=" font-size: 15px; margin-top: 4px;">瑜伽 慢跑</div>
+                        </div>
+                    </div>
+                    <div class="mark_area">
+                        有种感觉叫清风细雨，有种思念叫月满西楼，有种默契叫心有灵犀
+                    </div>
+                    <div class="grouplist_item_bottom">
+                        <div style="display: inline-block; width: 90px; height: 40px; margin-left: 218px; margin-top: 3px;"><input style=" width: 74px; height: 29px;margin-left: 2px; margin-top: 3px; vertical-align: 100%;" type="button" value="加入小组"></div>
+                    </div> 
+                </div>
+
+                <div class="grouplist_item" >
+                    <div>
+                        <div class="person_picture_site" ><img style="width: 66px; height: 66px;" src="43.jpg" alt="" title=""></div>
+                        <div style="display: inline-block; ">
+                            <div style=" font-size: 15px; margin-top: 4px;">组19</div>
+                            <div style=" font-size: 15px; margin-top: 4px;">58/79</div>
+                            <div style=" font-size: 15px; margin-top: 4px;">瑜伽</div>
+                        </div>
+                    </div>
+                    <div class="mark_area">
+                        有种感觉叫清风细雨，有种思念叫月满西楼，有种默契叫心有灵犀
+                    </div>
+                    <div class="grouplist_item_bottom">
+                        <div style="display: inline-block; width: 90px; height: 40px; margin-left: 218px; margin-top: 3px;"><input style=" width: 74px; height: 29px;margin-left: 2px; margin-top: 3px; vertical-align: 100%;" type="button" value="加入小组"></div>
+                    </div>
+                </div>
+
+            </div>
+            
+        </div>
+
+
+
+
+        <div style="width: 250px;  background-color: blue; display: inline-block;">
+            间隔
+        </div>
+    </div>
+    
+</body>
+</html>

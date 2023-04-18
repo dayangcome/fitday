@@ -1,6 +1,6 @@
-/*¹²ÓÃCSS*/
+/*ï¿½ï¿½ï¿½ï¿½CSS*/
 *{margin:0px;padding:0px;}
-body { font: 12px/1.5 'Microsoft Yahei', 'Simsun'; color: #666666; background: #fff }
+body { font: 12px/1.5 'Microsoft Yahei', 'Simsun'; color: #666666; }
 img { border: 0; display: block }
 ul { list-style: none; }
 h1, h2, h3, h4, h5, h6 { font-size: 100%; font-weight: normal; }
@@ -11,7 +11,7 @@ a:hover { text-decoration: none; }
 .f_r{float:right;}
 .l_box{width:670px;}
 .r_box{width:300px;}
-/*Í·²¿ÑùÊ½*/
+/*Í·ï¿½ï¿½ï¿½ï¿½Ê½*/
 header{
 	width:1000px;
 	margin:20px auto;
@@ -29,13 +29,12 @@ header{
 #topnav a { display: inline-block; font-size: 18px; font-family: "Microsoft Yahei", Arial, Helvetica, sans-serif; padding: 0 20px; }
 #topnav a:hover { background: #fff; color: #000; }
 #topnav a { color: #FFF }
-#topnav_current { background: #F3FF41; }/* ¸ßÁÁÑ¡ÖÐÑÕÉ« */
+#topnav_current { background: #F3FF41; }/* ï¿½ï¿½ï¿½ï¿½Ñ¡ï¿½ï¿½ï¿½ï¿½É« */
 a#topnav_current { color: #000 }
 article{
-	width:1000px;
 	margin:20px auto;
 }
-/*ÓÒ²àÑ¡Ïî¿¨*/
+/*ï¿½Ò²ï¿½Ñ¡ï¿½î¿¨*/
 .tab{
 	width:100%;
 	margin:30px 0 20px 0;
@@ -60,8 +59,8 @@ article{
 .bd-news ul li { border-bottom: solid 1px #EAEAEA; line-height: 30px; height: 30px; overflow: hidden; font-size: 14px; padding: 10px 0 0 30px; }
 .bd-news ul li a { display: block; }
 .bd-news ul li a:hover { color: #000; }
-.bd-news ul li:hover { border-bottom: #000 1px solid; }/* Êó±ê·ÅÉÏÈ¥µÄÐ§¹û */
-/*±êÇ©ÔÆ*/
+.bd-news ul li:hover { border-bottom: #000 1px solid; }/* ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½È¥ï¿½ï¿½Ð§ï¿½ï¿½ */
+/*ï¿½ï¿½Ç©ï¿½ï¿½*/
 .cloud{
 	width:100%;
 	clear:both;

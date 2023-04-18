@@ -1,9 +1,8 @@
 <!DOCTYPE HTML>
 <html>
 <head>
-	<meta charset="gb2312">
-	<title>ÉçÇø</title>
-	<meta name="?????" content="">
+	<meta charset="utf-8">
+	<title>ç¤¾åŒº</title>
 	<link rel="stylesheet" href="../../../public/plugins/element-ui/index.css" />
 	<link href="../../../public/css/buju.css" rel="stylesheet">
 	<link href="../../../public/css/index.css" rel="stylesheet">
@@ -12,24 +11,34 @@
 </head>
 <body>
 <div id="app">
-	<header>
-		<div class="logo f_l">
-			<a href="#">
-				<img src="../../assets/images/fitdaylogo.png">
-			</a>
-		</div>
 
-		<div id="topnav" class="f_r">
-			<ul>
-				<a href="#" target="_blank" id="topnav_current">FitÉçÇø</a>
-				<a href="./me.html" target="_blank">ÎÒµÄ¶¯Ì¬</a>
-				<a href="./add2.html" target="_blank">·¢²¼ÈÕ³£</a>
-				<a href="#" target="_blank">´ïÈË×¨Çø</a>
-			</ul>
+	<article style="display: flex;margin: 10px 10px;">
+		<div>
+		<el-menu
+				default-active="1"
+				class="el-menu-vertical-demo"
+				@select="handleSelect"
+				style="width:173px;height: 800px;"
+				>
+			<el-menu-item index="1">
+				<i class="el-icon-data-board"></i>
+				<span slot="title">Fitç¤¾åŒº</span>
+			</el-menu-item>
+			<el-menu-item index="2">
+				<i class="el-icon-soccer"></i>
+				<span slot="title">æˆ‘çš„åŠ¨æ€</span>
+			</el-menu-item>
+			<el-menu-item index="3">
+				<i class="el-icon-food"></i>
+				<span slot="title">å‘å¸ƒæ—¥å¸¸</span>
+			</el-menu-item>
+			<el-menu-item index="4">
+				<i class="el-icon-setting"></i>
+				<span slot="title">è¾¾äººä¸“åŒº</span>
+			</el-menu-item>
+		</el-menu>
 		</div>
-	</header>
-	<article>
-		<div class="l_box f_l">
+		<div class="l_box f_l" style="margin: 0 30px;">
 			<div class="banner">
 				<div id="slide-holder">
 					<div id="slide-runner">
@@ -56,240 +65,80 @@
 					</div>
 				</div>
 			</div>
-			<script>
-				if(!window.slider){
-					var slider={};
-				}
-				slider.data=[
-					{
-						"id":"slide-img-1",
-						"client":"½¡Éí´ò¿¨",
-						"desc":"·ÖÏí½¡Éí´ò¿¨¶¯Ì¬»òÊÓÆµ,Ã¿Ìì³äÂú¶¯Á¦"     //??????????????
-					},
-					{
-						"id":"slide-img-2",
-						"client":"Ñ§Ï°½è¼øËûÈË",
-						"desc":"ä¯ÀÀËûÈË·ÖÏíµÄ½¡ÉíÈÕ³£,»ñµÃ¾­Ñé"
-					},
-					{
-						"id":"slide-img-3",
-						"client":"Ê³Æ×·ÖÏí",
-						"desc":"·ÖÏí×Ô¼ºµÄÈÕ³£Ê³Æ×,Ñ§Ï°½è¼øËûÈËµÄÒûÊ³"
-					},
-					{
-						"id":"slide-img-4",
-						"client":"ÊÝÉíºÃÎÄ",
-						"desc":"ÎªÄãÍÆËÍµ±ÏÂÁ÷ÐÐµÄÊÝÉíÐ¡ÃîÕÐ"
-					}
-				];
-			</script>
 			<div class="topnews">
 				<h2>
 	   <span>
-	    <a href="/" target="_blank">µã»÷ÅÅÐÐ</a>
-		 <a href="/" target="_blank">½¡ÉíºÃÎÄÍÆ¼ö</a>
+	    <a href="/" target="_blank">ç‚¹å‡»æŽ’è¡Œ</a>
+		 <a href="/" target="_blank">å¥èº«å¥½æ–‡æŽ¨è</a>
 	   </span>
-					ÉçÇø¶¯Ì¬
+					ç¤¾åŒºåŠ¨æ€
 				</h2>
-				<div class="blogs">
+				<div class="blogs" v-for="item in tableData">
 					<figure>
-						<img src="../../assets/images/01.jpg">
+						<img :src="item.picture">
 					</figure>
 					<ul>
-						<h3><a href="/">±ðÉµÁË£¬ÍíÉÏ²»³Ô·¹ÕæµÄ¼õ²»ÁË·Ê£¡</a></h3>
-						<p>"ÎÒÒÔÇ°ÊÔ¹ýÍíÉÏ²»³Ô·¹¼õ·Ê£¬µ«ÊÇÌåÖØ²»¼õ·´Ôö£¬ºÃÓôÃÆ"</p>
+						<h3><a href="/" @click.prevent="navto(item.id)" >{{item.title}}</a></h3>
+						<p>"{{item.content.substring(0,(item.content.length>60?60:item.content.length))}}..."</p>
 						<p class="autor">
 				    <span class="lm f_l">
-					    <a href="/">¿âÀï</a>
+					    <a href="/">{{item.category}}</a>
 					 </span>
-							<span class="dtime f_l">2016-02-16</span>
+							<span class="dtime f_l">{{item.uploadtime.replace('T',' ')}}</span>
 							<span class="viewnum f_r">
-					    ¿´¹ý<a href="/">666</a></span>
+					    çœ‹è¿‡<a href="/">{{item.likes}}</a></span>
 							<span class="pingl f_r">
-					    ÆÀÂÛ<a href="/">60</a></span>
+					    è¯„è®º<a href="/">{{item.comments}}</a></span>
 						</p>
 					</ul>
 				</div>
-				<div class="blogs">
-					<figure>
-						<img src="../../assets/images/02.jpg">
-					</figure>
-					<ul>
-						<h3><a href="/">»·Ð£ÅÜµÚ¶þÌì£¬¼ÓÓÍ£¡</a></h3>
-						<p>"?????????????????????????????????????????????????????????????????????????????????????????????????????????????????????????????????????..."</p>
-						<p class="autor">
-				    <span class="lm f_l">
-					    <a href="/">ÇØÓîÑô</a>
-					 </span>
-							<span class="dtime f_l">2016-02-16</span>
-							<span class="viewnum f_r">
-					    ¿´¹ý<a href="/">666</a></span>
-							<span class="pingl f_r">
-					    ÆÀÂÛ<a href="/">60</a></span>
-						</p>
-					</ul>
-				</div>
-				<div class="blogs">
-					<figure>
-						<img src="../../assets/images/03.jpg">
-					</figure>
-					<ul>
-						<h3><a href="/">123</a></h3>
-						<p>"??????????????????????????????????QQ????????§µ????????????????????????????????????????????????,???????????????????????????..."</p>
-						<p class="autor">
-				    <span class="lm f_l">
-					    <a href="/">³õÒôÎ´À´</a>
-					 </span>
-							<span class="dtime f_l">2016-02-16</span>
-							<span class="viewnum f_r">
-					    ¿´¹ý<a href="/">666</a></span>
-							<span class="pingl f_r">
-					    ÆÀÂÛ<a href="/">60</a></span>
-						</p>
-					</ul>
-				</div>
-				<div class="blogs">
-					<figure>
-						<img src="../../assets/images/04.jpg">
-					</figure>
-					<ul>
-						<h3><a href="/">123</a></h3>
-						<p>"????????????????§Ò???????????????12593+?´Â????=????e????????§Ü?????????§³????????????????????????????????????..."</p>
-						<p class="autor">
-				    <span class="lm f_l">
-					    <a href="/">ÔÆ¶ä</a>
-					 </span>
-							<span class="dtime f_l">2016-02-16</span>
-							<span class="viewnum f_r">
-					    ¿´¹ý<a href="/">666</a></span>
-							<span class="pingl f_r">
-					    ÆÀÂÛ<a href="/">60</a></span>
-						</p>
-					</ul>
-				</div>
-				<div class="blogs">
-					<figure>
-						<img src="../../assets/images/05.jpg">
-					</figure>
-					<ul>
-						<h3><a href="/">123</a></h3>
-						<p>"??????????????????????¨®????????????????´Â?????§ß???????????????????????????????????¡ê?1????§³???2???????????QQ..."</p>
-						<p class="autor">
-				    <span class="lm f_l">
-					    <a href="/">ikun</a>
-					 </span>
-							<span class="dtime f_l">2016-02-16</span>
-							<span class="viewnum f_r">
-					    ¿´¹ý<a href="/">666</a></span>
-							<span class="pingl f_r">
-					    ÆÀÂÛ<a href="/">60</a></span>
-						</p>
-					</ul>
-				</div>
-				<div class="blogs">
-					<figure>
-						<img src="../../assets/images/06.jpg">
-					</figure>
-					<ul>
-						<h3><a href="/">123</a></h3>
-						<p>"??????????????§³????????????????????????????????????????????????????????????????????????????????????????????????????Tag Heuer?? ??????????????????Modelabs????????????????????????????????????????????????..."</p>
-						<p class="autor">
-				    <span class="lm f_l">
-					    <a href="/">Ò»Î»¹ÊÈË</a>
-					 </span>
-							<span class="dtime f_l">2016-02-16</span>
-							<span class="viewnum f_r">
-					    ¿´¹ý<a href="/">666</a></span>
-							<span class="pingl f_r">
-					    ÆÀÂÛ<a href="/">60</a></span>
-						</p>
-					</ul>
-				</div>
-				<div class="blogs">
-					<figure>
-						<img src="../../assets/images/04.jpg">
-					</figure>
-					<ul>
-						<h3><a href="/">123</a></h3>
-						<p>"????????????????§Ò???????????????12593+?´Â????=????e????????§Ü?????????§³????????????????????????????????????..."</p>
-						<p class="autor">
-				    <span class="lm f_l">
-					    <a href="/">Áõ»ªÇ¿</a>
-					 </span>
-							<span class="dtime f_l">2016-02-16</span>
-							<span class="viewnum f_r">
-					    ¿´¹ý<a href="/">666</a></span>
-							<span class="pingl f_r">
-					    ÆÀÂÛ<a href="/">60</a></span>
-						</p>
-					</ul>
-				</div>
+
 			</div>
 		</div>
-		<div class="r_box f_r">
+		<div class="r_box f_r" style="margin: 0 20px;">
 			<div class="tit01">
-				<h3>ÎÒµÄÉçÇø</h3>
+				<h3>æˆ‘çš„ç¤¾åŒº</h3>
 				<div class="gzwm">
 					<ul>
-						<li><a class="xlwb" href="#" target="_blank">ÎÒµÄ¹Ø×¢</a></li>
-						<li><a class="txwb" href="../´ïÈË/news.html" target="_blank">ä¯ÀÀÀúÊ·</a></li>
-						<li><a class="rss" href="#" target="_blank">ÎÒµÄÊÕ²Ø</a></li>
-						<li><a class="wx" href="#" target="_blank">ÎÒµÄÏûÏ¢</a></li>
+						<li><a class="xlwb" href="#" target="_blank">æˆ‘çš„å…³æ³¨</a></li>
+						<li><a class="txwb" href="./news.html" target="_blank">æµè§ˆåŽ†å²</a></li>
+						<li><a class="rss" href="#" target="_blank">æˆ‘çš„æ”¶è—</a></li>
+						<li><a class="wx" href="#" target="_blank">æˆ‘çš„æ¶ˆæ¯</a></li>
 					</ul>
 				</div>
 			</div>
 			<div class="ad300x100">
 				<a href="/">
-					<img src="../../assets/images/storys.jpg">
+					<img src="../../assets/images/02.jpg">
 				</a>
 			</div>
 			<div class="tab" id="lp_right_select">
-				<script>
-					window.onload=function()
-					{
-						var oLi=document.getElementById("tb").getElementsByTagName("li");
-						var oUl=document.getElementById("tb-main").getElementsByTagName("div");
-						for(var i=0;i<oLi.length;i++)
-						{
-							oLi[i].index=i;
-							oLi[i].onmouseover=function()
-							{
-								for(var n=0;n<oLi.length;n++)
-									oLi[n].className="";
-								this.className="cur";
-								for(var n=0;n<oUl.length;n++)
-									oUl[n].style.display="none";
-								oUl[this.index].style.display="block";
-							}
-						}
-					}
-				</script>
 				<div class="tab-top">
 					<ul class="hd" id="tb">
-						<li class="cur"><a href="/">µã»÷ÅÅÐÐ</a></li>
-						<li><a href="/">ÊÝÉíºÃÎÄÍÆ¼ö</a></li>
-						<li><a href="/">ÊÝÉítip</a></li>
+						<li class="cur"><a href="/">ç‚¹å‡»æŽ’è¡Œ</a></li>
+						<li><a href="/">ç˜¦èº«å¥½æ–‡æŽ¨è</a></li>
+						<li><a href="/">ç˜¦èº«tip</a></li>
 					</ul>
 				</div>
 				<div class="tab-main" id="tb-main">
 					<div class="bd bd-news" style="display:block;"><ul>
-						<li><a href="/" target="_blank">Ñô¿µºóÒûÊ³Ó¦×¢ÒâÄÄÐ©</a></li>
-						<li><a href="/" target="_blank">¼õ·Ê²»ÊÇµ¥¿¿ÉÙ³Ô£¡£¡£¡</a></li>
-						<li><a href="/" target="_blank">Èý·ÖÁ·£¬Æß·Ö³Ô</a></li>
+						<li><a href="/" target="_blank">é˜³åº·åŽé¥®é£Ÿåº”æ³¨æ„å“ªäº›</a></li>
+						<li><a href="/" target="_blank">å‡è‚¥ä¸æ˜¯å•é å°‘åƒï¼ï¼ï¼</a></li>
+						<li><a href="/" target="_blank">ä¸‰åˆ†ç»ƒï¼Œä¸ƒåˆ†åƒ</a></li>
 						<li><a href="/" target="_blank">123</a></li>
 						<li><a href="/" target="_blank">123</a></li>
 						<li><a href="/" target="_blank">123</a></li>
 					</ul></div>
 					<div class="bd bd-news" ><ul>
-						<li><a href="/" target="_blank">Ñô¿µºóÒûÊ³Ó¦×¢ÒâÄÄÐ©</a></li>
-						<li><a href="/" target="_blank">¼õ·Ê²»ÊÇµ¥¿¿ÉÙ³Ô£¡£¡£¡</a></li>
-						<li><a href="/" target="_blank">Èý·ÖÁ·£¬Æß·Ö³Ô</a></li>
-						<li><a href="/" target="_blank">»çËØ´îÅä£¬³Ô³ö½¡¿µ</a></li>
+						<li><a href="/" target="_blank">é˜³åº·åŽé¥®é£Ÿåº”æ³¨æ„å“ªäº›</a></li>
+						<li><a href="/" target="_blank">å‡è‚¥ä¸æ˜¯å•é å°‘åƒï¼ï¼ï¼</a></li>
+						<li><a href="/" target="_blank">ä¸‰åˆ†ç»ƒï¼Œä¸ƒåˆ†åƒ</a></li>
+						<li><a href="/" target="_blank">è¤ç´ æ­é…ï¼Œåƒå‡ºå¥åº·</a></li>
 						<li><a href="/" target="_blank">123</a></li>
 						<li><a href="/" target="_blank">123</a></li>
 					</ul></div>
 					<div class="bd bd-news" ><ul>
-						<li><a href="/" target="_blank">?????16??????§³????????99.999%????????</a></li>
+						<li><a href="/" target="_blank">?????16??????Ð¡????????99.999%????????</a></li>
 						<li><a href="/" target="_blank">????????????????????</a></li>
 						<li><a href="/" target="_blank">?????????????</a></li>
 						<li><a href="/" target="_blank">??????????????! ??????????????????</a></li>
@@ -299,20 +148,20 @@
 				</div>
 			</div>
 			<div class="cloud">
-				<h3>Ö÷Ìâ»î¶¯</h3>
+				<h3>ä¸»é¢˜æ´»åŠ¨</h3>
 				<ul>
-					<li><a href="/">¼õÖØÌôÕ½Èü</a></li>
-					<li><a href="/">½¡¿µÉú»îvlog´óÈü</a></li>
-					<li><a href="/">¼õÖ¬ÌôÕ½Èü</a></li>
-					<li><a href="/">Fit½²×ù</a></li>
-					<li><a href="/">ÔË¶¯´ò¿¨ÌôÕ½</a></li>
-					<li><a href="/">ÊÝÉíÎóÇø±Ü¿ÓÖ¸ÄÏ</a></li>
-					<li><a href="/">¼õ·ÊÄÜ³ÔXXXÂð</a></li>
+					<li><a href="/">å‡é‡æŒ‘æˆ˜èµ›</a></li>
+					<li><a href="/">å¥åº·ç”Ÿæ´»vlogå¤§èµ›</a></li>
+					<li><a href="/">å‡è„‚æŒ‘æˆ˜èµ›</a></li>
+					<li><a href="/">Fitè®²åº§</a></li>
+					<li><a href="/">è¿åŠ¨æ‰“å¡æŒ‘æˆ˜</a></li>
+					<li><a href="/">ç˜¦èº«è¯¯åŒºé¿å‘æŒ‡å—</a></li>
+					<li><a href="/">å‡è‚¥èƒ½åƒXXXå—</a></li>
 
 				</ul>
 			</div>
 			<div class="tuwen">
-				<h3>¿ÉÄÜÊÊºÏÄãµÄ</h3>
+				<h3>å¯èƒ½é€‚åˆä½ çš„</h3>
 				<ul>
 					<li><a href="/"><img src="../../assets/images/01.jpg"><b>?????????????</b></a>
 						<p>
@@ -320,12 +169,12 @@
 							<span class="tutime">2016-02-16</span>
 						</p>
 					</li>
-					<li><a href="/"><img src="../../assets/images/02.jpg"><b>????????????????????´Â</b></a>
+					<li><a href="/"><img src="../../assets/images/02.jpg"><b>????????????????????ç»°</b></a>
 						<p>
 							<span class="tulanum"><a href="/">??????</a></span>
 							<span class="tutime">2016-02-16</span>
 						</p></li>
-					<li><a href="/"><img src="../../assets/images/03.jpg"><b>?????16??????§³????????99.999%????????</b></a>
+					<li><a href="/"><img src="../../assets/images/03.jpg"><b>?????16??????Ð¡????????99.999%????????</b></a>
 						<p>
 							<span class="tulanum"><a href="/">??????</a></span>
 							<span class="tutime">2016-02-16</span>
@@ -344,55 +193,55 @@
 			</div>
 
 			<el-dialog
-					title="Fitday BMI×Ô²â"
+					title="Fitday BMIè‡ªæµ‹"
 					:visible.sync="bmiFormVisible"
 					width="60%"
 					top="15px"
 			>
 				<div class="mytop">
-					<p>»¶Ó­À´µ½FitdayBMI×Ô²â½çÃæ£¡&#128512;ÉíÌåÖÊÁ¿Ö¸Êý£¬ÊÇBMIÖ¸Êý£¬¼ò³ÆÌåÖÊÖ¸Êý£¬ÊÇ¹ú¼ÊÉÏ³£ÓÃµÄºâÁ¿ÈËÌåÅÖÊÝ³Ì¶ÈÒÔ¼°ÊÇ·ñ½¡¿µµÄÒ»¸ö±ê×¼¡£</p>
+					<p>æ¬¢è¿Žæ¥åˆ°FitdayBMIè‡ªæµ‹ç•Œé¢ï¼&#128512;èº«ä½“è´¨é‡æŒ‡æ•°ï¼Œæ˜¯BMIæŒ‡æ•°ï¼Œç®€ç§°ä½“è´¨æŒ‡æ•°ï¼Œæ˜¯å›½é™…ä¸Šå¸¸ç”¨çš„è¡¡é‡äººä½“èƒ–ç˜¦ç¨‹åº¦ä»¥åŠæ˜¯å¦å¥åº·çš„ä¸€ä¸ªæ ‡å‡†ã€‚</p>
 				</div>
 				<div class="main">
 					<div class="left">
-						<h4>¼ÆËãÄãµÄÉíÌåÖÊÁ¿Ö¸Êý (BMI)</h4>
+						<h4>è®¡ç®—ä½ çš„èº«ä½“è´¨é‡æŒ‡æ•° (BMI)</h4>
 						<p><span class="printbmi">{{printbmi0}}</span>&nbsp;&nbsp;&nbsp;<span class="printbmi">{{printbmi1}}</span></p>
-						<div>ÎÒµÄÉí¸ß£º<input type="text" class="heht" placeholder="ÇëÊäÈëÉí¸ß" v-model="hv"> µ¥Î»£ºÀåÃ× cm</div>
-						<div>ÎÒµÄÌåÖØ£º<input type="text" class="weht" placeholder="ÇëÊäÈëÌåÖØ" v-model="wv"> µ¥Î»£ºÇ§¿Ë kg</div>
-						<div>BMI±ê×¼£º<input type="text" value="ÖÐ¹ú±ê×¼"></div>
-						<div class="end"><input type="submit" value="¼ÆËãBMI" @click="onbmi"></div>
+						<div>æˆ‘çš„èº«é«˜ï¼š<input type="text" class="heht" placeholder="è¯·è¾“å…¥èº«é«˜" v-model="hv"> å•ä½ï¼šåŽ˜ç±³ cm</div>
+						<div>æˆ‘çš„ä½“é‡ï¼š<input type="text" class="weht" placeholder="è¯·è¾“å…¥ä½“é‡" v-model="wv"> å•ä½ï¼šåƒå…‹ kg</div>
+						<div>BMIæ ‡å‡†ï¼š<input type="text" value="ä¸­å›½æ ‡å‡†"></div>
+						<div class="end"><input type="submit" value="è®¡ç®—BMI" @click="onbmi"></div>
 					</div>
 					<div class="right">
-						<p style="color: brown; font-weight: bold;">BMIÖÐ¹ú±ê×¼</p>
+						<p style="color: brown; font-weight: bold;">BMIä¸­å›½æ ‡å‡†</p>
 						<table border="0px" cellspacing="0" cellpadding="0">
 							<tr style="background-color: chartreuse;">
-								<th>·ÖÀà</th>
-								<th>BMI·¶Î§</th>
+								<th>åˆ†ç±»</th>
+								<th>BMIèŒƒå›´</th>
 							</tr>
 							<tr style="background-color: hotpink;">
-								<th>Æ«ÊÝ</th>
+								<th>åç˜¦</th>
 								<th><= 18.4</th>
 							</tr>
 							<tr style="background-color: cyan;">
-								<th>Õý³£</th>
+								<th>æ­£å¸¸</th>
 								<th>18.5 ~ 23.9</th>
 							</tr>
 							<tr style="background-color: slateblue;">
-								<th>¹ýÖØ</th>
+								<th>è¿‡é‡</th>
 								<th>24.0 ~ 27.9</th>
 							</tr>
 							<tr style="background-color: purple;">
-								<th>·ÊÅÖ</th>
+								<th>è‚¥èƒ–</th>
 								<th>28~32</th>
 							</tr>
 							<tr style="background-color: royalblue;">
-								<th>ÑÏÖØ·ÊÅÖ</th>
+								<th>ä¸¥é‡è‚¥èƒ–</th>
 								<th>> 32.0</th>
 							</tr>
 						</table>
 					</div>
 				</div>
 				<span slot="footer" class="dialog-footer">
-            <el-button @click="bmiFormVisible = false">È¡ Ïû</el-button>
+            <el-button @click="bmiFormVisible = false">å– æ¶ˆ</el-button>
           </span>
 			</el-dialog>
 
@@ -400,25 +249,76 @@
 
 		</div>
 	</article>
-	<style>
-		.copyrights{text-indent:-9999px;height:0;line-height:0;font-size:0;overflow:hidden;}
-	</style>
 
 </div>
-<!-- VueºÍelement-uiÒÔ¼°axiosµÄJS-->
+<!-- Vueå’Œelement-uiä»¥åŠaxiosçš„JS-->
 <script src="../../../public/plugins/vue/vue.js"></script>
-<!-- ÒýÈë×é¼þ¿â -->
+<!-- å¼•å…¥ç»„ä»¶åº“ -->
 <script src="../../../public/plugins/element-ui/index.js"></script>
 <script src="../../../public/plugins/axios/axios.min.js"></script>
 <script src="../../../public/js/request.js"></script>
+<script src="../../myapi/dynamic.js"></script>
 
 <script>
 	new Vue({
 		el: "#app",
 		data(){
-			return{}
+			return {
+				activeIndex: '1',
+				tableData : [],
+			}
 		},
-		method:{}
+		mounted(){
+			window.parent.postMessage(document.body.clientHeight,'*')
+			this.init()
+		},
+		methods:{
+			async init () {
+				await getallList().then(res => {
+					if (String(res.code) === '1') {
+						this.tableData = res.data
+					}
+				}).catch(err => {
+					this.$message.error('è¯·æ±‚å‡ºé”™äº†ï¼š' + err)
+				})
+				console.log(this.tableData)
+			},
+			handleSelect(key, keyPath) {
+				console.log(key)
+				if(key==1){
+					window.location.href = "./community.html"
+				}
+				if(key==2){
+					console.log("window.location.href")
+					window.location.href = "./me.html"
+				}
+				if(key==3){
+					window.location.href = "./add2.html"
+				}
+				if(key==4){
+					window.location.href = "./case.html"
+				}
+			},
+			async navto(theid){
+				await getonedynamic(theid).then(res=>{
+					if(String(res.code) === '1'){
+						window.localStorage.setItem("dynamic",JSON.stringify(res.data))
+
+					}else{
+						console.log(res.msg)
+					}
+				})
+				await getcomments2(theid).then(res=>{
+					if(String(res.code) === '1'){
+						window.localStorage.setItem("comments",JSON.stringify(res.data))
+					}else{
+						console.log(res.msg)
+					}
+				})
+				window.localStorage.setItem("go","1")
+				window.location.href = "./blog.html"
+			},
+		}
 	})
 </script>
 </body>

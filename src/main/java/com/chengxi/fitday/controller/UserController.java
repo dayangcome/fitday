@@ -6,13 +6,11 @@ import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.chengxi.fitday.common.R;
 import com.chengxi.fitday.dto.FreezeInfodto;
 import com.chengxi.fitday.dto.Registerinfodto;
-import com.chengxi.fitday.entity.Employee;
-import com.chengxi.fitday.entity.Freeze;
-import com.chengxi.fitday.entity.User;
-import com.chengxi.fitday.entity.Userinfo;
+import com.chengxi.fitday.entity.*;
 import com.chengxi.fitday.service.IFreezeService;
 import com.chengxi.fitday.service.IUserService;
 import com.chengxi.fitday.service.IUserinfoService;
+import com.chengxi.fitday.service.IUservideoService;
 import org.apache.commons.lang.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.util.DigestUtils;
@@ -46,6 +44,9 @@ public class UserController {
 
     @Autowired
     private IUserinfoService userinfoService;
+
+    @Autowired
+    private IUservideoService uservideoService;
 
     //用户账号登录
     @PostMapping("/login")
@@ -354,5 +355,21 @@ public class UserController {
         }
         return R.success(userinfo);
     }
+
+    //通过视频id查找到作者信息
+    @GetMapping("/getbyvideo/{videoId}")
+    public R<User> getbyvideo(@PathVariable Long videoId){
+        Uservideo video=uservideoService.getById(videoId);
+        if(video==null){
+            return R.error("视频信息未找到！");
+        }
+        User user=userService.getById(video.getUserId());
+        if(user==null){
+            return R.error("作者信息未找到！");
+        }
+        return R.success(user);
+    }
+
+
 }
 

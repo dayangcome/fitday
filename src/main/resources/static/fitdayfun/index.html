@@ -69,7 +69,7 @@
                                     <i
                                             slot="suffix"
                                             class="el-input__icon el-icon-search"
-                                            style="cursor: pointer;font-size: 28px;"
+                                            style="cursor: pointer;font-size: 25px;"
                                     ></i>
                                 </el-input>
                             </div>
@@ -147,16 +147,16 @@
                             './page/home/home.html',
                             './page/food/food.html',
                             './page/sport/sport.html',
-                            'page/users/list4.html',
+                            './page/group/search/search1.html',
                             './page/community/community.html',
                             './page/mall/course.html',
-                            'page/psychology/psychology.html'
+                            './page/psychology/psychology.html'
                         ],
                         heightlist:[
                           "1580px",
                           "660px",
                           "1160px",
-                          "1180px",
+                          "780px",
                           "1960px",
                           "1280px",
                           "1280px"
@@ -175,6 +175,10 @@
                     }
                 },
                 mounted(){
+                    window.addEventListener('message',function(e){
+                        var nowheight=e.data+450+'px'
+                        document.querySelector("#cIframe").style.height=nowheight
+                    })
                     var userInfo = window.localStorage.getItem('userInfo')
                     userInfo = JSON.parse(userInfo)
                     this.userInfo=userInfo
@@ -222,7 +226,7 @@
                         }else if(command=='d'){
                             window.location.href = './page/Addmoney/Addmoney.html';
                         }else if(command=='b'){
-                            window.location.href = './page/message/回复我的.html';
+                            window.location.href = 'page/message/mes2.html';
                         }else if(command=='e'){
                             "客服中心"
                             "意见反馈"

@@ -1,0 +1,99 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta charset="utf-8" />
+        <title>首页</title>
+        <link rel="stylesheet" href="../../../public/plugins/element-ui/index.css" />
+        <style type="text/css">
+        #app{
+            text-align: center;
+            width: 600px
+        }
+        </style>
+    </head>
+    <body>
+        <div id="app">
+           
+           <el-form>
+                <el-form-item
+                           label="选择头像:"
+                           prop="avatarLink"
+                           style="display: inline-block"
+                   >
+                     <el-button
+                             class="avatar_chs"
+                             v-for="avatar in circleAvaUrls"
+                             style="width:10px; height:10px; margin-right: 10px; vertical-align: 30%; background: url('https://s1.ax1x.com/2023/01/28/pSUh3Js.jpg') center;background-size: cover;"
+                             maxlength="20"
+                             @click="click_avatar(avatar)"
+                             circle
+                     >
+                     </el-button>
+                   </el-form-item>
+            </el-form>
+
+        </div>
+        <!-- 开发环境版本，包含了有帮助的命令行警告 -->
+        <script src="../../../public/plugins/vue/vue.js"></script>
+        <!-- 引入组件库 -->
+        <script src="../../../public/plugins/element-ui/index.js"></script>
+
+        <script src="../../../public/plugins/axios/axios.min.js"></script>
+        <script src="../../../public/js/request.js"></script>
+        <script src="../../myapi/explain.js"></script>
+        <script>
+            new Vue({
+                el: '#app',
+                data() {
+                    return {
+                                    id: '',
+                                    actionType: '',
+                                    ruleForm: {
+                                        id: 0,
+                                        username: '',
+                                        name: '',
+                                        phone: '',
+                                        avatarLink: '',
+                                        description: "",
+                                        createTime: '',
+                                        level: 0,
+                                        status: 1
+                                    },
+                                    editMsg: false,
+                                    tempLink:'',
+                                    circleAvaUrls: [
+                                        "https://s1.ax1x.com/2023/01/28/pSUh3Js.jpg",
+                                        "https://s1.ax1x.com/2023/01/28/pSUh3Js.jpg",
+                                        "https://s1.ax1x.com/2023/01/28/pSUh3Js.jpg"
+                                    ]
+                                }
+                },
+                mounted() {
+                    this.account=localStorage.getItem("exaccount");
+                    this.phone=localStorage.getItem("exphone");
+                    this.reason=localStorage.getItem("exreason");
+                    this.logintype=localStorage.getItem("type");
+                },    
+                methods: {
+                    async submitex(){
+                        let res = await sendexplain(this.account,this.phone,this.reason,this.explain)
+                        if (String(res.code) === '1') {
+                            window.location.href='successres.html'
+                        } else {
+                            window.location.href='errores.html'
+                        }
+                    },
+                    goBack() {
+                        window.location.href='../../index.html'
+                    }
+                },
+                destroyed(){
+                    localStorage.removeItem("exaccount");
+                    localStorage.removeItem("exphone");
+                    localStorage.removeItem("exreason");
+                    localStorage.removeItem("type");
+                }
+            })
+        </script>
+    </body>
+</html>

@@ -60,7 +60,7 @@
                         box-shadow: 4px 4px 8px rgba(0, 0, 0, .1), -4px -4px 8px rgba(0, 0, 0, .1);
                     }
                 .image2 {
-                        margin-top:70px;
+                        margin-top:15px;
                         width: 100%;
                         height: 100%;
                         padding:2px;
@@ -108,7 +108,6 @@
               .card-video .card {
                   display: flex;
                   flex-direction: column;
-                  justify-content: center;
                   width: 230px;
                   height: 190px;
                   margin: 0 10px;
@@ -140,6 +139,9 @@
                 height: 100%;
 
             }
+            .bannerimg:hover{
+               cursor: pointer;
+            }
         </style>
     </head>
     <body>
@@ -148,68 +150,68 @@
                 <div class="mycarousel">
                     <el-carousel height="500px" style="border-radius:10px;width: 680px;">
                         <el-carousel-item v-for="item in piclist" :key="item">
-                            <img :src="item" class="bannerimg"/>
+                            <img :src="item" class="bannerimg"  @click="goto"/>
                         </el-carousel-item>
                     </el-carousel>
                 </div>
                 <div class="card-video">
-                    <div class="card" @click="navto(o)">
-                        <img src="../../assets/img/portfolio/2.jpg" class="image2">
+                    <div class="card" v-for="item in videolist" @click="navto(item.uservideo.videoId)">
+                        <img :src="item.uservideo.picture" class="image2">
                         <div class="myinfo">
-                            视频1
+                            {{item.uservideo.title}}
                         </div>
                         <div class="author">
-                           UP 徐一鸣 · 19小时前
+                           UP {{item.authorname}} · {{item.uservideo.uploadtime.toLocaleString().slice(0,10)}}
                         </div>
                    
                     </div>
-                    <div class="card">
-                        <img src="../../assets/img/portfolio/3.jpg" class="image2">
-                        <div class="myinfo">
-                            视频2
-                        </div>
-                        <div class="author">
-                             UP 赵俊超 · 3-21
-                        </div>
-                      
-                    </div>
-                    <div class="card">
-                        <img src="../../assets/img/portfolio/4.jpg" class="image2">
-                        <div class="myinfo">
-                            视频3
-                        </div>
-                    <div class="author">
-                         UP 摩托车· 3-22
-                    </div>
-                    </div>
-                    <div class="card">
-                        <img src="../../assets/img/portfolio/4.jpg" class="image2">
-                        <div class="myinfo">
-                            视频4
-                        </div>
-                          <div class="author">
-                               UP 大洋· 3-17
-                          </div>
-                    </div>
-                    <div class="card">
-                        <img src="../../assets/img/portfolio/4.jpg" class="image2">
-                        <div class="myinfo">
-                            视频5
-                        </div>
-                        <div class="author">
-                             UP 李哲· 3-14
-                        </div>
-            
-                    </div>
-                    <div class="card">
-                        <img src="../../assets/img/portfolio/4.jpg" class="image2">
-                        <div class="myinfo">
-                            视频6
-                        </div>
-                        <div class="author">
-                             UP 余洋· 3-11
-                        </div>
-                    </div>
+<!--                    <div class="card">-->
+<!--                        <img src="../../assets/img/portfolio/3.jpg" class="image2">-->
+<!--                        <div class="myinfo">-->
+<!--                            视频2-->
+<!--                        </div>-->
+<!--                        <div class="author">-->
+<!--                             UP 赵俊超 · 3-21-->
+<!--                        </div>-->
+<!--                      -->
+<!--                    </div>-->
+<!--                    <div class="card">-->
+<!--                        <img src="../../assets/img/portfolio/4.jpg" class="image2">-->
+<!--                        <div class="myinfo">-->
+<!--                            视频3-->
+<!--                        </div>-->
+<!--                    <div class="author">-->
+<!--                         UP 摩托车· 3-22-->
+<!--                    </div>-->
+<!--                    </div>-->
+<!--                    <div class="card">-->
+<!--                        <img src="../../assets/img/portfolio/4.jpg" class="image2">-->
+<!--                        <div class="myinfo">-->
+<!--                            视频4-->
+<!--                        </div>-->
+<!--                          <div class="author">-->
+<!--                               UP 大洋· 3-17-->
+<!--                          </div>-->
+<!--                    </div>-->
+<!--                    <div class="card">-->
+<!--                        <img src="../../assets/img/portfolio/4.jpg" class="image2">-->
+<!--                        <div class="myinfo">-->
+<!--                            视频5-->
+<!--                        </div>-->
+<!--                        <div class="author">-->
+<!--                             UP 李哲· 3-14-->
+<!--                        </div>-->
+<!--            -->
+<!--                    </div>-->
+<!--                    <div class="card">-->
+<!--                        <img src="../../assets/img/portfolio/4.jpg" class="image2">-->
+<!--                        <div class="myinfo">-->
+<!--                            视频6-->
+<!--                        </div>-->
+<!--                        <div class="author">-->
+<!--                             UP 余洋· 3-11-->
+<!--                        </div>-->
+<!--                    </div>-->
                     
                 </div>
             </div>
@@ -311,6 +313,7 @@
         <script src="../../../public/plugins/axios/axios.min.js"></script>
         <script src="../../../public/js/request.js"></script>
 		<script src="../../myapi/explain.js"></script>
+        <script src="../../myapi/video.js"></script>
 		
         <script>
 			
@@ -327,22 +330,52 @@
                       keyword:"",
                       inputVisible: false,
                       inputValue: '',
-                      userInfo:[]
+                      userInfo:{},
+                      videolist:[]
                     }
                 },
                 created(){
                     this.userInfo = JSON.parse(localStorage.getItem('userInfo'))
+
                 },
                 mounted() {
-                    this.setSize();
-                    window.addEventListener('resize', ()=>{
-                        this.setSize();
-                    },false);
+                    this.init1()
                 },    
                 methods: {
-                    navto(num){
+                    async init1(){
+                        await getallvideo().then(res=>{
+                            if(String(res.code) === '1'){
+                                console.log(res.data)
+                                this.videolist=res.data
+                            }
+                        })
+                        window.parent.postMessage(document.body.clientHeight-250,'*')
+                    },
+                    async navto(videoId){
+                        await getonevideo(videoId).then(res=>{
+                            if(String(res.code) === '1'){
+                                window.localStorage.setItem("thevideo",JSON.stringify(res.data))
+                            }else{
+                                console.log(res.msg)
+                            }
+                        })
+                        await getauthor(videoId).then(res=>{
+                            if(String(res.code) === '1'){
+                                console.log(res.data)
+                                window.localStorage.setItem("author",JSON.stringify(res.data))
+                            }else{
+                                console.log(res.msg)
+                            }
+                        })
+                        await getcomments(videoId).then(res=>{
+                            if(String(res.code) === '1'){
+                                console.log(res.data)
+                                window.localStorage.setItem("comments",JSON.stringify(res.data))
+                            }else{
+                                console.log(res.msg)
+                            }
+                        })
                         window.location.href = "../videodetails/videodetails.html"
-                        console.log(num)
                     },
                     setSize(){
                         this.bannerHeight = document.body.clientWidth / 4
@@ -366,8 +399,8 @@
                       this.inputVisible = false;
                       this.inputValue = '';
                     },
-                    handleQuery(){
-                        
+                    goto(){
+                        window.location.href="../question/question.html"
                     }
                 }
             })

@@ -167,6 +167,7 @@
                                 <img v-if="imageUrl" :src="imageUrl" class="avatar">
                                 <i v-else class="el-icon-plus avatar-uploader-icon"></i>
                               </el-upload>
+
                               
                               <span slot="footer" class="dialog-footer">
                                 <el-button type="primary" @click="changeavatar">确 定</el-button>
@@ -206,11 +207,11 @@
                             
                             <div class="myrow">
                                 <h3>我的性别</h3>
-                                <el-radio-group v-model="sex">
+                                <el-radio-mygroup v-model="sex">
                                     <el-radio  :label="0">男</el-radio>
                                     <el-radio  :label="1">女</el-radio>
                                     <el-radio  :label="2">保密/未知</el-radio>
-                                </el-radio-group>
+                                </el-radio-mygroup>
                             </div>
                             
                             <div class="myrow">
@@ -419,7 +420,7 @@
                                             <el-row :gutter="20">
                                                 <el-col :span="2">
                                                     <div>
-                                                        <el-statistic group-separator="," :precision="2" :value="value2" :title="title"></el-statistic>
+                                                        <el-statistic mygroup-separator="," :precision="2" :value="value2" :title="title"></el-statistic>
                                                     </div>
                                                 </el-col>
                                                 <el-col :span="2">
@@ -434,7 +435,7 @@
                                                 </el-col>
                                                 <el-col :span="2">
                                                     <div>
-                                                        <el-statistic group-separator="," :precision="2" decimal-separator="." :value="value1" :title="title">
+                                                        <el-statistic mygroup-separator="," :precision="2" decimal-separator="." :value="value1" :title="title">
                                                             <template slot="prefix">
                                                                 <i class="el-icon-s-flag" style="color: red"></i>
                                                             </template>

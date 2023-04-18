@@ -1,0 +1,299 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width,initial-scale=1.0">
+    <link rel="stylesheet" href="../../../../public/plugins/element-ui/index.css" />
+    <title>Document</title>
+    <style>
+        .el-message {
+            position: absolute;
+            left: 50%;
+            top: 20px;
+        }
+        .whole_containor{
+            margin: -8px -8px;
+            width: 1518px;
+            height: 745px;
+            background-color: #f5f5f5;
+        }
+        .contain{
+            width: 992px;
+            height:736px;
+            background-color: grey;
+            display: inline-block;
+            border: 1px solid rgb(171, 167, 167);
+        }
+        .top_option{
+            width:992px;
+            height:80px;
+            background-color: rgb(53, 141, 219);
+            display: inline-block;
+        }
+        .input_text{
+            width:992px;
+            height:55px;
+            background-color: rgb(198, 224, 247);
+            display: inline-block;
+            text-align: center;
+            font-size: 25px;
+        }
+        .comment{
+            display: inline-block; 
+            width: 520px; 
+            height: 30px; 
+            margin-left: 5px; 
+            margin-top: 5px; 
+            resize: none; 
+            border-color: rgb(0, 132, 255);
+        }
+        .rank_option{
+            width: 992px; 
+            height: 40px; 
+            background-color: gainsboro;
+        }
+        .groupmarks{
+            width:992px;
+            height:601px;
+            background-color: white;
+        }
+        .groupmark_item{
+            width:225px;
+            height: 120px;;
+            background-color: white;
+            border: 1px solid rgb(224, 221, 221);
+            display: inline-block;
+            margin-top: 12px;
+            margin-left: 8px;
+        }
+        .person_picture_site{
+            vertical-align: top;
+            width: 66px; 
+            height: 66px; 
+            display: inline-block;
+             margin-left: 5px;
+             margin-top: 5px; 
+        }
+        .sport_word{
+            vertical-align: 50%;
+            font-size:30px;
+        }
+        input:hover{
+            cursor: pointer;
+            background-color: #0ef6b8;
+
+        }
+        
+    </style>
+</head>
+
+<body>
+    <div class="whole_containor" id="app">
+        <div style="width: 250px;  display: inline-block;">
+
+        </div>
+        <div class="contain">
+            <div class="top_option">
+                <div style="text-align: center; margin-top: 10px;">
+                    <a style=" font-size: 30px; color: black; text-decoration: none; font-size: 30px; " target="_self" >创建小组</a>
+                </div>
+            </div>
+            <div class="input_text">
+                <div>请选择您想要的小组标签</div>
+            </div>
+            <div class="groupmarks">
+                <el-checkbox-group v-model="checkList">
+                <div class="groupmark_item">
+                    <div style="display: inline-block;"><img style="width: 90px; height: 90px;" src="basketball.png" alt="" title=""></div>
+                    <div style="display: inline-block;">
+                        <div class="sport_word">篮球</div>
+                         <el-checkbox label="篮球"></el-checkbox>
+                    </div>
+                   
+                </div>
+                <div class="groupmark_item">
+                    <div style="display: inline-block;"><img style="width: 90px; height: 90px;" src="football.jpg" alt="" title=""></div>
+                    <div style="display: inline-block;">
+                        <div class="sport_word">足球</div>
+                         <el-checkbox label="足球"></el-checkbox>
+                    </div>
+                </div>
+                <div class="groupmark_item">
+                    <div style="display: inline-block;"><img style="width: 90px; height: 90px;" src="pingpang.jpg" alt="" title=""></div>
+                    <div style="display: inline-block;">
+                        <div class="sport_word">乒乓球</div>
+                         <el-checkbox label="乒乓球"></el-checkbox>
+                    </div>
+                </div>
+                <div class="groupmark_item">
+                    <div style="display: inline-block;"><img style="width: 90px; height: 90px;" src="yumaoqiu.jpg" alt="" title=""></div>
+                    <div style="display: inline-block;">
+                        <div class="sport_word">羽毛球</div>
+                         <el-checkbox label="羽毛球"></el-checkbox>
+                    </div>
+                </div>
+                <div class="groupmark_item">
+                    <div style="display: inline-block;"><img style="width: 90px; height: 90px;" src="paiqui.jpg" alt="" title=""></div>
+                    <div style="display: inline-block;">
+                        <div class="sport_word">排球</div>
+                         <el-checkbox label="排球"></el-checkbox>
+                    </div>
+                </div>
+                <div class="groupmark_item">
+                    <div style="display: inline-block;"><img style="width: 90px; height: 90px;" src="run.png" alt="" title=""></div>
+                    <div style="display: inline-block;">
+                        <div class="sport_word">跑步</div>
+                         <el-checkbox label="跑步"></el-checkbox>
+                    </div>
+                </div>
+                <div class="groupmark_item">
+                    <div style="display: inline-block;"><img style="width: 90px; height: 90px;" src="bike.jpg" alt="" title=""></div>
+                    <div style="display: inline-block;">
+                        <div class="sport_word">骑行</div>
+                         <el-checkbox label="骑行"></el-checkbox>
+                    </div>
+                </div>
+                <div class="groupmark_item">
+                    <div style="display: inline-block;"><img style="width: 90px; height: 90px;" src="ticao.png" alt="" title=""></div>
+                    <div style="display: inline-block;">
+                        <div class="sport_word">体操</div>
+                         <el-checkbox label="体操"></el-checkbox>
+                    </div>
+                </div>
+                <div class="groupmark_item">
+                    <div style="display: inline-block;"><img style="width: 90px; height: 90px;" src="yujia.png" alt="" title=""></div>
+                    <div style="display: inline-block;">
+                        <div class="sport_word">瑜伽</div>
+                         <el-checkbox label="瑜伽"></el-checkbox>
+                    </div>
+                </div>
+                <div class="groupmark_item">
+                    <div style="display: inline-block;"><img style="width: 90px; height: 90px;" src="tiaoshen.png" alt="" title=""></div>
+                    <div style="display: inline-block;">
+                        <div class="sport_word">跳绳</div>
+                         <el-checkbox label="跳绳"></el-checkbox>
+                    </div>
+                </div>
+                <div class="groupmark_item">
+                    <div style="display: inline-block;"><img style="width: 90px; height: 90px;" src="jianshen.png" alt="" title=""></div>
+                    <div style="display: inline-block;">
+                        <div class="sport_word">健身</div>
+                         <el-checkbox label="健身"></el-checkbox>
+                    </div>
+                </div>
+                <div class="groupmark_item">
+                    <div style="display: inline-block;"><img style="width: 90px; height: 90px;" src="fuwoc.jpg" alt="" title=""></div>
+                    <div style="display: inline-block;">
+                        <div class="sport_word">俯卧撑</div>
+                         <el-checkbox label="俯卧撑"></el-checkbox>
+                    </div>
+                </div>
+                <div class="groupmark_item">
+                    <div style="display: inline-block;"><img style="width: 90px; height: 90px;" src="yintixiangs.png" alt="" title=""></div>
+                    <div style="display: inline-block;">
+                        <div class="sport_word">引体向上</div>
+                         <el-checkbox label="引体向上"></el-checkbox>
+                    </div>
+                </div>
+                <div class="groupmark_item">
+                    <div style="display: inline-block;"><img style="width: 90px; height: 90px;" src="dance.png" alt="" title=""></div>
+                    <div style="display: inline-block;">
+                        <div class="sport_word">舞蹈</div>
+                         <el-checkbox label="舞蹈"></el-checkbox>
+                    </div>
+                </div>
+                <div class="groupmark_item">
+                    <div style="display: inline-block;"><img style="width: 90px; height: 90px;" src="yangwoqiz.png" alt="" title=""></div>
+                    <div style="display: inline-block;">
+                        <div class="sport_word">仰卧起坐</div>
+                         <el-checkbox label="仰卧起坐"></el-checkbox>
+                    </div>
+                </div>
+                <div class="groupmark_item">
+                    <div style="display: inline-block;"><img style="width: 90px; height: 90px;" src="huaban.png" alt="" title=""></div>
+                    <div style="display: inline-block;">
+                        <div class="sport_word">滑板</div>
+                         <el-checkbox label="滑板"></el-checkbox>
+                    </div>
+                </div>
+                </el-checkbox-group>
+                <div style="text-align: center;">
+                    <div @click="nextbu" style="display: inline-block; width: 90px; height: 40px; margin-left: 8px; margin-top: 3px;"><el-button plain type="primary" style=" width: 90px; height: 39px;margin-top: 3px; vertical-align: 100%;border-radius: 3px;">下一步</el-button></div>
+                </div>
+                    
+            </div>
+            
+        </div>
+
+        <div style="width: 250px;  display: inline-block;">
+
+        </div>
+    </div>
+    <script src="../../../../public/plugins/vue/mystyle.js"></script>
+    <!-- 开发环境版本，包含了有帮助的命令行警告 -->
+    <script src="../../../../public/plugins/vue/vue.js"></script>
+    <!-- 引入组件库 -->
+    <script src="../../../../public/plugins/element-ui/index.js"></script>
+    <script src="../../../../public/plugins/axios/axios.min.js"></script>
+    <script src="../../../../public/js/request.js"></script>
+    <script src="../../../myapi/dynamic.js"></script>
+    <script>
+        new Vue({
+            el: '#app',
+            data() {
+                return {
+                    tableData : [],
+                    id : '',
+                    status : '',
+                    userInfo:{},
+                    userInfo2:{},
+                    checkList: []
+                }
+            },
+            computed: {},
+            created() {
+                var userInfo = window.localStorage.getItem('userInfo')
+                userInfo = JSON.parse(userInfo)
+                this.userInfo=userInfo
+                var userInfo2 = window.localStorage.getItem('userInfo2')
+                userInfo2 = JSON.parse(userInfo2)
+                this.userInfo2=userInfo2
+            },
+            mounted() {
+                window.parent.postMessage(document.body.clientHeight-100,'*')
+            },
+            methods: {
+                mysend(){
+                    addcomments2(this.userInfo.uid,this.dynamic.id,this.myinput).then(res=>{
+                        if(String(res.code) === '1'){
+                            this.$message.success("发布成功")
+                            this.myinput=''
+                        }else {
+                            this.$message.error("发布失败")
+                        }
+                    })
+                },
+                navto2(){
+                    window.location.href="./me.html"
+                },
+                nextbu(){
+                    console.log(this.checkList)
+                    if(this.checkList.length<1){
+                        this.$message({
+                            message: "请至少选择1个标签！",
+                            duration: 150000,
+                            type:'warning'
+                        })
+                    }else if(this.checkList.length>5){
+                        this.$message.warning("至多选择5个标签！")
+                    }else{
+                        window.localStorage.setItem("tags1",JSON.stringify(this.checkList))
+                        window.location.href='./create2.html'
+                    }
+                }
+            }
+        })
+    </script>
+</body>
+</html>

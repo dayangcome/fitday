@@ -1,0 +1,102 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta charset="utf-8" />
+        <title>首页</title>
+        <link rel="stylesheet" href="../../../public/plugins/element-ui/index.css" />
+        <style type="text/css">
+
+        h2{
+            display: block;
+            margin-top: 20px;
+        }
+        h1{
+            display: block;
+            margin-bottom:30px;
+        }
+        .el-page-header__left .el-icon-back{
+            font-size: 30px;
+            margin-right: 15px;
+        }
+        .el-page-header__title{
+            font-size: 18px;
+        }
+        .smallicon{
+            width: 50px;  
+        }
+        svg{
+            fill: #67C23A;
+        }
+        #second{
+            display: inline-block;
+            margin: 0 5px;
+            color: red;
+            font-size: 20px;
+        }
+        </style>
+    </head>
+    <body>
+        <div id="app">
+           <div class="banner" style="height: 120px; display: flex; background-image: url(../../assets/img/222.jpg);">
+               <img src="../../assets/img/fitdaylogo.png" alt="" style="height:100px ;width:300px;margin:0 80px;">
+               <span class="myfont" style="color: azure;
+               font-size: 40px;
+               line-height: 120px;
+               margin-left: 100px;">吃好，练好，拥有好心态，轻装上阵！</span>
+           </div>
+
+           <div style="text-align: center;">
+               <h1>答题挑战</h1>
+               <h2>答题结束！您答对的题数为：<span style="color: red;margin-right: 5px">{{right}}</span> 题！</h2>
+               <h2 v-if="right<6">很遗憾，您没有获得答题奖励</h2>
+               <h2 v-if="right==6||right==7">恭喜！您获得了三等奖！</h2>
+               <h2 v-if="right==8||right==9">恭喜！您获得了二等奖！</h2>
+               <h2 v-if="right==10">恭喜！您获得了一等奖！</h2>
+               <div style="font-size: 18px;margin: 25px 0;"><span id="second">30</span>秒后将自动返回主页面</div>
+               <el-button type=primary @click="navto">返回主页面</el-button>
+           </div>
+        </div>
+        <!-- 开发环境版本，包含了有帮助的命令行警告 -->
+        <script src="../../../public/plugins/vue/vue.js"></script>
+        <!-- 引入组件库 -->
+        <script src="../../../public/plugins/element-ui/index.js"></script>
+        <script>
+            new Vue({
+                el: '#app',
+                data() {
+                    return{
+                        right:0,
+                        errlist:[]
+                    }
+                },
+                created() {
+                    this.right = localStorage.getItem('right');
+                    localStorage.removeItem('right')
+                    this.errlist = JSON.parse(localStorage.getItem('errlist'));
+                    localStorage.removeItem('errlist')
+                    console.log("错误的题目为：",this.errlist)
+                    let i=29;
+                    timer=setInterval(function(){
+                        document.querySelector("#second").innerText=i;
+                        i--;
+                        if(i==-1){
+                            clearInterval(timer);
+                            setTimeout(function(){
+                                window.location.href='../../page/home/home.html'
+                            },1)
+                        }
+                    },1000)
+                    window.parent.postMessage(document.body.clientHeight-100,'*')
+                },
+                methods: {
+                    navto(){
+                        window.location.href='../../page/home/home.html'
+                    },
+                    goBack() {
+                        window.location.href='../login/login.html'
+                    }
+                }
+            })
+        </script>
+    </body>
+</html>

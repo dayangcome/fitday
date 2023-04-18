@@ -1,0 +1,414 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width,initial-scale=1.0">
+    <title>Document</title>
+    <style>
+        .containor{
+            margin: -8px -8px;
+            width: 1518px;
+            height: 745px;
+            background-color: #f5f5f5;
+        }
+        .left{
+            display: inline-block;
+            width: 180px;
+            height: 745px;
+            background-color: white;
+            border-radius:5px;
+            border: 1px solid rgb(224, 221, 221);
+        }
+        .button_dialog{
+            width: 60px;
+            height: 35px;
+        }
+        .hide{
+            display: none;
+        }
+        .c1{
+            position: fixed;
+            top:0;
+            bottom: 0;
+            left:0;
+            right: 0;
+            background: rgba(0,0,0,.5);
+            z-index: 2;
+        }
+        .c2{
+            background-color: white;
+            position: fixed;
+            width: 400px;
+            height: 220px;
+            top:50%;
+            left: 50%;
+            z-index: 3;
+            margin-top: -150px;
+            margin-left: -200px;
+        }
+		#modal p {
+			margin-left:80px;
+		}
+        .center{
+            display: inline-block;
+            width: 655px;
+            height: 745px;
+            background-color:  #f5f5f5;
+            vertical-align: top;
+            margin-left: 5px;
+
+        }
+        .center_top{
+            display: inline-block;
+            width: 655px;
+            height: 150px;
+            background-color:#f5f5f5;
+            border-radius:5px;
+        }
+        .center_bottom{
+            overflow:auto;
+            width: 655px;
+            height: 584px;
+            margin-top: 10px;
+
+            border-radius:5px;
+            vertical-align: top;
+            border: 1px solid rgb(224, 221, 221);
+        }
+        .center_bottom_item{
+            display: inline-block;
+            width: 655px;
+            height: 290px;
+            margin-top: 10px;
+            background-color: white;
+            border-radius:5px;
+            vertical-align: top;
+            border: 1px solid rgb(224, 221, 221);
+           
+        }
+        .person_picture_site{
+            vertical-align: top;
+            width: 40px; 
+            height: 40px; 
+            display: inline-block;
+             margin-left: 5px;
+             margin-top: 5px; 
+        }
+        .person_picture{
+            vertical-align: top;
+            width: 40px; 
+            height: 40px; 
+            display: inline-block;
+             margin-left: 2px; 
+             margin-top: 5px; 
+        }
+        .info_send{
+            border: 1px solid rgb(224, 221, 221);
+            width:655px;
+            height: 150px;
+            background-color: white;
+            display: inline-block;
+            border-radius:5px;
+        }
+        .comment{
+            display: inline-block; 
+            width: 520px; 
+            height: 30px; 
+            margin-left: 5px; 
+            margin-top: 125px; 
+            border-radius:5px; 
+            resize: none; 
+        }
+        .right{
+            display: inline-block;
+            width: 210px;
+            height: 745px;
+            background-color: #f5f5f5;
+            vertical-align: top;
+            margin-left: 5px;
+        }
+        .right_group_name{
+            border: 1px solid rgb(224, 221, 221);
+            width: 210px;
+            height: 100px;
+            background-color: white;
+            border-radius:5px;
+        }
+        .right_group_mark{
+            border: 1px solid rgb(224, 221, 221);
+            width: 210px;
+            height: 186px;
+            background-color: white;
+            border-radius:5px;
+            margin-top: 10px;
+            overflow:auto;
+        }
+        .right_mark_detail{
+            display: block; 
+            color: skyblue; 
+            text-decoration: none; 
+            font-size: 20px;  
+            text-align: center;
+        }
+        .right_info{
+            border: 1px solid rgb(224, 221, 221);
+            width: 210px;
+            height: 150px;
+            background-color: white;
+            border-radius:5px;
+            margin-top: 10px;
+            overflow:auto;
+        }
+        .right_rank{
+            border: 1px solid rgb(224, 221, 221);
+            margin-top: 10px;
+            width: 210px;
+            height: 272px;
+            background-color:white;
+            border-radius:5px;
+            overflow:auto;
+        }
+        .person{
+            width: 210px;
+            height: 60px;
+            margin-top: 3px;
+            background-color: white;
+        }
+
+    </style>
+</head>
+
+<body>
+    
+    <div class="containor">
+        <div style="width: 200px;   display: inline-block;">
+            
+        </div>
+        <div class="left">
+            <br>
+            <div>
+                <a style="color: black; text-decoration: none; font-size: 25px;" href="#" target="_blank"></a>
+            </div>
+            <hr>
+            <a style="color: black; text-decoration: none; font-size: 22px; margin-left: 42px;" href="../search/search1.html" target="_blank" >小组搜索</a>
+            <br><br>
+            <a style="color: black; text-decoration: none; font-size: 22px; margin-left: 42px;" target="_blank" onclick="Show_name();">修改名称</a>
+            <br><br>
+            <a style="color: black; text-decoration: none; font-size: 22px; margin-left: 42px;" target="_blank" onclick="Show_mark();">修改标签</a>
+            <br><br>
+            <a style="color: black; text-decoration: none; font-size: 22px; margin-left: 42px;" target="_blank" onclick="Show_info();">修改公告</a>
+            <br><br>
+            <a style="color: black; text-decoration: none; font-size: 22px; margin-left: 42px;" target="_blank" onclick="Show_release();">解散小组</a>
+        </div>
+
+        <div id="shade_name" class="c1 hide"></div>
+        <div id="modal_name" class="c2 hide">
+            <div style="text-align: center; font-size: 25px;">小组名称修改</div>
+            <p style="text-align: center; font-size: 20px; margin-top: 48px;" >小组名字：<input type="text" style="width: 210px; height:30px; " placeholder="请输入新的小组名称"></p>
+        <p style="text-align: center; margin-top: 62px;">
+            <input class="button_dialog" type="button"  value="确定">
+            <input class="button_dialog" type="button"  style="margin-left: 8px;" value="取消" onclick="Hide_name();">
+        </p>
+        </div>
+        <div id="shade_mark" class="c1 hide"></div>
+        <div id="modal_mark" class="c2 hide">
+            <div style="text-align: center; font-size: 25px;">小组标签修改</div>
+            <p style="text-align: center;">新的小组标签：</p>
+            <input type="checkbox" >篮球
+            <input type="checkbox" >排球
+            <input type="checkbox" >足球
+            <input type="checkbox" >跳绳
+            <input type="checkbox" >健身
+            <input type="checkbox" >跑步
+            <input type="checkbox" >瑜伽
+            <input type="checkbox" >舞蹈
+            <input type="checkbox" >骑行
+            <input type="checkbox" >体操
+            <input type="checkbox" >羽毛球
+            <input type="checkbox" >乒乓球
+            <input type="checkbox" >俯卧撑
+            <a style="width: 110px; display: inline-block"></a>
+            <input type="checkbox" >引体向上<input type="checkbox" >仰卧起坐
+        <p style="text-align: center;">
+            <input class="button_dialog" type="button" value="确定">
+            <input class="button_dialog" type="button" style="margin-left: 8px;" value="取消" onclick="Hide_mark();">
+        </p>
+        </div>
+        <div id="shade_info" class="c1 hide"></div>
+        <div id="modal_info" class="c2 hide">
+            <div style="text-align: center; font-size: 25px;">小组公告修改</div>
+            <textarea placeholder="请输入新的小组公告" style="width: 385px; height: 118px; resize: none; margin-left: 5px; margin-top: 5px;"></textarea>
+        <p style="text-align: center;">
+            <input class="button_dialog" type="button" value="确定">
+            <input class="button_dialog" type="button" style="margin-left: 8px;" value="取消" onclick="Hide_info();">
+        </p>
+        </div>
+        <div id="shade_release" class="c1 hide"></div>
+        <div id="modal_release" class="c2 hide">
+            <div style="text-align: center; font-size: 25px; margin:10px">小组解散</div>
+            <p style="font-size: 20px; text-align: center; margin-top: 48px;">你确定要解散小组吗？</p>
+        <p style="text-align: center; margin-top: 50px;">
+            <input class="button_dialog" type="button" value="确定">
+            <input class="button_dialog" type="button" style="margin-left: 8px;" value="取消" onclick="Hide_release();">
+        </p>
+        </div>
+
+        <div class="center">
+            <div class="center_top">
+                    <div class="info_send">
+                        
+                        <div>
+                            <textarea type="text" style="width: 640px; height: 76px; margin-left: 5px; margin-top: 5px; border-radius:5px; resize: none; " placeholder="有什么有趣的事分享给大家？"></textarea>
+                        </div>
+                        <div style="display: inline-block;"><label><a style="display: inline-block; width: 40px; height: 40px;" href="https://imgse.com/i/pSylOJS"><img style="width: 40px; height: 40px;" src="e28040a5f6cc3606005026bffac99f78.png" alt="pSylOJS.jpg" border="0" /></a><div style="display: inline-block;  vertical-align:top; margin-top: 8px;">表情</div></label></div>
+                        <div style="display: inline-block;"><label><a style="display: inline-block; width: 40px; height: 40px;" href="https://imgse.com/i/pSylOJS"><img style="width: 40px; height: 40px;" src="pic2.png" alt="pSylOJS.jpg" border="0" /></a><div style="display: inline-block;  vertical-align:top; margin-top: 8px;">话题</div></label></div>
+                        <div style="display: inline-block;"><label><a style="display: inline-block; width: 40px; height: 40px;" href="https://imgse.com/i/pSylOJS"><img style="width: 40px; height: 40px;" src="pic1.png" alt="pSylOJS.jpg" border="0" /></a><div style="display: inline-block; vertical-align:top; margin-top: 8px;">图片</div></label></div>
+                        <div style="display: inline-block;"><label><a style="display: inline-block; width: 40px; height: 40px;" href="https://imgse.com/i/pSylOJS"><img style="width: 40px; height: 40px;" src="tl.webp" alt="pSylOJS.jpg" border="0" /></a><div style="display: inline-block;  vertical-align:top; margin-top: 8px;">视频</div></label></div>
+                        <div style="display: inline-block; width: 90px; height: 40px;"><input style=" width: 74px; height: 29px; margin-top: 5px; margin-left: 268px;" type="button" value="发送"></div>
+                    </div>
+            </div>
+            <div class="center_bottom"  >
+                <div class="center_bottom_item" style="margin-top: 0px;">
+                    <div>
+                        <div class="person_picture_site" ><img style="width: 40px; height: 40px;" src="a.jpg" alt="" title=""></div>
+                        <div style="display: inline-block; ">
+                            <div style=" font-size: 15px; margin-top: 4px;">麻花藤</div>
+                            <div style=" font-size: 15px; margin-top: 4px;">2020年7月2日</div>
+                        </div>
+                    </div>
+                    <div style="font-size: 20px; margin-top: 2px; margin-left:3px">打卡，今天跑步跑了5公里</div>
+                    <div style=" vertical-align: top;width: 40px; height: 40px; display: inline-block; margin-left: 5px; margin-top: 5px; "><img style="width: 200px; height: 140px;" src="R-C.jpg" alt="" title=""></div>
+                    <div>
+                        <textarea type="text" class="comment"   placeholder="写下评论"></textarea>
+                        <div style="display: inline-block; width: 90px; height: 40px; margin-left: 2px; margin-top: 3px;"><input style=" width: 74px; height: 29px;margin-left: 2px; margin-top: 3px; vertical-align: 100%;" type="button" value="发送"></div>
+                    </div>
+                    
+                </div>
+    
+                <div class="center_bottom_item">
+                    <div>
+                        <div  class="person_picture_site"><img style="width: 40px; height: 40px;" src="b.jpg" alt="" title=""></div>
+                        <div style="display: inline-block; ">
+                            <div style=" font-size: 15px; margin-top: 4px;">张三</div>
+                            <div style=" font-size: 15px; margin-top: 4px;">2022年7月12日</div>
+                        </div>
+                    </div>
+                    <div style="font-size: 20px; margin-top: 2px; margin-left:3px">今日骑行打卡</div>
+                    <div style=" vertical-align: top;width: 40px; height: 40px; display: inline-block; margin-left: 5px; margin-top: 5px; "><img style="width: 200px; height: 140px;" src="c.jpg" alt="" title=""></div>
+                    <div>
+                        <textarea type="text" class="comment"  placeholder="写下评论"></textarea>
+                        <div style="display: inline-block; width: 90px; height: 40px; margin-left: 2px; margin-top: 3px"><input style=" width: 74px; height: 29px; margin-left: 2px; margin-top: 3px; vertical-align: 100%;" type="button" value="发送"></div>
+                    </div>
+                </div>
+
+                <div class="center_bottom_item" >
+                    <div>
+                        <div class="person_picture_site" ><img style="width: 40px; height: 40px;" src="a.jpg" alt="" title=""></div>
+                        <div style="display: inline-block; ">
+                            <div style=" font-size: 15px; margin-top: 4px;">麻花藤</div>
+                            <div style=" font-size: 15px; margin-top: 4px;">2020年7月2日</div>
+                        </div>
+                    </div>
+                    <div style="font-size: 20px; margin-top: 2px; margin-left:3px">打卡，今天跑步跑了5公里</div>
+                    <div style=" vertical-align: top;width: 40px; height: 40px; display: inline-block; margin-left: 5px; margin-top: 5px; "><img style="width: 200px; height: 140px;" src="R-C.jpg" alt="" title=""></div>
+                    <div>
+                        <textarea type="text" class="comment"   placeholder="写下评论"></textarea>
+                        <div style="display: inline-block; width: 90px; height: 40px; margin-left: 2px; margin-top: 3px;"><input style=" width: 74px; height: 29px;margin-left: 2px; margin-top: 3px; vertical-align: 100%;" type="button" value="发送"></div>
+                    </div>
+                    
+                </div>
+
+            </div>
+        </div>    
+
+
+        <div class="right">
+
+            <div class="right_group_name">
+                <div style="font-size: 25px; text-align: center;">小组名称</div>
+                <hr>
+                <div style="font-size: 20px; text-align: center;">葬爱家族</div>
+            </div>
+
+            <div class="right_group_mark">
+                <div style="font-size: 25px; text-align: center;">小组标签</div>
+                <hr>
+                <a class="right_mark_detail" href="../search/search1.html" target="_blank">排球</a>
+                <a class="right_mark_detail" href="../search/search1.html" target="_blank">足球</a>
+                <a class="right_mark_detail" href="../search/search1.html" target="_blank">羽毛球</a>
+                <a class="right_mark_detail" href="../search/search1.html" target="_blank">篮球</a>
+                <a class="right_mark_detail" href="../search/search1.html" target="_blank">乒乓球</a>
+            </div>
+
+            <div class="right_info">
+                <div style="font-size: 25px; text-align: center;">小组公告</div>
+                <hr>
+                <div style="font-size: 20px; text-align: center;">祝大家早日减肥成功</div>
+            </div>
+
+            <div class="right_rank">
+                <div style="font-size: 25px; text-align: center;">计划完成排行榜</div>
+                <hr>
+                <div class="person">  <div style="font-size: 26px; display: inline-block;" >&nbsp&nbsp 1 &nbsp&nbsp</div>  <div class="person_picture"><img style="width: 40px; height: 40px;" src="b.jpg" alt="" title=""></div> 张三</div>
+                <hr>
+                <div class="person">  <div style="font-size: 26px; display: inline-block;" >&nbsp&nbsp 2 &nbsp&nbsp</div>  <div class="person_picture" ><img style="width: 40px; height: 40px;" src="b.jpg" alt="" title=""></div> 李四</div>
+                <hr>
+                <div class="person">  <div style="font-size: 26px; display: inline-block;" >&nbsp&nbsp 3 &nbsp&nbsp</div>  <div class="person_picture"><img style="width: 40px; height: 40px;" src="b.jpg" alt="" title=""></div>  王五</div>
+                <hr>
+                <div class="person">  <div style="font-size: 26px; display: inline-block;" >&nbsp&nbsp 4 &nbsp&nbsp</div>  <div class="person_picture"><img style="width: 40px; height: 40px;" src="b.jpg" alt="" title=""></div>  刘六</div>
+                <hr>
+                <div class="person">  <div style="font-size: 26px; display: inline-block;" >&nbsp&nbsp 5 &nbsp&nbsp</div>  <div class="person_picture"><img style="width: 40px; height: 40px;" src="b.jpg" alt="" title=""></div>  杨七</div>
+                <hr>
+                <div class="person">  <div style="font-size: 26px; display: inline-block;" >&nbsp&nbsp 6 &nbsp&nbsp</div>  <div class="person_picture"><img style="width: 40px; height: 40px;" src="b.jpg" alt="" title=""></div>  黄八</div>
+            </div>
+            
+        </div>
+        <div style="width: 200px;   display: inline-block;">
+            
+        </div>
+    </div>
+    
+    
+
+    <script>
+        function alert1(){
+            alert('您不是小组组长，无权操作');
+        }
+        function Show_name(){
+            document.getElementById('shade_name').classList.remove('hide');
+            document.getElementById('modal_name').classList.remove('hide');
+        }
+         function Hide_name(){
+            document.getElementById('shade_name').classList.add('hide');
+            document.getElementById('modal_name').classList.add('hide');
+        }
+        function Show_mark(){
+            document.getElementById('shade_mark').classList.remove('hide');
+            document.getElementById('modal_mark').classList.remove('hide');
+        }
+         function Hide_mark(){
+            document.getElementById('shade_mark').classList.add('hide');
+            document.getElementById('modal_mark').classList.add('hide');
+        }
+        function Show_info(){
+            document.getElementById('shade_info').classList.remove('hide');
+            document.getElementById('modal_info').classList.remove('hide');
+        }
+         function Hide_info(){
+            document.getElementById('shade_info').classList.add('hide');
+            document.getElementById('modal_info').classList.add('hide');
+        }
+        function Show_release(){
+            document.getElementById('shade_release').classList.remove('hide');
+            document.getElementById('modal_release').classList.remove('hide');
+        }
+         function Hide_release(){
+            document.getElementById('shade_release').classList.add('hide');
+            document.getElementById('modal_release').classList.add('hide');
+        }
+    </script>
+
+
+</body>
+</html>

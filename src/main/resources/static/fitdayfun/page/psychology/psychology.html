@@ -3,10 +3,10 @@
 
 <head>
     <meta charset="UTF-8">
-	<link rel="stylesheet" href="../../../public/plugins/element-ui/index.css" />
-	<script src="../../../public/plugins/vue/vue.js"></script>
-	<!-- 引入组件库 -->
-	<script src="../../../public/plugins/element-ui/index.js"></script>
+    <link rel="stylesheet" href="../../../public/plugins/element-ui/index.css" />
+    <script src="../../../public/plugins/vue/vue.js"></script>
+    <!-- 引入组件库 -->
+    <script src="../../../public/plugins/element-ui/index.js"></script>
 	<style>
 	  
 	  .el-carousel__item h3 {
@@ -16,7 +16,6 @@
 	    line-height: 150px;
 	    margin: 0;
 	  }
-
 	
 	  .el-carousel__item:nth-child(2n) {
 	     background-color: #99a9bf;
@@ -30,6 +29,9 @@
 		  margin-top: 30px;
 		  align-content: center;
 	    }
+	  .el-row:last-child {
+		  margin-bottom: 0;
+	  }
 	    .el-col {
 	      border-radius: 4px;
 		  height: 150px;
@@ -64,7 +66,9 @@
 			<div class="block">
 			    <el-carousel height="500px">
 				  <el-carousel-item v-for="item in photolist" :key="item">
-				    <img style="object-fit: fill;;width: 100%;height: 100%;" :src="item" class="bannerimg"/>
+				    <a @click.prevent="goto(item.theid)">
+						<img style="object-fit: fill;;width: 100%;height: 100%;cursor: pointer" :src="item.img" class="bannerimg"/>
+					</a>
 			      </el-carousel-item>
 			    </el-carousel>
 			  </div>
@@ -122,20 +126,34 @@
 			<el-button type="text" style="float: right;">>>更多优秀咨询师</el-button>
 		</div>
 		
-		
     </div>
-	
-</body>
+
+<script src="../../../public/plugins/vue/mystyle.js"></script>
+<!-- 开发环境版本，包含了有帮助的命令行警告 -->
+<script src="../../../public/plugins/vue/vue.js"></script>
+<!-- 引入组件库 -->
+<script src="../../../public/plugins/element-ui/index.js"></script>
+<script src="../../../public/plugins/axios/axios.min.js"></script>
+<script src="../../../public/js/request.js"></script>
+<script src="../../myapi/dynamic.js"></script>
 <script>
     new Vue({
         el: '#app',
-        data() {
-            return {
-				visible: false,
+        data: function () {
+            return { visible: false,
 					photolist:[
-						"../../assets/img/portfolio/photo1.jpg",
-						"../../assets/img/portfolio/photo2.jpg",
-						"../../assets/img/portfolio/photo3.jpg",
+						{
+							theid:"1647069241341407638",
+							img:"../../assets/img/portfolio/photo1.jpg"
+						},
+						{
+							theid:"1647069241341407648",
+							img:"../../assets/img/portfolio/photo2.jpg"
+						},
+						{
+							theid:"1647069241341407658",
+							img:"../../assets/img/portfolio/photo3.jpg"
+						},
 					],
 					cooprate:[
 						"../../assets/img/portfolio/cop1.jpg",
@@ -148,16 +166,6 @@
 						"../../assets/img/portfolio/doc2.jpg",
 						"../../assets/img/portfolio/doc3.jpg",
 					],
-					tableData: [{
-							  article:'正确认识自我否定'
-					        }, {
-					          article:'如何做一个快乐的人'
-					        }, {
-					          article:'战胜自卑的五个小妙招'
-					        },
-					],
-					text: '',
-					textarea: '',
 			}
         },
 		mounted() {
@@ -170,7 +178,26 @@
 		    setSize(){
 		        this.bannerHeight = document.body.clientWidth / 4
 		    },
+			async goto(theid){
+				await getonedynamic(theid).then(res=>{
+					if(String(res.code) === '1'){
+						window.localStorage.setItem("dynamic",JSON.stringify(res.data))
+
+					}else{
+						console.log(res.msg)
+					}
+				})
+				await getcomments2(theid).then(res=>{
+					if(String(res.code) === '1'){
+						window.localStorage.setItem("comments",JSON.stringify(res.data))
+					}else{
+						console.log(res.msg)
+					}
+				})
+				window.location.href = "./hotarticle.html"
+			}
 		},
     })
 </script>
+</body>
 </html>

@@ -6,19 +6,6 @@
     <meta name="viewport" content="width=device-width,initial-scale=1.0">
     <title>Document</title>
     <style>
-        
-    </style>
-</head>
-
-<body>
-    <!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width,initial-scale=1.0">
-    <title>Document</title>
-    <style>
         .containor{
             margin: -8px -8px;
             width: 1518px;
@@ -89,7 +76,7 @@
 </head>
 
 <body>
-    <div class="containor" >
+    <div class="containor" id="app">
         <div style="width: 200px;  background-color: blue; display: inline-block;">
             间隔
         </div>
@@ -103,37 +90,37 @@
             <br><br>
 
             <div style="text-align: center;">
-                <a class="space_left_buttons" href="./回复我的.html" target="_self">● 回复我的</a>
+                <a class="space_left_buttons" href="mes2.html" target="_self">● 回复我的 <el-badge class="mark" :value="2" /></a>
             </div>
 
             <br><br>
 
             <div style="text-align: center;">
-                <a class="space_left_buttons" href="./艾特的人.html" target="_self">● @我的人</a>
+                <a class="space_left_buttons" href="mes8.html" target="_self">● @我的人 <el-badge class="mark" :value="2" /></a>
             </div>
 
             <br><br>
 
             <div style="text-align: center;">
-                <a class="space_left_buttons" href="./收到的赞.html" target="_self">● 收到的赞</a>
+                <a class="space_left_buttons" href="mes5.html" target="_self">● 收到的赞<el-badge class="mark" :value="3" /></a>
             </div>
 
             <br><br>
 
             <div style="text-align: center;">
-                <a class="space_left_buttons" href="./系统通知.html" target="_self">● 系统通知</a>
+                <a class="space_left_buttons" href="mes7.html" target="_self">● 系统通知<el-badge class="mark" :value="5" /></a>
             </div>
 
             <br><br>
 
             <div style="text-align: center;">
-                <a class="space_left_buttons" href="./我的消息.html" target="_self">● 我的消息</a>
+                <a class="space_left_buttons" href="mes3.html" target="_self">● 我的消息 <el-badge class="mark" :value="3" /></a>
             </div>
 
             <br><br>
 
             <div style="text-align: center;">
-                <a class="space_left_buttons" href="./我的私信.html" target="_self">● 我的私信</a>
+                <a class="space_left_buttons" href="mes4.html" target="_self">● 我的私信 <el-badge class="mark" :value="1" /></a>
             </div>
 
             <hr style="color: black;">
@@ -141,14 +128,14 @@
             <br>
 
             <div style="text-align: center;">
-                <a class="space_left_buttons" href="./消息界面.html" target="_self">● 消息设置</a>
+                <a class="space_left_buttons" href="#" target="_self">● 消息设置</a>
             </div>
             
         </div>
 
         <div class="space_right">
             <div class="space_right_top"  >
-                收到的赞
+                回复我的
             </div>
             <div class="space_right_bottom" >
                 <div>
@@ -162,7 +149,47 @@
             间隔
         </div>
     </div>
+    <!-- 开发环境版本，包含了有帮助的命令行警告 -->
+    <script src="../../../public/plugins/vue/vue.js"></script>
+    <!-- 引入组件库 -->
+    <script src="../../../public/plugins/element-ui/index.js"></script>
+
+    <script src="../../../public/plugins/axios/axios.min.js"></script>
+    <script src="../../../public/js/request.js"></script>
+    <script src="../../myapi/explain.js"></script>
+    <script>
+        new Vue({
+            el: '#app',
+            data() {
+                return {
+
+                    userInfo:{},
+                    userInfo2:{},
+
+                }
+            },
+            mounted() {
+                var userInfo = window.localStorage.getItem('userInfo')
+                var userInfo2 = window.localStorage.getItem('userInfo2')
+                userInfo = JSON.parse(userInfo)
+                userInfo2 = JSON.parse(userInfo2)
+                this.userInfo=userInfo
+                this.userInfo2=userInfo2
+                this.circleUrl=this.userInfo.avatar
+                console.log(this.userInfo)
+                console.log(this.userInfo2)
+            },
+            methods: {
+
+                goBack() {
+                    window.location.href='../../index.html'
+                }
+            },
+            destroyed(){
+
+            }
+        })
+    </script>
 </body>
-</html>
-</body>
+
 </html>

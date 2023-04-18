@@ -1,0 +1,297 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width,initial-scale=1.0">
+    <link rel="stylesheet" href="../../../../public/plugins/element-ui/index.css" />
+    <title>Document</title>
+    <style>
+        .whole_containor{
+            margin: -8px -8px;
+            width: 1518px;
+            height: 838px;
+            background-color: #f5f5f5;
+        }
+        .avatar {
+            width: 178px;
+            height: 178px;
+            display: block;
+        }
+        .contain{
+            width: 992px;
+            height:840px;
+            background-color: grey;
+            display: inline-block;
+            border: 1px solid rgb(171, 167, 167);
+        }
+        .top_option{
+            width:992px;
+            height:80px;
+            background-color: rgb(53, 141, 219);
+            display: inline-block;
+        }
+        .input_text{
+            width:992px;
+            height:60px;
+            background-color: rgb(198, 224, 247);
+            display: inline-block;
+
+            text-align: center;
+        }
+        .group_area_info{
+            width:992px;
+            height:60px;
+            display: inline-block;
+            
+        }
+        .comment{
+            display: inline-block; 
+            width: 520px; 
+            height: 100px; 
+            margin-left: 5px; 
+            margin-top: 5px; 
+            resize: none;
+            font-size: 16px;
+            padding: 5px;
+            border-color: rgb(0, 132, 255);
+            font-weight: 550;
+        }
+        .avatar-uploader {
+            display: inline-block;
+            border: 1px dashed #d9d9d9;
+            border-radius: 6px;
+            cursor: pointer;
+            position: relative;
+            overflow: hidden;
+            width: 178px;
+        }
+        .avatar-uploader .el-upload:hover {
+            border-color: #409EFF;
+        }
+        .avatar-uploader-icon {
+            font-size: 28px;
+            color: #8c939d;
+            width: 178px;
+            height: 178px;
+            line-height: 178px;
+            text-align: center;
+        }
+        .groupmarks{
+            width:992px;
+            height:700px;
+            background-color: white;
+        }
+        .groupmark_item{
+            width:225px;
+            height: 120px;
+            background-color: white;
+            border: 1px solid rgb(224, 221, 221);
+            display: inline-block;
+            margin-top: 12px;
+            margin-left: 8px;
+        }
+        .person_picture_site{
+            vertical-align: top;
+            width: 66px; 
+            height: 66px; 
+            display: inline-block;
+             margin-left: 5px;
+             margin-top: 5px; 
+        }
+        .mark_area{
+            width:300px;
+            height:113px;
+            margin-left: 4px;
+        }
+        .grouplist_item_bottom{
+            background-color: gainsboro;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="whole_containor" id="app">
+        <div style="width: 250px;  display: inline-block;">
+
+        </div>
+        <div class="contain">
+            <div class="top_option">
+                <div style="text-align: center; margin-top: 10px;">
+                    <a style=" font-size: 30px; color: black; text-decoration: none; font-size: 30px; " href="小组推荐.html" target="_self" >小组推荐</a> 
+                     &nbsp&nbsp&nbsp&nbsp&nbsp; 
+                     <a>|</a>  
+                     &nbsp&nbsp&nbsp&nbsp&nbsp;
+                     <a style=" font-size: 30px; color: black; text-decoration: none; font-size: 30px; " href="../搜索功能.html" target="_self" >小组查找</a>
+                     &nbsp&nbsp&nbsp&nbsp&nbsp; 
+                     <a>|</a>  
+                     &nbsp&nbsp&nbsp&nbsp&nbsp;
+                     <a style=" font-size: 30px; color: black; text-decoration: none; font-size: 30px; " href="#" target="_self" >小组创建</a>  
+                </div>
+            </div>
+            <div class="input_text">
+                <div style="font-size: 25px">请输入您的小组信息</div>
+            </div>
+            <div class="groupmarks">
+                <div style="text-align: center; " class="group_area_info">
+                    <div style="display: inline-block; vertical-align: 50%;">小组名称 : </div>
+                    <div style="display: inline-block; margin-left: 8px; margin-top: 20px;">
+                        <textarea type="text" v-model="name" class="comment" style="height: 30px;"  placeholder="为你的小组起一个名字吧"></textarea>
+                    </div>
+                </div>
+                <div style="text-align: center;" class="group_area_info">
+                    <div style="display: inline-block;  vertical-align: 300%;">小组介绍 : </div>
+                    <div style="display: inline-block; margin-left: 8px; margin-top: 20px;">
+                         <textarea type="text" v-model="intro" class="comment"   placeholder="有什么想对想要加入的成员说呢？"></textarea>
+                    </div>
+                </div>
+                <div style="margin-left: 188px; margin-top: 45px;" class="group_area_info">
+                    <div style="display: inline-block;">小组规模 : </div>
+                    <el-radio-group v-model="mem">
+                        <el-radio label="30人"></el-radio>
+                        <el-radio label="50人"></el-radio>
+                        <el-radio label="100人"></el-radio>
+                        <el-radio label="200人"></el-radio>
+                        <el-radio label="300人"></el-radio>
+                    </el-radio-group>
+                </div>
+                <div style="margin-left: 188px; margin-top: 20px;" class="group_area_info">
+                    <div style="display: inline-block;">加入小组验证 : </div>
+                    <el-radio-group v-model="yan">
+                        <el-radio label="无需验证"></el-radio>
+                        <el-radio label="需要验证"></el-radio>
+                    </el-radio-group>
+                </div>
+                <div style="margin-left: 188px; margin-top: 2px;" class="group_area_info" style="display: flex">
+                    <div style="display: inline-block;vertical-align: 360%">小组头像 :
+                        </div>
+                    <el-upload
+                            class="avatar-uploader"
+                            action="/common/upload"
+                            :show-file-list="false"
+                            :on-success="handleAvatarSuccess"
+                            :before-upload="beforeAvatarUpload"
+                    >
+                        <img v-if="imageUrl" :src="imageUrl" class="avatar">
+                        <i v-else class="el-icon-plus avatar-uploader-icon"></i>
+                    </el-upload>
+
+                </div>
+                <div style="margin-top: 25px; text-align: center;">
+                    <div style="display: inline-block; width: 90px; height: 40px;   margin-top: 3px; text-align: center;"><el-button @click="back" style=" width: 88px; height: 40px;margin-left: 2px; margin-top: 3px; vertical-align: 200%;" plain type="primary">后退</el-button></div>
+                        <div style="display: inline-block; width: 90px; height: 40px; margin-left: 30px; margin-top: 3px; text-align: center;"><el-button  @click="mysend" style=" width: 88px; height: 40px;margin-left: 2px; margin-top: 3px; vertical-align: 200%;" plain type="success">创建</el-button></div>
+                </div>
+                
+            </div>
+            
+        </div>
+
+
+
+
+        <div style="width: 250px;  display: inline-block;">
+
+        </div>
+    </div>
+    <script src="../../../../public/plugins/vue/mystyle.js"></script>
+    <!-- 开发环境版本，包含了有帮助的命令行警告 -->
+    <script src="../../../../public/plugins/vue/vue.js"></script>
+    <!-- 引入组件库 -->
+    <script src="../../../../public/plugins/element-ui/index.js"></script>
+    <script src="../../../../public/plugins/axios/axios.min.js"></script>
+    <script src="../../../../public/js/request.js"></script>
+    <script src="../../../myapi/group.js"></script>
+    <script>
+        new Vue({
+            el: '#app',
+            data() {
+                return {
+                    name:'',
+                    intro:'',
+                    userInfo:{},
+                    userInfo2:{},
+                    checkList: [],
+                    mem:'',
+                    yan:'',
+                    imageUrl:''
+                }
+            },
+            computed: {},
+            created() {
+                var userInfo = window.localStorage.getItem('userInfo')
+                userInfo = JSON.parse(userInfo)
+                this.userInfo=userInfo
+                var userInfo2 = window.localStorage.getItem('userInfo2')
+                userInfo2 = JSON.parse(userInfo2)
+                this.userInfo2=userInfo2
+                this.checkList =JSON.parse( window.localStorage.getItem('tags1'))
+                window.localStorage.removeItem("tags1")
+                console.log(this.checkList)
+            },
+            mounted() {
+                window.parent.postMessage(document.body.clientHeight-100,'*')
+            },
+            methods: {
+                back(){
+                    window.location.href='./create1.html'
+                },
+                mysend(){
+                    let str=''
+                    for(let i=0;i<this.checkList.length;i++){
+                        str+=this.checkList[i]
+                        str+=' '
+                    }
+                    const params = {
+                        name: this.name,
+                        introduction: this.intro,
+                        mymax:Number(this.mem.substring(0,this.mem.length-1)),
+                        mycheck: this.yan,
+                        avatar:this.imageUrl,
+                        leader:this.userInfo.uid,
+                        leadername:this.userInfo.username,
+                        leaderavatar:this.userInfo.avatar,
+                        tags:str
+                    }
+                    addgroup(params).then(res=>{
+                        console.log(params)
+                        if(String(res.code) === '1'){
+                            this.$message.success("创建成功")
+                        }else {
+                            this.$message.error("发布失败")
+                        }
+                    })
+                },
+                newmy(){
+                    window.localStorage.setItem("tags1",JSON.stringify(this.checkList))
+                    window.location.href="../new/create1.html"
+                },
+                navto2(){
+                    window.location.href="./me.html"
+                },
+                nextbu(){
+                    window.location.href='./create2.html'
+                },
+                handleAvatarSuccess(response, file,fileList) {
+                    this.imageUrl = `/common/download?name=${response.data}`;
+                    this.$forceUpdate() // 触发强制刷新
+                },
+                beforeAvatarUpload(file) {
+                    const isJPEG = file.type === 'image/jpeg'
+                    const isPNG = file.type === 'image/png'
+                    const isJPG = file.type === 'image/jpg'
+                    const isLt2M = file.size / 1024 / 1024 < 2;
+                    if (!isJPG && !isPNG && !isJPEG) {
+                        this.$message.error('上传图片只能是jpg，png，jpeg格式!');
+                        return false
+                    }
+                    if (!isLt2M) {
+                        this.$message.error('上传头像图片大小不能超过 2MB!');
+                        return false
+                    }
+                    return true;
+                },
+            }
+        })
+    </script>
+</body>
+</html>

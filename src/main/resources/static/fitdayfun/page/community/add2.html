@@ -2,7 +2,7 @@
 <html>
 <head>
     <meta charset="utf-8">
-    <title></title>
+    <title>发布动态</title>
     <link rel="stylesheet" href="../../../public/plugins/element-ui/index.css" />
     <script type="text/javascript" src="../../../public/js/jquery.min.js"></script>
     <script type="text/javascript" src="../../../public/js/sliders.js"></script>
@@ -75,6 +75,9 @@
         .down{
             margin-top: 20px;
         }
+        .orig:hover{
+            color: dodgerblue;
+        }
         .cont1>div{
             display: inline-block;
             /* border: 1px solid black; */
@@ -88,29 +91,41 @@
             height: 50px;
             line-height:50px;
         }
+
+        #competle:hover{
+            cursor: pointer;
+            background-color: #00ff00;
+        }
+        input{
+            padding: 5px 10px;
+        }
     </style>
 </head>
 <body>
-
+<div id="app">
+<div style="margin-top: 10px;margin-left: 40px;font-size: 17px">
+    <span @click="mynav" class="orig" style="font-weight: bold;cursor: pointer">社区</span>
+    <span>></span>
+    <span>发布日常</span>
+</div>
 <div class="wrapper">
-    <button>我要发布动态</button>
+    <button style="margin-left: 50px">我要发布动态</button>
     <div class="content">
         <input type="text" placeholder="请输入标题(1-50个字符)" class="t1">
         <div class="opt">
             <span>所属模块:</span>
-            <select name="section">
+            <select name="section" id="selector">
                 <option value="请选择模块" selected>请选择模块</option>
-                <option value="电子书籍">电子书籍</option>
-                <option value="新课来了">新课来了</option>
-                <option value="新手报到">新手报到</option>
-                <option value="职业规划">职业规划</option>
+                <option value="运动打卡">运动打卡</option>
+                <option value="健康美食">健康美食</option>
+                <option value="瘦身成果">瘦身成果</option>
+                <option value="经验分享">经验分享</option>
             </select>
         </div>
-        <div id="app">
             <el-input
                     class="down"
                     type="textarea"
-                    :rows="2"
+                    :rows="6"
                     placeholder="分享下你的健身与饮食吧..."
                     v-model="textarea">
             </el-input>
@@ -118,22 +133,25 @@
 
             <el-upload
                     class="up"
-                    action="https://jsonplaceholder.typicode.com/posts/"
+                    action="/common/upload"
                     list-type="picture-card"
                     :on-preview="handlePictureCardPreview"
-                    :on-remove="handleRemove">
+                    :on-remove="handleRemove"
+                    :on-success="handleAvatarSuccess">
 
-                <i class="el-icon-plus">图片</i>
+                <img v-if="imageUrl" :src="imageUrl">
+                <i v-else class="el-icon-plus">图片</i>
+
             </el-upload>
-            <!--<el-dialog :visible.sync="dialogVisible">
-                <img width="100%" :src="dialogImageUrl" alt="">
-            </el-dialog>-->
-            <button>发布</button>
-        </div>
+
+
+            <button id="competle" @click="send">发布</button>
+
         <div class="cont">
 
         </div>
     </div>
+</div>
 </div>
 <!-- Vue和element-ui以及axios的JS-->
 <script src="../../../public/plugins/vue/mystyle.js"></script>
@@ -143,6 +161,7 @@
 <script src="../../../public/plugins/element-ui/index.js"></script>
 <script src="../../../public/plugins/axios/axios.min.js"></script>
 <script src="../../../public/js/request.js"></script>
+<script src="../../myapi/dynamic.js"></script>
 <script>
     new Vue({
         el: "#app",
@@ -150,62 +169,68 @@
             return {
                 dialogImageUrl: '',
                 dialogVisible: false,
-                textarea: ''
-
+                textarea: '',
+                imageUrl:'',
+                userInfo:{},
+                userInfo2:{}
             };
-
+        },
+        created(){
+            var userInfo = window.localStorage.getItem('userInfo')
+            userInfo = JSON.parse(userInfo)
+            this.userInfo=userInfo
+            var userInfo2 = window.localStorage.getItem('userInfo2')
+            userInfo2 = JSON.parse(userInfo2)
+            this.userInfo2=userInfo2
+        },
+        mounted(){
+            window.parent.postMessage(document.body.clientHeight,'*')
         },
         methods: {
+            send(){
+                var select=document.querySelector("select");//选择模块
+                var btns=document.querySelectorAll("button");//我要发贴按钮和发布按钮
+                var inputs=document.querySelectorAll("input");//标题与内容输入框
+                if(inputs[0].value==""||select.value=="请选择模块"||this.textarea==''){
+                    alert("请输入内容!!!");
+                    btns[1].style.disabled=true;
+                }else {
+                    var title=$(".t1").val()
+                    var category=$("#selector").val()
+                    console.log(title)
+                    console.log(category)
+                    console.log(this.imageUrl)
+                    adddynamic (this.userInfo.uid,title,category,this.textarea,this.imageUrl).then(res=>{
+                        if (String(res.code) === '1'){
+                            this.$message.success("发布成功！")
+                            setTimeout(function (){
+                                window.location.href="./me.html"
+                            },2000)
+                        }else{
+                            this.$message.error("发布失败，请稍后重试！")
+                        }
+                    })
+                }
+            },
             handleRemove(file, fileList) {
                 console.log(file, fileList);
             },
             handlePictureCardPreview(file) {
                 this.dialogImageUrl = file.url;
                 this.dialogVisible = true;
+            },
+            handleAvatarSuccess(response, file,fileList) {
+                if(this.imageUrl!=''){
+                    this.imageUrl+=" "
+                }
+                this.imageUrl += `/common/download?name=${response.data}`;
+                this.$forceUpdate() // 触发强制刷新
+            },
+            mynav(){
+                window.location.href='./community.html'
             }
         }
     })
-</script>
-<script>
-    var ary=['./img/1.jpeg','./img/2.jpeg','./img/3.jpeg','./img/4.jpeg','./img/5.jpeg']
-    var btns=document.querySelectorAll("button");//我要发贴按钮和发布按钮
-    var inputs=document.querySelectorAll("input");//标题与内容输入框
-    var select=document.querySelector("select");//选择模块
-    var content=document.querySelector(".content")
-    var cont=document.querySelector(".cont");//输出内容
-    btns[0].onclick=function(){
-        inputs[0].value="";
-        inputs[1].value="";
-        // select.value="";
-        content.style.display="block";
-        cont.style.display="none";
-    }
-    btns[1].onclick=function(){
-        if(inputs[0].value==""||inputs[1].value==""||select.value=="请选择模块"){
-            alert("请输入内容!!!");
-            btns[1].style.disabled=true;
-        }else{
-            cont.style.display="block";
-            content.style.display="none";
-            var date=new Date;
-            var cont1=document.createElement("div");
-            cont.append(cont1);
-            var div11=document.createElement("div");
-            cont1.append(div11);
-            var num=Math.floor(Math.random()*4);
-            var h1=document.createElement("h1");
-            var img=document.createElement("img");
-            var p=document.createElement("p");
-            cont1.classList.add("cont1");
-            img.src=ary[num];
-            h1.innerHTML=inputs[0].value;
-            p.innerHTML=select.value;
-            p.innerHTML+=`&emsp;&emsp;发表时间：${date.getMonth()+1}月${date.getDate()}日${date.getHours()}时${date.getMinutes()}分${date.getSeconds()}秒`;
-            div11.before(img);
-            div11.append(h1);
-            div11.append(p);
-        }
-    }
 </script>
 </body>
 </html>

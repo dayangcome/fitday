@@ -35,16 +35,13 @@
             .smallicon{
                 width: 20px;
             }
-            .myvideo{
-
-            }
             .mv{
                 width: 668px;
                 height: 376px;
             }
             .interact{
                 display: flex;
-                margin: 15px 0;
+                margin-top: 18px;
             }
             i{
                 font-size: 20px;
@@ -128,7 +125,7 @@
             .midicon{
                 width: 30px;
             }
-            .midicon:hover{
+            .icon:hover{
                 cursor: pointer;
             }
             .el-tag.el-tag--info:hover{
@@ -139,6 +136,24 @@
             .orig:hover{
                 color: dodgerblue;
             }
+            .intro{
+                margin-bottom: 15px;
+                color: #3e3e3e;
+            }
+            .el-message {
+                top: 550px !important;
+            }
+            .time{
+                float: right;
+                margin-right: 60px;
+                font-size: 12px;
+                color: #818693;
+            }
+            .el-divider--horizontal{
+                margin: 10px 0;
+            }
+
+
         </style>
     </head>
     <body>
@@ -148,41 +163,47 @@
 
 
                 <div class="myleft">
-                    <div style="margin: 10px 0;font-size: 18px;margin-left: -100px;">
-                        <span @click="navto" class="orig" style="font-weight: bold;cursor: pointer">首页</span>
+                    <div v-if="go!='1'" style="margin: 10px 0;font-size: 17px;margin-left: -100px;">
+                        <span @click="navto2" class="orig" style="font-weight: bold;cursor: pointer">首页</span>
+                        <span>></span>
+                        <span>视频详情</span>
+                    </div>
+                    <div v-if="go=='1'" style="margin: 10px 0;font-size: 17px;margin-left: -100px;">
+                        <span @click="navto3" class="orig" style="font-weight: bold;cursor: pointer">社区</span>
+                        <span>></span>
+                        <span @click="navto4" class="orig" style="font-weight: bold;cursor: pointer">达人专区</span>
                         <span>></span>
                         <span>视频详情</span>
                     </div>
                     <div class="videoinfo">
-                        <h2 style="margin: 20px 0 5px 0">视频1</h2>
+                        <h2 style="margin: 20px 0 5px 0">{{myvideoinfo.title}}</h2>
                         <div class="vdata">
                             <div class="watchs">
                                 <img src="../../../public/styles/icon/view.svg" class="smallicon" alt="">
-                                <span class="thefont">3456</span>
+                                <span class="thefont">{{myvideoinfo.hits}}</span>
                                 <img src="../../../public/styles/icon/uptime.svg" class="smallicon" alt="">
-                                <span class="thefont">2023-03-08 16:55:07</span>
+                                <span class="thefont">{{myvideoinfo.uploadtime.toLocaleString().replace(/T/g, ' ').replace(/\.[\d]{3}Z/, '')}}</span>
                                 <span class="thefont">未经作者授权，禁止转载</span>
                             </div>
                             <div class="myvideo">
-                                <video class="mv"  :src="mvurl" controls="controls"> </video>
+                                <video class="mv" preload="metadata" crossorigin="anonymous" :src="myvideoinfo.videolink" controls="controls"> </video>
                             </div>
                             <div class="interact">
-                                <img src="../../../public/styles/icon/like.svg" class="midicon" alt="">
-                                <span class="thefont">1433</span>
+                                <svg width="36" height="36" viewBox="0 0 36 36" @click="tblue1" xmlns="http://www.w3.org/2000/svg" class="icon svg1"><path fill-rule="evenodd" clip-rule="evenodd" d="M9.77234 30.8573V11.7471H7.54573C5.50932 11.7471 3.85742 13.3931 3.85742 15.425V27.1794C3.85742 29.2112 5.50932 30.8573 7.54573 30.8573H9.77234ZM11.9902 30.8573V11.7054C14.9897 10.627 16.6942 7.8853 17.1055 3.33591C17.2666 1.55463 18.9633 0.814421 20.5803 1.59505C22.1847 2.36964 23.243 4.32583 23.243 6.93947C23.243 8.50265 23.0478 10.1054 22.6582 11.7471H29.7324C31.7739 11.7471 33.4289 13.402 33.4289 15.4435C33.4289 15.7416 33.3928 16.0386 33.3215 16.328L30.9883 25.7957C30.2558 28.7683 27.5894 30.8573 24.528 30.8573H11.9911H11.9902Z"></path></svg>
+                                <span class="thefont">{{myvideoinfo.likes}}</span>
 
-                                <img src="../../../public/styles/icon/collect.svg" class="midicon" alt="">
-                                <span class="thefont">233</span>
+                                <svg width="36" height="36" viewBox="0 0 28 28" @click="tblue2" xmlns="http://www.w3.org/2000/svg" class="icon svg2"><path fill-rule="evenodd" clip-rule="evenodd" d="M19.8071 9.26152C18.7438 9.09915 17.7624 8.36846 17.3534 7.39421L15.4723 3.4972C14.8998 2.1982 13.1004 2.1982 12.4461 3.4972L10.6468 7.39421C10.1561 8.36846 9.25639 9.09915 8.19315 9.26152L3.94016 9.91102C2.63155 10.0734 2.05904 11.6972 3.04049 12.6714L6.23023 15.9189C6.96632 16.6496 7.29348 17.705 7.1299 18.7605L6.39381 23.307C6.14844 24.6872 7.62063 25.6614 8.84745 25.0119L12.4461 23.0634C13.4276 22.4951 14.6544 22.4951 15.6359 23.0634L19.2345 25.0119C20.4614 25.6614 21.8518 24.6872 21.6882 23.307L20.8703 18.7605C20.7051 17.705 21.0339 16.6496 21.77 15.9189L24.9597 12.6714C25.9412 11.6972 25.3687 10.0734 24.06 9.91102L19.8071 9.26152Z"></path></svg>
+                                <span class="thefont">{{myvideoinfo.saves}}</span>
 
-                                <img src="../../../public/styles/icon/share.svg" class="midicon" alt="">
-                                <span class="thefont">26</span>
+                                <svg width="36" height="36" viewBox="0 0 28 28" @click="tblue3" xmlns="http://www.w3.org/2000/svg" class="icon svg3"><path d="M12.6058 10.3326V5.44359C12.6058 4.64632 13.2718 4 14.0934 4C14.4423 4 14.78 4.11895 15.0476 4.33606L25.3847 12.7221C26.112 13.3121 26.2087 14.3626 25.6007 15.0684C25.5352 15.1443 25.463 15.2144 25.3847 15.2779L15.0476 23.6639C14.4173 24.1753 13.4791 24.094 12.9521 23.4823C12.7283 23.2226 12.6058 22.8949 12.6058 22.5564V18.053C7.59502 18.053 5.37116 19.9116 2.57197 23.5251C2.47607 23.6489 2.00031 23.7769 2.00031 23.2122C2.00031 16.2165 3.90102 10.3326 12.6058 10.3326Z"></path></svg>
+                                <span class="thefont">{{myvideoinfo.shares}}</span>
+                            </div>
+                            <el-divider></el-divider>
+                            <div class="intro">
+                                {{myvideoinfo.introduction}}
                             </div>
                             <div class="mytab">
-                                <el-tag type="info" class="onetab">跑步</el-tag>
-                                <el-tag type="info" class="onetab">校园</el-tag>
-                                <el-tag type="info" class="onetab">篮球</el-tag>
-                                <el-tag type="info" class="onetab">UP今天吃什么</el-tag>
-                                <el-tag type="info" class="onetab">饮食</el-tag>
-                                <el-tag type="info" class="onetab">游戏</el-tag>
+                                <el-tag v-for="tag in tags" type="info" class="onetab">{{tag}}</el-tag>
                             </div>
                         </div>
                         <el-divider></el-divider>
@@ -190,34 +211,35 @@
                     <div class="comment">
                         <div class="comminfo">
                             <h4 style="margin: 0 5px">评论</h4>
-                            <span class="thefont">157 </span>
+                            <span class="thefont">{{comments.length}} </span>
                             <el-button type="text" style="padding: 0 5px;">最热</el-button>
                             <el-divider direction="vertical"></el-divider>
                             <el-button type="text" style="color: #9d9c9c;padding: 0 5px;">最新</el-button>
                         </div>
                         <div class="mycomment">
                             <el-avatar :size="50" src="https://s1.ax1x.com/2023/03/24/ppBJaQ0.png"></el-avatar>
-                            <el-input
-                                    type="textarea"
+                            <textarea
                                     :rows="2"
+                                    maxlength="100"
                                     placeholder="请输入内容"
-                                    v-model="textarea"
-                                    class="myinput">
-                            </el-input>
-                            <el-button type="primary">发布</el-button>
+                                    v-model="mytextarea"
+                                    class="myinput el-textarea__inner">
+                            </textarea>
+                            <el-button type="primary" @click="commets">发布</el-button>
                         </div>
                         <div style="margin: 10px 0;">
 
-                                <div v-for="item in hotcom" style="margin: 10px 0;">
-                                    <el-avatar :size="50" :src="item.avatarUrl"></el-avatar>
-                                    <strong>{{item.nickname}}</strong>
+                                <div v-for="(item,i) in comments" style="margin: 10px 0;">
+                                    <el-avatar :size="50" :src="item.avatar"></el-avatar>
+                                    <strong style="vertical-align: 80%;margin-left: 5px">{{item.prepare}}</strong>
+                                    <span class="time">{{i+1}}楼</span>
                                     <br><span style="color:rgb(14,16,16)">{{item.content}}</span><br>
-                                    <span id="time">{{item.timeStr}}</span>
+                                    <span class="time">{{item.commentdate.toLocaleString().replace(/T/g, ' ').replace(/\.[\d]{3}Z/, '')}}</span>
                                     <br>
+                                    <el-divider></el-divider>
                                 </div>
 
                         </div>
-
 
 
                     </div>
@@ -225,19 +247,20 @@
                 <div class="myright">
                     <div style="display: flex">
                         <div style="margin: 15px 20px">
-                            <el-avatar :size="50" src="https://s1.ax1x.com/2023/03/24/ppBJDwF.png"></el-avatar>
+                            <el-avatar :size="50" :src="author.avatar"></el-avatar>
                         </div>
                         <div style="display: flex;flex-direction: column;margin: 10px 5px;">
                             <div>
-                                <span class="theup">春风桃李花开夜</span>
+                                <span class="theup">{{author.username}}</span>
                                 <div class="sendmss">
                                     <i class="el-icon-message-solid"></i>
                                     <span class="smallicon">发信息</span>
                                 </div>
                             </div>
                             <div style="margin:0 0 10px 10px;">
-                                <span class="thefont">欢迎关注新人up主</span>
+                                <span class="thefont">{{'该用户暂未设置个性签名'||author.sign}}</span>
                             </div>
+                            <el-button v-if="false" type="info" style="width: 200px" round>+ 已关注 7772</el-button>
                             <el-button type="primary" style="width: 200px" round>+ 关注 7772</el-button>
                         </div>
                     </div>
@@ -245,92 +268,21 @@
                     <div class="morevid">
                         <h3 style="display: inline-block;margin-left: 10px">推荐视频</h3>
                         <div class="card-video">
-                            <div class="card">
-                                <img src="../../assets/img/portfolio/2.jpg" class="image2">
+                            <div v-for="item in videolist" @click="navto(item.uservideo.videoId)" class="card" >
+                                <img :src="item.uservideo.picture" class="image2">
                                 <div class="mycolo">
                                     <div class="myinfo">
-                                        视频1
+                                        {{item.uservideo.title}}
                                     </div>
                                     <div class="author">
-                                        UP 徐一鸣
+                                        UP {{item.authorname}}
                                     </div>
                                     <div class="author">
 
                                     </div>
                                 </div>
                             </div>
-                            <div class="card">
-                                <img src="../../assets/img/portfolio/3.jpg" class="image2">
-                                <div class="mycolo">
-                                    <div class="myinfo">
-                                        视频2
-                                    </div>
-                                    <div class="author">
-                                        UP 秦宇阳
-                                    </div>
-                                    <div class="author">
 
-                                    </div>
-                                </div>
-
-                            </div>
-                            <div class="card">
-                                <img src="../../assets/img/portfolio/4.jpg" class="image2">
-                                <div class="mycolo">
-                                    <div class="myinfo">
-                                        视频3
-                                    </div>
-                                    <div class="author">
-                                        UP 懒懒
-                                    </div>
-                                    <div class="author">
-
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="card">
-                                <img src="../../assets/img/portfolio/4.jpg" class="image2">
-                                <div class="mycolo">
-                                    <div class="myinfo">
-                                        视频4
-                                    </div>
-                                    <div class="author">
-                                        UP 摩托姐
-                                    </div>
-                                    <div class="author">
-
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="card">
-                                <img src="../../assets/img/portfolio/4.jpg" class="image2">
-                                <div class="mycolo">
-                                    <div class="myinfo">
-                                        视频5
-                                    </div>
-                                    <div class="author">
-                                        UP 原圆圆原
-                                    </div>
-                                    <div class="author">
-
-                                    </div>
-                                </div>
-
-                            </div>
-                            <div class="card">
-                                <img src="../../assets/img/portfolio/4.jpg" class="image2">
-                                <div class="mycolo">
-                                    <div class="myinfo">
-                                        视频6
-                                    </div>
-                                    <div class="author">
-                                        UP 小白
-                                    </div>
-                                    <div class="author">
-
-                                    </div>
-                                </div>
-                            </div>
 
                         </div>
                     </div>
@@ -339,54 +291,136 @@
 
 
         </div>
-        <script src="../../../public/plugins/vue/mystyle.js"></script>
         <!-- 开发环境版本，包含了有帮助的命令行警告 -->
         <script src="../../../public/plugins/vue/vue.js"></script>
         <!-- 引入组件库 -->
         <script src="../../../public/plugins/element-ui/index.js"></script>
         <script src="../../../public/plugins/axios/axios.min.js"></script>
         <script src="../../../public/js/request.js"></script>
-        <script src="../../myapi/usercenter.js"></script>
+        <script src="../../myapi/video.js"></script>
         <script>
             new Vue({
                 el: '#app',
                 data() {
                     return {
-                        mvurl:"../../assets/testvideo.mp4",
                         activeName: 'first',
-                        hotcom:[
-                            {
-                                content:"集中精力在圆锥的高上追求高度",
-                                timeStr:"2020-04-25",
-                                avatarUrl:"http://p4.music.126.net/CNcgF_Gy0ZB3qrcgnsq8Og==/109951166040613136.jpg",
-                                nickname:"想再开心一点"
-                            },
-                            {
-                                content:"加油",
-                                timeStr:"2019-04-11",
-                                avatarUrl:"http://p4.music.126.net/Tj4oc57NDiaiwAyzNxZlcw==/109951166452714313.jpg",
-                                nickname:"什么都不懂ddd"
-                            },
-                            {
-                                content:"关注up主谢谢喵",
-                                timeStr:"2022-02-04",
-                                avatarUrl:"http://p3.music.126.net/oP18PaE7dyIOMiOeMSzrJg==/3272146610178852.jpg",
-                                nickname:"什么都不懂ddd"
-                            },
-
-                        ]
-
+                        myvideoinfo:{},
+                        userInfo:{},
+                        tags:[],
+                        mytextarea:'',
+                        videolist:[],
+                        author:{},
+                        comments:[],
+                        go:'0'
                     }
                 },
 
                 mounted() {
-                  
+                    this.myvideoinfo=JSON.parse(window.localStorage.getItem("thevideo"))
+                    window.localStorage.removeItem("thevideo")
+                    this.author=JSON.parse(window.localStorage.getItem("author"))
+                    window.localStorage.removeItem("author")
+                    this.comments=JSON.parse(window.localStorage.getItem("comments"))
+                    window.localStorage.removeItem("comments")
+                    this.go=window.localStorage.getItem("go")
+                    window.localStorage.removeItem("go")
+                    this.tags=this.myvideoinfo.taps.split(" ")
+                    this.init1()
+                    this.userInfo = JSON.parse(localStorage.getItem('userInfo'))
+
                 },
                 methods: {
-                    navto(){
-                        window.location.href="../home/home.html"
-                    }
+                    async init1(){
+                        await getallvideo().then(res=>{
+                            if(String(res.code) === '1'){
+                                this.videolist=res.data
+                                window.parent.postMessage(document.body.clientHeight-250,'*')
+                            }
+                        })
 
+                    },
+                    tblue1(){
+                        if(document.querySelector(".svg1").style.fill==""){
+                            document.querySelector(".svg1").style.fill="#00aeec"
+                            thumb(1,this.userInfo.uid,this.myvideoinfo.videoId).then(res=>{
+                                if(String(res.code) === '1'){
+                                    this.myvideoinfo.likes=this.myvideoinfo.likes+1
+                                }
+                            })
+                        }else{
+                            document.querySelector(".svg1").style.fill=""
+                        }
+                    },
+                    tblue2(){
+                        if(document.querySelector(".svg2").style.fill==""){
+                            document.querySelector(".svg2").style.fill="#00aeec"
+                        }else{
+                            document.querySelector(".svg2").style.fill=""
+                        }
+                        thumb(2,this.userInfo.uid,this.myvideoinfo.videoId).then(res=>{
+                            if(String(res.code) === '1'){
+                                this.myvideoinfo.saves=this.myvideoinfo.saves+1
+                            }
+                        })
+                    },
+                    tblue3(){
+                        if(document.querySelector(".svg3").style.fill==""){
+                            document.querySelector(".svg3").style.fill="#00aeec"
+                        }else{
+                            document.querySelector(".svg3").style.fill=""
+                        }
+                        thumb(3,this.userInfo.uid,this.myvideoinfo.videoId).then(res=>{
+                            if(String(res.code) === '1'){
+                                this.myvideoinfo.shares=this.myvideoinfo.shares+1
+                            }
+                        })
+                    },
+                    navto2(){
+                        window.location.href="../home/home.html"
+                    },
+                    navto3(){
+                        window.location.href="../community/community.html"
+                    },
+                    navto4(){
+                        window.location.href="../community/case.html"
+                    },
+                    commets(){
+                        addcomments(this.userInfo.uid,this.myvideoinfo.videoId,this.mytextarea).then(res=>{
+                            if(String(res.code) === '1'){
+                                this.$message.success("发布成功")
+                                this.myinput=''
+                                this.comments.push(res.data)
+                            }else {
+                                this.$message.error("发布失败")
+                            }
+                        })
+                    },
+                    async navto(videoId){
+                        await getonevideo(videoId).then(res=>{
+                            if(String(res.code) === '1'){
+                                window.localStorage.setItem("thevideo",JSON.stringify(res.data))
+                            }else{
+                                console.log(res.msg)
+                            }
+                        })
+                        await getauthor(videoId).then(res=>{
+                            if(String(res.code) === '1'){
+                                console.log(res.data)
+                                window.localStorage.setItem("author",JSON.stringify(res.data))
+                            }else{
+                                console.log(res.msg)
+                            }
+                        })
+                        await getcomments(videoId).then(res=>{
+                            if(String(res.code) === '1'){
+                                console.log(res.data)
+                                window.localStorage.setItem("comments",JSON.stringify(res.data))
+                            }else{
+                                console.log(res.msg)
+                            }
+                        })
+                        window.location.href = "../videodetails/videodetails.html"
+                    },
                 }
             })
         </script>
