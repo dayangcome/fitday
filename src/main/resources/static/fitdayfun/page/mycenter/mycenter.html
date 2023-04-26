@@ -185,14 +185,16 @@
                                 </el-input>
                             </div>
                             <div class="myrow">
+
                                 <h3>我的等级</h3>
                                 {{userInfo.level}}
-                               
                                 <i class="el-icon-star-on" style="color:red"></i>
+
+
                                 <h3 style="margin-left: 20px">我的余额</h3>
-                                {{userInfo.remain}}
-                             
+                                {{userInfo.remain}} 元
                                 <i class="el-icon-wallet" style="color:navy"></i>
+
                             </div>
                             <div class="myrow">
                                 <h3>我的电话</h3>
@@ -207,11 +209,11 @@
                             
                             <div class="myrow">
                                 <h3>我的性别</h3>
-                                <el-radio-mygroup v-model="sex">
+                                <el-radio-group v-model="sex">
                                     <el-radio  :label="0">男</el-radio>
                                     <el-radio  :label="1">女</el-radio>
                                     <el-radio  :label="2">保密/未知</el-radio>
-                                </el-radio-mygroup>
+                                </el-radio-group>
                             </div>
                             
                             <div class="myrow">
@@ -534,9 +536,9 @@
                   this.userInfo=userInfo
                   this.username=userInfo.username
                   this.phone=userInfo.phone
-                  this.sex=userInfo.sex
                   this.circleUrl=userInfo.avatar
                   this.wxNumber=userInfo.wxNumber
+                  this.sex=userInfo.sex
                   userInfo.createTime=userInfo.createTime.replace(/T/g, '  ').replace(/.[\d]{3}Z/, '  ')
                   userInfo.updateTime=userInfo.updateTime.replace(/T/g, '  ').replace(/.[\d]{3}Z/, '  ')
                   var userInfo2 = window.localStorage.getItem('userInfo2')

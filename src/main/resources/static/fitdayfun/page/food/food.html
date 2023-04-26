@@ -130,7 +130,7 @@
                                         ></el-autocomplete>
                                     </el-form-item>
                                     <el-form-item label="摄入量(g)：" prop="intake">
-                                        <el-input v-model="editForm.intake" style="width: 350px"></el-input>
+                                        <el-input v-model="editForm.intake" oninput="value = Number(value) || 0" style="width: 350px"></el-input>
                                     </el-form-item>
                                 </el-form>
                                 <!-- 弹框底部按钮 -->
@@ -189,7 +189,7 @@
                                             ></el-autocomplete>
                                         </el-form-item>
                                         <el-form-item label="摄入量(g)：" prop="intake">
-                                            <el-input v-model="editForm.intake" style="width: 350px"></el-input>
+                                            <el-input  oninput="value = Number(value) || 0" v-model="editForm.intake" style="width: 350px"></el-input>
                                         </el-form-item>
                                 </el-form>
                                 <!-- 弹框底部按钮 -->
@@ -248,7 +248,7 @@
                                         ></el-autocomplete>
                                     </el-form-item>
                                     <el-form-item label="摄入量(g)：" prop="intake">
-                                        <el-input v-model="editForm.intake" style="width: 350px"></el-input>
+                                        <el-input  oninput="value = Number(value) || 0" v-model="editForm.intake" style="width: 350px"></el-input>
                                     </el-form-item>
                                 </el-form>
                                 <!-- 弹框底部按钮 -->
@@ -307,7 +307,7 @@
                                         ></el-autocomplete>
                                     </el-form-item>
                                     <el-form-item label="摄入量(g)：" prop="intake">
-                                        <el-input v-model="editForm.intake" style="width: 350px"></el-input>
+                                        <el-input  oninput="value = Number(value) || 0" v-model="editForm.intake" style="width: 350px"></el-input>
                                     </el-form-item>
                                 </el-form>
                                 <!-- 弹框底部按钮 -->
@@ -739,6 +739,7 @@
             }
         },
         created(){
+            window.parent.postMessage(document.body.clientHeight-450,'*')
             this.init()
             this.userInfo = JSON.parse(localStorage.getItem('userInfo'))
             this.userInfo2 = JSON.parse(localStorage.getItem('userInfo2'))
@@ -1216,7 +1217,6 @@
                         if(this.notchange==false){
                             getmyheat(this.breakfastData,this.lunchData,this.dinnerData,this.addData).then(res => {
                                 if (String(res.code) === '1') {
-
                                     this.finish=res.data
                                     this.finish=this.finish.toFixed(2)
                                     this.mypercent=this.finish*100/this.allheat

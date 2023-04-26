@@ -16,6 +16,7 @@
                 margin: 0 150px;
             }
             .myvideo{
+                margin-top: 10px;
                 margin-right: 90px;
             }
             .cell:hover{
@@ -32,10 +33,6 @@
                 display: flex;
                 flex-direction: column;
                 margin-top: 8px;
-            }
-            h5{
-                display: inline-block;
-                color: red;
             }
             .mybottom{
                 display: flex;
@@ -59,6 +56,27 @@
                 width: 550px;
                 background-color: #e2e2e2;
             }
+            .myimg{
+                width: 50px;
+                height: 40px;
+                padding-top: 20px;
+            }
+            .red{
+                color: red;
+            }
+            .el-dialog{
+                margin-top: 1vh !important;
+            }
+            .el-form-item__error{
+                position: inherit;
+                margin-left:185px;
+            }
+            .hide{
+                display: none;
+            }
+            .borderred{
+                border-color:#F56C6C;
+            }
         </style>
     </head>
     <body>
@@ -66,35 +84,107 @@
 
             <div class="mytop">
                 <div style="margin-top: 15px;font-size: 17px">
-                    <span @click="navto" class="orig" style="font-weight: bold;cursor: pointer">课程</span>
+                    <span v-if="mycourse.type==1" @click="navto" class="orig" style="font-weight: bold;cursor: pointer">课程</span>
+                    <span v-if="mycourse.type==2" @click="navto2" class="orig" style="font-weight: bold;cursor: pointer">健身器材</span>
                     <span>></span>
-                    <span>课程详情</span>
+                    <span v-if="mycourse.type==1">课程详情</span>
+                    <span v-if="mycourse.type==2">器材详情</span>
                 </div>
                 <div style="display: flex">
                     <div class="myvideo">
-                        <video class="mv"  :src="mvurl" controls="controls"> </video>
+<!--                        <video class="mv"  :src="mvurl" controls="controls"> </video>-->
+                        <img :src="coursepic" class="mv">
                     </div>
                     <div class="viedointro">
-                        <div><h2>Java6个月速成</h2></div>
+                        <div><h2>{{mycourse.productName}}</h2></div>
                         <div class="intoduce">
-                            这里是视频简单介绍 <br>
-                            关注视频内容谢谢喵 <br>
-                            关注视频内容谢谢喵 <br>
-                            这里是视频简单介绍 <br>
-                            <p style="float: right;font-size: 14px;color: black">已有2992人购买</p>
+                            {{mycourse.info}}
+                            <br>
+                            <p v-if="mycourse.type==1" style="float: right;font-size: 14px;color: #b41f1f">已有{{mycourse.sales}}人购买</p>
                         </div>
                         <div>
-                            <h5>售价：￥333</h5>
+                            <h4 style="color: red">售价：￥{{mycourse.price}}</h4>
                         </div>
-                        <el-button type="success" style="width: 200px">
+                        <div style="margin-bottom: 10px" v-if="mycourse.type==2">
+                            <h4 style="display: inline-block">购买数量：</h4>
+                            <el-input-number v-model="mynum" :min="1" :max="10" label="描述文字"></el-input-number>
+                        </div>
+                        <el-button type="success" style="width: 200px" @click="buy">
                             立刻购买
                         </el-button>
                     </div>
                 </div>
             </div>
+
+            <el-dialog title="购买商品" :visible.sync="dialogFormVisible2" width="43%" center>
+                    <div style="margin: 10px;font-size: 18px">
+                        您要购买的商品为：{{mycourse.productName}}
+                    </div>
+                    <div style="margin: 10px;font-size: 18px">
+                        您要购买的数量为：{{mynum}} 件
+                    </div>
+                <div style="margin: 10px;font-size: 18px">
+                   请选择您的收货地址：
+                    <el-cascader
+                            size='medium'
+                            v-model="workarea"
+                            :options="options"
+                            ref="myCascader"
+                            @change="handleChange">
+                    </el-cascader>
+                    <div id="check1" class="el-form-item__error hide">请选择收货地址</div>
+                </div>
+
+                <div id="address" style="margin: 10px;font-size: 18px">
+                    请填写详细收货地址：
+                    <el-input
+                            @blur="myck"
+                            style="width: 360px"
+                            placeholder="详细收货地址"
+                            v-model="detailarea"
+                            clearable>
+                    </el-input>
+                    <div id="check2" class="el-form-item__error hide">请填写详细地址</div>
+                </div>
+                <div style="margin: 15px 10px;font-size: 18px">
+                请选择优惠券：
+                    <el-select v-model="myvalue">
+                        <el-option
+                                v-for="item in options2"
+                                :key="item.value"
+                                :label="item.label"
+                                :value="item.value">
+                            <span style="float: left">{{ item.label }}</span>
+                            <span style="float: right; color: #8492a6; font-size: 13px">{{ item.remain }}</span>
+                        </el-option>
+                    </el-select>
+                </div>
+                <div v-if="radio==1" style="margin: 10px;font-size: 18px">
+                    当前您的账户余额为：<span class="red">{{userInfo.remain}} 元</span>
+                </div>
+                <div style="margin: 10px;font-size: 18px">
+                    商品的原价为：<span class="red">{{mycourse.price * mynum}} 元</span>
+                </div>
+                <div style="margin: 10px;font-size: 18px">
+                    您要支付的价格为：<span class="red">{{(mycourse.price * mynum - myvalue > 0) ? (mycourse.price * mynum - myvalue): 0}} 元</span>
+                </div>
+                    <div style="margin-bottom: 20px">
+                        <img  class="myimg" src="../../assets/img/remainpay.png" style="vertical-align: -70%">
+                        <el-radio v-model="radio" :label="1" border>余额支付</el-radio>
+                        <img  class="myimg" src="../../assets/img/wxpay.png" style="vertical-align: -58%">
+                        <el-radio v-model="radio" :label="2" border>微信支付</el-radio>
+                        <img  class="myimg" src="../../assets/img/pay1.png" style="vertical-align: -52%;margin-right: 8px;">
+                        <el-radio v-model="radio" :label="3" border>支付宝支付</el-radio>
+                    </div>
+
+                <div slot="footer" class="dialog-footer">
+                    <el-button type="success" @click="buy2">支付</el-button>
+                </div>
+            </el-dialog>
+
             <div class="mybottom">
                 <div class="left">
-                    <el-tabs v-model="activeName" @tab-click="handleClick" style="width: 750px;">
+                    <el-tabs v-model="activeName" style="width: 750px;">
                         <el-tab-pane label="课程详情" name="first">
                             <h4>课程概述</h4>
                             <p>
@@ -208,14 +298,21 @@
         <script src="../../../public/plugins/element-ui/index.js"></script>
         <script src="../../../public/plugins/axios/axios.min.js"></script>
         <script src="../../../public/js/request.js"></script>
-        <script src="../../myapi/usercenter.js"></script>
+        <script src="../../myapi/mall.js"></script>
+        <script src="./area.js"></script>
         <script>
             new Vue({
                 el: '#app',
                 data() {
                     return {
+                        mycourse:{},
                         mvurl:"../../assets/testvideo.mp4",
+                        coursepic:'',
                         activeName: 'first',
+                        mynum:1,
+                        myvalue:0,
+                        options: areajson, //调用外部js文件的json数据 地址选择框
+                        workarea: ['', '', ''], //自定义 默认值  此处填写对应的value值 地址选择框
                         teacherData:[
                             {
                                 username:"卡颂",
@@ -259,18 +356,108 @@
                                 productName:"简明CSS教程",
                                 productPicture:"../../assets/img/portfolio/model3-4.jpg"
                             }
-                        ]
+                        ],
+                        options2: [{
+                            value: 0,
+                            remain:'',
+                            label: '无'
+                        }, {
+                            value: 10,
+                            remain:'剩余 0 张',
+                            label: '10元优惠券'
+                        }, {
+                            value: 30,
+                            remain:'剩余 0 张',
+                            label: '30元优惠券'
+                        }, {
+                            value: 50,
+                            remain:'剩余 0 张',
+                            label: '50元优惠券'
+                        }, {
+                            value: 100,
+                            remain:'剩余 0 张',
+                            label: '100元优惠券'
+                        },{
+                            value: 500,
+                            remain:'剩余 0 张',
+                            label: '500元优惠券'
+                        }],
+                        radio:1,
+                        userInfo:{},
+                        userInfo2:{},
+                        dialogFormVisible2:false,
+                        area:'',
+                        detailarea:'',
+
                     }
                 },
 
                 mounted() {
-                  
+                    var userInfo = window.localStorage.getItem('userInfo')
+                    userInfo = JSON.parse(userInfo)
+                    this.userInfo=userInfo
+                    this.mycourse=JSON.parse(window.localStorage.getItem("num"))
+                    window.localStorage.removeItem("num")
+                    this.coursepic=this.mycourse.productPicture
+                    window.parent.postMessage(document.body.clientHeight-100,'*')
+                    console.log(this.mycourse)
                 },
                 methods: {
                     navto(){
                         window.location.href="./course.html"
-                    }
+                    },
+                    navto2(){
+                        window.location.href="./tools.html"
+                    },
+                    buy(){
+                        this.dialogFormVisible2=true
+                    },
+                    async buy2(){
+                        if(this.area==''){
+                            document.querySelector("#check1").classList.remove("hide")
+                            document.querySelector(".el-cascader input").classList.add("borderred")
 
+                        }else if(this.detailarea==''){
+                            document.querySelector("#check2").classList.remove("hide")
+                            document.querySelector("#address input").classList.add("borderred")
+                        }else{
+                            const myaddress=this.area+' '+this.detailarea
+                            const finalpay=(this.mycourse.price * this.mynum - this.myvalue > 0) ? (this.mycourse.price * this.mynum - this.myvalue): 0
+                            await buygoods(this.userInfo.uid,this.mycourse.productId,this.radio,this.mynum,this.myvalue,finalpay,myaddress).then(res=>{
+                                if (String(res.code) === '1'){
+                                    window.localStorage.setItem('res',"success")
+                                    window.location.href=`./loading.html`
+                                }else {
+                                    this.$message({
+                                        message: res.msg,
+                                        center: true,
+                                        type:'error'
+                                    })
+                                }
+                            }).catch(err => {
+                                this.$message.error('请求出错了：' + err)
+                            })
+                        }
+
+                    },
+                    handleChange (value) {
+                        this.area=this.$refs.myCascader.$children[0].$options.propsData.value
+                        if(this.area!=''){
+                            document.querySelector("#check1").classList.add("hide")
+                            document.querySelector(".el-cascader input").classList.remove("borderred")
+                        }
+                        console.log(this.$refs["myCascader"].getCheckedNodes()[0].label)
+                    console.log(this.$refs.myCascader.$children[0].$options.propsData.value);
+                    },
+                    myck(){
+                        if(this.detailarea!=''){
+                            document.querySelector("#check2").classList.add("hide")
+                            document.querySelector("#address input").classList.remove("borderred")
+                        }else{
+                            document.querySelector("#check2").classList.remove("hide")
+                            document.querySelector("#address input").classList.add("borderred")
+                        }
+                    }
                 }
             })
         </script>

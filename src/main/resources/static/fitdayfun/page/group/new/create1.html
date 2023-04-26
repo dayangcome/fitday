@@ -8,9 +8,9 @@
     <title>Document</title>
     <style>
         .el-message {
-            position: absolute;
+            position: fixed;
             left: 50%;
-            top: 20px;
+            top: 90px;
         }
         .whole_containor{
             margin: -8px -8px;
@@ -76,13 +76,19 @@
              margin-top: 5px; 
         }
         .sport_word{
-            vertical-align: 50%;
-            font-size:30px;
+            vertical-align: 200%;
+            font-size:26px;
         }
         input:hover{
             cursor: pointer;
             background-color: #0ef6b8;
 
+        }
+        img{
+            margin:8px;
+        }
+        .groupmark_item:hover{
+            box-shadow: 2px 2px 4px rgba(0, 0, 0, .1), -2px -2px 4px rgba(0, 0, 0, .1);
         }
         
     </style>
@@ -95,8 +101,9 @@
         </div>
         <div class="contain">
             <div class="top_option">
-                <div style="text-align: center; margin-top: 10px;">
-                    <a style=" font-size: 30px; color: black; text-decoration: none; font-size: 30px; " target="_self" >创建小组</a>
+
+                <div style="text-align: center;margin-top: 10px;">
+                    <a style="font-size: 30px; color: black; text-decoration: none; font-size: 30px; " target="_self" >创建小组</a>
                 </div>
             </div>
             <div class="input_text">
@@ -219,7 +226,8 @@
                 </div>
                 </el-checkbox-group>
                 <div style="text-align: center;">
-                    <div @click="nextbu" style="display: inline-block; width: 90px; height: 40px; margin-left: 8px; margin-top: 3px;"><el-button plain type="primary" style=" width: 90px; height: 39px;margin-top: 3px; vertical-align: 100%;border-radius: 3px;">下一步</el-button></div>
+                    <el-button style="margin-right: 50px;display: inline-block;vertical-align: 100%" @click="goback">返回</el-button>
+                    <div @click="nextbu"  style="display: inline-block; width: 90px; height: 40px; margin-left: 8px; margin-top: 5px;"><el-button plain type="success" style=" width: 90px; height: 39px;margin-top: 3px; vertical-align: 100%;border-radius: 3px;">下一步</el-button></div>
                 </div>
                     
             </div>
@@ -264,29 +272,28 @@
                 window.parent.postMessage(document.body.clientHeight-100,'*')
             },
             methods: {
-                mysend(){
-                    addcomments2(this.userInfo.uid,this.dynamic.id,this.myinput).then(res=>{
-                        if(String(res.code) === '1'){
-                            this.$message.success("发布成功")
-                            this.myinput=''
-                        }else {
-                            this.$message.error("发布失败")
-                        }
-                    })
-                },
                 navto2(){
                     window.location.href="./me.html"
+                },
+                goback(){
+                  window.location.href='../search/search1.html'
                 },
                 nextbu(){
                     console.log(this.checkList)
                     if(this.checkList.length<1){
-                        this.$message({
-                            message: "请至少选择1个标签！",
-                            duration: 150000,
-                            type:'warning'
-                        })
+                        this.$notify({
+                            title: '提示',
+                            message: '请至少选择一个标签',
+                            type: 'warning',
+                            offset: 200
+                        });
                     }else if(this.checkList.length>5){
-                        this.$message.warning("至多选择5个标签！")
+                        this.$notify({
+                            title: '提示',
+                            message: '至多选择5个标签！',
+                            type: 'warning',
+                            offset: 200
+                        });
                     }else{
                         window.localStorage.setItem("tags1",JSON.stringify(this.checkList))
                         window.location.href='./create2.html'

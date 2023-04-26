@@ -27,11 +27,12 @@
 <body>
 <div id="app">
     <div style="display: inline-block;margin-left:40px;margin-top: 15px;font-size: 17px;">
-        <span @click="navto" class="orig" style="font-weight: bold;cursor: pointer">社区</span>
+        <span v-if="param=='2'" @click="navto3" class="orig" style="font-weight: bold;cursor: pointer">首页</span>
+        <span v-if="param!='2'" @click="navto" class="orig" style="font-weight: bold;cursor: pointer">社区</span>
         <span v-if="go=='0'">></span>
         <span v-if="go=='0'" @click="navto2" class="orig" style="font-weight: bold;cursor: pointer">我的动态</span>
         <span>></span>
-        <span>动态详情</span>
+        <span>文章详情</span>
     </div>
     <div class="container margin-b-lg">
         <nav class="navbar navbar-expand-md border-bottom">
@@ -161,7 +162,6 @@
 
     <script src="../../../public/js/jquery-2.1.3.min.js"></script>
     <script src="../../../public/js/bootstrap.bundle.min.js"></script>
-    <script src="../../../public/plugins/vue/mystyle.js"></script>
     <!-- 开发环境版本，包含了有帮助的命令行警告 -->
     <script src="../../../public/plugins/vue/vue.js"></script>
     <!-- 引入组件库 -->
@@ -184,7 +184,8 @@
                     picarr:[],
                     myinput:'',
                     comments:[],
-                    go:"0"
+                    go:"0",
+                    param:"1"
                 }
             },
             computed: {},
@@ -202,6 +203,8 @@
                 localStorage.removeItem("comments")
                 this.go=window.localStorage.getItem("go")
                 localStorage.removeItem("go")
+                this.param=window.localStorage.getItem("param")
+                localStorage.removeItem("param")
             },
             mounted() {
                 window.parent.postMessage(document.body.clientHeight,'*')
@@ -223,6 +226,9 @@
                 },
                 navto2(){
                     window.location.href="./me.html"
+                },
+                navto3(){
+                    window.location.href="../home/home.html"
                 },
             }
         })

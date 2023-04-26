@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta charset="utf-8" />
+        <title>首页</title>
+        <link rel="stylesheet" href="../../../public/plugins/element-ui/index.css" />
+        <style type="text/css">
+        #user{
+            float: right;
+        }
+        .el-page-header__left .el-icon-back{
+            font-size: 30px;
+            margin-right: 15px;
+        }
+        .el-page-header__title{
+            font-size: 18px;
+        }
+        .smallicon{
+            width: 50px;  
+        }
+        svg{
+            fill: #67C23A;
+        }
+        #second{
+            display: inline-block;
+            margin: 0 5px;
+            color: red;
+            font-size: 20px;
+        }
+        svg{
+            fill: red;
+        }
+        </style>
+    </head>
+    <body>
+        <div id="app">
+           <div class="banner" style="height: 120px; display: flex; background-image: url(../../assets/img/222.jpg);">
+               <img src="../../assets/img/fitdaylogo.png" alt="" style="height:100px ;width:300px;margin:0 80px;">
+               <span class="myfont" style="color: azure;
+               font-size: 40px;
+               line-height: 120px;
+               margin-left: 100px;">吃好，练好，拥有好心态，轻装上阵！</span>
+           </div>
+           <div style="text-align: center;margin-top: 80px;">
+               <svg viewBox="0 0 48 48" xmlns="http://www.w3.org/2000/svg" class="icon-error" width="100" height="100">
+                   <path d="M24,4 C35.045695,4 44,12.954305 44,24 C44,35.045695 35.045695,44 24,44 C12.954305,44 4,35.045695 4,24 C4,12.954305 12.954305,4 24,4 Z M32.57818,15.42182 C32.0157534,14.8593933 31.1038797,14.8593933 30.541453,15.42182 L30.541453,15.42182 L24.0006789,21.9625941 L17.458547,15.42182 C16.8961203,14.8593933 15.9842466,14.8593933 15.42182,15.42182 C14.8593933,15.9842466 14.8593933,16.8961203 15.42182,17.458547 L15.42182,17.458547 L21.9639519,23.9993211 L15.42182,30.541453 C14.8593933,31.1038797 14.8593933,32.0157534 15.42182,32.57818 C15.9842466,33.1406067 16.8961203,33.1406067 17.458547,32.57818 L17.458547,32.57818 L24.0006789,26.0360481 L30.541453,32.57818 C31.1038797,33.1406067 32.0157534,33.1406067 32.57818,32.57818 C33.1406067,32.0157534 33.1406067,31.1038797 32.57818,30.541453 L32.57818,30.541453 L26.0374059,23.9993211 L32.57818,17.458547 C33.1406067,16.8961203 33.1406067,15.9842466 32.57818,15.42182 Z"></path>
+               </svg>
+               <h1>购买失败</h1>
+               <h2>可能是多种原因导致，请稍后再进行重试</h2>
+               <el-button type=primary @click="navto">返回商城页面</el-button>
+           </div>
+        </div>
+        <!-- 开发环境版本，包含了有帮助的命令行警告 -->
+        <script src="../../../public/plugins/vue/vue.js"></script>
+        <!-- 引入组件库 -->
+        <script src="../../../public/plugins/element-ui/index.js"></script>
+        <script>
+            new Vue({
+                el: '#app',
+                data() {
+                    return{
+                    }
+                },
+                created() {
+                    window.parent.postMessage(document.body.clientHeight-250,'*')
+                },
+                methods: {
+                    navto(){
+
+                        window.location.href="./course.html"
+                    },
+                    goBack() {
+                        window.location.href='../login/login.html'
+                    }
+                }
+            })
+        </script>
+    </body>
+</html>

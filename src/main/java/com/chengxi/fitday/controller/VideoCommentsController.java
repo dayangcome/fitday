@@ -55,7 +55,7 @@ public class VideoCommentsController {
         comments.setVideoid(videoId);
         User user=userService.getById(uid);
         if(user==null){
-            return R.error("作者信息未找到！");
+            return R.error("用户信息未找到！");
         }
         comments.setPrepare(user.getUsername());
         comments.setAvatar(user.getAvatar());
@@ -63,6 +63,11 @@ public class VideoCommentsController {
         comments.setContent(content);
         comments.setUserid(uid);
         videoCommentsService.save(comments);
+
+        user.setExp(user.getExp()+50);     //发表评论加50经验
+        user.setLevel(user.getExp()/1000+1);    //检查用户是否升级
+        userService.updateById(user);           //更新用户信息
+
         return R.success(comments);
     }
 

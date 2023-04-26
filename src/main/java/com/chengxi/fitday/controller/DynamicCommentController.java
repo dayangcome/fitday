@@ -51,7 +51,7 @@ public class DynamicCommentController {
         comments.setDynamicId(dyId);
         User user=userService.getById(uid);
         if(user==null){
-            return R.error("作者信息未找到！");
+            return R.error("用户信息未找到！");
         }
         comments.setProductPicture(user.getAvatar());   //用户头像
         comments.setLikes(0);
@@ -66,6 +66,11 @@ public class DynamicCommentController {
             return R.error("动态信息未找到！");
         }
         dynamicService.updateById(dynamic);
+
+        user.setExp(user.getExp()+50);     //发表评论加50经验
+        user.setLevel(user.getExp()/1000+1);    //检查用户是否升级
+        userService.updateById(user);           //更新用户信息
+
         return R.success("发表成功");
     }
 }

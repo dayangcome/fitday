@@ -10,6 +10,7 @@ import com.chengxi.fitday.dto.Foodplandto;
 import com.chengxi.fitday.entity.*;
 import com.chengxi.fitday.service.IDietPlanService;
 import com.chengxi.fitday.service.IFoodService;
+import com.chengxi.fitday.service.IUserService;
 import org.apache.commons.lang.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.util.DigestUtils;
@@ -37,6 +38,9 @@ public class FoodController {
 
     @Autowired
     private IDietPlanService dietPlanService;
+
+    @Autowired
+    private IUserService userService;
 
     //食物信息分页查询
     @GetMapping("/page")
@@ -139,6 +143,15 @@ public class FoodController {
             dietPlan.setBreakfast(breakfast);
             dietPlanService.updateById(dietPlan);
         }
+
+        User user=userService.getById(foodplandto.getUserid());
+        if(user==null){
+            return R.error("没有找到用户");
+        }
+        user.setExp(user.getExp()+50);     //制定计划加50经验
+        user.setLevel(user.getExp()/1000+1);    //检查用户是否升级
+        userService.updateById(user);           //更新用户信息
+
         return R.success("成功");
     }
 
@@ -180,6 +193,15 @@ public class FoodController {
             dietPlan.setLunch(lunch);
             dietPlanService.updateById(dietPlan);
         }
+
+        User user=userService.getById(foodplandto.getUserid());
+        if(user==null){
+            return R.error("没有找到用户");
+        }
+        user.setExp(user.getExp()+50);     //制定计划加50经验
+        user.setLevel(user.getExp()/1000+1);    //检查用户是否升级
+        userService.updateById(user);           //更新用户信息
+
         return R.success("成功");
     }
 
@@ -221,6 +243,15 @@ public class FoodController {
             dietPlan.setDinner(dinner);
             dietPlanService.updateById(dietPlan);
         }
+
+        User user=userService.getById(foodplandto.getUserid());
+        if(user==null){
+            return R.error("没有找到用户");
+        }
+        user.setExp(user.getExp()+50);     //制定计划加50经验
+        user.setLevel(user.getExp()/1000+1);    //检查用户是否升级
+        userService.updateById(user);           //更新用户信息
+
         return R.success("成功");
     }
 
@@ -262,6 +293,15 @@ public class FoodController {
             dietPlan.setAdddiet(adddiet);
             dietPlanService.updateById(dietPlan);
         }
+
+        User user=userService.getById(foodplandto.getUserid());
+        if(user==null){
+            return R.error("没有找到用户");
+        }
+        user.setExp(user.getExp()+50);     //制定计划加50经验
+        user.setLevel(user.getExp()/1000+1);    //检查用户是否升级
+        userService.updateById(user);           //更新用户信息
+
         return R.success("成功");
     }
 

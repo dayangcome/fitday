@@ -63,3 +63,18 @@ function updatemyinfo(userId,height,weight){
         data:{userId,height,weight}
     })
 }
+
+
+function getusergroup(uid){
+    return $axios({
+        'url': `/group/getgroup/${uid}`,
+        'method': 'get'
+    })
+}
+
+function getone(uid){
+    return $axios({
+        'url': `/user/getuser/${uid}`,
+        'method': 'get'
+    })
+}

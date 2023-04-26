@@ -886,6 +886,7 @@
                                 this.showlist2.push(this.alllist2[(ramnum+2)%count])
                                 this.showlist2.push(this.alllist2[(ramnum+3)%count])
                             }
+                            window.parent.postMessage(document.body.clientHeight-450,'*')
                         }).catch(err => {
                             this.$message.error('请求出错了：' + err)
                         })

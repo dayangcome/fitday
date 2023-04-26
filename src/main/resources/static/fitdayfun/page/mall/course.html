@@ -99,32 +99,20 @@
                 <div class="mid">
                     <div style="margin-bottom: 40px">
                     <h2><span class="green">* </span> 推荐课程 <span class="green"> *</span></h2>
-                    <div style="display: flex;">
-                        <div v-for="(o, index) in 3" :key="o" :offset="index > 0 ? 3 : 0" style="width: 220px;margin:0 20px;" @click="navto(o)">
+                    <div style="display: flex;flex-wrap: wrap">
+                        <div v-for="(o, index) in datalist" style="width: 220px;margin:0 20px 20px 20px;" @click="navto(o)">
                             <el-card :body-style="{ padding: '0px' }" shadow="hover" >
-                                <img src="../../assets/img/portfolio/2.jpg" class="image">
+                                <img :src="o.productPicture" class="image">
                                 <div style="padding: 14px;">
-                                    <span>课程{{o}}</span>
+                                    <span>{{o.productName}}</span>
                                     <div class="bottom clearfix">
-                                        <h5>售价：￥233</h5>
+                                        <h5>售价：￥{{o.price}}</h5>
                                     </div>
                                 </div>
                             </el-card>
                         </div>
                     </div>
-                    <div style="display: flex;margin-top: 40px">
-                        <div v-for="(o, index) in 3" :key="o" :offset="index > 0 ? 3 : 0" style="width: 220px;margin:0 20px;">
-                            <el-card :body-style="{ padding: '0px' }" shadow="hover">
-                                <img src="../../assets/img/portfolio/1.jpg" class="image">
-                                <div style="padding: 14px;">
-                                    <span>课程{{o+3}}</span>
-                                    <div class="bottom clearfix">
-                                        <h5>售价：￥333</h5>
-                                    </div>
-                                </div>
-                            </el-card>
-                        </div>
-                    </div>
+
                     </div>
 
                 <div>
@@ -132,7 +120,7 @@
                     <div style="display: flex;">
                         <div v-for="(o, index) in 3" :key="o" :offset="index > 0 ? 3 : 0" style="width: 220px;margin:0 25px;">
                             <el-card :body-style="{ padding: '0px' }" shadow="hover">
-                                <img src="../../assets/img/portfolio/3.jpg" class="image">
+                                <img :src="o.productPicture" class="image">
                                 <div style="padding: 14px;">
                                     <span>课程{{o}}</span>
                                     <div class="bottom clearfix">
@@ -145,7 +133,7 @@
                     <div style="display: flex;margin-top: 40px">
                         <div v-for="(o, index) in 3" :key="o" :offset="index > 0 ? 3 : 0" style="width: 220px;margin:0 25px;">
                             <el-card :body-style="{ padding: '0px' }" shadow="hover">
-                                <img src="../../assets/img/portfolio/5.jpg" class="image">
+                                <img :src="o.productPicture" class="image">
                                 <div style="padding: 14px;">
                                     <span>课程{{o+3}}</span>
                                     <div class="bottom clearfix">
@@ -215,19 +203,18 @@
                     </div>
                 </div> 
         </div>
-        <script src="../../../public/plugins/vue/mystyle.js"></script>
-        <!-- 开发环境版本，包含了有帮助的命令行警告 -->
         <script src="../../../public/plugins/vue/vue.js"></script>
         <!-- 引入组件库 -->
         <script src="../../../public/plugins/element-ui/index.js"></script>
         <script src="../../../public/plugins/axios/axios.min.js"></script>
         <script src="../../../public/js/request.js"></script>
-        <script src="../../myapi/usercenter.js"></script>
+        <script src="../../myapi/mall.js"></script>
         <script>
             new Vue({
                 el: '#app',
                 data() {
                     return {
+                        datalist:[],
                         courseData:[
                             {
                                 productName:"Java6个月速成",
@@ -276,12 +263,22 @@
                 },
 
                 mounted() {
-                  
+                  this.init()
                 },
                 methods: {
+                    init(){
+                        gettypeall(1).then(res=>{
+                            if(String(res.code) === '1'){
+                                this.datalist=res.data
+                                window.parent.postMessage(document.body.clientHeight-100,'*')
+                            }else {
+                                this.$message.error("获取失败")
+                            }
+                        })
+                    },
                     navto(num){
+                        window.localStorage.setItem("num",JSON.stringify(num))
                         window.location.href = "./coursedetails.html"
-                        console.log(num)
                     },
                    handleSelect(key, keyPath) {
                         if(key==1){

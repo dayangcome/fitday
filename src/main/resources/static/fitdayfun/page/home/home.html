@@ -61,19 +61,21 @@
                     }
                 .image2 {
                         margin-top:15px;
-                        width: 100%;
-                        height: 100%;
+                        width: 224px;
+                        height: 140px;
                         padding:2px;
                         border-radius: 10px;
                         border:1px solid #DCDFE6;
                         transition: transform .2s, box-shadow .2s;
                 }
                 .image {
-                 margin-top:15px;
-                 width: 80%;
-                 height: 80%;
+                 width: 190px;
+                 height: 200px;
                  border-radius: 20px;
              }
+            .el-divider--horizontal{
+                margin:10px 0;
+            }
             
             .el-carousel__item h3 {
                 color: #475669;
@@ -91,18 +93,17 @@
                  background-color: #d3dce6;
               }
               .mycarousel{
-                  margin: 30px 0 30px 30px;
+                  margin: 30px 0 5px 30px;
                   width: 700px;
                   height: 600px;
               }
               .card-video{
-                  
                   display: flex;
                   flex-wrap: wrap;
                   justify-content:center;
                   margin: 20px;
                   width: 1264px;
-                  height: 620px;
+                  height: 588px;
               }
     
               .card-video .card {
@@ -125,6 +126,7 @@
                   color: #3e3e3e;
               }
               .myinfo{
+                  padding: 0 18px;
                   margin-top: 10px;
               }
               .myinfo:hover{
@@ -218,87 +220,14 @@
            <div id="main" style="display: flex;">
 
                <div class="card-box">
-                       <div class="card">
-                           <img src="../../assets/img/portfolio/2.jpg" class="image">
+                       <div v-for="item in tableData" class="card" @click.prevent="navto2(item.id)">
+                           <img :src="item.picture" class="image">
                            <el-divider></el-divider>
                            <div class="myinfo">
-                               内容1
+                               {{item.title}}
                            </div>
-                           <el-divider></el-divider>
                        </div>
-                       <div class="card">
-                           <img src="../../assets/img/portfolio/3.jpg" class="image">
-                           <el-divider></el-divider>
-                           <div class="myinfo">
-                               内容2
-                           </div>
-                           <el-divider></el-divider>
-                       </div>
-                       <div class="card">
-                           <img src="../../assets/img/portfolio/4.jpg" class="image">
-                           <el-divider></el-divider>
-                           <div class="myinfo">
-                               内容3
-                           </div>
-                           <el-divider></el-divider>
-                       </div>
-                       <div class="card">
-                           <img src="../../assets/img/portfolio/5.jpg" class="image">
-                           <el-divider></el-divider>
-                           <div class="myinfo">
-                               内容4
-                           </div>
-                           <el-divider></el-divider>
-                       </div>
-                       <div class="card">
-                           <img src="../../assets/img/portfolio/6.jpg" class="image">
-                           <el-divider></el-divider>
-                           <div class="myinfo">
-                               内容5
-                           </div>
-                           <el-divider></el-divider>
-                       </div>
-                       <div class="card">
-                           <img src="../../assets/img/portfolio/7.jpg" class="image">
-                           <el-divider></el-divider>
-                           <div class="myinfo">
-                               内容6
-                           </div>
-                           <el-divider></el-divider>
-                       </div>
-                       <div class="card">
-                           <img src="../../assets/img/portfolio/model6-1.jpg" class="image">
-                           <el-divider></el-divider>
-                           <div class="myinfo">
-                               内容7
-                           </div>
 
-                           <el-divider></el-divider>
-                       </div>
-                       <div class="card">
-                           <img src="../../assets/img/portfolio/model1-1.png" class="image">
-                           <el-divider></el-divider>
-                           <div class="myinfo">
-                               内容8
-                           </div>
-                           <el-divider></el-divider>
-                       </div>
-                       <div class="card">
-                           <img src="../../assets/img/portfolio/model1-3.jpg" class="image">
-                           <el-divider></el-divider>
-                           <div class="myinfo">
-                               内容9
-                           </div>
-                           <el-divider></el-divider>
-                       </div>
-                       <div class="card">
-                           <img src="../../assets/img/portfolio/model4-2.jpg" class="image">
-                           <el-divider></el-divider>
-                           <div class="myinfo">
-                               内容10
-                           </div>
-                           <el-divider></el-divider>
-                       </div>
                        
                    </div>
 
@@ -314,7 +243,7 @@
         <script src="../../../public/js/request.js"></script>
 		<script src="../../myapi/explain.js"></script>
         <script src="../../myapi/video.js"></script>
-		
+        <script src="../../myapi/dynamic.js"></script>
         <script>
 			
             new Vue({
@@ -331,7 +260,8 @@
                       inputVisible: false,
                       inputValue: '',
                       userInfo:{},
-                      videolist:[]
+                      videolist:[],
+                      tableData : [],
                     }
                 },
                 created(){
@@ -348,6 +278,13 @@
                                 console.log(res.data)
                                 this.videolist=res.data
                             }
+                        })
+                        await getallList().then(res => {
+                            if (String(res.code) === '1') {
+                                this.tableData = res.data
+                            }
+                        }).catch(err => {
+                            this.$message.error('请求出错了：' + err)
                         })
                         window.parent.postMessage(document.body.clientHeight-250,'*')
                     },
@@ -401,7 +338,25 @@
                     },
                     goto(){
                         window.location.href="../question/question.html"
-                    }
+                    },
+                    async navto2(theid){
+                        await getonedynamic(theid).then(res=>{
+                            if(String(res.code) === '1'){
+                                window.localStorage.setItem("dynamic",JSON.stringify(res.data))
+                            }else{
+                                console.log(res.msg)
+                            }
+                        })
+                        await getcomments2(theid).then(res=>{
+                            if(String(res.code) === '1'){
+                                window.localStorage.setItem("comments",JSON.stringify(res.data))
+                            }else{
+                                console.log(res.msg)
+                            }
+                        })
+                        window.localStorage.setItem("param","2")
+                        window.location.href = "../community/blog.html"
+                    },
                 }
             })
         </script>

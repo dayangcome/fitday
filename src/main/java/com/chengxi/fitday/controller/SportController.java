@@ -5,10 +5,7 @@ import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.chengxi.fitday.common.R;
 import com.chengxi.fitday.entity.*;
-import com.chengxi.fitday.service.IFoodService;
-import com.chengxi.fitday.service.IPlanformService;
-import com.chengxi.fitday.service.ISportService;
-import com.chengxi.fitday.service.ISportsPlanService;
+import com.chengxi.fitday.service.*;
 import org.apache.commons.lang.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
@@ -44,6 +41,9 @@ public class SportController {
 
     @Autowired
     private IPlanformService planformService;
+
+    @Autowired
+    private IUserService userService;
 
     //运动信息分页查询
     @GetMapping("/page")
@@ -133,6 +133,15 @@ public class SportController {
         SportsPlan sportsPlan=sportsPlanService.getById(id);
         sportsPlan.setIsDelect(1);
         sportsPlanService.updateById(sportsPlan);
+
+        User user=userService.getById(sportsPlan.getUserid());
+        if(user==null){
+            return R.error("没有找到用户");
+        }
+        user.setExp(user.getExp()+50);     //完成计划加50经验
+        user.setLevel(user.getExp()/1000+1);    //检查用户是否升级
+        userService.updateById(user);           //更新用户信息
+
         return R.success("计划已完成");
     }
 

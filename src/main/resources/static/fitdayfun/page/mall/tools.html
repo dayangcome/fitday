@@ -86,30 +86,16 @@
                 <div class="mid">
                 <div>
                     <h2><span class="green">* </span> 推荐健身器材 <span class="green"> *</span></h2>
-                    <div style="display: flex;">
-                        <div v-for="(o, index) in 4" :key="o" :offset="index > 0 ? 4 : 0" style="width: 180px;margin:0 10px;">
+                    <div style="display: flex;flex-wrap: wrap">
+                        <div v-for="(o, index) in datalist" style="width: 170px;margin:0 10px 15px 15px;" @click="navto(o)">
                             <el-card :body-style="{ padding: '0px' }" shadow="hover">
-                                <img src="../../assets/img/portfolio/7.jpg" class="image">
+                                <img :src="o.productPicture" class="image">
                                 <div style="padding: 14px;">
-                                    <span>器材{{o}}</span>
+                                    <span>{{o.productName}}</span>
                                     <div class="bottom clearfix">
-                                        <h5>售价：￥133</h5>
+                                        <h5>售价：￥{{o.price}}</h5>
                                     </div>
-                                    <el-button type="text" class="button">查看详情</el-button>
-                                </div>
-                            </el-card>
-                        </div>
-                    </div>
-                    <div style="display: flex;margin-top: 40px;">
-                        <div v-for="(o, index) in 4" :key="o" :offset="index > 0 ? 4 : 0" style="width: 180px;margin:0 10px;">
-                            <el-card :body-style="{ padding: '0px' }" shadow="hover">
-                                <img src="../../assets/img/portfolio/b6.jpg" class="image">
-                                <div style="padding: 14px;">
-                                    <span>器材{{o}}</span>
-                                    <div class="bottom clearfix">
-                                        <h5>售价：￥133</h5>
-                                    </div>
-                                    <el-button type="text" class="button">查看详情</el-button>
+                                    <el-button type="text" @click="navto(o)" class="button">查看详情</el-button>
                                 </div>
                             </el-card>
                         </div>
@@ -166,28 +152,40 @@
                     </div>
                 </div> 
         </div>
-        <script src="../../../public/plugins/vue/mystyle.js"></script>
         <!-- 开发环境版本，包含了有帮助的命令行警告 -->
         <script src="../../../public/plugins/vue/vue.js"></script>
         <!-- 引入组件库 -->
         <script src="../../../public/plugins/element-ui/index.js"></script>
         <script src="../../../public/plugins/axios/axios.min.js"></script>
         <script src="../../../public/js/request.js"></script>
-        <script src="../../myapi/usercenter.js"></script>
+        <script src="../../myapi/mall.js"></script>
         <script>
             new Vue({
                 el: '#app',
                 data() {
                     return {
-                        
-                        
+                        datalist:[]
                     }
                 },
 
                 mounted() {
-                  
+                  this.init()
                 },
                 methods: {
+                    init(){
+                        gettypeall(2).then(res=>{
+                            if(String(res.code) === '1'){
+                                this.datalist=res.data
+                                window.parent.postMessage(document.body.clientHeight-100,'*')
+                            }else {
+                                this.$message.error("获取失败")
+                            }
+                        })
+                    },
+                    navto(num){
+                        window.localStorage.setItem("num",JSON.stringify(num))
+                        window.location.href = "./coursedetails.html"
+                    },
                    handleSelect(key, keyPath) {
                        if(key==1){
                            window.location.href = "./course.html"

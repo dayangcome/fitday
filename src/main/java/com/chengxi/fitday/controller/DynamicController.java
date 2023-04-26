@@ -6,6 +6,7 @@ import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.chengxi.fitday.common.R;
 import com.chengxi.fitday.entity.*;
 import com.chengxi.fitday.service.IDynamicService;
+import com.chengxi.fitday.service.IUserService;
 import org.apache.commons.lang.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
@@ -28,10 +29,12 @@ public class DynamicController {
     @Autowired
     private IDynamicService dynamicService;
 
+    @Autowired
+    private IUserService userService;
+
     //发布动态
     @PostMapping("/add")
     public R<String> adddynamic(@RequestBody Dynamic dynamic){
-        System.out.println(dynamic+"??????????????????");
         Dynamic dynamic1=new Dynamic();
         dynamic1.setUserId(dynamic.getUserId());
         dynamic1.setPicture(dynamic.getPicture());
@@ -41,6 +44,15 @@ public class DynamicController {
         dynamic1.setTitle(dynamic.getTitle());
         dynamic1.setCategory(dynamic.getCategory());
         dynamicService.save(dynamic1);
+
+        User user=userService.getById(dynamic.getUserId());
+        if(user==null){
+            return R.error("没有找到用户");
+        }
+        user.setExp(user.getExp()+300);     //发一篇动态加300经验
+        user.setLevel(user.getExp()/1000+1);    //检查用户是否升级
+        userService.updateById(user);           //更新用户信息
+
         return R.success("发布成功");
     }
 

@@ -118,15 +118,7 @@
         <div class="contain">
             <div class="top_option">
                 <div style="text-align: center; margin-top: 10px;">
-                    <a style=" font-size: 30px; color: black; text-decoration: none; font-size: 30px; " href="小组推荐.html" target="_self" >小组推荐</a> 
-                     &nbsp&nbsp&nbsp&nbsp&nbsp; 
-                     <a>|</a>  
-                     &nbsp&nbsp&nbsp&nbsp&nbsp;
-                     <a style=" font-size: 30px; color: black; text-decoration: none; font-size: 30px; " href="../搜索功能.html" target="_self" >小组查找</a>
-                     &nbsp&nbsp&nbsp&nbsp&nbsp; 
-                     <a>|</a>  
-                     &nbsp&nbsp&nbsp&nbsp&nbsp;
-                     <a style=" font-size: 30px; color: black; text-decoration: none; font-size: 30px; " href="#" target="_self" >小组创建</a>  
+                     <a style=" font-size: 30px; color: black; text-decoration: none; font-size: 30px; " >小组创建</a>
                 </div>
             </div>
             <div class="input_text">
@@ -213,7 +205,8 @@
                     checkList: [],
                     mem:'',
                     yan:'',
-                    imageUrl:''
+                    imageUrl:'',
+                    mygroup:{}
                 }
             },
             computed: {},
@@ -255,9 +248,22 @@
                     addgroup(params).then(res=>{
                         console.log(params)
                         if(String(res.code) === '1'){
-                            this.$message.success("创建成功")
+                            this.mygroup=res.data
+                            window.localStorage.setItem("mygroup",JSON.stringify(this.mygroup))
+                            this.$notify({
+                                title: '成功',
+                                message: '小组创建成功！',
+                                type: 'success',
+                                offset: 200
+                            });
+                            window.location.href='../group/community.html'
                         }else {
-                            this.$message.error("发布失败")
+                            this.$notify({
+                                title: '失败',
+                                message: '小组创建失败！',
+                                type: 'error',
+                                offset: 200
+                            });
                         }
                     })
                 },

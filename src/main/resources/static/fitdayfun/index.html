@@ -17,7 +17,7 @@
         }
         body{
             /*background-image: url("assets/img/2ciyuan.png");*/
-            background-image: linear-gradient(45deg, #efe6ef 14%, #d8ffe0 83%, #ffffff 100%);
+            background-image: linear-gradient(45deg, #efe6ef30 14%, #d8ffe030 83%, #ffffff 100%);
         }
         .el-header{
             padding: 0 7px;
@@ -34,6 +34,10 @@
             background-color: rgba(0, 0, 15, 0.47);
             display: inline-block;
             padding: 0 85.4px;
+        }
+        .el-progress-bar{
+            padding: 0;
+            margin: 0;
         }
         </style>
     </head>
@@ -82,9 +86,18 @@
                                   <span>{{userInfo.username}}</span>
                                   <i class="el-icon-caret-bottom"></i>
                                 </span>
-                                <el-dropdown-menu slot="dropdown">
-                                <el-dropdown-item icon="el-icon-user-solid" command="a"> 个人中心 </el-dropdown-item>
-                                    <el-dropdown-item icon="el-icon-message-solid" command="b"> 查看消息 <el-badge class="mark" :value="12" :max="99"/></el-dropdown-item>
+                                <el-dropdown-menu slot="dropdown" style="width: 200px;text-align: center">
+                                    <div style="height: 20px">
+                                        <span style="font-size: 14px;color: #606266;vertical-align: 80%">LV{{userInfo.level}}</span>
+                                        <el-progress style="display: inline-block;width: 110px" :percentage="mypercent" :format="format"></el-progress>
+                                        <span style="font-size: 14px;color: #e2e2e2;vertical-align: 80%">LV{{userInfo.level+1}}</span>
+                                    </div>
+                                    <div style="font-size: 12px;color: #afb3c2;padding: 0 5px; ">
+                                        当前经验{{userInfo.exp}}，距离升级LV{{userInfo.level+1}}还需要{{userInfo.level*1000-userInfo.exp}}经验
+                                        <i @click.prevent="refreshexp" style="font-size: 14px;color: #818693;cursor: pointer;padding-left: 5px" class="el-icon-refresh"></i>
+                                    </div>
+                                <el-dropdown-item icon="el-icon-user-solid" divided command="a"> 个人中心 </el-dropdown-item>
+                                    <el-dropdown-item icon="el-icon-message-solid" command="b"> 查看消息 </el-dropdown-item>
                                     <el-dropdown-item icon="el-icon-s-finance" command="d"> 余额充值 </el-dropdown-item>
                                     <el-dropdown-item icon="el-icon-star-on" command="e"> 推荐服务 </el-dropdown-item>
                                     <el-dropdown-item icon="el-icon-s-promotion" command="f"> 我的社交 </el-dropdown-item>
@@ -171,7 +184,9 @@
                         formLabelWidth: '120px',
                         nowheight:'',
                         nowweight:'',
-                        keyword:''
+                        keyword:'',
+                        mygroup:{},
+                        mypercent:0
                     }
                 },
                 mounted(){
@@ -179,17 +194,20 @@
                         var nowheight=e.data+450+'px'
                         document.querySelector("#cIframe").style.height=nowheight
                     })
-                    var userInfo = window.localStorage.getItem('userInfo')
-                    userInfo = JSON.parse(userInfo)
-                    this.userInfo=userInfo
-                    this.circleUrl=userInfo.avatar
+                    this.init0()
                     this.init()
                 },
                 methods: {
+                    init0(){
+                        var userInfo = window.localStorage.getItem('userInfo')
+                        userInfo = JSON.parse(userInfo)
+                        this.userInfo=userInfo
+                        this.circleUrl=userInfo.avatar
+                        this.mypercent=userInfo.exp*100/(userInfo.level*1000)
+                    },
                     async init () {
                         await getuserinfo(this.userInfo.uid).then(res => {
                             if (String(res.code) === '1') {
-
                                 this.userInfo2=res.data
                                 localStorage.setItem('userInfo2',JSON.stringify(res.data))
                             }else{
@@ -204,7 +222,18 @@
                             this.iframeUrl=this.urlList[0];
                         }else if(key==8){
                             this.iframeUrl=this.iframeUrl;
-                        }else {
+                        }else if(key==4) {
+                            getusergroup(this.userInfo.uid).then(res=>{
+                                console.log(res)
+                                if (String(res.code) === '1') {
+                                    this.mygroup=res.data
+                                    window.localStorage.setItem("mygroup",JSON.stringify(this.mygroup))
+                                    this.iframeUrl='./page/group/group/community.html'
+                                }else{
+                                    this.iframeUrl='./page/group/search/search1.html'
+                                }
+                            })
+                        } else{
                             this.iframeUrl=this.urlList[key-1];
                             this.myheight=this.heightlist[key-1];
                         }
@@ -217,6 +246,21 @@
                             }
                         })
                         this.userinfoVisible=false
+                    },
+                    format(percentage) {
+                        return ``;
+                    },
+                    refreshexp(){
+                        getone(this.userInfo.uid).then(res=>{
+                            if(String(res.code) === '1'){
+                                this.userInfo=res.data
+                                window.localStorage.setItem("userInfo",JSON.stringify(res.data))
+                                this.init0()
+                                this.$message.success("刷新成功！")
+                            }else{
+                                this.$message.error("刷新失败！")
+                            }
+                        })
                     },
                     handleCommand(command) {
                         if(command=='a'){

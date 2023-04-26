@@ -18,7 +18,7 @@
             margin: 0 10px;
         }
         body{
-            background-color: #fff7;
+            background-color: #fff;
         }
         .del{
             display: inline-block;
@@ -79,9 +79,6 @@
                         </div>
                     </div>
                 </div>
-
-
-
 
                 <div style="text-align: center;margin-top: 40px">
                     <el-pagination
@@ -254,7 +251,6 @@
                 await getonedynamic(theid).then(res=>{
                     if(String(res.code) === '1'){
                         window.localStorage.setItem("dynamic",JSON.stringify(res.data))
-
                     }else{
                         console.log(res.msg)
                     }
@@ -287,7 +283,6 @@
                 return year + "-" + month + "-" + day + " " + hour + ":" + min + ":"+second
             },
             mydel(id){
-
                     deldynamic(id).then(res => {
                         if (String(res.code) === '1') {
                             this.$message.success('已成功删除该动态！')
@@ -301,7 +296,6 @@
             mynav(){
                 window.location.href='./community.html'
             },
-
         }
     })
 </script>
