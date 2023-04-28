@@ -31,9 +31,8 @@
         }
         .search{
             height: 60px;
-            background-color: rgba(0, 0, 15, 0.47);
             display: inline-block;
-            padding: 0 85.4px;
+            padding-left: 80px;
         }
         .el-progress-bar{
             padding: 0;
@@ -53,7 +52,7 @@
                     @select="selectMenu"
                     text-color="#fff"
                     active-text-color="#8dd9cc"
-                    background-color="#00000f78"
+                    background-color="#454751"
 
                     >
                       <el-menu-item index="0" style="border-bottom: none;text-decoration: none;">
@@ -264,7 +263,13 @@
                     },
                     handleCommand(command) {
                         if(command=='a'){
-                            window.location.href = './page/mycenter/mycenter.html';
+                            console.log(localStorage.getItem('userInfo2'))
+                            if(localStorage.getItem('userInfo2')==null){
+                                this.userinfoVisible=true
+                                this.$message.warning("请先填写自己的身高体重信息！");
+                            }else{
+                                window.location.href = './page/mycenter/mycenter.html';
+                            }
                         }else if(command=='c'){
                             this.logout()
                         }else if(command=='d'){

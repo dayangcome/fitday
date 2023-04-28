@@ -47,3 +47,10 @@ function thumb(num,uid,videoId) {
         method: 'get'
     })
 }
+
+function getcommentsd(videoId) {
+    return $axios({
+        url: `/videoComments/getcommentsd/${videoId}`,
+        method: 'get'
+    })
+}

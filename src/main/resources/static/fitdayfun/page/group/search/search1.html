@@ -26,6 +26,9 @@
             background-color: rgb(53, 141, 219);
             display: inline-block;
         }
+        .el-message-box__wrapper {
+            bottom: 200px;
+        }
         .input_text{
             width:992px;
             height:92px;
@@ -33,7 +36,10 @@
             display: inline-block;
         }
         .comment{
-            display: inline-block; 
+            display: inline-block;
+            padding: 5px;
+            vertical-align: 65%;
+            font-size:15px;
             width: 520px; 
             height: 30px; 
             margin-left: 5px; 
@@ -77,10 +83,6 @@
         .grouplist_item_bottom{
             background-color: gainsboro;
         }
-        input:hover{
-            cursor: pointer;
-            background-color: #0ef6b8;
-        }
     </style>
 </head>
 
@@ -96,35 +98,32 @@
                 </div>
             </div>
             <div class="input_text">
-                <div style="display: inline-block;margin-left: 160px; margin-top: 20px;">
-                    <textarea type="text" class="comment"   placeholder="你喜欢什么类型的小组？输入小组名称或标签"></textarea>
-                    <div style="display: inline-block; width: 90px; height: 40px; margin-left: 2px; margin-top: 3px;"><input style=" width: 85px; height: 37px;margin-left: 2px; margin-top: 3px; vertical-align: 85%;" type="button" value="搜索"></div>
+                <div style="display: inline-block;margin-left: 160px; margin-top: 14px;">
+                    <el-input v-model="keyword" type="text" class="comment"   placeholder="你喜欢什么类型的小组？输入小组名称或标签"></el-input>
+                    <div style="display: inline-block; width: 90px; height: 40px; margin-left: 2px; margin-top: 3px;"><el-button @keyup.enter.native="mysearch" @click="mysearch" style=" width: 85px; height: 37px;margin-left: 2px; margin-top: 3px; vertical-align: 85%;">搜索</el-button></div>
                 </div>
                 <div style="display: inline-block;float: right;margin-right: 5px;margin-top: 25px;">
-                    <input type="button" @click="newmy" style=" width: 115px; height: 37px;margin-right: 20px;" value="创建我的小组">
+                    <el-button type="button" @click="newmy" style=" width: 115px; height: 37px;margin-right: 20px;">创建我的小组</el-button>
                 </div>
             </div>
             <div class="rank_option">
-                <div style="display: inline-block; width: 300px; height: 40px;">当前搜索词为 ,共搜索到{{groups.length}}个小组</div>
-                <a style="color: black; text-decoration: none; font-size: 18px; margin-left: 420px;" href="#" target="_self" >默认</a> 
-                <a style="color: black; text-decoration: none; font-size: 18px; margin-left: 42px;" href="search2.html" target="_self" >人数</a>
-                <a style="color: black; text-decoration: none; font-size: 18px; margin-left: 42px;" href="search3.html" target="_self" >活跃度</a>
+                <div style="display: inline-block;margin-left: 20px; width: 300px; height: 40px;">当前共找到 {{templist.length}} 个小组</div>
             </div>
             <div class="grouplist">
-                <div v-for="i in groups" class="grouplist_item" >
+                <div v-for="i in templist" class="grouplist_item" >
                     <div>
                         <div class="person_picture_site" ><img style="width: 66px; height: 66px;" :src="i.avatar" alt="" title=""></div>
                         <div style="display: inline-block; ">
-                            <div style=" font-size: 15px; margin-top: 4px;">{{i.name}}</div>
+                            <div style=" font-weight: 550; font-size: 16px; margin-top: 4px;"><span v-html="highlight(i.name)"></span></div>
                             <div style=" font-size: 15px; margin-top: 4px;">{{i.members}}/{{i.mymax}}</div>
-                            <div style=" font-size: 15px; margin-top: 4px;">{{i.tags}}</div>
+                            <div style=" font-size: 15px; margin-top: 4px;"><span v-html="highlight(i.tags)"></span></div>
                         </div>
                     </div>
                     <div class="mark_area">
-                        {{i.introduction}}
+                        <span v-html="highlight(i.introduction)"></span>
                     </div>
                     <div class="grouplist_item_bottom">
-                        <div style="display: inline-block; width: 90px; height: 40px; margin-left: 218px; margin-top: 3px;"><input style=" width: 74px; height: 29px;margin-left: 2px; margin-top: 3px; vertical-align: 100%;" type="button" value="加入小组"></div>
+                        <div style="display: inline-block; width: 90px; height: 40px; margin-left: 218px; margin-top: 3px;"><el-button size="small" style=" padding: 0px;width: 74px; height: 29px;margin-left: 2px; margin-top: 3px; vertical-align: 100%;" @click="join(i.id)">加入小组</el-button></div>
                     </div>
                 </div>
             </div>
@@ -149,10 +148,15 @@
                     status : '',
                     userInfo:{},
                     userInfo2:{},
-                    groups:[]
+                    groups:[],
+                    templist:[],
+                    keyword:'',
+                    myred:''
                 }
             },
-            computed: {},
+            computed: {
+
+            },
             created() {
                 var userInfo = window.localStorage.getItem('userInfo')
                 userInfo = JSON.parse(userInfo)
@@ -162,21 +166,34 @@
                 this.userInfo2=userInfo2
             },
             mounted() {
-                window.parent.postMessage(document.body.clientHeight-100,'*')
+                window.parent.postMessage(document.body.clientHeight-380,'*')
                 this.getgroups()
             },
             methods: {
-                mysend(){
-
-                },
                 getgroups(){
                     getmygroup().then(res=>{
                         if(String(res.code) === '1'){
                             this.groups=res.data
-                            console.log(this.groups)
+                            this.templist=this.groups
                         }else {
                             this.$message.error("发布失败")
                         }
+                    })
+                },
+                join(id){
+                    this.$confirm('确认要加入该小组吗?', '提示', {
+                        'confirmButtonText': '确定',
+                        'cancelButtonText': '取消',
+                        'type': 'warning'
+                    }).then(() => {
+                        joinmygroup(id,this.userInfo.uid).then(res=>{
+                            if(String(res.code) === '1'){
+                                window.localStorage.setItem("mygroup",JSON.stringify(res.data))
+                                window.location.href='../group/community.html'
+                            }else {
+                                this.$message.error("加入失败")
+                            }
+                        })
                     })
                 },
                 newmy(){
@@ -185,6 +202,22 @@
                 navto2(){
                     window.location.href="./me.html"
                 },
+                mysearch(){
+                    console.log(this.keyword)
+                    if(this.keyword!=''){
+                        this.templist=this.groups.filter(e =>
+                            e.name.includes(this.keyword) ||
+                            e.tags.includes(this.keyword) ||
+                            e.introduction.includes(this.keyword)
+                        )
+                        this.myred=this.keyword
+                    }else{
+                        this.templist=this.groups
+                    }
+                },
+                highlight(v) {
+                    return v.replaceAll(this.myred, `<span style="color: red">$&</span>`)
+                }
             }
         })
     </script>

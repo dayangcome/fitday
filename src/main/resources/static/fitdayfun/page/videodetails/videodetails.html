@@ -43,6 +43,9 @@
                 display: flex;
                 margin-top: 18px;
             }
+            .active{
+                color: #9d9c9c;
+            }
             i{
                 font-size: 20px;
             }
@@ -141,7 +144,7 @@
                 color: #3e3e3e;
             }
             .el-message {
-                top: 550px !important;
+                top: 450px !important;
             }
             .time{
                 float: right;
@@ -212,12 +215,12 @@
                         <div class="comminfo">
                             <h4 style="margin: 0 5px">评论</h4>
                             <span class="thefont">{{comments.length}} </span>
-                            <el-button type="text" style="padding: 0 5px;">最热</el-button>
+                            <el-button class="pos" type="text" @click="positive1" style="padding: 0 5px;">正序</el-button>
                             <el-divider direction="vertical"></el-divider>
-                            <el-button type="text" style="color: #9d9c9c;padding: 0 5px;">最新</el-button>
+                            <el-button class="neg active" type="text" @click="negitive" style="padding: 0 5px;">倒序</el-button>
                         </div>
                         <div class="mycomment">
-                            <el-avatar :size="50" src="https://s1.ax1x.com/2023/03/24/ppBJaQ0.png"></el-avatar>
+                            <el-avatar :size="50" :src="userInfo.avatar"></el-avatar>
                             <textarea
                                     :rows="2"
                                     maxlength="100"
@@ -225,11 +228,11 @@
                                     v-model="mytextarea"
                                     class="myinput el-textarea__inner">
                             </textarea>
-                            <el-button type="primary" @click="commets">发布</el-button>
+                            <el-button type="primary" @click="commets1">发布</el-button>
                         </div>
                         <div style="margin: 10px 0;">
 
-                                <div v-for="(item,i) in comments" style="margin: 10px 0;">
+                                <div v-show="positive==true" v-for="(item,i) in comments" style="margin: 10px 0;">
                                     <el-avatar :size="50" :src="item.avatar"></el-avatar>
                                     <strong style="vertical-align: 80%;margin-left: 5px">{{item.prepare}}</strong>
                                     <span class="time">{{i+1}}楼</span>
@@ -239,6 +242,15 @@
                                     <el-divider></el-divider>
                                 </div>
 
+                            <div v-show="positive==false" v-for="(item,i) in comments" style="margin: 10px 0;">
+                                <el-avatar :size="50" :src="item.avatar"></el-avatar>
+                                <strong style="vertical-align: 80%;margin-left: 5px">{{item.prepare}}</strong>
+                                <span class="time">{{comments.length-i}}楼</span>
+                                <br><span style="color:rgb(14,16,16)">{{item.content}}</span><br>
+                                <span class="time">{{item.commentdate.toLocaleString().replace(/T/g, ' ').replace(/\.[\d]{3}Z/, '')}}</span>
+                                <br>
+                                <el-divider></el-divider>
+                            </div>
                         </div>
 
 
@@ -260,8 +272,8 @@
                             <div style="margin:0 0 10px 10px;">
                                 <span class="thefont">{{'该用户暂未设置个性签名'||author.sign}}</span>
                             </div>
-                            <el-button v-if="false" type="info" style="width: 200px" round>+ 已关注 7772</el-button>
-                            <el-button type="primary" style="width: 200px" round>+ 关注 7772</el-button>
+                            <el-button  v-if="false" type="info" style="width: 200px" round>+ 已关注 7772</el-button>
+                            <el-button @click="focus" type="primary" style="width: 200px" round>+ 关注 7772</el-button>
                         </div>
                     </div>
 
@@ -311,7 +323,8 @@
                         videolist:[],
                         author:{},
                         comments:[],
-                        go:'0'
+                        go:'0',
+                        positive:true
                     }
                 },
 
@@ -375,6 +388,25 @@
                             }
                         })
                     },
+                    focus(){
+
+                    },
+                    positive1(){
+                        if(this.positive==false){
+                            this.comments.reverse()
+                        }
+                        this.positive=true
+                        document.querySelector(".pos").classList.remove("active")
+                        document.querySelector(".neg").classList.add("active")
+                    },
+                    negitive(){
+                        if(this.positive==true){
+                            this.comments.reverse()
+                        }
+                        this.positive=false
+                        document.querySelector(".neg").classList.remove("active")
+                        document.querySelector(".pos").classList.add("active")
+                    },
                     navto2(){
                         window.location.href="../home/home.html"
                     },
@@ -384,12 +416,16 @@
                     navto4(){
                         window.location.href="../community/case.html"
                     },
-                    commets(){
+                    commets1(){
                         addcomments(this.userInfo.uid,this.myvideoinfo.videoId,this.mytextarea).then(res=>{
                             if(String(res.code) === '1'){
                                 this.$message.success("发布成功")
-                                this.myinput=''
-                                this.comments.push(res.data)
+                                this.mytextarea=''
+                                if(this.positive==true){
+                                    this.comments.push(res.data)
+                                }else{
+                                    this.comments.unshift(res.data)
+                                }
                             }else {
                                 this.$message.error("发布失败")
                             }

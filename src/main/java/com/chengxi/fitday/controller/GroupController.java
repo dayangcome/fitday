@@ -80,8 +80,8 @@ public class GroupController {
     }
 
     //用户在小组发动态
-    @PostMapping("/add/{uid}/{groupid}/{content}")
-    public R<Articles> addcomments(@PathVariable Long uid,@PathVariable Long groupid,@PathVariable String content){
+    @PostMapping("/addd/{uid}/{groupid}/{content}/{prepare1}")
+    public R<Articles> addcomments(@PathVariable Long uid,@PathVariable Long groupid,@PathVariable String content,@PathVariable String prepare1){
 
         Articles articles=new Articles();
         articles.setCreatedate(LocalDateTime.now());
@@ -94,7 +94,13 @@ public class GroupController {
         articles.setName(user.getUsername());
         articles.setGroupid(groupid);
         articles.setContent(content);
+        articles.setPrepare1(prepare1);     //动态配图
         articlesService.save(articles);
+
+        user.setExp(user.getExp()+100);     //发布动态加100经验
+        user.setLevel(user.getExp()/1000+1);    //检查用户是否升级
+        userService.updateById(user);           //更新用户信息
+
         return R.success(articles);
     }
 
@@ -124,6 +130,37 @@ public class GroupController {
             return R.error("小组修改失败");
         }
         return R.success(mygroup);
+    }
+
+    //用户加入小组
+    @GetMapping("/join/{groupid}/{uid}")
+    public R<Mygroup> join(@PathVariable Long groupid,@PathVariable Long uid){
+        Mygroup mygroup=groupService.getById(groupid);
+        if (mygroup.getMembers()+1>mygroup.getMymax()){
+            return R.error("小组人数已满，不能继续加入！");
+        }
+        mygroup.setMembers(mygroup.getMembers()+1);  //小组成员+1
+        groupService.updateById(mygroup);
+
+        Usergroup usergroup=new Usergroup();
+        usergroup.setUserId(uid);
+        usergroup.setGroupId(groupid);
+        usergroupService.save(usergroup);
+
+        return R.success(mygroup);
+    }
+
+    //用户退出小组
+    @GetMapping("/out/{uid}")
+    public R<String> out(@PathVariable Long uid){
+        LambdaQueryWrapper<Usergroup> queryWrapper=new LambdaQueryWrapper<>();
+        queryWrapper.eq(Usergroup::getUserId,uid);
+        Usergroup usergroup = usergroupService.getOne(queryWrapper);
+        usergroupService.removeById(usergroup.getId());
+        Mygroup mygroup=groupService.getById(usergroup.getGroupId());
+        mygroup.setMembers(mygroup.getMembers()-1); //小组人数-1
+        groupService.updateById(mygroup);
+        return R.success("退出小组");
     }
 }
 

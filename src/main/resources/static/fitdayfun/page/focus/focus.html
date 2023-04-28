@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html lang="zh">
+	<head>
+		<meta charset="utf-8">
+		<title>浏览历史</title>
+		<link rel="stylesheet" type="text/css" href="../../../public/css/style.css"/>
+		<link rel="stylesheet" href="../../../public/plugins/element-ui/index.css" />
+		<style>
+			.el-tabs__item{
+				font-size:20px ;
+				font-weight: 550;
+			}
+		</style>
+	</head>
+	<body>
+	    <div id="app" style="margin: 0 200px;">
+			<el-tabs v-model="activeName" stretch style="margin:20px 100px;width: 900px ">
+				<el-tab-pane label="我的关注" name="first">
+					<div v-if="focus.length==0" style="font-size: 20px;color: #818693">
+						暂时还没有关注
+					</div>
+
+				</el-tab-pane>
+				<el-tab-pane label="我的粉丝" name="second" style="font-size: 20px;color: #818693">
+					<div v-if="fans.length==0">
+						暂时还没有粉丝
+					</div>
+
+				</el-tab-pane>
+				<el-tab-pane label="我的黑名单" name="third" style="font-size: 20px;color: #818693">
+					<div v-if="blacks.length==0">
+						黑名单里暂时还没有人员
+					</div>
+
+				</el-tab-pane>
+			</el-tabs>
+		</div>	
+
+		<script src="../../../public/plugins/vue/vue.js"></script>
+		<!-- 引入组件库 -->
+		<script src="../../../public/plugins/element-ui/index.js"></script>
+		<script src="../../../public/plugins/axios/axios.min.js"></script>
+		<script src="../../../public/js/request.js"></script>
+		<script>
+			new Vue({
+				el: "#app",
+				data() {
+					return {
+						activeName: 'first',
+						focus:[],
+						fans:[],
+						blacks:[]
+					}
+				}
+			})
+		</script>
+	</body>
+</html>                                                                            

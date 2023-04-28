@@ -542,20 +542,22 @@
                   userInfo.createTime=userInfo.createTime.replace(/T/g, '  ').replace(/.[\d]{3}Z/, '  ')
                   userInfo.updateTime=userInfo.updateTime.replace(/T/g, '  ').replace(/.[\d]{3}Z/, '  ')
                   var userInfo2 = window.localStorage.getItem('userInfo2')
-                  userInfo2 = JSON.parse(userInfo2)
-                  this.userInfo2=userInfo2
-                  this.mybmi=userInfo2.bmi
-                  this.newheight=userInfo2.height
-                  this.newweight=userInfo2.weight
-                  this.newgoalweight=userInfo2.fatRate
-                  this.newgoalday=userInfo2.prepare
-                  if(userInfo.sex=='0'){
-                      this.calres=(userInfo2.weight-userInfo2.fatRate)*22.3
-                  }else if(userInfo.sex=='1'){
-                      this.calres=(userInfo2.weight-userInfo2.fatRate)*21.2
-                  }else {
-                      this.calres=(userInfo2.weight-userInfo2.fatRate)*22
-                  }
+                    if(userInfo2){
+                        userInfo2 = JSON.parse(userInfo2)
+                        this.userInfo2=userInfo2
+                        this.mybmi=userInfo2.bmi
+                        this.newheight=userInfo2.height
+                        this.newweight=userInfo2.weight
+                        this.newgoalweight=userInfo2.fatRate
+                        this.newgoalday=userInfo2.prepare
+                        if(userInfo.sex=='0'){
+                            this.calres=(userInfo2.weight-userInfo2.fatRate)*22.3
+                        }else if(userInfo.sex=='1'){
+                            this.calres=(userInfo2.weight-userInfo2.fatRate)*21.2
+                        }else {
+                            this.calres=(userInfo2.weight-userInfo2.fatRate)*22
+                        }
+                    }
                 },
                 methods: {
                     customColorMethod(percentage) {

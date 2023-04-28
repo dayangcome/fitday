@@ -63,9 +63,13 @@ public class ProductController {
                 }
                 user.setRemain(user.getRemain().subtract(buydto.getFinalpay()));    //减去余额
                 userService.updateById(user);
-
             }
             product.setSales(product.getSales()+buydto.getNum());       //购买量增加
+
+            user.setExp(user.getExp()+100);     //购买商品加100经验
+            user.setLevel(user.getExp()/1000+1);    //检查用户是否升级
+            userService.updateById(user);           //更新用户信息
+
             productService.updateById(product);
         }catch (Exception e){
             TransactionAspectSupport.currentTransactionStatus().setRollbackOnly();      //手动回滚

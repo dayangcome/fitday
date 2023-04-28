@@ -47,6 +47,16 @@ public class VideoCommentsController {
         return R.success(arr);
     }
 
+    //查询视频评论
+    @GetMapping("/getcommentsd/{videoId}")
+    public R<List<VideoComments>> getcommentsd(@PathVariable Long videoId){
+        LambdaQueryWrapper<VideoComments> queryWrapper=new LambdaQueryWrapper<>();
+        queryWrapper.eq(VideoComments::getVideoid,videoId);
+        queryWrapper.orderByDesc(VideoComments::getCommentdate);
+        List <VideoComments> arr=videoCommentsService.list(queryWrapper);
+        return R.success(arr);
+    }
+
     //用户发表评论
     @PostMapping("/addcomments/{uid}/{videoId}/{content}")
     public R<VideoComments> addcomments(@PathVariable Long uid,@PathVariable Long videoId,@PathVariable String content){
