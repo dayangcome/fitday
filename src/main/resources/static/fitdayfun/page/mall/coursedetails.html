@@ -416,11 +416,11 @@
                         if(this.area==''){
                             document.querySelector("#check1").classList.remove("hide")
                             document.querySelector(".el-cascader input").classList.add("borderred")
-
                         }else if(this.detailarea==''){
                             document.querySelector("#check2").classList.remove("hide")
                             document.querySelector("#address input").classList.add("borderred")
                         }else{
+                            console.log(this.area)
                             const myaddress=this.area+' '+this.detailarea
                             const finalpay=(this.mycourse.price * this.mynum - this.myvalue > 0) ? (this.mycourse.price * this.mynum - this.myvalue): 0
                             await buygoods(this.userInfo.uid,this.mycourse.productId,this.radio,this.mynum,this.myvalue,finalpay,myaddress).then(res=>{
@@ -441,12 +441,12 @@
 
                     },
                     handleChange (value) {
-                        this.area=this.$refs.myCascader.$children[0].$options.propsData.value
+                        this.area=this.$refs["myCascader"].getCheckedNodes()[0].pathLabels.join(' ')
                         if(this.area!=''){
                             document.querySelector("#check1").classList.add("hide")
                             document.querySelector(".el-cascader input").classList.remove("borderred")
                         }
-                        console.log(this.$refs["myCascader"].getCheckedNodes()[0].label)
+                        console.log(this.$refs["myCascader"].getCheckedNodes()[0].pathLabels.join(' '))
                     console.log(this.$refs.myCascader.$children[0].$options.propsData.value);
                     },
                     myck(){

@@ -36,6 +36,13 @@ function getmygroup() {
     })
 }
 
+function getmymem(groupid) {
+    return $axios({
+        url: `/group/allmem/${groupid}`,
+        method: 'get'
+    })
+}
+
 function joinmygroup(groupid,uid) {
     return $axios({
         url: `/group/join/${groupid}/${uid}`,

@@ -615,7 +615,7 @@
                             },
                             tooltip: {},
                             legend: {
-                                data: ['卡路里']
+                                data: ['卡路里/千卡']
                             },
                             xAxis: {
                                 data: [` ${new Date(new Date().getTime() - 6*24*60*60*1000).toLocaleDateString().replace(/\//g,"-")} `, ` ${new Date(new Date().getTime() - 5*24*60*60*1000).toLocaleDateString().replace(/\//g,"-")} `, ` ${new Date(new Date().getTime() - 4*24*60*60*1000).toLocaleDateString().replace(/\//g,"-")} `, ` ${new Date(new Date().getTime() -3*24*60*60*1000).toLocaleDateString().replace(/\//g,"-")} `, ` ${new Date(new Date().getTime() - 2*24*60*60*1000).toLocaleDateString().replace(/\//g,"-")} `, ` ${new Date(new Date().getTime() - 24*60*60*1000).toLocaleDateString().replace(/\//g,"-")} `, `${new Date().toLocaleDateString().replace(/\//g,"-")}`],
@@ -626,7 +626,7 @@
                             yAxis: {},
                             series: [
                                 {
-                                    name: '卡路里',
+                                    name: '卡路里/千卡',
                                     type: 'bar',
                                     // data: ["3","4","5","23","45","23","333"]
                                     data: [...this.sevenday,this.finish]
@@ -665,7 +665,6 @@
                             }).catch(err => {
                             })
                         }
-                        console.log(this.sevenday)
                         this.myechart()
                     },
 

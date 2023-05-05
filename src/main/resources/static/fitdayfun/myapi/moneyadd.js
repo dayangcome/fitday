@@ -21,3 +21,11 @@ function getaddmoneyList (params) {
         params
     })
 }
+
+function getbuyList (params) {
+    return $axios({
+        url: '/productOrder/page',
+        method: 'get',
+        params
+    })
+}

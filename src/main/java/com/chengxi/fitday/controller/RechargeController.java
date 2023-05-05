@@ -72,7 +72,6 @@ public class RechargeController {
     //充值历史查询
     @GetMapping("/page")
     public R<Page> page(int page, int pageSize, Long uid){
-
         Page pageinfo=new Page<>(page,pageSize);
         LambdaQueryWrapper<Recharge> queryWrapper=new LambdaQueryWrapper<>();
         queryWrapper.eq(Recharge::getUid,uid);

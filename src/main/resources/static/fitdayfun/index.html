@@ -20,11 +20,7 @@
             background-image: linear-gradient(45deg, #efe6ef30 14%, #d8ffe030 83%, #ffffff 100%);
         }
         .el-header{
-            padding: 0 7px;
-        }
-        .el-dropdown{
-           color: white;
-
+            padding: 0;
         }
         .el-menu-item i{
             color: white;
@@ -37,6 +33,20 @@
         .el-progress-bar{
             padding: 0;
             margin: 0;
+        }
+        .el-dropdown{
+            color: #fff;
+        }
+        .choose{
+            display: inline-block;
+            width: 15px;
+            height: 15px;
+            border:1px solid #818693;
+            margin: 5px;
+        }
+        .choose:hover{
+            cursor: pointer;
+            border: #b3d8ff 1px solid;
         }
         </style>
     </head>
@@ -57,7 +67,26 @@
                     >
                       <el-menu-item index="0" style="border-bottom: none;text-decoration: none;">
                           <div>
-                            <img src="assets/img/fitdaylogo.png" alt="" style="width: 142px; height: 50px;margin-bottom:8px;" />
+                              <el-dropdown @command="handleCommand">
+                                <span style="cursor: pointer;">
+                                  <img src="assets/img/fitdaylogo.png" alt="" style="width: 142px; height: 50px;margin-bottom:8px;" />
+                                </span>
+                                  <el-dropdown-menu slot="dropdown" style="width: 250px;text-align: center">
+                                      <div style="height: 20px;color: #818693">
+                                          请选择主题颜色
+                                      </div>
+                                      <div>
+                                          <div class="choose" @click="changecolor('linear-gradient(45deg, rgba(255,255,255) 100%, rgba(255,255,255) 100%, #ffffff 100%)')" style="background-image: linear-gradient(45deg, rgba(255,255,255) 100%, rgba(255,255,255) 100%, #ffffff 100%)"></div>
+                                          <div class="choose" @click="changecolor('linear-gradient(45deg, rgba(239,230,239,0.36) 14%, rgba(216,255,224,0.42) 83%, #ffffff 100%)')" style="background-image: linear-gradient(45deg, rgba(239,230,239,0.36) 14%, rgba(216,255,224,0.42) 83%, #ffffff 100%)"></div>
+                                          <div class="choose" @click="changecolor('linear-gradient(45deg, rgba(245,198,245,0.19) 14%, rgba(217,113,255,0.19) 83%, #ffffff 100%)')" style="background-image: linear-gradient(45deg, rgba(245,198,245,0.19) 14%, rgba(217,113,255,0.19) 83%, #ffffff 100%)"></div>
+                                          <div class="choose" @click="changecolor('linear-gradient(45deg, rgb(198,255,237) 14%, rgba(214,253,204,0.55) 83%, #ffffff 100%)')" style="background-image: linear-gradient(45deg, rgb(198,255,237) 14%, rgba(214,253,204,0.55) 83%, #ffffff 100%)"></div>
+                                          <div class="choose" @click="changecolor('linear-gradient(45deg, rgba(133,255,227,0.49) 0%, rgba(154,154,243,0.58) 100%)')" style="background-image: linear-gradient(45deg, rgba(133,255,227,0.49) 0%, rgba(154,154,243,0.58) 100%);"></div>
+                                          <div class="choose" @click="changecolor('linear-gradient(45deg, rgba(255,208,21,0.45) 14%, rgba(255,251,202,0.45) 83%, #ffffff 100%)')" style="background-image: linear-gradient(45deg, rgba(255,208,21,0.45) 14%, rgba(255,251,202,0.45) 83%, #ffffff 100%)"></div>
+                                          <div class="choose" @click="changecolor('linear-gradient(43deg, rgba(65,88,208,0.4) 0%, rgba(200,80,192,0.35) 46%, rgba(255,204,112,0.33) 100%)')" style="background-image: linear-gradient(43deg, rgba(65,88,208,0.4) 0%, rgba(200,80,192,0.35) 46%, rgba(255,204,112,0.33) 100%);"></div>
+                                      </div>
+
+                                  </el-dropdown-menu>
+                              </el-dropdown>
                           </div>
                       </el-menu-item>
                       <el-menu-item index="1">首页</el-menu-item>
@@ -68,11 +97,12 @@
                       <el-menu-item index="6">商城</el-menu-item>
                       <el-menu-item index="7">心理咨询</el-menu-item>
                             <div class="search" >
-                                <el-input placeholder="感兴趣的搜一搜"  v-model="keyword"  style="width: 350px;margin-top: 10px">
+                                <el-input placeholder="感兴趣的搜一搜"  v-model="keyword"  style="width: 350px;margin-top: 10px" @keyup.enter.native="query">
                                     <i
                                             slot="suffix"
                                             class="el-input__icon el-icon-search"
                                             style="cursor: pointer;font-size: 25px;"
+                                            @click="query"
                                     ></i>
                                 </el-input>
                             </div>
@@ -96,10 +126,9 @@
                                         <i @click.prevent="refreshexp" style="font-size: 14px;color: #818693;cursor: pointer;padding-left: 5px" class="el-icon-refresh"></i>
                                     </div>
                                 <el-dropdown-item icon="el-icon-user-solid" divided command="a"> 个人中心 </el-dropdown-item>
-                                    <el-dropdown-item icon="el-icon-message-solid" command="b"> 查看消息 </el-dropdown-item>
                                     <el-dropdown-item icon="el-icon-s-finance" command="d"> 余额充值 </el-dropdown-item>
-                                    <el-dropdown-item icon="el-icon-star-on" command="e"> 推荐服务 </el-dropdown-item>
-                                    <el-dropdown-item icon="el-icon-s-promotion" command="f"> 我的社交 </el-dropdown-item>
+                                    <el-dropdown-item icon="el-icon-star-on" command="e"> 我的订单 </el-dropdown-item>
+                                    <el-dropdown-item icon="el-icon-s-promotion" command="f"> 用户反馈 </el-dropdown-item>
                                 <el-dropdown-item icon="el-icon-switch-button" divided command="c"> 退出登录 </el-dropdown-item>
                               </el-dropdown-menu>
                             </el-dropdown>  
@@ -185,7 +214,7 @@
                         nowweight:'',
                         keyword:'',
                         mygroup:{},
-                        mypercent:0
+                        mypercent:0,
                     }
                 },
                 mounted(){
@@ -215,6 +244,13 @@
                         }).catch(err => {
                             this.$message.error('请求出错了：' + err)
                         })
+                    },
+                    changecolor(color){
+                        if(this.userInfo.level<2){
+                            this.$message.warning("用户需要达到2级才能切换主题颜色")
+                        }else {
+                            document.querySelector("body").style.backgroundImage=color
+                        }
                     },
                     selectMenu(key, keyPath) {
                         if(key==0){
@@ -275,15 +311,12 @@
                         }else if(command=='d'){
                             window.location.href = './page/Addmoney/Addmoney.html';
                         }else if(command=='b'){
-                            window.location.href = 'page/message/mes2.html';
+                            window.location.href = './page/message/mes2.html';
                         }else if(command=='e'){
-                            "客服中心"
-                            "意见反馈"
-                            "申请认证"
+                            window.location.href = './page/mall/history.html';
                         }else if(command=='f'){
-                            "我的关注"
-                            "我的粉丝"
-                            "我的黑名单"
+                            localStorage.setItem("exaccount",this.userInfo.account);
+                            window.location.href = './page/accountexplain/feedback.html';
                         }
                     },
                     logout() {
@@ -295,6 +328,14 @@
                             }
                         })
                     },
+                    query(){
+                        localStorage.setItem("keyword",JSON.stringify(this.keyword))
+                        if(this.iframeUrl!='./page/search/search.html'){
+                            this.iframeUrl='./page/search/search.html'
+                        }else{
+                            document.getElementById('cIframe').contentWindow.location.reload();
+                        }
+                    }
                 }
             })
         </script>

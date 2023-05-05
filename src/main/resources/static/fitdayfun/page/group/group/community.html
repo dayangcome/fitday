@@ -222,35 +222,23 @@
                         @select="handleSelect"
                 >
                     <el-menu-item index="0">
-                        <i class="el-icon-data-board"></i>
+                        <i class="el-icon-s-custom"></i>
                         <span slot="title">小组成员</span>
                     </el-menu-item>
-                    <el-menu-item index="6">
-                        <i class="el-icon-setting"></i>
-                        <span slot="title">入群申请</span>
-                    </el-menu-item>
-                    <el-menu-item index="1">
-                        <i class="el-icon-data-board"></i>
-                        <span slot="title">小组搜索</span>
-                    </el-menu-item>
                     <el-menu-item index="2">
-                        <i class="el-icon-soccer"></i>
+                        <i class="el-icon-edit"></i>
                         <span slot="title">修改名称</span>
                     </el-menu-item>
                     <el-menu-item index="3">
-                        <i class="el-icon-food"></i>
+                        <i class="el-icon-collection-tag"></i>
                         <span slot="title">修改标签</span>
                     </el-menu-item>
                     <el-menu-item index="4">
-                        <i class="el-icon-setting"></i>
+                        <i class="el-icon-data-board"></i>
                         <span slot="title">修改公告</span>
                     </el-menu-item>
-                    <el-menu-item index="5">
-                        <i class="el-icon-setting"></i>
-                        <span slot="title">解散小组</span>
-                    </el-menu-item>
                     <el-menu-item index="6">
-                        <i class="el-icon-setting"></i>
+                        <i class="el-icon-switch-button"></i>
                         <span slot="title">退出小组</span>
                     </el-menu-item>
                 </el-menu>
@@ -280,13 +268,23 @@
                 </div>
 
             </div>
-            <div>
-                <h2>副组长</h2>
-                <el-avatar :size="50" :src="circleUrl"></el-avatar>
-            </div>
+<!--            <div>-->
+<!--                <h2>副组长</h2>-->
+<!--                <div style="display: inline-block;margin-right: 10px">-->
+<!--                    <el-avatar :size="50" :src="mygroup.davatar1"></el-avatar>-->
+<!--                    <div>{{mygroup.dleadername1}}</div>-->
+<!--                </div>-->
+<!--                <div style="display: inline-block;margin-right: 10px">-->
+<!--                    <el-avatar :size="50" :src="mygroup.davatar2"></el-avatar>-->
+<!--                    <div>{{mygroup.dleadername2}}</div>-->
+<!--                </div>-->
+<!--            </div>-->
             <div>
                 <h2>小组成员</h2>
-                <el-avatar :size="50" :src="circleUrl"></el-avatar>
+                <div v-for="u in members1" style="display: inline-block;margin-right: 10px">
+                    <el-avatar :size="50" :src="u.avatar"></el-avatar>
+                    <div>{{u.username}}</div>
+                </div>
             </div>
             <span slot="footer" class="dialog-footer">
                 <el-button @click="centerDialogVisible = false">取 消</el-button>
@@ -452,19 +450,10 @@
             </div>
                 <el-divider></el-divider>
             <div class="right_rank">
-                <div style="font-size: 25px; text-align: center;">计划完成排行榜</div>
+                <div style="font-size: 25px; text-align: center;">消耗热量排行榜</div>
                 <el-divider></el-divider>
-                <div class="person">  <div style="font-size: 26px; display: inline-block;" >&nbsp;&nbsp; 1 &nbsp;&nbsp;</div>  <div class="person_picture"><img style="width: 40px; height: 40px;" src="b.jpg" alt="" title=""></div> 张三</div>
-                <el-divider></el-divider>
-                <div class="person">  <div style="font-size: 26px; display: inline-block;" >&nbsp&nbsp 2 &nbsp&nbsp</div>  <div class="person_picture" ><img style="width: 40px; height: 40px;" src="b.jpg" alt="" title=""></div> 李四</div>
-                <el-divider></el-divider>
-                <div class="person">  <div style="font-size: 26px; display: inline-block;" >&nbsp&nbsp 3 &nbsp&nbsp</div>  <div class="person_picture"><img style="width: 40px; height: 40px;" src="b.jpg" alt="" title=""></div>  王五</div>
-                <el-divider></el-divider>
-                <div class="person">  <div style="font-size: 26px; display: inline-block;" >&nbsp&nbsp 4 &nbsp&nbsp</div>  <div class="person_picture"><img style="width: 40px; height: 40px;" src="b.jpg" alt="" title=""></div>  刘六</div>
-                <el-divider></el-divider>
-                <div class="person">  <div style="font-size: 26px; display: inline-block;" >&nbsp&nbsp 5 &nbsp&nbsp</div>  <div class="person_picture"><img style="width: 40px; height: 40px;" src="b.jpg" alt="" title=""></div>  杨七</div>
-                <el-divider></el-divider>
-                <div class="person">  <div style="font-size: 26px; display: inline-block;" >&nbsp&nbsp 6 &nbsp&nbsp</div>  <div class="person_picture"><img style="width: 40px; height: 40px;" src="b.jpg" alt="" title=""></div>  黄八</div>
+                <div class="person" v-for="(u,o) in members">  <div style="font-size: 20px; display: inline-block;" >
+                  &nbsp;  {{o+1}} &nbsp;    </div>  <div class="person_picture"><img style="width: 40px; height: 40px;border-radius: 50%;" :src="u.avatar" alt="" title=""></div> {{u.username}}</div>
             </div>
         </div>
         <div style="width: 200px;   display: inline-block;">
@@ -506,7 +495,9 @@
                         "./b.jpg",
                         "./c.jpg"
                     ],
-                    checkpic:'pic'
+                    checkpic:'pic',
+                    members:[],
+                    members1:[],
                 }
             },
             computed: {},
@@ -529,6 +520,7 @@
                 this.checklist=this.gtags
                 this.theshow=this.mygroup.introduction
                 this.init()
+                this.getmems()
             },
             methods: {
                 b11(){
@@ -561,6 +553,20 @@
                 },
                 del(item){
                     console.log(item)
+                },
+                getmems(){
+                    getmymem(this.mygroup.id).then(res=>{
+                        if(String(res.code) === '1'){
+                            this.members=res.data
+                            this.members1=this.members.filter(e =>
+                                e.uid!=this.mygroup.leader&&
+                                e.uid!=this.mygroup.deputyleader1&&
+                                e.uid!=this.mygroup.deputyleader2
+                            )
+                        }else {
+                            this.$message.error(res.msg)
+                        }
+                    })
                 },
                 mysend(){
                     if(this.mytext==''){

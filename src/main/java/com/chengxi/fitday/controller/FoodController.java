@@ -48,6 +48,8 @@ public class FoodController {
         Page pageinfo=new Page<>(page,pageSize);
         LambdaQueryWrapper<Food> queryWrapper=new LambdaQueryWrapper<>();
         queryWrapper.like(StringUtils.isNotEmpty(name),Food::getFoodName,name);   //模糊查询食物名称
+
+
         foodService.page(pageinfo,queryWrapper);
         return R.success(pageinfo);
     }

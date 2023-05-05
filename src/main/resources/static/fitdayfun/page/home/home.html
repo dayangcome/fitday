@@ -126,8 +126,10 @@
                   color: #3e3e3e;
               }
               .myinfo{
-                  padding: 0 18px;
                   margin-top: 10px;
+              }
+              #main .myinfo{
+                  padding: 0 18px;
               }
               .myinfo:hover{
                   color: rgb(107, 196, 240);
@@ -167,55 +169,13 @@
                         </div>
                    
                     </div>
-<!--                    <div class="card">-->
-<!--                        <img src="../../assets/img/portfolio/3.jpg" class="image2">-->
-<!--                        <div class="myinfo">-->
-<!--                            视频2-->
-<!--                        </div>-->
-<!--                        <div class="author">-->
-<!--                             UP 赵俊超 · 3-21-->
-<!--                        </div>-->
-<!--                      -->
-<!--                    </div>-->
-<!--                    <div class="card">-->
-<!--                        <img src="../../assets/img/portfolio/4.jpg" class="image2">-->
-<!--                        <div class="myinfo">-->
-<!--                            视频3-->
-<!--                        </div>-->
-<!--                    <div class="author">-->
-<!--                         UP 摩托车· 3-22-->
-<!--                    </div>-->
-<!--                    </div>-->
-<!--                    <div class="card">-->
-<!--                        <img src="../../assets/img/portfolio/4.jpg" class="image2">-->
-<!--                        <div class="myinfo">-->
-<!--                            视频4-->
-<!--                        </div>-->
-<!--                          <div class="author">-->
-<!--                               UP 大洋· 3-17-->
-<!--                          </div>-->
-<!--                    </div>-->
-<!--                    <div class="card">-->
-<!--                        <img src="../../assets/img/portfolio/4.jpg" class="image2">-->
-<!--                        <div class="myinfo">-->
-<!--                            视频5-->
-<!--                        </div>-->
-<!--                        <div class="author">-->
-<!--                             UP 李哲· 3-14-->
-<!--                        </div>-->
-<!--            -->
-<!--                    </div>-->
-<!--                    <div class="card">-->
-<!--                        <img src="../../assets/img/portfolio/4.jpg" class="image2">-->
-<!--                        <div class="myinfo">-->
-<!--                            视频6-->
-<!--                        </div>-->
-<!--                        <div class="author">-->
-<!--                             UP 余洋· 3-11-->
-<!--                        </div>-->
-<!--                    </div>-->
-                    
+                    <el-pagination
+                            small
+                            layout="total,prev, pager, next"
+                            :total="6">
+                    </el-pagination>
                 </div>
+
             </div>
            <div id="main" style="display: flex;">
 
@@ -227,11 +187,11 @@
                                {{item.title}}
                            </div>
                        </div>
-
-                       
+                   <div style="margin: 10px auto;font-size: 16px">
+                    暂时没有更多了...
+                   </div>
                    </div>
 
-            
            </div>
         </div>
         <!-- 开发环境版本，包含了有帮助的命令行警告 -->
@@ -252,7 +212,7 @@
                     return {
                         piclist:[
                             "../../assets/img/portfolio/b1.jpg",
-                            "../../assets/img/portfolio/b2.jpg",
+                            "../../assets/img/portfolio/b2.png",
                             "../../assets/img/portfolio/b3.jpg",
                             "../../assets/img/portfolio/b4.jpg",
                         ],

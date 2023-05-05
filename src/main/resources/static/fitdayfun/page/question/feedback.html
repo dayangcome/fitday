@@ -1,0 +1,137 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="UTF-8">
+    <link rel="stylesheet" href="../../../public/plugins/element-ui/index.css" />
+    <script src="../../../public/plugins/vue/vue.js"></script>
+    <!-- 引入组件库 -->
+    <script src="../../../public/plugins/element-ui/index.js"></script>
+    <script src="../../../public/plugins/axios/axios.min.js"></script>
+    <script src="../../../public/js/request.js"></script>
+    <script src="../../myapi/question.js"></script>
+    <style>
+        body{
+            background-color: white;
+            margin: 0px 8px;
+        }
+
+        .a3{
+            display: flex;
+            flex-direction: column;
+            margin-bottom: 15px;
+            font-size: 16px;
+            font-weight: 550;
+        }
+        .a3 div{
+            margin: 10px 0;
+        }
+        .el-radio, .el-radio--medium.is-bordered .el-radio__label{
+            font-size: 16px;
+            font-weight: 550;
+        }
+        .el-dialog__body{
+            font-size: 16px;
+        }
+        .el-radio{
+            margin: 15px 0;
+            width: 600px;
+        }
+        .el-radio.is-bordered+.el-radio.is-bordered{
+            margin-left: 0px;
+        }
+
+    </style>
+</head>
+
+<body>
+<div id="app" style="margin:0px 380px;">
+
+
+    <h1 style="text-align: center;">错题回顾</h1>
+
+    <div class="a2">
+        <h3>{{title}}</h3>
+    </div>
+    <div class="a3">
+        <div>A.{{ansa}}</div>
+        <div>B.{{ansb}}</div>
+        <div>C.{{ansc}}</div>
+        <div>D.{{ansd}}</div>
+        <div style="color: red">
+            正确答案为：{{rightan}}
+        </div>
+        <div>
+            答案解析：{{exp}}
+        </div>
+    </div>
+    <div>
+        <el-button :disabled="index==1" @click="last"  type="primary" icon="el-icon-arrow-left">上一题</el-button>
+        <el-button  :disabled="index==selectedque.length" @click="next"   type="primary" style="margin-left: 50px">下一题<i class="el-icon-arrow-right el-icon--right"></i></el-button>
+        <el-button  @click="submit"  type="success" style="margin-left: 50px">返回</el-button>
+    </div>
+</div>
+
+</body>
+<script>
+    new Vue({
+        el: '#app',
+        data() {
+            return {
+                questions:[],
+                selectedque:[],
+                myans:[],
+                index:1,
+                title:'',
+                ansa:'',
+                ansb:'',
+                ansc:'',
+                ansd:'',
+                rightan:'',
+                exp:'',
+                errlist:[]
+            }
+        },
+        mounted() {
+            this.errlist = JSON.parse(localStorage.getItem('errlist'));
+            console.log("错误的题目为：",this.errlist)
+            localStorage.removeItem('errlist')
+            window.parent.postMessage(document.body.clientHeight-100,'*')
+            this.init()
+        },
+        methods: {
+            async init(){
+                        this.selectedque=this.errlist
+                        this.getque(1)
+            },
+            back(){
+                window.location.href="../../page/home/home.html"
+            },
+            getque(mynum){
+                this.title=this.selectedque[mynum-1].title
+                this.ansa=this.selectedque[mynum-1].ansa
+                this.ansb=this.selectedque[mynum-1].ansb
+                this.ansc=this.selectedque[mynum-1].ansc
+                this.ansd=this.selectedque[mynum-1].ansd
+                this.rightan=this.selectedque[mynum-1].rightans
+                this.exp=this.selectedque[mynum-1].prepared
+            },
+            next(){
+                this.myans[this.index-1]=this.radio1
+                this.index=this.index+1
+                this.getque(this.index)
+                this.radio1=this.myans[this.index-1]
+            },
+            last(){
+                this.myans[this.index-1]=this.radio1
+                this.index=this.index-1
+                this.getque(this.index)
+                this.radio1=this.myans[this.index-1]
+            },
+            submit(){
+                window.location.href='../../page/home/home.html'
+            }
+        },
+    })
+</script>
+</html>

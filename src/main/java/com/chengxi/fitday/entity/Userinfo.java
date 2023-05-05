@@ -99,5 +99,25 @@ public class Userinfo implements Serializable {
      */
     private String prepare;
 
+    public Userinfo() {
+    }
+
+    public Userinfo(Long id, Long userId, Double height, Double weight, Double bmi, Integer stage, LocalDateTime createTime, Float fatRate, Integer isDeleted, Integer age, String certificate, Integer attention, Integer fans, Integer black, String prepare) {
+        this.id = id;
+        this.userId = userId;
+        this.height = height;
+        this.weight = weight;
+        this.bmi = bmi;
+        this.stage = stage;
+        this.createTime = createTime;
+        this.fatRate = fatRate;
+        this.isDeleted = isDeleted;
+        this.age = age;
+        this.certificate = certificate;
+        this.attention = attention;
+        this.fans = fans;
+        this.black = black;
+        this.prepare = prepare;
+    }
 
 }

@@ -1,0 +1,110 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta charset="utf-8" />
+        <title>首页</title>
+        <link rel="stylesheet" href="../../../public/plugins/element-ui/index.css" />
+        <style type="text/css">
+        #user{
+            float: right;
+        }
+        .el-page-header__left .el-icon-back{
+            font-size: 30px;
+            margin-right: 15px;
+        }
+        .el-page-header__title{
+            font-size: 18px;
+        }
+        </style>
+    </head>
+    <body>
+        <div id="app">
+           <div class="banner" style="height: 120px; display: flex; background-image: url(../../assets/img/222.jpg);">
+               <img src="../../assets/img/fitdaylogo.png" alt="" style="height:100px ;width:300px;margin:0 80px;">
+               <span class="myfont" style="color: azure;
+               font-size: 40px;
+               line-height: 120px;
+               margin-left: 100px;">吃好，练好，拥有好心态，轻装上阵！</span>
+           </div>
+
+            <el-page-header @back="goBack" style="line-height: 40px;margin-top: 10px">
+            </el-page-header>
+
+           <h1 style="text-align: center;">系统反馈</h1>
+            
+            <div style="width: 600px;padding: 0 40px;margin: 50px auto;">
+                反馈用户的账号：<strong>{{logintype==2?phone:account}}</strong><br><br>
+                反馈主题：<el-input
+                    placeholder="请简要概括反馈主题"
+                    v-model="reason"
+                    style="width: 450px;">
+            </el-input>
+                <br><br>
+                
+                反馈内容<br><br>
+                <el-input
+                  type="textarea"
+                  placeholder="请填写反馈内容"
+                  v-model="explain"
+                  rows="5"
+                  style="width: 600px;">
+                  
+                </el-input>
+            
+                <div style="width: 280px; margin: 40px auto;">
+                    <el-button type="warning" style="margin-left: 30px;" @click="submitex">提交反馈</el-button>
+                </div>
+            
+            </div>
+
+        </div>
+        <!-- 开发环境版本，包含了有帮助的命令行警告 -->
+        <script src="../../../public/plugins/vue/vue.js"></script>
+        <!-- 引入组件库 -->
+        <script src="../../../public/plugins/element-ui/index.js"></script>
+
+        <script src="../../../public/plugins/axios/axios.min.js"></script>
+        <script src="../../../public/js/request.js"></script>
+        <script src="../../myapi/explain.js"></script>
+        <script>
+            new Vue({
+                el: '#app',
+                data() {
+                    return {
+                      account:'',
+                      phone:'',
+                      reason:'',
+                      explain:'',
+                      logintype:0
+                    }
+                },
+                mounted() {
+                    this.account=localStorage.getItem("exaccount");
+                    localStorage.removeItem("exaccount");
+                    this.phone=localStorage.getItem("exphone");
+                    this.reason=localStorage.getItem("exreason");
+                    this.logintype=localStorage.getItem("type");
+                },    
+                methods: {
+                    async submitex(){
+                        let res = await sendexplain(this.account,this.phone,this.reason,this.explain)
+                        if (String(res.code) === '1') {
+                            window.location.href='successres.html'
+                        } else {
+                            window.location.href='errores.html'
+                        }
+                    },
+                    goBack() {
+                        window.location.href='../../index.html'
+                    }
+                },
+                destroyed(){
+                    localStorage.removeItem("exaccount");
+                    localStorage.removeItem("exphone");
+                    localStorage.removeItem("exreason");
+                    localStorage.removeItem("type");
+                }
+            })
+        </script>
+    </body>
+</html>

@@ -6,6 +6,7 @@ import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.chengxi.fitday.common.R;
 import com.chengxi.fitday.entity.*;
 import com.chengxi.fitday.service.*;
+import com.chengxi.fitday.utils.SportRecommendation;
 import org.apache.commons.lang.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
@@ -45,12 +46,36 @@ public class SportController {
     @Autowired
     private IUserService userService;
 
+    @Autowired
+    private IMatrixService matrixService;
+
     //运动信息分页查询
     @GetMapping("/page")
     public R<Page> page(int page, int pageSize, String name){
         Page pageinfo=new Page<>(page,pageSize);
         LambdaQueryWrapper<Sport> queryWrapper=new LambdaQueryWrapper<>();
         queryWrapper.like(StringUtils.isNotEmpty(name),Sport::getSportName,name);   //模糊查询运动名称
+//        LambdaQueryWrapper<Matrix> queryWrapper2=new LambdaQueryWrapper<>();    //实现协同过滤
+//        queryWrapper2.eq(Matrix::getXs,0);
+//        List<Matrix> usermatlist= matrixService.list(queryWrapper2);
+//        LambdaQueryWrapper<Matrix> queryWrapper3=new LambdaQueryWrapper<>();
+//        queryWrapper3.eq(Matrix::getYs,0);
+//        List<Matrix> sportmatlist= matrixService.list(queryWrapper3);
+//        double[][] Amn = new double[Integer.parseInt(usermatlist.size()+"")][Integer.parseInt(usermatlist.size()+"")];
+//        for(int i=0;i<Amn.length;i++){
+//            for (int j=0;j<Amn[0].length;j++){
+//                Amn[i][j]=usermatlist.get(j).getMyvalue();
+//            }
+//        }
+//        // 运动项目相似矩阵
+//        double[][] Bmn = new double[Integer.parseInt(sportmatlist.size()+"")][Integer.parseInt(sportmatlist.size()+"")];
+//        for(int i=0;i<Bmn.length;i++){
+//            for (int j=0;j<Bmn[0].length;j++){
+//                Bmn[i][j]=sportmatlist.get(j).getMyvalue();
+//            }
+//        }
+//        SportRecommendation sr = new SportRecommendation(Amn, Bmn);
+//        List<Integer> recommendationList = sr.getRecommendationList(1);
         sportService.page(pageinfo,queryWrapper);
         return R.success(pageinfo);
     }
@@ -60,6 +85,40 @@ public class SportController {
     public R<List<Sport>> getAll(){
         List <Sport> arr=sportService.list();
         return R.success(arr);
+    }
+
+    //查询所有运动信息（根据用户信息协同过滤）
+    @GetMapping("recom/{uid}")
+    public R<List<Sport>> Recommendation(@PathVariable Long uid){
+        List <Sport> arr=sportService.list();
+
+        LambdaQueryWrapper<Matrix> queryWrapper=new LambdaQueryWrapper<>();    //实现协同过滤,开始协同过滤算法
+        queryWrapper.eq(Matrix::getXs,uid);
+        List<Matrix> usermatlist= matrixService.list(queryWrapper);
+        LambdaQueryWrapper<Matrix> queryWrapper2=new LambdaQueryWrapper<>();
+        queryWrapper2.eq(Matrix::getYs,arr.get(0).getSportId());
+        List<Matrix> sportmatlist= matrixService.list(queryWrapper2);
+        double[][] Amn = new double[Integer.parseInt(usermatlist.get(0).getMyx()+"")][Integer.parseInt(usermatlist.get(0).getMyy()+"")];
+        for(int i=0;i<Amn.length;i++){
+            for (int j=0;j<Amn[0].length;j++){
+                Amn[i][j]=usermatlist.get(j).getMyvalue();
+            }
+        }
+        // 运动项目相似矩阵
+        double[][] Bmn = new double[Integer.parseInt(sportmatlist.get(0).getMyx()+"")][Integer.parseInt(sportmatlist.get(0).getMyy()+"")];
+        for(int i=0;i<Bmn.length;i++){
+            for (int j=0;j<Bmn[0].length;j++){
+                Bmn[i][j]=sportmatlist.get(j).getMyvalue();
+            }
+        }
+        SportRecommendation sr = new SportRecommendation(Amn, Bmn);
+        List<Integer> recommendationList = sr.getRecommendationList(1);
+        List <Sport> farr=new ArrayList<>();
+        for(int i=0;i<recommendationList.size();i++){           //根据协同过滤的结果获得推荐
+            farr.add(arr.get(recommendationList.get(i)));
+        }
+
+        return R.success(farr);
     }
 
     //查询所有运动计划表信息

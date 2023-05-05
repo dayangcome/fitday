@@ -3,7 +3,7 @@
     <head>
         <meta charset="utf-8" />
         <title>个人中心</title>
-        <link rel="shortcut icon" href="../public/favicon.ico">
+        <link rel="shortcut icon" href="../../../public/favicon.ico">
         <link rel="stylesheet" href="../../../public/plugins/element-ui/index.css" />
         <style>
             body, html {
@@ -123,6 +123,9 @@
             .el-avatar{
                 background:#FFFFFF;
             }
+            .orig:hover{
+                color: dodgerblue;
+            }
         </style>
     </head>
     <body>
@@ -135,9 +138,12 @@
                 line-height: 120px;
                 margin-left: 100px;">吃好，练好，拥有好心态，轻装上阵！</span>
             </div>
-            
-            <el-page-header @back="goBack" style="line-height: 40px;margin-top: 10px">
-            </el-page-header>
+
+            <div style="margin: 10px 0;font-size: 17px;margin-left: 30px;">
+                <span @click="goBack" class="orig" style="font-weight: bold;cursor: pointer">首页</span>
+                <span>></span>
+                <span>个人中心</span>
+            </div>
             
             <h1 style="text-align: center;">个人中心</h1>
             
@@ -245,8 +251,8 @@
                             <el-input type="password" v-model="formLabelAlign.newcodeagagin" style="width: 250px;"></el-input>
                           </el-form-item>
                           <el-form-item>
-                            <el-button type="primary" @click="changecode">修改密码</el-button>
-                            <el-button @click="newform" style="margin-left: 50px;">重置</el-button>
+                            <el-button type="primary">修改密码</el-button>
+                            <el-button style="margin-left: 50px;">重置</el-button>
                           </el-form-item>
                         </el-form>
                     </el-tab-pane>
@@ -291,7 +297,7 @@
                         </div>
                     </el-tab-pane>
                     <el-tab-pane label="体重监管" >
-                        <el-card  style="background-color: rgba(235,238,245,0.45); margin-right: 750px">
+                        <el-card  style="background-color: rgba(235,238,245,0.45); margin-right: 680px">
                         <div style="margin:0 30px;" id="supervise">
 
                             <div class="myrow">
@@ -335,6 +341,18 @@
                                         @click="changeinfo(2)" style="margin-left: 10px">确定</el-button>
 
                         </div>
+
+
+                            <el-dialog
+                                    title="体重变化曲线"
+                                    :visible.sync="dialogVisible"
+                                    >
+
+                                <span slot="footer" class="dialog-footer">
+                                    <el-button @click="dialogVisible = false">取 消</el-button>
+                                    <el-button type="primary" @click="dialogVisible = false">确 定</el-button>
+                                </span>
+                            </el-dialog>
 
                             <div class="myrow">
                                 <h3>最新BMI</h3>
@@ -395,77 +413,12 @@
                         </div>
                         </el-card>
                     </el-tab-pane>
-                    <el-tab-pane label="我的栏目">
+                    <el-tab-pane label="体重变化">
                         <div>
-                            <el-col :span="11" v-for="(o, index) in 1" :key="o" :offset="index > 0 ? 1 : 0">
-                                <el-card :body-style="{ padding: '20x' }" style="background-color: #c2e7b0">
-                                    <div slot="header" class="clearfix">
-                                        <span style="font-style: italic"><strong>我的栏目</strong></span>
-                                    </div>
-                                    <el-row style="padding: 14px;">
-
-                                        <el-button type="primary" icon="el-icon-document-copy" circle size="200">我的订单</el-button>
-                                        <el-button type="success" icon="el-icon-shopping-cart-full" circle> 购物小车 </el-button>
-                                        <el-button type="info" icon="el-icon-basketball" circle>运动计划</el-button>
-                                        <el-button type="danger" icon="el-icon-dish-1" circle>饮食记录</el-button>
-                                    </el-row>
-                                    <el-row style="padding: 14px;">
-                                        <el-button type="primary" icon="el-icon-finished" circle plain>运动小结</el-button>
-                                        <el-button type="success" icon="el-icon-edit-outline" circle plain>饮食测评</el-button>
-                                        <el-button type="warning" icon="el-icon-chat-dot-square" circle plain>我的群组</el-button>
-                                        <el-button type="warning" icon="el-icon-star-off" circle>我的收藏</el-button>
-
-                                    </el-row>
+                            <div id="mychart" style="width: 850px;height: 400px;"></div>
                                     <div style="padding: 14px;">
-
-                                        <div>
-                                            <el-row :gutter="20">
-                                                <el-col :span="2">
-                                                    <div>
-                                                        <el-statistic mygroup-separator="," :precision="2" :value="value2" :title="title"></el-statistic>
-                                                    </div>
-                                                </el-col>
-                                                <el-col :span="2">
-                                                    <div>
-                                                        <el-statistic  title="男女比">
-                                                            <template slot="formatter">
-                                                                456/2
-                                                            </template>
-
-                                                        </el-statistic>
-                                                    </div>
-                                                </el-col>
-                                                <el-col :span="2">
-                                                    <div>
-                                                        <el-statistic mygroup-separator="," :precision="2" decimal-separator="." :value="value1" :title="title">
-                                                            <template slot="prefix">
-                                                                <i class="el-icon-s-flag" style="color: red"></i>
-                                                            </template>
-                                                            <template slot="suffix">
-                                                                <i class="el-icon-s-flag" style="color: blue"></i>
-                                                            </template>
-                                                        </el-statistic>
-                                                    </div>
-
-                                                </el-col>
-                                                <el-col :span="2">
-                                                    <div>
-                                                        <el-statistic :value="like ? 521 : 520" title="Feedback">
-                                                            <template slot="suffix">
-                                                            <span @click="like = !like" class="like">
-                                                              <i class="el-icon-star-on" style="color:red" v-show="!!like"></i>
-                                                              <i class="el-icon-star-off"  v-show="!like"></i>
-                                                            </span> </template>
-                                                        </el-statistic>
-                                                    </div>
-                                                </el-col>
-                                            </el-row>
-                                        </div>
-
                                         <time class="time">{{ currentDate }}</time>
                                     </div>
-                                </el-card>
-                            </el-col>
                         </div>
                     </el-tab-pane>
                 </el-tabs>
@@ -491,6 +444,7 @@
         <script src="../../../public/plugins/element-ui/index.js"></script>
         <script src="../../../public/plugins/axios/axios.min.js"></script>
         <script src="../../../public/js/request.js"></script>
+        <script src="../../../public/js/echarts.js"></script>
         <script src="../../myapi/usercenter.js"></script>
         <script>
             new Vue({
@@ -506,10 +460,14 @@
                         currentDate: new Date(),
                         userInfo: {},
                         userInfo2:{},
+                        changeme:[],
+                        mytimes:[],
+                        kgs:[],
                         username:"",
                         phone:"",
                         sex:"",
                         wxNumber:"",
+                        dialogVisible: false,
                         heightedit:false,
                         newheight:'',
                         weightedit:false,
@@ -558,8 +516,82 @@
                             this.calres=(userInfo2.weight-userInfo2.fatRate)*22
                         }
                     }
+                    this.getchangeme()
                 },
                 methods: {
+                    myechart(){
+                        // 基于准备好的dom，初始化echarts实例
+                        var myChart = echarts.init(document.getElementById('mychart'));
+                        // 指定图表的配置项和数据
+                        var option = {
+                            title: {
+                                text: '体重变化记录'
+                            },
+                            legend: {
+                                data: ['体重/kg']
+                            },
+                            xAxis: {
+                                data: [...this.mytimes],
+                                axisLabel:{
+                                    rotate: 20
+                                }
+                            },
+                            yAxis: {
+                            },
+                            tooltip: {
+                                trigger: 'axis'   // axis   item   none三个值
+                            },
+                            series: [
+                                {
+                                    name: '体重/kg',
+                                    type: 'line',
+                                    // data: ["3","4","5","23","45","23","333"]
+                                    data: [...this.kgs],
+                                    //不知道为啥 this.sevenday最后一个数组在echart中显示不出来，只能这样做了
+                                    markLine: {
+                                        symbol: ['none', 'none'],//去掉箭头
+                                        itemStyle: {
+                                            normal: { lineStyle: { type: 'dashed', color:'red'}
+                                                ,label: { show: true,color:'red',fontSize:16,formatter:`目标体重`  } }
+                                        },
+                                        data: [{
+                                            name: '目标体重',
+                                            yAxis: this.userInfo2.fatRate
+                                        }]
+                                    },
+                                },
+
+                            ],
+
+                            dataZoom: [
+                                {
+                                    type: "slider", //隐藏或显示（true）组件
+                                    show: true,
+                                    showDetail: false, //是否显示detail，即拖拽时候显示详细数值信息
+                                    startValue: 0,
+                                    endValue: 5,
+                                    filterMode: "empty",
+                                    height: 8, //滚动条显示位置
+                                    zoomLoxk: true, // 是否锁定选择区域（或叫做数据窗口）的大小
+                                    handleSize: 3, //控制手柄的尺寸
+                                    bottom: 0, // dataZoom-slider组件离容器下侧的距离
+                                },
+                                {
+                                    //没有下面这块的话，只能拖动滚动条，鼠标滚轮在区域内不能控制外部滚动条
+                                    type: "inside",
+                                    zoomOnMouseWheel: false, //滚轮是否触发缩放
+                                    moveOnMouseMove: true, //鼠标滚轮触发滚动
+                                    moveOnMouseWheel: true,
+                                },
+                            ]
+                        };
+                        // 使用刚指定的配置项和数据显示图表。
+                        myChart.setOption(option);
+                    },
+                    mydia(){
+                        this.dialogVisible = true
+                        this.myechart()
+                    },
                     customColorMethod(percentage) {
                         if (percentage < 18.5) {
                             return '#909399';
@@ -598,6 +630,23 @@
                         if(row==4){
                             this.goaldayedit=true
                         }
+                    },
+                    async getchangeme(){
+                        await getmychange(this.userInfo2.userId).then(res => {
+                            if (String(res.code) === '1') {
+                                this.changeme=res.data
+                                console.log(this.changeme)
+                                for(let i=0;i<this.changeme.length;i++){
+                                    this.mytimes.push(this.changeme[i].createTime.toLocaleString().replace(/T/g, ' ').replace(/\.[\d]{3}Z/, ''))
+                                    this.kgs.push(this.changeme[i].weight)
+                                    this.myechart()
+                                }
+                            }else {
+                                console.log("not")
+                            }
+                        }).catch(err => {
+                            this.$message.error('请求出错了：' + err)
+                        })
                     },
                     async changeinfo(row){
                         if(row==1){

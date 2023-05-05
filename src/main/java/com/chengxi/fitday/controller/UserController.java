@@ -23,6 +23,7 @@ import java.nio.charset.StandardCharsets;
 import java.sql.SQLException;
 import java.sql.SQLIntegrityConstraintViolationException;
 import java.time.LocalDateTime;
+import java.util.List;
 
 @RestController
 @RequestMapping("/user")
@@ -102,11 +103,19 @@ public class UserController {
         }
     }
 
+    //获得所有用户信息
+    @GetMapping("/all")
+    public R<List<User>> getalluser(){
+        List <User> arr=userService.list();
+        return R.success(arr);
+    }
+
     //获得用户信息2
     @GetMapping("/userinfo/{uid}")
     public R<Userinfo> userinfo(@PathVariable Long uid){
         LambdaQueryWrapper<Userinfo> queryWrapper=new LambdaQueryWrapper<>(); //获得用户的体重等信息
         queryWrapper.eq(Userinfo::getUserId,uid);
+        queryWrapper.eq(Userinfo::getStage,1);
         Userinfo userinfo=userinfoService.getOne(queryWrapper);
         if(userinfo==null){
             return R.error("用户未设置");
@@ -291,7 +300,7 @@ public class UserController {
         userinfo1.setWeight(userinfo.getWeight());
         userinfo1.setFans(0);
         userinfo1.setBmi(userinfo.getWeight()/userinfo.getHeight()/userinfo.getHeight()*10000);
-        userinfo1.setStage(1);
+        userinfo1.setStage(1);      //还未作废
         userinfoService.save(userinfo1);
         return R.success(userinfo1);
     }
@@ -301,6 +310,7 @@ public class UserController {
     public R<Userinfo> quest(@PathVariable Long uid,@PathVariable int number,@PathVariable String info){
         LambdaQueryWrapper<Userinfo> queryWrapper=new LambdaQueryWrapper<>();
         queryWrapper.eq(Userinfo::getUserId,uid);
+        queryWrapper.eq(Userinfo::getStage,1);//未作废的
         Userinfo userinfo= userinfoService.getOne(queryWrapper);
         if(userinfo==null){
             Userinfo userinfo1=new Userinfo();
@@ -325,27 +335,30 @@ public class UserController {
             userinfoService.save(userinfo1);
             return R.success(userinfo1);
         }else{
+            Userinfo userinfo1=new Userinfo(null,userinfo.getUserId(),userinfo.getHeight(),userinfo.getWeight(),userinfo.getBmi(),userinfo.getStage(),LocalDateTime.now(),userinfo.getFatRate(),userinfo.getIsDeleted(),userinfo.getAge(),userinfo.getCertificate(),userinfo.getAttention(),userinfo.getFans(),userinfo.getBlack(),userinfo.getPrepare());
             if(number==1){
-                userinfo.setHeight(Double.parseDouble(info.trim()));
-                if(userinfo.getWeight()!=null){
-                    userinfo.setBmi(userinfo.getWeight()/userinfo.getHeight()/userinfo.getHeight()*10000);
+                userinfo1.setHeight(Double.parseDouble(info.trim()));
+                if(userinfo1.getWeight()!=null){
+                    userinfo1.setBmi(userinfo1.getWeight()/userinfo1.getHeight()/userinfo1.getHeight()*10000);
                 }
             }
             if(number==2){
-                userinfo.setWeight(Double.parseDouble(info.trim()));
-                if(userinfo.getHeight()!=null){
-                    userinfo.setBmi(userinfo.getWeight()/userinfo.getHeight()/userinfo.getHeight()*10000);
+                userinfo1.setWeight(Double.parseDouble(info.trim()));
+                if(userinfo1.getHeight()!=null){
+                    userinfo1.setBmi(userinfo1.getWeight()/userinfo1.getHeight()/userinfo1.getHeight()*10000);
                 }
             }
             if(number==3){
-                userinfo.setFatRate(Float.parseFloat(info.trim()));
+                userinfo1.setFatRate(Float.parseFloat(info.trim()));
             }
             if(number==4){
-                userinfo.setPrepare(info.trim());
+                userinfo1.setPrepare(info.trim());
             }
+            userinfoService.save(userinfo1);
+            userinfo.setStage(0);   //停用
             userinfoService.updateById(userinfo);
+            return R.success(userinfo1);
         }
-        return R.success(userinfo);
     }
 
     //通过视频id查找到作者信息
@@ -362,6 +375,19 @@ public class UserController {
         return R.success(user);
     }
 
+
+    //获得体重变化信息
+    @GetMapping("/getc/{uid}")
+    public R<List<Userinfo>> getmychange(@PathVariable Long uid){
+        LambdaQueryWrapper<Userinfo> queryWrapper=new LambdaQueryWrapper<>();
+        queryWrapper.eq(Userinfo::getUserId,uid);
+        queryWrapper.orderByAsc(Userinfo::getCreateTime);
+        List<Userinfo> userinfos= userinfoService.list(queryWrapper);
+        if(userinfos==null){
+            return R.error("用户信息未找到！");
+        }
+        return R.success(userinfos);
+    }
 
 }
 

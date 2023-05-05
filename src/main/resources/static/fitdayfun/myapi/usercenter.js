@@ -19,3 +19,18 @@ function questchange (uid,number,info) {
         method: 'get',
     })
 }
+
+function getmychange (uid) {
+    return $axios({
+        url: `user/getc/${uid}`,
+        method: 'get',
+    })
+}
+
+function getallUser () {
+    return $axios({
+        url: '/user/all',
+        method: 'get'
+    })
+}
+

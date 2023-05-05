@@ -1,0 +1,183 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="UTF-8">
+    <link rel="stylesheet" href="../../../public/plugins/element-ui/index.css" />
+    <script src="../../../public/plugins/vue/vue.js"></script>
+    <!-- 引入组件库 -->
+    <script src="../../../public/plugins/element-ui/index.js"></script>
+	<style>
+		.el-textarea__inner{
+			font-size: 16px;
+			font-weight: 550;
+			color: black;
+		}
+		.slider-block {
+			display: flex;
+			align-items: center;
+		}
+
+		.slider-block .el-slider {
+			margin-top: 0;
+			margin-left: 12px;
+		}
+
+		.slider-block .slider-laber+.el-slider {
+			flex: 0 0 70%;
+		}
+		.point:nth-last-child(1){
+			border-bottom: 1px #DCDFE6 solid;
+		}
+		.point:hover{
+			background-color: #f3f3f6;
+		}
+		.point:hover{
+			cursor: pointer;
+		}
+		.el-loading-text{
+			white-space: pre;
+		}
+		.el-loading-spinner .el-loading-text{
+			font-size: 18px;
+		}
+		.el-loading-spinner{
+			top:25%
+		}
+
+		
+	</style>
+</head>
+
+<body>
+    <div id="app" style="margin-left: 150px;margin-right: 150px;">
+		<el-container>
+			<el-header>
+				<h1>AI自助心理问答 </h1>
+			</el-header>
+			<el-main>
+				<el-row :gutter="40" v-loading="loading" :element-loading-text="mytext">
+					<el-col :span="16" class="col-params"
+							>
+
+
+						<el-form>
+							<h4>请输入你有关心理问题方面的提问</h4>
+							<el-input type="textarea" v-model="prompt" placeholder="输入你的提问内容" rows="4"></el-input>
+						</el-form>
+						<el-button size="large" style="float: right;margin: 10px 0" type="success" @click="submitForm">提问</el-button>
+
+							<div style="margin-top: 70px">
+							<h4>回答结果</h4>
+							<p id="result" style="color:red;white-space: pre-wrap;">{{ response }}</p>
+							</div>
+					</el-col>
+					<el-col :span="8" class="col-params"
+							>
+
+
+							<h4>常见问题</h4>
+						<div class="point" v-for="i in questions" @click="addn(i)" style="padding: 10px;font-size: 16px;border-top: 1px #DCDFE6 solid;">
+							{{i}}
+						</div>
+
+					</el-col>
+				</el-row>
+			</el-main>
+		</el-container>
+    </div>
+
+<script src="../../../public/plugins/vue/vue.js"></script>
+<!-- 引入组件库 -->
+<script src="../../../public/plugins/element-ui/index.js"></script>
+<script src="../../../public/pluprgins/axios/axios.min.js"></script>
+<script src="../../../public/js/request.js"></script>
+<script src="../../myapi/gpt.js"></script>
+<script>
+    new Vue({
+        el: '#app',
+        data(){
+            return {
+				key: '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',
+				prompt: '',
+				temperature: 1,
+				top_p: 1,
+				max_tokens: 2048,
+				frequency_penalty: 0,
+				presence_penalty: 0,
+				stop: ["Human:", "AI:"],
+				model: 'text-davinci-003',
+				response: '',
+				loading:false,
+				tips:[
+					'所谓多喝水是指每天喝够1500～1700毫升，大概一次性纸杯8杯的量。',
+					'运动时达到微微气喘、心跳加速但还能勉强说话交流的强度为最佳。',
+					'每天最好要喝够至少300克的牛奶或酸奶。',
+					'连续久坐超过90分钟，一定要起身活动一会再继续。',
+					'定期进行健康体检，疾病可以早发现。'
+				],
+				questions:[
+						'可以通过不吃早饭来减肥吗？',
+						'什么食物最适合减肥？',
+						'没有动力去健身怎么办？',
+						'感到沮丧、抑郁，并且有睡眠障碍等问题怎么办？',
+						'如何选择合适的运动项目？',
+						'减肥需要喝哪种饮料？',
+						'减肥半年了体重没有减少是怎么回事？',
+						'减肥过程中有什么典型的食谱可以参考？',
+						'如何在节食期间保持健康？',
+						'如何避免维生素和矿物质缺乏？',
+						'什么运动可以有效增肌？',
+						'什么是有益健康的运动？'
+				],
+				mytext:''
+			}
+        },
+		mounted() {
+			window.parent.postMessage(document.body.clientHeight-150,'*')
+		},
+		methods: {
+			addn(i){
+				this.prompt=i
+			},
+			submitForm(){
+				this.mytext=`请耐心等待机器人回答问题......
+
+
+
+健康生活小贴士：${this.tips[Math.floor(Math.random()* this.tips.length)]}`
+				if(this.prompt==''){
+					this.$message.warning("请输入要提问的内容！")
+				}else{
+					let data = {
+						prompt: this.prompt,
+						temperature: this.temperature,
+						top_p: this.top_p,
+						model: this.model,
+						max_tokens: this.max_tokens,
+						frequency_penalty: this.frequency_penalty,
+						presence_penalty: this.presence_penalty,
+						stop: this.stop
+					}
+					this.loading = true
+					axios.post('https://api.openai.com/v1/completions', data, {
+						headers: {
+							'Content-Type': 'application/json',
+							'Authorization': `Bearer ` + this.key,
+						}
+					}).then(response => {
+						this.loading = false
+						this.response = response.data.choices[0].text;
+						console.log(this.response)
+					}).catch(error => {
+						this.loading = false
+						this.response='在回答过程中出现了问题，请稍后进行重试...'
+						console.log(error);
+					});
+				}
+			}
+		},
+    })
+</script>
+</body>
+</html>

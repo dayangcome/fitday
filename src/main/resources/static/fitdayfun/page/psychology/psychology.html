@@ -98,7 +98,8 @@
 				></el-input>
 			  </div></el-col>
 			  <el-col :span="8" style="height: 50px;">
-				<el-button type="primary" round>点击预约</el-button>
+				<el-button @click="yuyue" type="primary" round>点击预约</el-button>
+				  <el-button @click="togpt" style="display: inline-block;margin-left: 20px" type="success" round>AI心理问题问答</el-button>
 			  </el-col>
 			</el-row>
 		</div>
@@ -169,15 +170,23 @@
 			}
         },
 		mounted() {
-		    this.setSize();
-		    window.addEventListener('resize', ()=>{
-		        this.setSize();
-		    },false);
+			window.parent.postMessage(document.body.clientHeight-250,'*')
 		},    
 		methods: {
-		    setSize(){
-		        this.bannerHeight = document.body.clientWidth / 4
-		    },
+			yuyue(){
+				if(this.userInfo.level<3){
+					this.$message.warning("用户需要达到3级才能使用这个功能！");
+				}else{
+					this.$message.success("预约成功！");
+				}
+			},
+			togpt(){
+				if(this.userInfo.level<3){
+					this.$message.warning("用户需要达到3级才能使用这个功能！");
+				}else{
+					window.location.href='./gpt.html'
+				}
+			},
 			async goto(theid){
 				await getonedynamic(theid).then(res=>{
 					if(String(res.code) === '1'){

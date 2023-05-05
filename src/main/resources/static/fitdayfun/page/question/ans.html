@@ -49,10 +49,10 @@
                <h1>答题挑战</h1>
                <h2>答题结束！您答对的题数为：<span style="color: red;margin-right: 5px">{{right}}</span> 题！</h2>
                <h2 v-if="right<6">很遗憾，您没有获得答题奖励</h2>
-               <h2 v-if="right==6||right==7">恭喜！您获得了三等奖！</h2>
-               <h2 v-if="right==8||right==9">恭喜！您获得了二等奖！</h2>
-               <h2 v-if="right==10">恭喜！您获得了一等奖！</h2>
-               <div style="font-size: 18px;margin: 25px 0;"><span id="second">30</span>秒后将自动返回主页面</div>
+               <h2 v-if="right==6||right==7">恭喜！您获得了三等奖：200经验！</h2>
+               <h2 v-if="right==8||right==9">恭喜！您获得了二等奖：500经验！</h2>
+               <h2 v-if="right==10">恭喜！您获得了一等奖：10元消费券！</h2>
+               <el-button type="success" @click="navto2">查看错题</el-button>
                <el-button type=primary @click="navto">返回主页面</el-button>
            </div>
         </div>
@@ -73,24 +73,15 @@
                     this.right = localStorage.getItem('right');
                     localStorage.removeItem('right')
                     this.errlist = JSON.parse(localStorage.getItem('errlist'));
-                    localStorage.removeItem('errlist')
                     console.log("错误的题目为：",this.errlist)
-                    let i=29;
-                    timer=setInterval(function(){
-                        document.querySelector("#second").innerText=i;
-                        i--;
-                        if(i==-1){
-                            clearInterval(timer);
-                            setTimeout(function(){
-                                window.location.href='../../page/home/home.html'
-                            },1)
-                        }
-                    },1000)
                     window.parent.postMessage(document.body.clientHeight-100,'*')
                 },
                 methods: {
                     navto(){
                         window.location.href='../../page/home/home.html'
+                    },
+                    navto2(){
+                        window.location.href='./feedback.html'
                     },
                     goBack() {
                         window.location.href='../login/login.html'

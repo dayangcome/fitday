@@ -1,0 +1,538 @@
+<!DOCTYPE html>
+<html lang="zh">
+	<head>
+		<meta charset="utf-8">
+		<title>搜索结果</title>
+		<link rel="stylesheet" type="text/css" href="../../../public/css/style.css"/>
+		<link rel="stylesheet" href="../../../public/plugins/element-ui/index.css" />
+		<style>
+			.el-tabs__item{
+				font-size:20px ;
+				font-weight: 550;
+			}
+			.card-video{
+				display: flex;
+				flex-wrap: wrap;
+				margin: 0 10px;
+				width: 1264px;
+				height: 588px;
+			}
+
+			.card-video .card {
+				display: flex;
+				flex-direction: column;
+				width: 264px;
+				height: 190px;
+				margin: 0 20px;
+				border-radius: 10px;
+
+				color: #000000;
+				font-size: 18px;
+				font-weight: 700;
+				letter-spacing: 3px;
+				cursor: pointer;
+			}
+			.image2:hover {
+				transition: transform .2s, box-shadow .2s;
+				transform: translateY(-4px);
+				box-shadow: 4px 4px 8px rgba(0, 0, 0, .1), -4px -4px 8px rgba(0, 0, 0, .1);
+			}
+			.image2 {
+				margin-top:15px;
+				width: 224px;
+				height: 140px;
+				padding:2px;
+				border-radius: 10px;
+				border:1px solid #DCDFE6;
+				transition: transform .2s, box-shadow .2s;
+			}
+			.card-box {
+				display: flex;
+				flex-wrap: wrap;
+
+			}
+			.card-box .card {
+				transition: transform .2s, box-shadow .2s;
+				background-color: #fff;
+				display: flex;
+				flex-direction: column;
+				justify-content: center;
+				align-items: center;
+				width: 240px;
+				height: 340px;
+				margin: 20px 29px;
+				border-radius: 10px;
+				border:1px solid #DCDFE6;
+				color: #3e3e3e;
+				font-size: 20px;
+				font-weight: 700;
+				letter-spacing: 4px;
+				cursor: pointer;
+			}
+			.card-box .card:hover {
+				transition: transform .2s, box-shadow .2s;
+				transform: translateY(-4px);
+				box-shadow: 4px 4px 8px rgba(0, 0, 0, .1), -4px -4px 8px rgba(0, 0, 0, .1);
+			}
+			.image {
+				width: 190px;
+				height: 200px;
+				border-radius: 20px;
+			}
+			.tdleft{
+				font-weight: bold;
+				width: 200px;
+			}
+			.point:hover{
+				cursor: pointer;
+				background-color: #f3f3f6;
+			}
+			.point{
+				width: 340px;
+				display: flex;
+				flex-wrap: wrap;
+			}
+		</style>
+	</head>
+	<body>
+	    <div id="app" style="margin: 0 80px;">
+			<el-tabs v-model="activeName" stretch style="margin:20px 60px;width: 1200px ">
+				<el-tab-pane label="视频" name="first" style="font-size: 16px;color: #818693">
+					<div style="margin-left: 30px;">
+						当前关键词为“{{keyword}}”，共搜索到 {{videolist1.length}} 个视频
+					</div>
+					<div class="card-video">
+						<div class="card" v-for="item in videolist1" @click="navto(item.uservideo.videoId)">
+							<img :src="item.uservideo.picture" class="image2">
+							<div class="myinfo">
+								{{item.uservideo.title}}
+							</div>
+							<div class="author">
+								UP {{item.authorname}} · {{item.uservideo.uploadtime.toLocaleString().slice(0,10)}}
+							</div>
+
+						</div>
+					</div>
+				</el-tab-pane>
+
+				<el-tab-pane label="文章" name="second" style="font-size: 16px;color: #818693">
+					<div style="margin-left: 30px;">
+						当前关键词为“{{keyword}}”，共搜索到 {{art1.length}} 篇文章
+					</div>
+					<div class="card-box">
+						<div v-for="item in art1" class="card" @click.prevent="navto2(item.id)">
+							<img :src="item.picture" class="image">
+							<el-divider></el-divider>
+							<div class="myinfo" style="padding: 0 18px">
+								{{item.title}}
+							</div>
+						</div>
+
+					</div>
+
+				</el-tab-pane>
+
+				<el-tab-pane label="食物" name="second2" style="font-size: 16px;color: #818693">
+
+					<div  style="margin-left: 30px;">
+						当前关键词为“{{keyword}}”，共搜索到 {{food1.length}} 个食物
+					</div>
+					<div class="card-box">
+						<div v-for="item in food1" class="card" @click="fooddetail(item)">
+							<img :src="item.picture" class="image">
+							<el-divider></el-divider>
+							<div class="myinfo" style="padding: 0 18px">
+								{{item.foodName}}
+							</div>
+							<el-button
+									type="text"
+									class="blueBug"
+									@click="fooddetail(item)"
+							>
+								查看详情
+							</el-button>
+						</div>
+					</div>
+
+					<el-dialog title="食物详情" :visible.sync="ydVisible" width="35%" top="20px" :lock-scroll="false">
+						<div >
+							<img :src="listinfo.picture" class="image" style="margin:20px 138px;">
+							<table style="margin:0px auto;font-size: 15px;">
+								<tr>
+									<td class="tdleft">食物名称</td>
+									<td>{{listinfo.foodName}}</td>
+								</tr>
+								<tr>
+									<td class="tdleft">食物类别</td>
+									<td>{{listinfo.foodCategory}}</td>
+								</tr>
+								<tr>
+									<td class="tdleft">热量(千卡/100g)</td>
+									<td>{{listinfo.heat}}</td>
+								</tr>
+								<tr>
+									<td class="tdleft">脂肪(g/100g)</td>
+									<td>{{listinfo.fat}}</td>
+								</tr>
+								<tr>
+									<td class="tdleft">碳水化合物(g/100g)</td>
+									<td>{{listinfo.carbohydrate}}</td>
+								</tr>
+								<tr>
+									<td class="tdleft">蛋白质(g/100g)</td>
+									<td>{{listinfo.protein}}</td>
+								</tr>
+								<tr>
+									<td class="tdleft">适宜人群</td>
+									<td>{{listinfo.suitablePerson}}</td>
+								</tr>
+								<tr>
+									<td class="tdleft">饮食禁忌</td>
+									<td>{{listinfo.dietTaboo}}</td>
+								</tr>
+							</table>
+						</div>
+						<div slot="footer" class="dialog-footer">
+							<el-button @click="ydVisible = false">取 消</el-button>
+							<el-button type="primary" @click="ydVisible = false">确 定</el-button>
+						</div>
+					</el-dialog>
+				</el-tab-pane>
+
+				<el-tab-pane label="套餐" name="second3" style="font-size: 16px;color: #818693">
+					<div style="margin-left: 30px;">
+						当前关键词为“{{keyword}}”，共搜索到 {{foods1.length}} 个套餐
+					</div>
+					<div class="card-box">
+						<div v-for="item in foods1" class="card" @click="detail(item)">
+							<img :src="item.cover" class="image">
+							<el-divider></el-divider>
+							<div class="myinfo" style="padding: 0 18px">
+								{{item.dietTitle}}
+							</div>
+							<el-button
+									type="text"
+									class="blueBug"
+									@click="detail(item)"
+							>
+								查看详情
+							</el-button>
+						</div>
+					</div>
+
+					<el-dialog title="套餐详情" :visible.sync="ydVisible2" width="35%" top="20px" :lock-scroll="false">
+						<div >
+							<img :src="listinfo.cover" class="image" style="margin:20px 138px;">
+							<table style="margin:0px auto;font-size: 15px;">
+								<tr>
+									<td class="tdleft">套餐名称</td>
+									<td>{{listinfo.dietTitle}}</td>
+								</tr>
+								<tr>
+									<td class="tdleft">套餐类别</td>
+									<td>{{ String(listinfo.dietCategoryId) === '1' ? '素菜' : '肉菜' }}</td>
+								</tr>
+								<tr>
+									<td class="tdleft">烹饪方法</td>
+									<td>{{listinfo.cookingMethod}}</td>
+								</tr>
+								<tr>
+									<td class="tdleft">食谱热量(千卡/100g)</td>
+									<td>{{listinfo.dietHeat}}</td>
+								</tr>
+
+								<tr>
+									<td class="tdleft">一般价格(元)</td>
+									<td>{{listinfo.price}}</td>
+								</tr>
+
+								<tr>
+									<td class="tdleft">适宜人群</td>
+									<td>{{listinfo.suitablePerson}}</td>
+								</tr>
+
+							</table>
+						</div>
+						<div slot="footer" class="dialog-footer">
+							<el-button @click="ydVisible2 = false">取 消</el-button>
+							<el-button type="primary" @click="ydVisible2 = false">确 定</el-button>
+						</div>
+					</el-dialog>
+
+				</el-tab-pane>
+
+				<el-tab-pane label="运动" name="second4" style="font-size: 16px;color: #818693">
+					<div style="margin-left: 30px;">
+						当前关键词为“{{keyword}}”，共搜索到 {{sport1.length}} 个运动
+					</div>
+					<div class="card-box">
+						<div v-for="item in sport1" class="card" @click="detail(item)">
+							<img :src="item.picture" class="image">
+							<el-divider></el-divider>
+							<div class="myinfo" style="padding: 0 18px">
+								{{item.sportName}}
+							</div>
+							<el-button
+									type="text"
+									class="blueBug"
+									@click="detail(item)"
+							>
+								查看详情
+							</el-button>
+						</div>
+					</div>
+
+
+				</el-tab-pane>
+
+				<el-tab-pane label="运动计划" name="second5" style="font-size: 16px;color: #818693">
+					<div style="margin-left: 30px;">
+						当前关键词为“{{keyword}}”，共搜索到 {{sports1.length}} 个运动计划
+					</div>
+					<div class="card-box">
+						<div v-for="item in sports1" class="card" @click="detail(item)">
+							<img :src="item.des" class="image">
+							<el-divider></el-divider>
+							<div class="myinfo" style="padding: 0 18px">
+								{{item.title}}
+							</div>
+							<el-button
+									type="text"
+									class="blueBug"
+									@click="detail(item)"
+							>
+								查看详情
+							</el-button>
+						</div>
+					</div>
+				</el-tab-pane>
+
+				<el-tab-pane label="用户" name="third6" style="font-size: 16px;color: #818693">
+					<div style="margin-left: 30px;">
+						当前关键词为“{{keyword}}”，共搜索到 {{users1.length}} 位用户
+					</div>
+					<div style="display: flex;flex-wrap: wrap">
+						<div class="point" v-for="i in users1" style="padding:20px 30px;font-size: 15px;">
+							<el-avatar :size="50" :src="i.avatar"></el-avatar>
+							<div style="display: flex;flex-direction: column;margin: 5px">
+								<div><span style="font-size: 17px;color: black;font-weight: 600">{{i.username}}</span>&nbsp;&nbsp;&nbsp;LV{{i.level}}</div>
+								<div>{{i.sign}}</div>
+							</div>
+						</div>
+					</div>
+				</el-tab-pane>
+
+				<el-tab-pane label="小组" name="second7" style="font-size: 16px;color: #818693">
+					<div style="margin-left: 30px;">
+						当前关键词为“{{keyword}}”，共搜索到 {{groups1.length}} 个小组
+					</div>
+					<div style="display: flex;flex-wrap: wrap">
+						<div class="point" v-for="i in groups1" style="padding: 20px 30px;font-size: 15px;">
+							<el-avatar shape="square" :size="60" fit="cover" :src="i.avatar"></el-avatar>
+							<div style="display: flex;flex-direction: column;margin: 5px">
+								<div><span style="font-size: 17px;color: black;font-weight: 600">{{i.name}}</span></div>
+								<div>{{i.tags}}</div>
+							</div>
+						</div>
+					</div>
+
+				</el-tab-pane>
+
+			</el-tabs>
+		</div>	
+
+		<script src="../../../public/plugins/vue/vue.js"></script>
+		<!-- 引入组件库 -->
+		<script src="../../../public/plugins/element-ui/index.js"></script>
+		<script src="../../../public/plugins/axios/axios.min.js"></script>
+		<script src="../../../public/js/request.js"></script>
+		<script src="../../myapi/video.js"></script>
+		<script src="../../myapi/dynamic.js"></script>
+		<script src="../../myapi/food.js"></script>
+		<script src="../../myapi/diet.js"></script>
+		<script src="../../myapi/sport.js"></script>
+		<script src="../../myapi/usercenter.js"></script>
+		<script src="../../myapi/group.js"></script>
+
+		<script>
+			new Vue({
+				el: "#app",
+				data() {
+					return {
+						activeName: 'first',
+						videolist:[],
+						videolist1:[],
+						art:[],
+						art1:[],
+						food:[],
+						food1:[],
+						foods:[],
+						foods1:[],
+						groups:[],
+						groups1:[],
+						users:[],
+						users1:[],
+						sport:[],
+						sport1:[],
+						sports:[],
+						sports1:[],
+						listinfo:[],
+						keyword:'',
+						ydVisible:false,
+						ydVisible2:false,
+					}
+				},
+				mounted(){
+					this.keyword = JSON.parse(localStorage.getItem("keyword"))
+					localStorage.removeItem("keyword")
+					this.init1()
+				},
+				methods:{
+					fooddetail(item){
+						this.listinfo=item
+						console.log(this.listinfo)
+						this.ydVisible=true
+					},
+					detail(item){
+						this.listinfo=item
+						console.log(this.listinfo)
+						this.ydVisible2=true
+					},
+					async init1(){
+						console.log(this.keyword)
+
+
+							await getallvideo().then(res=>{
+								if(String(res.code) === '1'){
+									this.videolist=res.data
+									if(this.keyword!=''){
+										this.videolist1=this.videolist.filter(e =>
+												e.uservideo.title.includes(this.keyword)
+										)
+									}else {
+										this.videolist1=this.videolist
+									}
+
+								}
+							})
+
+						await getallList().then(res => {
+							if (String(res.code) === '1') {
+								this.art = res.data
+								if(this.keyword!=''){
+									this.art1=this.art.filter(e =>
+											e.title.includes(this.keyword)
+									)
+								}else {
+									this.art1=this.art
+								}
+							}
+						}).catch(err => {
+							this.$message.error('请求出错了：' + err)
+						})
+
+						await getallFoodList().then(res => {
+							if (String(res.code) === '1') {
+								this.food = res.data
+								if(this.keyword!=''){
+									this.food1=this.food.filter(e =>
+											e.foodName.includes(this.keyword)
+									)
+								}else {
+									this.food1=this.food
+								}
+							}
+						}).catch(err => {
+							this.$message.error('请求出错了：' + err)
+						})
+
+						await getalldietList().then(res => {
+							if (String(res.code) === '1') {
+								this.foods = res.data
+								if(this.keyword!=''){
+									this.foods1=this.foods.filter(e =>
+											e.dietTitle.includes(this.keyword)
+									)
+								}else {
+									this.foods1=this.foods
+								}
+							}
+						}).catch(err => {
+							this.$message.error('请求出错了：' + err)
+						})
+
+
+						await getAllList().then(res => {
+							if (String(res.code) === '1') {
+								this.sport=res.data
+								if(this.keyword!=''){
+									this.sport1=this.sport.filter(e =>
+											e.sportName.includes(this.keyword)
+									)
+								}else {
+									this.sport1=this.sport
+								}
+							}
+						}).catch(err => {
+							this.$message.error('请求出错了：' + err)
+						})
+
+						await getAllList2().then(res => {
+							if (String(res.code) === '1') {
+								this.sports=res.data
+								if(this.keyword!=''){
+									this.sports1=this.sports.filter(e =>
+											e.title.includes(this.keyword)
+									)
+								}else {
+									this.sports1=this.sports
+								}
+							}
+
+						}).catch(err => {
+							this.$message.error('请求出错了：' + err)
+						})
+
+						await getallUser().then(res => {
+							if (String(res.code) === '1') {
+								this.users=res.data
+								if(this.keyword!=''){
+									this.users1=this.users.filter(e =>
+											e.username.includes(this.keyword)
+									)
+								}else {
+									this.users1=this.users
+								}
+							}
+
+						}).catch(err => {
+							this.$message.error('请求出错了：' + err)
+						})
+
+
+						await getmygroup().then(res=>{
+							if(String(res.code) === '1'){
+								this.groups=res.data
+								if(this.keyword!=''){
+									this.groups1=this.groups.filter(e =>
+											e.name.includes(this.keyword)
+									)
+								}else {
+									this.groups1=this.groups
+								}
+							}else {
+								this.$message.error("搜索失败")
+							}
+						})
+
+
+
+
+
+
+					}
+				}
+			})
+		</script>
+	</body>
+</html>                                                                            

@@ -51,21 +51,23 @@
                 :header-cell-style="{ textAlign: 'center' }"
         >
             <el-table-column
-                    prop="product_id"
+                    prop="productId"
                     label="商品ID"
             ></el-table-column>
 
             <el-table-column
-                    prop="product_name"
+                    prop="productName"
                     label="商品名称"
             ></el-table-column>
 
             <el-table-column
-                    prop="source"
-                    label="商品来源"
+                    prop="type"
+                    label="商品类别"
                     width="140"
             >
-
+                <template slot-scope="{row}">
+                    {{ row.type==1?'课程':(row.type==2?'健身器材':'食品') }}
+                </template>
             </el-table-column>
 
             <el-table-column
@@ -74,15 +76,16 @@
             ></el-table-column>
 
 
-            <el-table-column
-                    prop="original_price"
-                    label="原始价格"
-            ></el-table-column>
 
             <el-table-column
                     prop="videolink"
                     label="视频链接"
-            ></el-table-column>
+            >
+                <template slot-scope="{row}">
+                    {{ row.videolink||'没有视频' }}
+                </template>
+
+            </el-table-column>
 
             <el-table-column
                     prop="sales"
@@ -92,23 +95,17 @@
             <el-table-column
                     prop="info"
                     label="产品介绍"
+                    width="300"
             ></el-table-column>
 
             <el-table-column
                     prop="stock"
                     label="库存数量"
-            ></el-table-column>
-
-            <el-table-column
-                    prop="suit_tag"
-                    label="适合人群标签"
-            ></el-table-column>
-
-            <el-table-column
-                    prop="relate_recomm"
-                    label="相关推荐产品"
-            ></el-table-column>
-
+            >
+                <template slot-scope="{row}">
+                    {{ 500 }}
+                </template>
+            </el-table-column>
 
             <el-table-column
                     label="操作"
@@ -122,7 +119,7 @@
                             class="blueBug"
                             @click="userdetail(scope.row)"
                     >
-                        查看
+                        更改
                     </el-button>
 
 
@@ -132,7 +129,7 @@
                             class="delBut non"
                             @click="statusHandle(scope.row)"
                     >
-                        {{ scope.row.status == '1' ? '冻结' : '启用' }}
+                        {{ scope.row.status == '1' ? '下架' : '下架' }}
                     </el-button>
                 </template>
             </el-table-column>
@@ -229,7 +226,7 @@
 <!-- 引入axios -->
 <script src="../../../public/plugins/axios/axios.min.js"></script>
 <script src="../../../public/js/request.js"></script>
-<script src="../../myapi/users.js"></script>
+<script src="../../myapi/product.js"></script>
 <script>
     new Vue({
         el: '#member-app',
@@ -260,10 +257,11 @@
                     pageSize: this.pageSize,
                     name: this.input ? this.input : undefined
                 }
-                await getUserList(params).then(res => {
+                await getproList(params).then(res => {
                     if (String(res.code) === '1') {
                         this.tableData = res.data.records || []
                         this.counts = res.data.total
+                        console.log(this.tableData)
                     }
                 }).catch(err => {
                     this.$message.error('请求出错了：' + err)

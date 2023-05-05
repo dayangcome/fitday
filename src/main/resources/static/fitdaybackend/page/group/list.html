@@ -51,18 +51,18 @@
                 :header-cell-style="{ textAlign: 'center' }"
         >
             <el-table-column
-                    prop="group_id"
-                    label="组ID"
+                    prop="id"
+                    label="小组ID"
             ></el-table-column>
 
             <el-table-column
-                    prop="group_name"
-                    label="组名"
+                    prop="name"
+                    label="小组名"
             ></el-table-column>
 
             <el-table-column
                     prop="tags"
-                    label="组标签"
+                    label="小组标签"
                     width="140"
             >
 
@@ -70,34 +70,51 @@
 
             <el-table-column
                     prop="introduction"
-                    label="组介绍"
+                    label="小组介绍"
             ></el-table-column>
 
 
             <el-table-column
                     prop="members"
                     label="组人数"
-            ></el-table-column>
 
-            <el-table-column
-                    prop="avatar"
-                    label="组头像"
-            ></el-table-column>
+            >
+                <template slot-scope="{row}">
+                    {{ row.members }} / {{ row.mymax }}
+                </template>
+            </el-table-column>
+
+            <el-table-column label="小组头像">
+                <template slot-scope="scope">
+                    <el-popover placement="top-start" title="" trigger="hover">
+                        <img :src="scope.row.avatar" alt="" style="width: 250px;height: 250px;">
+                        <img slot="reference" :src="scope.row.avatar" style="width: 32px;height: 32px;">
+                    </el-popover>
+                </template>
+            </el-table-column>
 
             <el-table-column
                     prop="leader"
-                    label="组长"
+                    label="组长ID"
             ></el-table-column>
 
             <el-table-column
                     prop="Deputyleader1"
-                    label="副组长1"
-            ></el-table-column>
+                    label="副组长1 ID"
+            >
+                <template slot-scope="{row}">
+                    {{ row.Deputyleader1||'暂无副组长1' }}
+                </template>
+            </el-table-column>
 
             <el-table-column
                     prop="Deputyleader2"
-                    label="副组长2"
-            ></el-table-column>
+                    label="副组长2 ID"
+            >
+                <template slot-scope="{row}">
+                    {{ row.Deputyleader2||'暂无副组长2' }}
+                </template>
+            </el-table-column>
 
             <el-table-column
                     label="操作"
@@ -108,20 +125,10 @@
                     <el-button
                             type="text"
                             size="small"
-                            class="blueBug"
-                            @click="userdetail(scope.row)"
-                    >
-                        查看
-                    </el-button>
-
-
-                    <el-button
-                            type="text"
-                            size="small"
                             class="delBut non"
                             @click="statusHandle(scope.row)"
                     >
-                        {{ scope.row.status == '1' ? '冻结' : '启用' }}
+                        {{ '冻结' }}
                     </el-button>
                 </template>
             </el-table-column>
@@ -218,7 +225,7 @@
 <!-- 引入axios -->
 <script src="../../../public/plugins/axios/axios.min.js"></script>
 <script src="../../../public/js/request.js"></script>
-<script src="../../myapi/users.js"></script>
+<script src="../../myapi/group.js"></script>
 <script>
     new Vue({
         el: '#member-app',
@@ -238,7 +245,7 @@
         computed: {},
         created() {
             this.init()
-            this.empInfo = JSON.parse(localStorage.getItem('empInfo')).name
+            this.empInfo = JSON.parse(localStorage.getItem('empInfo'))
         },
         mounted() {
         },
@@ -249,10 +256,11 @@
                     pageSize: this.pageSize,
                     name: this.input ? this.input : undefined
                 }
-                await getUserList(params).then(res => {
+                await getGroupList(params).then(res => {
                     if (String(res.code) === '1') {
                         this.tableData = res.data.records || []
                         this.counts = res.data.total
+                        console.log(this.tableData)
                     }
                 }).catch(err => {
                     this.$message.error('请求出错了：' + err)

@@ -1,0 +1,244 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta charset="utf-8" />
+        <title>购买记录</title>
+        <link rel="shortcut icon" href="../../../public/favicon.ico">
+        <link rel="stylesheet" href="../../../public/plugins/element-ui/index.css" />
+    
+        <style type="text/css">
+        #user{
+            float: right;
+        }
+        h1{
+            margin: 2px 0;
+        }
+        .el-page-header__left .el-icon-back{
+            font-size: 30px;
+            margin-right: 15px;
+        }
+        .el-page-header__title{
+            font-size: 18px;
+        }
+        .container{
+            margin: 0 40px;
+        }
+        .orig:hover{
+            color: dodgerblue;
+        }
+        .el-table__header-wrapper{
+            font-size: 18px;
+            font-weight: 600;
+        }
+        </style>
+    </head>
+    <body>
+        <div id="app">
+           <div class="banner" style="height: 120px; display: flex; background-image: url(../../assets/img/222.jpg);">
+               <img src="../../assets/img/fitdaylogo.png" alt="" style="height:100px ;width:300px;margin:0 80px;">
+               <span class="myfont" style="color: azure;
+               font-size: 40px;
+               line-height: 120px;
+               margin-left: 100px;">吃好，练好，拥有好心态，轻装上阵！</span>
+           </div>
+
+            <div class="container">
+                <div style="display: inline-block;margin-top: 25px;font-size: 18px;">
+                    <span @click="navto" class="orig" style="font-weight: bold;cursor: pointer">首页</span>
+                    <span>></span>
+                    <span>我的订单</span>
+                </div>
+                <h1 style="text-align: center;">我的订单</h1>
+
+                <div class="tableBar">
+
+                </div>
+                <el-input
+                        v-model="input"
+                        placeholder="请输入商品名称"
+                        style="width: 250px;margin-bottom: 15px"
+                        clearable
+                        @keyup.enter.native="handleQuery"
+                >
+                    <i
+                            slot="prefix"
+                            class="el-input__icon el-icon-search"
+                            style="cursor: pointer;"
+                            @click="handleQuery"
+                    ></i>
+                </el-input>
+                <el-table
+                        :data="tableData"
+                        stripe
+                        border
+                        class="tableBox"
+                        :cell-style="{ textAlign: 'center' }"
+                        :header-cell-style="{ textAlign: 'center' }"
+                        style="font-size: 16px;font-weight: 550"
+                >
+                    <el-table-column
+                            prop="orderId"
+                            label="订单号"
+                            width="340"
+                            :show-overflow-tooltip="true"
+                    >
+                    </el-table-column>
+
+
+                    <el-table-column
+                            prop="prepare2"
+                            label="商品名称"
+                            width="200"
+                            :show-overflow-tooltip="true"
+                    ></el-table-column>
+
+                    <el-table-column label="商品图片" width="200">
+                        <template slot-scope="scope">
+                            <el-popover placement="top-start" title="" trigger="hover">
+                                <img :src="scope.row.avatar" alt="" style="width: 250px;height: 250px;">
+                                <img slot="reference" :src="scope.row.avatar" style="width: 45px;height: 45px;">
+                            </el-popover>
+                        </template>
+                    </el-table-column>
+
+                    <el-table-column
+                            label="购买数量"
+                            prop="num"
+                            width="140"
+                    >
+                    </el-table-column>
+
+                    <el-table-column
+                            label="总付款金额"
+                            width="200"
+                    >
+                        <template slot-scope="scope">
+                            <span style="color: red">￥{{scope.row.totalPrice}}</span>
+                        </template>
+                    </el-table-column>
+
+                    <el-table-column
+                            prop="type"
+                            label="支付方式"
+                            width="160"
+                    >
+                        <template slot-scope="scope">
+                            <span v-if="scope.row.payMethod==1" style="color: orange">余额支付</span>
+                            <span v-if="scope.row.payMethod==2" style="color: #51a549">微信支付</span>
+                            <span v-if="scope.row.payMethod==3" style="color: #1a76ff">支付宝支付</span>
+                        </template>
+                    </el-table-column>
+
+
+
+
+                    <el-table-column label="下单时间" width="200" prop="payTime">
+                        <template slot-scope="scope">
+                            <span>{{scope.row.orderTime.toLocaleString().replace(/T/g, ' ').replace(/\.[\d]{3}Z/, '')}}</span>
+                        </template>
+                    </el-table-column>
+
+                    <el-table-column
+                            prop="addressId"
+                            label="收货地址"
+                            width="400"
+                            :show-overflow-tooltip="true"
+                    ></el-table-column>
+
+
+                    <el-table-column label="订单状态" width="160">
+                        <template slot-scope="scope">
+                            <span v-if="scope.row.orderState==1" style="color: #00a49a">已完成下单</span>
+                            <span v-if="scope.row.orderState==2" style="color: orangered">已签收</span>
+                        </template>
+                    </el-table-column>
+
+
+                </el-table>
+                <div style="text-align: center;margin-top: 40px">
+                    <el-pagination
+                            class="pageList"
+                            :page-sizes="[10, 20, 30, 40]"
+                            :page-size="pageSize"
+                            layout="total, sizes, prev, pager, next, jumper"
+                            :total="counts"
+                            :current-page.sync="page"
+                            @size-change="handleSizeChange"
+                            @current-change="handleCurrentChange"
+                    ></el-pagination>
+                </div>
+            </div>
+                    
+
+        </div>
+        <!-- 开发环境版本，包含了有帮助的命令行警告 -->
+        <script src="../../../public/plugins/vue/vue.js"></script>
+        <!-- 引入组件库 -->
+        <script src="../../../public/plugins/element-ui/index.js"></script>
+        <script src="../../../public/plugins/axios/axios.min.js"></script>
+        <script src="../../../public/js/request.js"></script>
+        <script src="../../myapi/moneyadd.js"></script>
+        <script>
+            new Vue({
+                el: '#app',
+                data() {
+                    return{
+                        tableData:[],
+                        counts: 0,
+                        page: 1,
+                        pageSize: 10,
+                        userInfo:{},
+                        input:''
+                    }
+                },
+                created(){
+                    var userInfo = window.localStorage.getItem('userInfo')
+                    userInfo = JSON.parse(userInfo)
+                    this.userInfo=userInfo
+                    this.init();
+                },
+                methods: {
+                    handleQuery() {
+                        this.page = 1;
+                        this.init();
+                    },
+                    async init () {
+                        const params = {
+                            page: this.page,
+                            pageSize: this.pageSize,
+                            name: this.input ? this.input : undefined,
+                            uid:this.userInfo.uid
+                        }
+                        await getbuyList(params).then(res => {
+                            if (String(res.code) === '1') {
+                                this.tableData = res.data.records || []
+                                this.counts = res.data.total
+                                this.tableData.reverse()
+                            }
+                        }).catch(err => {
+                            this.$message.error('请求出错了：' + err)
+                        })
+                    },
+                    handleQuery() {
+                        this.page = 1;
+                        this.init();
+                    },
+                    handleSizeChange (val) {
+                        this.pageSize = val
+                        this.init()
+                    },
+                    handleCurrentChange (val) {
+                        this.page = val
+                        this.init()
+                    },
+                    navto(){
+                        window.location.href="../../index.html"
+                    },
+                    navto2(){
+                        window.location.href="./Addmoney.html"
+                    },
+                }
+            })
+        </script>
+    </body>
+</html>
