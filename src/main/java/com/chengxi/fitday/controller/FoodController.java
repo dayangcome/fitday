@@ -11,6 +11,9 @@ import com.chengxi.fitday.entity.*;
 import com.chengxi.fitday.service.IDietPlanService;
 import com.chengxi.fitday.service.IFoodService;
 import com.chengxi.fitday.service.IUserService;
+import com.chengxi.fitday.service.IUserinfoService;
+import com.chengxi.fitday.utils.FoodRecommendation;
+import com.chengxi.fitday.utils.SportRecommendation;
 import org.apache.commons.lang.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.util.DigestUtils;
@@ -20,6 +23,7 @@ import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.LocalTime;
 import java.time.format.DateTimeFormatter;
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -42,6 +46,9 @@ public class FoodController {
     @Autowired
     private IUserService userService;
 
+    @Autowired
+    private IUserinfoService userinfoService;
+
     //食物信息分页查询
     @GetMapping("/page")
     public R<Page> page(int page, int pageSize, String name){
@@ -49,6 +56,12 @@ public class FoodController {
         LambdaQueryWrapper<Food> queryWrapper=new LambdaQueryWrapper<>();
         queryWrapper.like(StringUtils.isNotEmpty(name),Food::getFoodName,name);   //模糊查询食物名称
 
+        FoodRecommendation foodRecommendation = new FoodRecommendation();
+        List<String> recommendedRecipes = foodRecommendation.getRecommendation(userinfoService.getById(0), 5).getRecommendedRecipes();
+
+        for (String recipe : recommendedRecipes) {
+            System.out.println(recipe);
+        }
 
         foodService.page(pageinfo,queryWrapper);
         return R.success(pageinfo);
@@ -70,7 +83,7 @@ public class FoodController {
         food1.setProtein(food.getProtein());
         food1.setCarbohydrate(food.getCarbohydrate());
         foodService.save(food1);
-        return R.success("注册成功");
+        return R.success("添加成功");
     }
 
     //删除食物信息（员工后台）
@@ -97,6 +110,21 @@ public class FoodController {
         food1.setCarbohydrate(food.getCarbohydrate());
         foodService.updateById(food1);
         return R.success("更改成功");
+    }
+
+    //查询所有食物信息（根据用户信息协同过滤）
+    @GetMapping("recom/{uid}")
+    public R<List<Food>> Recommendation(@PathVariable Long uid){
+        List <Food> arr=foodService.list();
+        FoodRecommendation foodRecommendation = new FoodRecommendation();  //实现协同过滤,开始协同过滤算法
+        List<String> recommendedRecipes = foodRecommendation.getRecommendation(userinfoService.getById(uid), arr.size()).getRecommendedRecipes();
+        LambdaQueryWrapper<Food> queryWrapper=new LambdaQueryWrapper<>();
+        List<Food> farr=new ArrayList<>();
+        for(int i=0;i<recommendedRecipes.size();i++){
+            queryWrapper.eq(Food::getFoodName,recommendedRecipes.get(i));
+            farr.add(foodService.getOne(queryWrapper));
+        }
+        return R.success(farr);
     }
 
     //查询所有食物信息
