@@ -9,8 +9,6 @@ import org.apache.ibatis.annotations.Mapper;
  *  Mapper 接口
  * </p>
  *
- * @author 成溪科技公司开发
- * @since 2022-12-26
  */
 @Mapper
 public interface UserMapper extends BaseMapper<User> {

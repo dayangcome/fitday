@@ -18,14 +18,6 @@ import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.Date;
 
-/**
- * <p>
- * 用户充值表 前端控制器
- * </p>
- *
- * @author 成溪科技公司开发
- * @since 2023-03-29
- */
 @RestController
 @RequestMapping("/recharge")
 public class RechargeController {

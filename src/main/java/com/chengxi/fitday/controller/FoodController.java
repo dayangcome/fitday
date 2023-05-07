@@ -26,14 +26,6 @@ import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.List;
 
-/**
- * <p>
- *  前端控制器
- * </p>
- *
- * @author 成溪科技公司开发
- * @since 2023-01-28
- */
 @RestController
 @RequestMapping("/food")
 public class FoodController {
@@ -56,12 +48,12 @@ public class FoodController {
         LambdaQueryWrapper<Food> queryWrapper=new LambdaQueryWrapper<>();
         queryWrapper.like(StringUtils.isNotEmpty(name),Food::getFoodName,name);   //模糊查询食物名称
 
-        FoodRecommendation foodRecommendation = new FoodRecommendation();
-        List<String> recommendedRecipes = foodRecommendation.getRecommendation(userinfoService.getById(0), 5).getRecommendedRecipes();
-
-        for (String recipe : recommendedRecipes) {
-            System.out.println(recipe);
-        }
+//        FoodRecommendation foodRecommendation = new FoodRecommendation();
+//        List<String> recommendedRecipes = foodRecommendation.getRecommendation(userinfoService.getById(0), 5).getRecommendedRecipes();
+//
+//        for (String recipe : recommendedRecipes) {
+//            System.out.println(recipe);
+//        }
 
         foodService.page(pageinfo,queryWrapper);
         return R.success(pageinfo);

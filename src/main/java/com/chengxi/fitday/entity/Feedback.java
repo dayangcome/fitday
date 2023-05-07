@@ -8,14 +8,7 @@ import java.io.Serializable;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 
-/**
- * <p>
- * 
- * </p>
- *
- * @author 成溪科技公司开发
- * @since 2023-01-07
- */
+
 @Data
 @EqualsAndHashCode(callSuper = false)
 public class Feedback implements Serializable {

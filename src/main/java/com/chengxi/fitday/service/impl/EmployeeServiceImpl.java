@@ -11,8 +11,6 @@ import org.springframework.stereotype.Service;
  *  服务实现类
  * </p>
  *
- * @author 成溪科技公司开发
- * @since 2022-12-26
  */
 @Service
 public class EmployeeServiceImpl extends ServiceImpl<EmployeeMapper, Employee> implements IEmployeeService {

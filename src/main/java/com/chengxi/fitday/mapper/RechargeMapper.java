@@ -6,11 +6,9 @@ import org.apache.ibatis.annotations.Mapper;
 
 /**
  * <p>
- * 小程序商城-用户充值表 Mapper 接口
+ * Mapper 接口
  * </p>
  *
- * @author 成溪科技公司开发
- * @since 2023-03-29
  */
 @Mapper
 public interface RechargeMapper extends BaseMapper<Recharge> {

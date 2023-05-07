@@ -14,8 +14,8 @@ class FitdayApplicationTests {
 
     @Test
     void contextLoads() {
-        String ss="abcdefg1";
-        System.out.println(LocalDateTime.of(LocalDate.now(), LocalTime.MIN));
+        String ss="123456ab";
+        System.out.println(DigestUtils.md5DigestAsHex(ss.getBytes()));
     }
 
 }

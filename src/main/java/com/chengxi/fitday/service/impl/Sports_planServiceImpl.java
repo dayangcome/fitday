@@ -11,8 +11,6 @@ import org.springframework.stereotype.Service;
  *  服务实现类
  * </p>
  *
- * @author 成溪科技公司开发
- * @since 2023-01-29
  */
 @Service
 public class Sports_planServiceImpl extends ServiceImpl<SportsPlanMapper, SportsPlan> implements ISportsPlanService {

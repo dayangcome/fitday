@@ -9,14 +9,6 @@ import com.baomidou.mybatisplus.annotation.TableLogic;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 
-/**
- * <p>
- * 
- * </p>
- *
- * @author 成溪科技公司开发
- * @since 2023-04-12
- */
 @Data
 @EqualsAndHashCode(callSuper = false)
 public class DynamicComment implements Serializable {

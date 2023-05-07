@@ -8,14 +8,7 @@ import java.io.Serializable;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 
-/**
- * <p>
- * 
- * </p>
- *
- * @author 成溪科技公司开发
- * @since 2022-12-26
- */
+
 @Data
 @EqualsAndHashCode(callSuper = false)
 public class Employee implements Serializable {

@@ -34,14 +34,14 @@
     <div style="margin-top: 15px;margin-left: 40px;font-size: 17px">
         <span @click="mynav" class="orig" style="font-weight: bold;cursor: pointer">社区</span>
         <span>></span>
-        <span>我的动态</span>
+        <span>我的文章</span>
     </div>
     <div class="my">
     <div class="container margin-b-lg">
         <nav class="navbar navbar-expand-md border-bottom">
 
             <!-- logo -->
-            <h1><a class="navbar-brand text-dark font-size-bg" href="#">我的动态日常</a></h1>
+            <h1><a class="navbar-brand text-dark font-size-bg" href="#">我的文章</a></h1>
             <!-- 当屏幕小的时候自动收缩导航栏改用下拉列表 -->
             <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#headerNavbar">
                 <i class="fa fa-bars"></i>
@@ -58,11 +58,11 @@
                         <el-popconfirm
                                 icon="el-icon-info"
                                 icon-color="red"
-                                title="确定要删除该动态吗？"
+                                title="确定要删除该文章吗？"
                                 @confirm="mydel(item.id)"
                                 style="font-size: 16px;width: 200px;height: 150px;"
                         >
-                            <el-link slot="reference">删除动态</el-link>
+                            <el-link slot="reference">删除文章</el-link>
                         </el-popconfirm>
                     </div>
                     <div class="font-size-article-header">{{item.title}}</div>
@@ -100,7 +100,7 @@
                     <div class="row">
                         <div class="col-sm-4">
                             <a href="#">
-                                <div>动态</div>
+                                <div>文章</div>
                                 <div>{{tableData.length}}</div>
                             </a>
                         </div>
@@ -108,6 +108,7 @@
                             <a href="">
                                 <div>粉丝</div>
                                 <div>0</div>
+                            </a>
                             </a>
                         </div>
                         <div class="col-sm-4">
@@ -118,22 +119,7 @@
                         </div>
                     </div>
                 </div>
-                <!-- 最新文章-->
-                <div class="bar shadow-small">
-                    <h3 class="bar-title">最新动态</h3>
-                </div>
-                <!--归档-->
-                <div class="bar shadow-small">
-                    <h3 class="bar-title">归档</h3>
-                </div>
-                <!--分类-->
-                <div class="bar shadow-small">
-                    <h3 class="bar-title">分类</h3>
-                </div>
-                <div class="bar shadow-small">
-                    <h3 class="bar-title">标签</h3>
 
-                </div>
             </div>
         </div>
     </div>
@@ -144,7 +130,6 @@
             <div class="col-sm-12 text-center margin-tb-large">
 
             </div>
-
         </div>
     </div>
     </div>
@@ -254,7 +239,7 @@
             mydel(id){
                     deldynamic(id).then(res => {
                         if (String(res.code) === '1') {
-                            this.$message.success('已成功删除该动态！')
+                            this.$message.success('已成功删除该文章！')
                             this.init()
                         }
                     }).catch(err => {

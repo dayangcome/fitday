@@ -11,14 +11,6 @@ import java.time.LocalDateTime;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 
-/**
- * <p>
- * 小程序商城-用户充值表
- * </p>
- *
- * @author 成溪科技公司开发
- * @since 2023-03-29
- */
 @Data
 @EqualsAndHashCode(callSuper = false)
 public class Recharge implements Serializable {

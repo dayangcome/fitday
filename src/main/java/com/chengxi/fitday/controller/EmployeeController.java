@@ -21,14 +21,6 @@ import javax.servlet.http.HttpSession;
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
 
-/**
- * <p>
- *  前端控制器
- * </p>
- *
- * @author 成溪科技公司开发
- * @since 2022-12-26
- */
 @RestController
 @RequestMapping("/employee")
 public class EmployeeController {

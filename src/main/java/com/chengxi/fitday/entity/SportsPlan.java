@@ -8,14 +8,7 @@ import com.baomidou.mybatisplus.annotation.TableLogic;
 import com.baomidou.mybatisplus.annotation.TableName;
 import lombok.*;
 
-/**
- * <p>
- * 
- * </p>
- *
- * @author 成溪科技公司开发
- * @since 2023-01-29
- */
+
 @Data
 @EqualsAndHashCode(callSuper = false)
 @TableName("sports_plan")

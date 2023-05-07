@@ -8,14 +8,7 @@ import com.baomidou.mybatisplus.annotation.TableName;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 
-/**
- * <p>
- * 
- * </p>
- *
- * @author 成溪科技公司开发
- * @since 2023-02-11
- */
+
 @Data
 @EqualsAndHashCode(callSuper = false)
 @TableName("diet_plan")

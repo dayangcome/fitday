@@ -11,8 +11,6 @@ import org.springframework.stereotype.Service;
  *  服务实现类
  * </p>
  *
- * @author 成溪科技公司开发
- * @since 2023-04-23
  */
 @Service
 public class ProductServiceImpl extends ServiceImpl<ProductMapper, Product> implements IProductService {
