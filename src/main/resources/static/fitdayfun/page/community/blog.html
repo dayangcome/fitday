@@ -36,20 +36,15 @@
     </div>
     <div class="container margin-b-lg">
         <nav class="navbar navbar-expand-md border-bottom">
-            <!-- logo -->
-            <h1><a class="navbar-brand text-dark font-size-bg" href="#">{{userInfo.username}}的博客</a></h1>
-            <!-- 当屏幕小的时候自动收缩导航栏改用下拉列表 -->
             <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#headerNavbar">
                 <i class="fa fa-bars"></i>
             </button>
-            <!-- Navbar links -->
             <div class="collapse navbar-collapse justify-content-end" id="headerNavbar">
             </div>
         </nav>
     </div>
     <div class="container margin-b-lg">
         <div class="row">
-            <!--    博客列表-->
             <div class="col-sm-9">
                 <div class="article-body shadow-small">
                     <div class="article-header">
@@ -101,27 +96,12 @@
             <!--  bar  -->
             <div class="col-sm-3">
                 <div class="bar shadow-small text-center">
-                    <img :src="myava" class="rounded-circle" alt="" style="width: 110px">
-                    <div class="author-info-name margin-tb-normal">{{userInfo.username}}</div>
+                    <h4>作者</h4><br>
+
+                    <img :src="hisava" class="rounded-circle" alt="" style="width: 110px">
+                    <div class="author-info-name margin-tb-normal">{{author.username}}</div>
                     <div class="row">
-                        <div class="col-sm-4">
-                            <a href="#">
-                                <div>文章</div>
-                                <div>31</div>
-                            </a>
-                        </div>
-                        <div class="col-sm-4">
-                            <a href="">
-                                <div>标签</div>
-                                <div>36</div>
-                            </a>
-                        </div>
-                        <div class="col-sm-4">
-                            <a href="#">
-                                <div>分类</div>
-                                <div>9</div>
-                            </a>
-                        </div>
+                        {{userInfo.sign}}
                     </div>
                 </div>
             <!-- 最新文章-->
@@ -136,7 +116,7 @@
                                 </div>
                                 <div class="col-sm-10">
                                     <div class="margin-ml-normal">
-                                        <img :src="item.productPicture" alt="" class="rounded-circle" style="width: 40px;">&nbsp;&nbsp;{{item.username}}<span class="font-size-sm"><br>{{item.createTime.replace(/T/g, '  ').replace(/.[\d]{3}Z/, '  ')}} &nbsp;&nbsp;{{index+1}}楼</span>
+                                        <img :src="item.productPicture" alt="" class="rounded-circle" style="width: 40px;">&nbsp;&nbsp;{{item.username}}<span class="font-size-sm"><br>{{item.createTime.replace(/T/g, '  ').replace(/.[\d]{3}Z/, '  ').substring(0,20)}} &nbsp;&nbsp;{{index+1}}楼</span>
 
                                         <a href="#comment" class="float-right"><i class="fa fa-comment-o"></i></a>
                                     </div>
@@ -180,12 +160,18 @@
                     userInfo:{},
                     userInfo2:{},
                     myava:'',
+                    hisava:'',
                     dynamic:{},
                     picarr:[],
                     myinput:'',
                     comments:[],
+                    author:[],
                     go:"0",
-                    param:"1"
+                    param:"1",
+                    doctor:{
+                        username:'心理医生',
+                        avatar:'https://img2.baidu.com/it/u=3502996416,2052036618&fm=253&fmt=auto&app=138&f=JPEG?w=500&h=500',
+                    }
                 }
             },
             computed: {},
@@ -205,16 +191,32 @@
                 localStorage.removeItem("go")
                 this.param=window.localStorage.getItem("param")
                 localStorage.removeItem("param")
+                this.init()
             },
             mounted() {
-                window.parent.postMessage(document.body.clientHeight,'*')
+
+                window.parent.postMessage(document.body.clientHeight+100,'*')
                 this.picarr=this.dynamic.picture.split(" ")
+
             },
             methods: {
+               async init(){
+                    await getmyauthor(this.dynamic.userId).then(res=>{
+                        if(String(res.code) === '1'){
+                            console.log(res.data)
+                            this.author=res.data
+                            this.hisava=this.author.avatar
+                        }else{
+                            this.author=this.doctor
+                            this.hisava=this.author.avatar
+                        }
+                    })
+                },
                 mysend(){
                     addcomments2(this.userInfo.uid,this.dynamic.id,this.myinput).then(res=>{
                         if(String(res.code) === '1'){
                             this.$message.success("发布成功")
+                            this.comments.push(res.data)
                             this.myinput=''
                         }else {
                             this.$message.error("发布失败")

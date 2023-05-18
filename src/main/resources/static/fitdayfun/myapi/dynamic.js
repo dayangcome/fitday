@@ -49,3 +49,10 @@ function getcomments2(dyId) {
         method: 'get'
     })
 }
+
+function getmyauthor(uid) {
+    return $axios({
+        url: `/user/getuser/${uid}`,
+        method: 'get'
+    })
+}

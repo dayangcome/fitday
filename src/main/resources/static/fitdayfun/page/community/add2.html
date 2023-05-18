@@ -195,7 +195,7 @@
                 var btns=document.querySelectorAll("button");//我要发贴按钮和发布按钮
                 var inputs=document.querySelectorAll("input");//标题与内容输入框
                 if(inputs[0].value==""||select.value=="请选择模块"||this.textarea==''){
-                    alert("请输入内容!!!");
+                    alert("请完善文章内容！");
                     btns[1].style.disabled=true;
                 }else {
                     var title=$(".t1").val()

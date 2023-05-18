@@ -78,7 +78,7 @@
                                         <div class="col-sm-12">
                                             <a href="javascript:void(0);"><i class="fa fa-image"></i></a>
                                             <input type="file" style="display: none" name="file" id="file">
-                                            <button type="submit" @click="mysend" class="btn btn-sm btn-light float-right">发送</button>
+                                            <button type="submit" @click.prevent="mysend" class="btn btn-sm btn-light float-right">发送</button>
                                         </div>
                                     </div>
                                 </div>
@@ -92,27 +92,10 @@
             <!--  bar  -->
             <div class="col-sm-3">
                 <div class="bar shadow-small text-center">
+                    <h4>作者</h4><br>
                     <img src="https://img2.baidu.com/it/u=3502996416,2052036618&fm=253&fmt=auto&app=138&f=JPEG?w=500&h=500" class="rounded-circle" alt="" style="width: 110px">
                     <div class="author-info-name margin-tb-normal">心理医生</div>
                     <div class="row">
-                        <div class="col-sm-4">
-                            <a href="#">
-                                <div>文章</div>
-                                <div>31</div>
-                            </a>
-                        </div>
-                        <div class="col-sm-4">
-                            <a href="">
-                                <div>标签</div>
-                                <div>36</div>
-                            </a>
-                        </div>
-                        <div class="col-sm-4">
-                            <a href="#">
-                                <div>分类</div>
-                                <div>9</div>
-                            </a>
-                        </div>
                     </div>
                 </div>
             <!-- 最新文章-->
@@ -127,7 +110,7 @@
                                 </div>
                                 <div class="col-sm-10">
                                     <div class="margin-ml-normal">
-                                        <img :src="item.productPicture" alt="" class="rounded-circle" style="width: 40px;">&nbsp;&nbsp;{{item.username}}<span class="font-size-sm"><br>{{item.createTime.replace(/T/g, '  ').replace(/.[\d]{3}Z/, '  ')}} &nbsp;&nbsp;{{index+1}}楼</span>
+                                        <img :src="item.productPicture" alt="" class="rounded-circle" style="width: 40px;">&nbsp;&nbsp;{{item.username}}<span class="font-size-sm"><br>{{item.createTime.replace(/T/g, '  ').replace(/.[\d]{3}Z/, '  ').substring(0,20)}} &nbsp;&nbsp;{{index+1}}楼</span>
 
                                         <a href="#comment" class="float-right"><i class="fa fa-comment-o"></i></a>
                                     </div>
@@ -189,13 +172,23 @@
                 this.myava=userInfo.avatar
                 this.dynamic = JSON.parse(window.localStorage.getItem('dynamic'))
                 window.localStorage.removeItem('dynamic')
+                this.comments=JSON.parse(window.localStorage.getItem("comments"))
+                localStorage.removeItem("comments")
             },
             mounted() {
                 window.parent.postMessage(document.body.clientHeight,'*')
             },
             methods: {
                 mysend(){
-
+                    addcomments2(this.userInfo.uid,this.dynamic.id,this.myinput).then(res=>{
+                        if(String(res.code) === '1'){
+                            this.$message.success("发布成功")
+                            this.comments.push(res.data)
+                            this.myinput=''
+                        }else {
+                            this.$message.error("发布失败")
+                        }
+                    })
                 },
                 navto(){
                     window.location.href="./psychology.html"

@@ -98,25 +98,7 @@
                     <img :src="myava" class="rounded-circle" alt="" style="width: 110px">
                     <div class="author-info-name margin-tb-normal">{{userInfo.username}}</div>
                     <div class="row">
-                        <div class="col-sm-4">
-                            <a href="#">
-                                <div>文章</div>
-                                <div>{{tableData.length}}</div>
-                            </a>
-                        </div>
-                        <div class="col-sm-4">
-                            <a href="">
-                                <div>粉丝</div>
-                                <div>0</div>
-                            </a>
-                            </a>
-                        </div>
-                        <div class="col-sm-4">
-                            <a href="#">
-                                <div>关注</div>
-                                <div>0</div>
-                            </a>
-                        </div>
+                        {{userInfo.sign}}
                     </div>
                 </div>
 

@@ -209,7 +209,6 @@
 				await getonedynamic(theid).then(res=>{
 					if(String(res.code) === '1'){
 						window.localStorage.setItem("dynamic",JSON.stringify(res.data))
-
 					}else{
 						console.log(res.msg)
 					}

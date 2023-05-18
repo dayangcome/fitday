@@ -38,7 +38,7 @@ public class DynamicCommentController {
 
     //用户发表评论
     @PostMapping("/addcomments/{uid}/{dyId}/{content}")
-    public R<String> addcomments(@PathVariable Long uid,@PathVariable Long dyId,@PathVariable String content){
+    public R<DynamicComment> addcomments(@PathVariable Long uid,@PathVariable Long dyId,@PathVariable String content){
         DynamicComment comments=new DynamicComment();
         comments.setCreateTime(LocalDateTime.now());
         comments.setDynamicId(dyId);
@@ -64,7 +64,7 @@ public class DynamicCommentController {
         user.setLevel(user.getExp()/1000+1);    //检查用户是否升级
         userService.updateById(user);           //更新用户信息
 
-        return R.success("发表成功");
+        return R.success(comments);
     }
 }
 
