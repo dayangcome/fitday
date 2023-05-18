@@ -7,6 +7,21 @@
     <link rel="stylesheet" href="../../../../public/plugins/element-ui/index.css" />
     <title>Document</title>
     <style>
+        body {
+            animation: fadeInAnimation ease 3s;
+            animation-iteration-count: 1;
+            animation-fill-mode: forwards;
+
+        }
+
+        @keyframes fadeInAnimation {
+            0% {
+                opacity: 0;
+            }
+            100% {
+                opacity: 1;
+            }
+        }
         .whole_containor{
             margin: -8px -8px;
             width: 1518px;

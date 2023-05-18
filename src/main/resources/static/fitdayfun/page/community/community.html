@@ -9,9 +9,23 @@
 	<script type="text/javascript" src="../../../public/js/jquery.min.js"></script>
 	<script type="text/javascript" src="../../../public/js/sliders.js"></script>
 	<style>
-		body{
+		body {
+			animation: fadeInAnimation ease 3s;
+			animation-iteration-count: 1;
+			animation-fill-mode: forwards;
 			background-color: #fff;
+
 		}
+
+		@keyframes fadeInAnimation {
+			0% {
+				opacity: 0;
+			}
+			100% {
+				opacity: 1;
+			}
+		}
+
 	</style>
 </head>
 <body>
@@ -26,19 +40,19 @@
 				style="width:173px;height: 800px;"
 				>
 			<el-menu-item index="1">
-				<i class="el-icon-data-board"></i>
-				<span slot="title">Fit社区</span>
+				<i class="el-icon-house"></i>
+				<span slot="title">FitDay社区</span>
 			</el-menu-item>
 			<el-menu-item index="2">
-				<i class="el-icon-soccer"></i>
+				<i class="el-icon-reading"></i>
 				<span slot="title">我的文章</span>
 			</el-menu-item>
 			<el-menu-item index="3">
-				<i class="el-icon-food"></i>
-				<span slot="title">发布日常</span>
+				<i class="el-icon-share"></i>
+				<span slot="title">发布文章</span>
 			</el-menu-item>
 			<el-menu-item index="4">
-				<i class="el-icon-setting"></i>
+				<i class="el-icon-trophy"></i>
 				<span slot="title">达人专区</span>
 			</el-menu-item>
 		</el-menu>
@@ -73,8 +87,8 @@
 			<div class="topnews">
 				<h2>
 	   <span>
-	    <a href="/" target="_blank">点击排行</a>
-		 <a href="/" target="_blank">健身好文推荐</a>
+	    <a href="" target="_blank">点击排行</a>
+		 <a href="" target="_blank">健身好文推荐</a>
 	   </span>
 					社区文章
 				</h2>
@@ -103,152 +117,24 @@
 		<div class="r_box f_r" style="margin: 0 20px;">
 			<div class="tit01">
 				<h3>我的社区</h3>
-				<div class="gzwm">
-					<ul>
-						<li><a class="xlwb" href="#" target="_blank">我的关注</a></li>
-						<li><a class="txwb" href="../focus/focus.html" target="_blank">浏览历史</a></li>
-						<li><a class="rss" href="#" target="_blank">我的收藏</a></li>
-						<li><a class="wx" href="#" target="_blank">我的消息</a></li>
-					</ul>
-				</div>
 			</div>
 			<div class="ad300x100">
-				<a href="/">
+				<a href="">
 					<img src="../../assets/images/02.jpg">
 				</a>
 			</div>
-			<div class="tab" id="lp_right_select">
-				<div class="tab-top">
-					<ul class="hd" id="tb">
-						<li class="cur"><a href="/">点击排行</a></li>
-						<li><a href="/">瘦身好文推荐</a></li>
-						<li><a href="/">瘦身tip</a></li>
-					</ul>
-				</div>
-				<div class="tab-main" id="tb-main">
-					<div class="bd bd-news" style="display:block;"><ul>
-						<li><a href="/" target="_blank">阳康后饮食应注意哪些</a></li>
-						<li><a href="/" target="_blank">减肥不是单靠少吃！！！</a></li>
-						<li><a href="/" target="_blank">三分练，七分吃</a></li>
-						<li><a href="/" target="_blank">123</a></li>
-						<li><a href="/" target="_blank">123</a></li>
-						<li><a href="/" target="_blank">123</a></li>
-					</ul></div>
-					<div class="bd bd-news" ><ul>
-						<li><a href="/" target="_blank">阳康后饮食应注意哪些</a></li>
-						<li><a href="/" target="_blank">减肥不是单靠少吃！！！</a></li>
-						<li><a href="/" target="_blank">三分练，七分吃</a></li>
-						<li><a href="/" target="_blank">荤素搭配，吃出健康</a></li>
-						<li><a href="/" target="_blank">123</a></li>
-						<li><a href="/" target="_blank">123</a></li>
-					</ul></div>
-					<div class="bd bd-news" ><ul>
-						<li><a href="/" target="_blank">?????16??????С????????99.999%????????</a></li>
-						<li><a href="/" target="_blank">????????????????????</a></li>
-						<li><a href="/" target="_blank">?????????????</a></li>
-						<li><a href="/" target="_blank">??????????????! ??????????????????</a></li>
-						<li><a href="/" target="_blank">????????????????????</a></li>
-						<li><a href="/" target="_blank">??????????????????????????????????...</a></li>
-					</ul></div>
-				</div>
-			</div>
-			<div class="cloud">
+			<div class="cloud" style="margin-top: 20px">
 				<h3>主题活动</h3>
 				<ul>
-					<li><a href="/">减重挑战赛</a></li>
-					<li><a href="/">健康生活vlog大赛</a></li>
-					<li><a href="/">减脂挑战赛</a></li>
-					<li><a href="/">Fit讲座</a></li>
-					<li><a href="/">运动打卡挑战</a></li>
-					<li><a href="/">瘦身误区避坑指南</a></li>
-					<li><a href="/">减肥能吃XXX吗</a></li>
-
+					<li><a href="">减重挑战赛</a></li>
+					<li><a href="">健康生活vlog大赛</a></li>
+					<li><a href="">减脂挑战赛</a></li>
+					<li><a href="">Fit讲座</a></li>
+					<li><a href="">运动打卡挑战</a></li>
+					<li><a href="">瘦身误区避坑指南</a></li>
+					<li><a href="">减肥能吃XXX吗</a></li>
 				</ul>
 			</div>
-			<div class="tuwen">
-				<h3>可能适合你的</h3>
-				<ul>
-					<li><a href="/"><img src="../../assets/images/01.jpg"><b>?????????????</b></a>
-						<p>
-							<span class="tulanum"><a href="/">??????</a></span>
-							<span class="tutime">2016-02-16</span>
-						</p>
-					</li>
-					<li><a href="/"><img src="../../assets/images/02.jpg"><b>????????????????????绰</b></a>
-						<p>
-							<span class="tulanum"><a href="/">??????</a></span>
-							<span class="tutime">2016-02-16</span>
-						</p></li>
-					<li><a href="/"><img src="../../assets/images/03.jpg"><b>?????16??????С????????99.999%????????</b></a>
-						<p>
-							<span class="tulanum"><a href="/">??????</a></span>
-							<span class="tutime">2016-02-16</span>
-						</p></li>
-					<li><a href="/"><img src="../../assets/images/06.jpg"><b>??????????????????????????????????...</b></a>
-						<p>
-							<span class="tulanum"><a href="/">??????</a></span>
-							<span class="tutime">2016-02-16</span>
-						</p></li>
-					<li><a href="/"><img src="../../assets/images/04.jpg"><b>??????????????! ??????????????????</b></a>
-						<p>
-							<span class="tulanum"><a href="/">??????</a></span>
-							<span class="tutime">2016-02-16</span>
-						</p></li>
-				</ul>
-			</div>
-
-			<el-dialog
-					title="Fitday BMI自测"
-					:visible.sync="bmiFormVisible"
-					width="60%"
-					top="15px"
-			>
-				<div class="mytop">
-					<p>欢迎来到FitdayBMI自测界面！&#128512;身体质量指数，是BMI指数，简称体质指数，是国际上常用的衡量人体胖瘦程度以及是否健康的一个标准。</p>
-				</div>
-				<div class="main">
-					<div class="left">
-						<h4>计算你的身体质量指数 (BMI)</h4>
-						<p><span class="printbmi">{{printbmi0}}</span>&nbsp;&nbsp;&nbsp;<span class="printbmi">{{printbmi1}}</span></p>
-						<div>我的身高：<input type="text" class="heht" placeholder="请输入身高" v-model="hv"> 单位：厘米 cm</div>
-						<div>我的体重：<input type="text" class="weht" placeholder="请输入体重" v-model="wv"> 单位：千克 kg</div>
-						<div>BMI标准：<input type="text" value="中国标准"></div>
-						<div class="end"><input type="submit" value="计算BMI" @click="onbmi"></div>
-					</div>
-					<div class="right">
-						<p style="color: brown; font-weight: bold;">BMI中国标准</p>
-						<table border="0px" cellspacing="0" cellpadding="0">
-							<tr style="background-color: chartreuse;">
-								<th>分类</th>
-								<th>BMI范围</th>
-							</tr>
-							<tr style="background-color: hotpink;">
-								<th>偏瘦</th>
-								<th><= 18.4</th>
-							</tr>
-							<tr style="background-color: cyan;">
-								<th>正常</th>
-								<th>18.5 ~ 23.9</th>
-							</tr>
-							<tr style="background-color: slateblue;">
-								<th>过重</th>
-								<th>24.0 ~ 27.9</th>
-							</tr>
-							<tr style="background-color: purple;">
-								<th>肥胖</th>
-								<th>28~32</th>
-							</tr>
-							<tr style="background-color: royalblue;">
-								<th>严重肥胖</th>
-								<th>> 32.0</th>
-							</tr>
-						</table>
-					</div>
-				</div>
-				<span slot="footer" class="dialog-footer">
-            <el-button @click="bmiFormVisible = false">取 消</el-button>
-          </span>
-			</el-dialog>
 
 			<div class="ad"><img src="../../assets/images/03.jpg"></div>
 

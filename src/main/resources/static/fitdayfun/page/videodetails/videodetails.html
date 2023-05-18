@@ -258,7 +258,7 @@
                 </div>
                 <div class="myright">
                     <div style="display: flex">
-                        <div style="margin: 15px 20px">
+                        <div style="margin: 15px 2px 15px 40px">
                             <el-avatar :size="50" :src="author.avatar"></el-avatar>
                         </div>
                         <div style="display: flex;flex-direction: column;margin: 10px 5px;">
@@ -266,14 +266,14 @@
                                 <span class="theup">{{author.username}}</span>
                                 <div class="sendmss">
                                     <i class="el-icon-message-solid"></i>
-                                    <span class="smallicon">发信息</span>
+                                    <span class="smallicon" @click="focus('发信息')">发信息</span>
                                 </div>
                             </div>
                             <div style="margin:0 0 10px 10px;">
                                 <span class="thefont">{{'该用户暂未设置个性签名'||author.sign}}</span>
                             </div>
                             <el-button  v-if="false" type="info" style="width: 200px" round>+ 已关注 7772</el-button>
-                            <el-button @click="focus" type="primary" style="width: 200px" round>+ 关注 7772</el-button>
+                            <el-button @click="focus('关注')" type="primary" style="width: 200px" round>+ 关注 7772</el-button>
                         </div>
                     </div>
 
@@ -388,8 +388,12 @@
                             }
                         })
                     },
-                    focus(){
-
+                    focus(fun){
+                        this.$notify({
+                            title: '提示',
+                            message: `${fun}功能暂未开放，敬请期待！`,
+                            type: 'warning'
+                        });
                     },
                     positive1(){
                         if(this.positive==false){
@@ -417,19 +421,23 @@
                         window.location.href="../community/case.html"
                     },
                     commets1(){
-                        addcomments(this.userInfo.uid,this.myvideoinfo.videoId,this.mytextarea).then(res=>{
-                            if(String(res.code) === '1'){
-                                this.$message.success("发布成功")
-                                this.mytextarea=''
-                                if(this.positive==true){
-                                    this.comments.push(res.data)
-                                }else{
-                                    this.comments.unshift(res.data)
+                        if(this.mytextarea==''){
+                            this.$message.warning("请输入评论的内容！")
+                        }else{
+                            addcomments(this.userInfo.uid,this.myvideoinfo.videoId,this.mytextarea).then(res=>{
+                                if(String(res.code) === '1'){
+                                    this.$message.success("发布成功")
+                                    this.mytextarea=''
+                                    if(this.positive==true){
+                                        this.comments.push(res.data)
+                                    }else{
+                                        this.comments.unshift(res.data)
+                                    }
+                                }else {
+                                    this.$message.error("发布失败")
                                 }
-                            }else {
-                                this.$message.error("发布失败")
-                            }
-                        })
+                            })
+                        }
                     },
                     async navto(videoId){
                         await getonevideo(videoId).then(res=>{

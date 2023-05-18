@@ -584,9 +584,9 @@
                 created(){
                     this.userInfo = JSON.parse(localStorage.getItem('userInfo'))
                     this.init()
-                    this.init2()
+                    this.init11()
                     this.init3()
-                    this.init6()
+                    this.init12()
 
                 },
                 mounted() {
@@ -657,7 +657,7 @@
                                             console.log("not")
                                         }
                                     }).catch(err => {
-                                        this.$message.error('请求出错了：' + err)
+                                        this.$message.error("由于您还未填写您的身高和体重，我们暂时无法提供给您精确的服务！")
                                     })
                                 }else {
                                     console.log("not")
@@ -797,6 +797,23 @@
                             this.$message.error('请求出错了：' + err)
                         })
                     },
+                    async init11(){
+                        this.alllist=[]
+                        this.showlist=[]
+                        await getAllList().then(res => {
+                            if (String(res.code) === '1') {
+                                this.alllist.push(...res.data)
+                                var count=this.alllist.length
+                                var ramnum=(Number(this.userInfo.uid)+1)%count
+                                this.showlist.push(this.alllist[ramnum])
+                                this.showlist.push(this.alllist[(ramnum+1)%count])
+                                this.showlist.push(this.alllist[(ramnum+2)%count])
+                                this.showlist.push(this.alllist[(ramnum+3)%count])
+                            }
+                        }).catch(err => {
+                            this.$message.error('请求出错了：' + err)
+                        })
+                    },
                     async init2(){
                         this.alllist=[]
                         this.showlist=[]
@@ -849,7 +866,7 @@
                                 console.log("not")
                             }
                         }).catch(err => {
-                            this.$message.error('请求出错了：' + err)
+                            this.$message.error("由于您还未填写您的身高和体重，我们暂时无法提供给您精确的服务！")
                         })
                     },
                     async init5 () {
@@ -871,6 +888,24 @@
                                 this.tableData.push(temp)
                             }
                         }
+                    },
+                    async init12(){
+                        this.alllist2=[]
+                        this.showlist2=[]
+                        await getAllList2().then(res => {
+                            if (String(res.code) === '1') {
+                                this.alllist2.push(...res.data)
+                                var count=this.alllist2.length
+                                var ramnum=(Number(this.userInfo.uid)-1)%count
+                                this.showlist2.push(this.alllist2[ramnum])
+                                this.showlist2.push(this.alllist2[(ramnum+1)%count])
+                                this.showlist2.push(this.alllist2[(ramnum+2)%count])
+                                this.showlist2.push(this.alllist2[(ramnum+3)%count])
+                            }
+                            window.parent.postMessage(document.body.clientHeight-450,'*')
+                        }).catch(err => {
+                            this.$message.error('请求出错了：' + err)
+                        })
                     },
                     async init6(){
                         this.alllist2=[]

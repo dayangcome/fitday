@@ -7,6 +7,21 @@
     <link rel="stylesheet" href="../../../../public/plugins/element-ui/index.css" />
     <title>Document</title>
     <style>
+        body {
+            animation: fadeInAnimation ease 3s;
+            animation-iteration-count: 1;
+            animation-fill-mode: forwards;
+
+        }
+
+        @keyframes fadeInAnimation {
+            0% {
+                opacity: 0;
+            }
+            100% {
+                opacity: 1;
+            }
+        }
         .containor{
             display: flex;
             margin: 8px 8px;
@@ -417,7 +432,13 @@
                             <div style=" font-size: 15px; margin-top: 4px;">{{item.name}}</div>
                             <div style=" font-size: 15px; margin-top: 4px;">{{item.createdate.toLocaleString().replace(/T/g, ' ').replace(/\.[\d]{3}Z/, '')}}</div>
                         </div>
-                        <el-button v-if="item.userid==userInfo.uid" @click="del(item)" style="float: right;margin-right: 76px;margin-top: 12px;" type="text" >删除动态</el-button>
+                        <el-popconfirm
+                                title="确定要删除这条动态吗？"
+                                @confirm="del(item.id)"
+                        >
+                            <el-button slot="reference" v-if="item.userid==userInfo.uid" style="float: right;margin-right: 76px;margin-top: 12px;" type="text" >删除动态</el-button>
+                        </el-popconfirm>
+
                     </div>
                     <div style="font-size: 20px; margin-top: 15px; margin-left:3px;margin-bottom: 15px"><span v-html="topic(item.content)"></span></div>
                     <div  v-if="item.prepare1!='pic'" style=" vertical-align: top;width: 40px; display: inline-block; margin-left: 5px; margin-top: 5px; "><img style="width: 200px; height: 140px;" :src="item.prepare1" alt="" title=""></div>
@@ -551,8 +572,15 @@
                     document.querySelector(".b3").classList.remove("active")
                     document.querySelector(".b1").classList.remove("active")
                 },
-                del(item){
-                    console.log(item)
+                del(id){
+                    delmydt(id).then(res => {
+                        if (String(res.code) === '1') {
+                            this.$message.success('已成功删除该动态！')
+                            this.init()
+                        }
+                    }).catch(err => {
+                        this.$message.error('请求出错了：' + err)
+                    })
                 },
                 getmems(){
                     getmymem(this.mygroup.id).then(res=>{

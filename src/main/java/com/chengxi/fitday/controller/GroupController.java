@@ -180,5 +180,16 @@ public class GroupController {
         groupService.updateById(mygroup);
         return R.success("退出小组");
     }
+
+    //删除小组动态
+    @GetMapping("/del/{id}")
+    public R<String> delmydt(@PathVariable Long id){
+        try{
+            articlesService.removeById(id);       //把动态删除
+            return R.success("成功删除");
+        }catch (Exception e){
+            return R.error(e.getMessage());
+        }
+    }
 }
 

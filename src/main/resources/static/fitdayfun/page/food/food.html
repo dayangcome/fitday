@@ -1087,6 +1087,17 @@
                     if (String(res.code) === '1') {
                         this.foodData = res.data.records|| []
                         this.counts = res.data.total
+                        var m=(Number(this.userInfo.uid)-1)% 5
+                        console.log(m)
+                        for(let i=0; i< m ;i++)
+                        {
+                            let j=0
+                            let x = this.foodData[0];
+                            for(j=0;j<4;j++){
+                                this.foodData[j]=this.foodData[j+1];
+                            }
+                            this.foodData[j]=x;
+                        }
                     }
                 }).catch(err => {
                     this.$message.error('请求出错了：' + err)
@@ -1095,6 +1106,17 @@
                     if (String(res.code) === '1') {
                         this.dietData = res.data.records|| []
                         this.counts2 = res.data.total
+                        var m=(Number(this.userInfo.uid)+1)% 5
+                        console.log(m)
+                        for(let i=0; i< m ;i++)
+                        {
+                            let j=0
+                            let x = this.dietData[0];
+                            for(j=0;j<4;j++){
+                                this.dietData[j]=this.dietData[j+1];
+                            }
+                            this.dietData[j]=x;
+                        }
                     }
                 }).catch(err => {
                     this.$message.error('请求出错了：' + err)

@@ -56,3 +56,10 @@ function lout(uid) {
         method: 'get'
     })
 }
+
+function delmydt (id) {
+    return $axios({
+        url: `/group/del/${id}`,
+        method: 'get'
+    })
+}

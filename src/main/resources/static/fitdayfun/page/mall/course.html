@@ -114,37 +114,6 @@
                     </div>
 
                     </div>
-
-                <div>
-                    <h2><span class="green">* </span> 新上好课 <span class="green"> *</span></h2>
-                    <div style="display: flex;">
-                        <div v-for="(o, index) in 3" :key="o" :offset="index > 0 ? 3 : 0" style="width: 220px;margin:0 25px;">
-                            <el-card :body-style="{ padding: '0px' }" shadow="hover">
-                                <img :src="o.productPicture" class="image">
-                                <div style="padding: 14px;">
-                                    <span>课程{{o}}</span>
-                                    <div class="bottom clearfix">
-                                        <h5>售价：￥133</h5>
-                                    </div>
-                                </div>
-                            </el-card>
-                        </div>
-                    </div>
-                    <div style="display: flex;margin-top: 40px">
-                        <div v-for="(o, index) in 3" :key="o" :offset="index > 0 ? 3 : 0" style="width: 220px;margin:0 25px;">
-                            <el-card :body-style="{ padding: '0px' }" shadow="hover">
-                                <img :src="o.productPicture" class="image">
-                                <div style="padding: 14px;">
-                                    <span>课程{{o+3}}</span>
-                                    <div class="bottom clearfix">
-                                        <h5>售价：￥203</h5>
-                                    </div>
-                                </div>
-                            </el-card>
-                        </div>
-                    </div>
-                    <el-button style="margin: 20px 25px;width: 94%"><strong>浏览更多课程</strong></el-button>
-                </div>
         </div>
                 <div class="right">
                     <h3>热门课程</h3>
@@ -166,6 +135,11 @@
                         <el-table-column
                                 prop="productName"
                         >
+                            <template slot-scope="scope">
+                                <a  @click="navto(scope.row)">{{
+                                    scope.row.productName
+                                    }}</a>
+                            </template>
                         </el-table-column>
                     </el-table>
                     </div>
@@ -270,6 +244,7 @@
                         gettypeall(1).then(res=>{
                             if(String(res.code) === '1'){
                                 this.datalist=res.data
+                                this.courseData=this.datalist.slice(4,9)
                                 window.parent.postMessage(document.body.clientHeight-100,'*')
                             }else {
                                 this.$message.error("获取失败")
@@ -288,7 +263,10 @@
                            window.location.href = "./tools.html"
                        }
                        if(key==3){
-                           window.location.href = "./healthyfood.html"
+                           this.$message.warning("暂时还没有食品上架...")
+                       }
+                       if(key==4){
+                           this.$message.warning("暂时还没有其他物品上架...")
                        }
                     }
                 }

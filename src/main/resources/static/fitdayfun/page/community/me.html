@@ -179,7 +179,7 @@
             this.init()
         },
         mounted() {
-            window.parent.postMessage(document.body.clientHeight,'*')
+
         },
         methods: {
             async init () {
@@ -192,6 +192,8 @@
                     if (String(res.code) === '1') {
                         this.tableData = res.data.records || []
                         this.counts = res.data.total
+                        window.parent.postMessage(document.body.clientHeight+860,'*')
+                        console.log(document.body.clientHeight)
                     }
                 }).catch(err => {
                     this.$message.error('请求出错了：' + err)

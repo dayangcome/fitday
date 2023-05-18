@@ -221,7 +221,10 @@
                            window.location.href = "./tools.html"
                        }
                        if(key==3){
-                           window.location.href = "./healthyfood.html"
+                           this.$message.warning("暂时还没有食品上架...")
+                       }
+                       if(key==4){
+                           this.$message.warning("暂时还没有其他物品上架...")
                        }
                     }
                 }

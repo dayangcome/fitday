@@ -8,7 +8,21 @@
     <!-- 引入组件库 -->
     <script src="../../../public/plugins/element-ui/index.js"></script>
 	<style>
-	  
+		body {
+			animation: fadeInAnimation ease 3s;
+			animation-iteration-count: 1;
+			animation-fill-mode: forwards;
+
+		}
+
+		@keyframes fadeInAnimation {
+			0% {
+				opacity: 0;
+			}
+			100% {
+				opacity: 1;
+			}
+		}
 	  .el-carousel__item h3 {
 	    color: #475669;
 	    font-size: 14px;
@@ -178,11 +192,11 @@
 		},    
 		methods: {
 			yuyue(){
-				if(this.userInfo.level<3){
-					this.$message.warning("用户需要达到3级才能使用这个功能！");
-				}else{
-					this.$message.success("预约成功！");
-				}
+				this.$notify({
+					title: '提示',
+					message: '抱歉，当前暂无可预约的医生！',
+					type: 'warning'
+				});
 			},
 			togpt(){
 				if(this.userInfo.level<3){

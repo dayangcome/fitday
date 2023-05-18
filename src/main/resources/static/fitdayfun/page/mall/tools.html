@@ -19,8 +19,10 @@
                 cursor: pointer;
             }
             .el-table__row:hover{
-                background-color: #f0c78a;
                 cursor: pointer;
+            }
+            .cell:hover{
+                color: blue;
             }
             @keyframes fadeInAnimation {
                 0% {
@@ -41,6 +43,10 @@
             .green{
                 color: green;
             }
+            .classtable .el-image__inner{
+                width: 150px;
+                height: 82px;
+            }
             h2{
                 text-align: center;
             }
@@ -55,6 +61,13 @@
             .mysubmit:hover{
                 background-color: rgba(235, 238, 245, 0.86);
                 cursor: pointer;
+            }
+            .el-notification{
+                width: 35%;
+                height: 100px;
+            }
+            .el-notification h2{
+                text-align: left !important;
             }
         </style>
     </head>
@@ -100,31 +113,37 @@
                             </el-card>
                         </div>
                     </div>
-                    <el-button style="margin: 20px 25px;width: 94%"><strong>浏览更多器材</strong></el-button>
+                    <el-button style="margin: 20px 25px;width: 94%" @click="waiting(1)"><strong>浏览更多器材</strong></el-button>
                 </div>
         </div>
                 <div class="right">
-                    <h3>热门课程</h3>
-                    <el-table
-                            :data="courseData"
-                            stripe
-                            style="width: 100%"
-                            :show-header="false"
-                            highlight-current-row
-                    >
-                        <el-table-column
-                                align="center"
-                                width="180">
-                            <template slot-scope="scope">
-                                <el-image :src="scope.row.picture"/>
-                            </template>
-                        </el-table-column>
-                        <el-table-column
-                                prop="course"
-                                align="center"
+                    <h3>热门器材</h3>
+                    <div class="classtable">
+                        <el-table
+                                :data="datalist2"
+                                stripe
+                                style="width: 100%"
+                                :show-header="false"
+                                highlight-current-row
                         >
-                        </el-table-column>
-                    </el-table>
+                            <el-table-column
+                                    align="center"
+                                    width="180">
+                                <template slot-scope="scope">
+                                    <el-image :src="scope.row.productPicture"/>
+                                </template>
+                            </el-table-column>
+                            <el-table-column
+                                    prop="productName"
+                            >
+                                <template slot-scope="scope">
+                                    <a  @click="navto(scope.row)">{{
+                                        scope.row.productName
+                                        }}</a>
+                                </template>
+                            </el-table-column>
+                        </el-table>
+                    </div>
 
                     <h3>优秀名师</h3>
                     <el-table
@@ -135,20 +154,25 @@
                             highlight-current-row
                     >
                         <el-table-column
+                                width="110"
                                 align="center"
-                                width="180">
+                        >
                             <template slot-scope="scope">
-                                <el-image :src="scope.row.picture"/>
+                                <el-image :src="scope.row.avatar"/>
                             </template>
                         </el-table-column>
                         <el-table-column
-                                prop="course"
-                                align="center"
                         >
+                            <template slot-scope="scope">
+                                <div style="display: flex;flex-direction: column;">
+                                    <strong>{{scope.row.username}}</strong>
+                                    {{scope.row.sign}}
+                                </div>
+                            </template>
                         </el-table-column>
                     </el-table>
                     <div class="mysubmit" style="text-align: center;border-bottom: 1px solid #EBEEF5;" >
-                   <el-button type="text" style="color: rgb(18,157,105);font-weight: bold;font-size: 16px;">申请成为名师</el-button>
+                   <el-button type="text" style="color: rgb(18,157,105);font-weight: bold;font-size: 16px;" @click="waiting(2)">申请成为名师</el-button>
                     </div>
                 </div> 
         </div>
@@ -164,7 +188,30 @@
                 el: '#app',
                 data() {
                     return {
-                        datalist:[]
+                        datalist:[],
+                        datalist2:[],
+                        teacherData:[
+                            {
+                                username:"焦东海",
+                                avatar:"https://www.chinadaily.com.cn/hqcj/images/attachement/jpg/site1/20130423/eca86bd9ddc712e0853205.jpg",
+                                sign:"中医减肥研究院专家，原中国保健科学技术学会肥胖症分会会长"
+                            },
+                            {
+                                username:"王顶",
+                                avatar:"https://img2.baidu.com/it/u=4142452225,3902180146&fm=253&fmt=auto&app=138&f=JPEG?w=500&h=281",
+                                sign:"教授、主任医师，硕士/博士研究生导师"
+                            },
+                            {
+                                username:"孟化",
+                                avatar:"https://5b0988e595225.cdn.sohucs.com/images/20200306/77d333b58dc3492d9c90be50dcba251d.jpeg",
+                                sign:"医学博士后、教授、主任医师、研究生导师、外科代谢中心主任、普外科副主任"
+                            },
+                            {
+                                username:"刘忠旭",
+                                avatar:"../../assets/img/portfolio/b4.jpg",
+                                sign:"滴滴出行高级专家工程师&橙心优选营销体系负责人，“spring boot”课程作者"
+                            },
+                        ]
                     }
                 },
 
@@ -172,10 +219,29 @@
                   this.init()
                 },
                 methods: {
+                    waiting(i){
+                        if(i==1){
+                            this.$notify({
+                                title: '提示',
+                                message: '该功能暂未开放',
+                                type: 'warning',
+                                offset: 300
+                            });
+                        }else{
+                            this.$notify({
+                                title: '提示',
+                                message: '该功能暂未开放',
+                                type: 'warning',
+                                offset: 500
+                            });
+                        }
+
+                    },
                     init(){
                         gettypeall(2).then(res=>{
                             if(String(res.code) === '1'){
                                 this.datalist=res.data
+                                this.datalist2=this.datalist.slice(2,7)
                                 window.parent.postMessage(document.body.clientHeight-100,'*')
                             }else {
                                 this.$message.error("获取失败")
@@ -194,7 +260,10 @@
                            window.location.href = "./tools.html"
                        }
                        if(key==3){
-                           window.location.href = "./healthyfood.html"
+                           this.$message.warning("暂时还没有食品上架...")
+                       }
+                       if(key==4){
+                           this.$message.warning("暂时还没有其他物品上架...")
                        }
                     }
                 }

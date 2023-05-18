@@ -59,8 +59,6 @@ public class UserController {
         if(user1.getStatus()==0){
             return R.error("freeze"); //账号封禁，后端接收
         }
-
-
         user1.setUpdateTime(LocalDateTime.now());  //最近登录时间
         request.getSession().setAttribute("useruid",user1.getUid());
         return R.success(user1);
