@@ -28,7 +28,7 @@ public class FeedbackController {
     private IUserService userService;
 
     @PostMapping("/nologinfeedback")
-    public R<String> nologinfeedback(@RequestBody Feedback feedback){
+    public R<String> noLoginFeedback(@RequestBody Feedback feedback){
         Feedback feedback1=new Feedback();
         feedback1.setName(feedback.getName());
         feedback1.setEmail(feedback.getEmail());
@@ -54,7 +54,7 @@ public class FeedbackController {
 
     //用户申诉被封禁的账号
     @PostMapping("/sendexplain")
-    public R<String> sendexplain(@RequestBody Explaindto explaindto){
+    public R<String> sendExplain(@RequestBody Explaindto explaindto){
         User user1=null;
         if(explaindto.getAccount()!=""){
             LambdaQueryWrapper<User> queryWrapper=new LambdaQueryWrapper<>();
@@ -100,7 +100,7 @@ public class FeedbackController {
 
     //删除反馈信息（员工后台）
     @GetMapping("/delfeed/{id}")
-    public R<String> delfeed(@PathVariable Long id){
+    public R<String> delFeed(@PathVariable Long id){
         feedbackService.removeById(id);        //删除反馈信息
         return R.success("成功删除");
     }

@@ -49,7 +49,7 @@ public class UservideoController {
 
     //查询单个视频信息
     @GetMapping("/one/{videoId}")
-    public R<Uservideo> getonevideo(@PathVariable Long videoId){
+    public R<Uservideo> getOneVideo(@PathVariable Long videoId){
         Uservideo uservideo=uservideoService.getById(videoId);
         if(uservideo==null){
             return R.error("未找到该视频！");

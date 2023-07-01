@@ -34,7 +34,7 @@ public class DietController {
 
     //添加套餐（员工后台）
     @PostMapping("/adddiet")
-    public R<String> adddiet(@RequestBody Diet diet){
+    public R<String> addDiet(@RequestBody Diet diet){
         Diet diet1=new Diet();
         diet1.setDietTitle(diet.getDietTitle());
         diet1.setDietCategoryId(diet.getDietCategoryId());
@@ -51,14 +51,14 @@ public class DietController {
 
     //删除套餐信息（员工后台）
     @GetMapping("/deldiet/{id}")
-    public R<String> delfood(@PathVariable Long id){
+    public R<String> delFood(@PathVariable Long id){
         dietService.removeById(id);        //删除套餐信息
         return R.success("成功删除");
     }
 
     //修改套餐（员工后台）
     @PostMapping("/changediet")
-    public R<String> changediet(@RequestBody Diet diet){
+    public R<String> changeDiet(@RequestBody Diet diet){
         Diet diet1 =dietService.getById(diet.getDietId());
         diet1.setDietTitle(diet.getDietTitle());
         diet1.setDietCategoryId(diet.getDietCategoryId());

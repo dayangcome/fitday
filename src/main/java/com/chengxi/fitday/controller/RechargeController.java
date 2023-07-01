@@ -29,7 +29,7 @@ public class RechargeController {
     //充值业务
     @Transactional(rollbackFor = Exception.class)      //添加事务，如果充值出了问题则进行回滚
     @PostMapping("/moneyadd")
-    public R<String> mymoneyadd(@RequestBody Recharge recharge){
+    public R<String> myMoneyAdd(@RequestBody Recharge recharge){
         try{
             User user=userService.getById(recharge.getUid());
             if(user==null){

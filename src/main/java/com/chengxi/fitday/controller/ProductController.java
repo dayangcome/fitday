@@ -54,7 +54,7 @@ public class ProductController {
     //购买商品业务
     @Transactional(rollbackFor = Exception.class)      //添加事务，如果购买商品过程出了问题则进行回滚
     @PostMapping("/buy")
-    public R<String> buygoods(@RequestBody Buydto buydto){
+    public R<String> buyGoods(@RequestBody Buydto buydto){
         System.out.println("budto+++++++++"+buydto);
         try{
             User user=userService.getById(buydto.getUid());

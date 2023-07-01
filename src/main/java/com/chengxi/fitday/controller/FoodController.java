@@ -19,6 +19,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.util.DigestUtils;
 import org.springframework.web.bind.annotation.*;
 
+import javax.annotation.Resource;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.LocalTime;
@@ -38,7 +39,7 @@ public class FoodController {
     @Autowired
     private IUserService userService;
 
-    @Autowired
+    @Resource
     private IUserinfoService userinfoService;
 
     //食物信息分页查询
@@ -61,7 +62,7 @@ public class FoodController {
 
     //添加食物（员工后台）
     @PostMapping("/addfood")
-    public R<String> addfood(@RequestBody Food food){
+    public R<String> addFood(@RequestBody Food food){
         Food food1=new Food();
         food1.setFoodName(food.getFoodName());
         food1.setHeat(food.getHeat());
@@ -70,7 +71,7 @@ public class FoodController {
         food1.setPicture(food.getPicture());
         food1.setSuitablePerson(food.getSuitablePerson());
         food1.setDietTaboo(food.getDietTaboo());
-        food1.setCreateTime(LocalDateTime.now());
+        food1.setCreateTime(LocalDateTime.now());       //设置添加时间
         food1.setUpdataeTime(LocalDateTime.now());
         food1.setProtein(food.getProtein());
         food1.setCarbohydrate(food.getCarbohydrate());
@@ -80,14 +81,14 @@ public class FoodController {
 
     //删除食物信息（员工后台）
     @GetMapping("/delfood/{id}")
-    public R<String> delfood(@PathVariable Long id){
+    public R<String> delFood(@PathVariable Long id){
         foodService.removeById(id);        //删除食物信息
         return R.success("成功删除");
     }
 
     //修改食物（员工后台）
     @PostMapping("/changefood")
-    public R<String> changefood(@RequestBody Food food){
+    public R<String> changeFood(@RequestBody Food food){
         Food food1=foodService.getById(food.getFoodId());
         food1.setFoodName(food.getFoodName());
         food1.setHeat(food.getHeat());
@@ -128,7 +129,7 @@ public class FoodController {
 
     //添加早餐计划信息
     @PostMapping("/breakfast")
-    public R<String> mybreakfast(@RequestBody Foodplandto foodplandto){
+    public R<String> myBreakFast(@RequestBody Foodplandto foodplandto){
         LambdaQueryWrapper<DietPlan> queryWrapper=new LambdaQueryWrapper<>();
         System.out.println("???"+foodplandto.getUserid());
         queryWrapper.eq(DietPlan::getUserid,foodplandto.getUserid());
@@ -139,7 +140,7 @@ public class FoodController {
             DietPlan dietPlan1=new DietPlan();
             List<Fooddto> foods=foodplandto.getFoods();
             String breakfast="";
-            for (Fooddto myfood:foods){
+            for (Fooddto myfood:foods){         //拼接早餐计划字符串
                 breakfast+=myfood.getFood();
                 breakfast+="  ";
                 breakfast+=myfood.getIntake();

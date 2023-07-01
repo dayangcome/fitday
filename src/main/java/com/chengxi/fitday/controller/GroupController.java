@@ -86,7 +86,7 @@ public class GroupController {
 
     //用户在小组发动态
     @PostMapping("/addd/{uid}/{groupid}/{content}/{prepare1}")
-    public R<Articles> addcomments(@PathVariable Long uid,@PathVariable Long groupid,@PathVariable String content,@PathVariable String prepare1){
+    public R<Articles> addComments(@PathVariable Long uid,@PathVariable Long groupid,@PathVariable String content,@PathVariable String prepare1){
 
         Articles articles=new Articles();
         articles.setCreatedate(LocalDateTime.now());
@@ -111,7 +111,7 @@ public class GroupController {
 
     //查询小组动态
     @GetMapping("/getcomments/{groupid}")
-    public R<List<Articles>> getcomments(@PathVariable Long groupid){
+    public R<List<Articles>> getComments(@PathVariable Long groupid){
         LambdaQueryWrapper<Articles> queryWrapper=new LambdaQueryWrapper<>();
         queryWrapper.eq(Articles::getGroupid,groupid);
         queryWrapper.orderByDesc(Articles::getCreatedate);
@@ -121,7 +121,7 @@ public class GroupController {
 
     //查询小组动态
     @GetMapping("/allmem/{groupid}")
-    public R<List<User>> getallmems(@PathVariable Long groupid){
+    public R<List<User>> getAllmems(@PathVariable Long groupid){
         LambdaQueryWrapper<Usergroup> queryWrapper=new LambdaQueryWrapper<>();
         queryWrapper.eq(Usergroup::getGroupId,groupid);
         List<Usergroup> usergroups= usergroupService.list(queryWrapper);
@@ -183,7 +183,7 @@ public class GroupController {
 
     //删除小组动态
     @GetMapping("/del/{id}")
-    public R<String> delmydt(@PathVariable Long id){
+    public R<String> delMydt(@PathVariable Long id){
         try{
             articlesService.removeById(id);       //把动态删除
             return R.success("成功删除");

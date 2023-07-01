@@ -47,6 +47,7 @@ public class SportController {
         Page pageinfo=new Page<>(page,pageSize);
         LambdaQueryWrapper<Sport> queryWrapper=new LambdaQueryWrapper<>();
         queryWrapper.like(StringUtils.isNotEmpty(name),Sport::getSportName,name);   //模糊查询运动名称
+
 //        LambdaQueryWrapper<Matrix> queryWrapper2=new LambdaQueryWrapper<>();    //实现协同过滤
 //        queryWrapper2.eq(Matrix::getXs,0);
 //        List<Matrix> usermatlist= matrixService.list(queryWrapper2);
@@ -68,6 +69,7 @@ public class SportController {
 //        }
 //        SportRecommendation sr = new SportRecommendation(Amn, Bmn);
 //        List<Integer> recommendationList = sr.getRecommendationList(1);
+
         sportService.page(pageinfo,queryWrapper);
         return R.success(pageinfo);
     }
@@ -122,7 +124,7 @@ public class SportController {
 
     //查询部分运动信息
     @GetMapping("name/{name}")
-    public R<List<Sport>> getname(@PathVariable String name){
+    public R<List<Sport>> getName(@PathVariable String name){
         LambdaQueryWrapper<Sport> queryWrapper=new LambdaQueryWrapper<>();
         queryWrapper.like(StringUtils.isNotEmpty(name),Sport::getSportName,name);
         List <Sport> arr=sportService.list(queryWrapper);
@@ -131,7 +133,7 @@ public class SportController {
 
     //查询部分运动计划表信息
     @GetMapping("name2/{name}")
-    public R<List<Planform>> getname2(@PathVariable String name){
+    public R<List<Planform>> getName2(@PathVariable String name){
         LambdaQueryWrapper<Planform> queryWrapper=new LambdaQueryWrapper<>();
         queryWrapper.like(StringUtils.isNotEmpty(name),Planform::getTitle,name);
         List <Planform> arr=planformService.list(queryWrapper);
@@ -140,7 +142,7 @@ public class SportController {
 
     //查询运动计划
     @GetMapping("plan/{uid}/{mydate}")
-    public R<List<SportsPlan>> getplan(@PathVariable Long uid,@PathVariable int mydate){
+    public R<List<SportsPlan>> getPlan(@PathVariable Long uid,@PathVariable int mydate){
         LambdaQueryWrapper<SportsPlan> queryWrapper=new LambdaQueryWrapper<>();
         queryWrapper.eq(SportsPlan::getUserid,uid);
         if(mydate==0){
@@ -162,7 +164,7 @@ public class SportController {
 
     //添加运动计划
     @GetMapping("addplan/{uid}/{context}")
-    public R<String> addplan(@PathVariable Long uid,@PathVariable String context){
+    public R<String> addPlan(@PathVariable Long uid,@PathVariable String context){
         SportsPlan sportsPlan=new SportsPlan();
         sportsPlan.setContent(context);
         sportsPlan.setUserid(uid);
@@ -173,14 +175,14 @@ public class SportController {
 
     //删除某运动计划
     @GetMapping("/delplan/{id}")
-    public R<String> delplan(@PathVariable Long id){
+    public R<String> delPlan(@PathVariable Long id){
         sportsPlanService.removeById(id);     //删除运动计划信息
         return R.success("成功删除");
     }
 
     //完成某运动计划
     @GetMapping("/finplan/{id}")
-    public R<String> finplan(@PathVariable Long id){
+    public R<String> finPlan(@PathVariable Long id){
         SportsPlan sportsPlan=sportsPlanService.getById(id);
         sportsPlan.setIsDelect(1);
         sportsPlanService.updateById(sportsPlan);
@@ -198,7 +200,7 @@ public class SportController {
 
     //添加运动（员工后台）
     @PostMapping("/addsport")
-    public R<String> addsport(@RequestBody Sport sport){
+    public R<String> addSport(@RequestBody Sport sport){
         Sport sport1=new Sport();
         sport1.setSportName(sport.getSportName());
         sport1.setSportCategory(sport.getSportCategory());
@@ -211,14 +213,14 @@ public class SportController {
 
     //删除运动信息（员工后台）
     @GetMapping("/delsport/{id}")
-    public R<String> delsport(@PathVariable Long id){
+    public R<String> delSport(@PathVariable Long id){
         sportService.removeById(id);        //删除运动信息
         return R.success("成功删除");
     }
 
     //修改运动（员工后台）
     @PostMapping("/changesport")
-    public R<String> changesport(@RequestBody Sport sport){
+    public R<String> changeSport(@RequestBody Sport sport){
         Sport sport1=sportService.getById(sport.getSportId());
         sport1.setSportName(sport.getSportName());
         sport1.setSportCategory(sport.getSportCategory());
@@ -231,7 +233,7 @@ public class SportController {
 
     //通过运动计划得到消耗的热量
     @PostMapping("/getheat")
-    public R<Double> getheat(@RequestBody List<SportsPlan> plans){
+    public R<Double> getHeat(@RequestBody List<SportsPlan> plans){
         double sumheat=0;
         for(SportsPlan sp:plans){
             if(sp.getIsDelect()==1){
@@ -264,7 +266,7 @@ public class SportController {
 
     //获取推荐食物
     @GetMapping("/getrecom/{sport}")
-    public R<String> getrecom(@PathVariable String sport){
+    public R<String> getRecom(@PathVariable String sport){
         System.out.println(sport);
         LambdaQueryWrapper<Sport> queryWrapper=new LambdaQueryWrapper<>();
         queryWrapper.eq(Sport::getSportName,sport.trim());

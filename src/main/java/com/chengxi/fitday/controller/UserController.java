@@ -66,7 +66,7 @@ public class UserController {
 
     //用户手机号登录
     @PostMapping("/phonelogin")
-    public R<User> phonelogin(HttpServletRequest request, @RequestBody User user){
+    public R<User> phoneLogin(HttpServletRequest request, @RequestBody User user){
         String password=user.getPassword();
         password=DigestUtils.md5DigestAsHex(password.getBytes());
         LambdaQueryWrapper<User> queryWrapper=new LambdaQueryWrapper<>();
@@ -92,7 +92,7 @@ public class UserController {
 
     //获得用户信息1
     @GetMapping("/getuser/{uid}")
-    public R<User> getuser(@PathVariable Long uid){
+    public R<User> getUser(@PathVariable Long uid){
         User user=userService.getById(uid);
         if(user==null){
             return R.error("未找到用户");
@@ -103,14 +103,14 @@ public class UserController {
 
     //获得所有用户信息
     @GetMapping("/all")
-    public R<List<User>> getalluser(){
+    public R<List<User>> getAllUser(){
         List <User> arr=userService.list();
         return R.success(arr);
     }
 
     //获得用户信息2
     @GetMapping("/userinfo/{uid}")
-    public R<Userinfo> userinfo(@PathVariable Long uid){
+    public R<Userinfo> userInfo(@PathVariable Long uid){
         LambdaQueryWrapper<Userinfo> queryWrapper=new LambdaQueryWrapper<>(); //获得用户的体重等信息
         queryWrapper.eq(Userinfo::getUserId,uid);
         queryWrapper.eq(Userinfo::getStage,1);
@@ -172,7 +172,7 @@ public class UserController {
 
     //封禁用户账号（员工后台）
     @PutMapping("/freeze")
-    public R<String> freezeuser(@RequestBody FreezeInfodto freezeInfodto){
+    public R<String> freezeUser(@RequestBody FreezeInfodto freezeInfodto){
         User user1= userService.getById(freezeInfodto.getId());
         if(user1==null){
             return R.error("该用户不存在！");
@@ -196,7 +196,7 @@ public class UserController {
 
     //解封用户账号（员工后台）
     @GetMapping("/delfreeze/{id}")
-    public R<String> delfreezeuser(@PathVariable Long id){
+    public R<String> delFreezeUser(@PathVariable Long id){
         User user1= userService.getById(id);
         if(user1==null){
             return R.error("该用户不存在！");
@@ -234,7 +234,7 @@ public class UserController {
 
     //获取账号封禁信息（手机登录）
     @GetMapping("/phonefreezeInfo/{phone}")
-    public R<Freeze> phonefreezeInfo(@PathVariable String phone){
+    public R<Freeze> phoneFreezeInfo(@PathVariable String phone){
         LambdaQueryWrapper<User> queryWrapper=new LambdaQueryWrapper<>();
         queryWrapper.eq(User::getPhone,phone);
         User user1= userService.getOne(queryWrapper);
@@ -259,7 +259,7 @@ public class UserController {
 
     //更改账号个人信息
     @PutMapping("/changeuserinfo")
-    public R<String> changeuserinfo(@RequestBody User user){
+    public R<String> changeUserInfo(@RequestBody User user){
         System.out.println(user);
         User user1=userService.getById(user.getUid());
         user1.setUsername(user.getUsername());
@@ -277,7 +277,7 @@ public class UserController {
 
     //删除用户账号
     @GetMapping("/deluser/{uid}")
-    public R<String> deluser(@PathVariable Long uid){
+    public R<String> delUser(@PathVariable Long uid){
         User user=userService.getById(uid);
         if(user==null){
             return R.error("该账号已经注销！");
@@ -288,7 +288,7 @@ public class UserController {
 
     //用户填写了信息
     @PostMapping("/updatemyinfo")
-    public R<Userinfo> updatemyinfo(@RequestBody Userinfo userinfo){
+    public R<Userinfo> updateMyinfo(@RequestBody Userinfo userinfo){
         Userinfo userinfo1=new Userinfo();
         userinfo1.setAttention(0);
         userinfo1.setBlack(0);
@@ -361,7 +361,7 @@ public class UserController {
 
     //通过视频id查找到作者信息
     @GetMapping("/getbyvideo/{videoId}")
-    public R<User> getbyvideo(@PathVariable Long videoId){
+    public R<User> getbyVideo(@PathVariable Long videoId){
         Uservideo video=uservideoService.getById(videoId);
         if(video==null){
             return R.error("视频信息未找到！");
@@ -376,7 +376,7 @@ public class UserController {
 
     //获得体重变化信息
     @GetMapping("/getc/{uid}")
-    public R<List<Userinfo>> getmychange(@PathVariable Long uid){
+    public R<List<Userinfo>> getmyChange(@PathVariable Long uid){
         LambdaQueryWrapper<Userinfo> queryWrapper=new LambdaQueryWrapper<>();
         queryWrapper.eq(Userinfo::getUserId,uid);
         queryWrapper.orderByAsc(Userinfo::getCreateTime);

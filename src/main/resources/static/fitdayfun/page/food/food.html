@@ -173,7 +173,7 @@
                         </el-dialog>
                     </div>
 
-                    <div class="block" style="display: inline-block;"><el-avatar v-if="lunchData.length!=0" :size="50" :src="circleUrl2"></el-avatar><el-avatar v-if="lunchData.length==0" :size="50" :src="circleUrl"></el-avatar><br><el-button type="text" style="color:green" @click="lunchDialog">+ 午餐</el-button>
+                    <div class="block" style="display: inline-block;"><el-avatar v-if="lunchData.length!=0" :size="50" :src="circleUrl4"></el-avatar><el-avatar v-if="lunchData.length==0" :size="50" :src="circleUrl3"></el-avatar><br><el-button type="text" style="color:green" @click="lunchDialog">+ 午餐</el-button>
                         <el-dialog title="午餐" :visible.sync="lunchVisible" width="50%"
                                    :center="true">
                             <!-- append-to-body为true可以在弹框内部加上一个弹框 -->
@@ -232,7 +232,7 @@
                         </el-dialog>
                     </div>
 
-                    <div class="block" style="display: inline-block;"><el-avatar v-if="dinnerData.length!=0" :size="50" :src="circleUrl2"></el-avatar><el-avatar v-if="dinnerData.length==0" :size="50" :src="circleUrl"></el-avatar><br><el-button type="text" style="color:black" @click="dinnerDialog">+ 晚餐</el-button>
+                    <div class="block" style="display: inline-block;"><el-avatar v-if="dinnerData.length!=0" :size="50" :src="circleUrl6"></el-avatar><el-avatar v-if="dinnerData.length==0" :size="50" :src="circleUrl5"></el-avatar><br><el-button type="text" style="color:black" @click="dinnerDialog">+ 晚餐</el-button>
                         <el-dialog title="晚餐" :visible.sync="dinnerVisible" width="50%"
                                    :center="true">
                             <!-- append-to-body为true可以在弹框内部加上一个弹框 -->
@@ -291,7 +291,7 @@
                         </el-dialog>
                     </div>
 
-                    <div class="block" style="display: inline-block;"><el-avatar v-if="addData.length!=0" :size="50" :src="circleUrl2"></el-avatar><el-avatar v-if="addData.length==0" :size="50" :src="circleUrl"></el-avatar><br><el-button type="text" style="color:deeppink" @click="addDialog">+ 加餐</el-button>
+                    <div class="block" style="display: inline-block;"><el-avatar v-if="addData.length!=0" :size="50" :src="circleUrl8"></el-avatar><el-avatar v-if="addData.length==0" :size="50" :src="circleUrl7"></el-avatar><br><el-button type="text" style="color:deeppink" @click="addDialog">+ 加餐</el-button>
                         <el-dialog title="加餐" :visible.sync="addVisible" width="50%"
                                    :center="true">
                             <!-- append-to-body为true可以在弹框内部加上一个弹框 -->
@@ -645,8 +645,14 @@
                 counts: 0,
                 counts2: 0,
                 input:'',
-                circleUrl:'https://s1.ax1x.com/2023/01/28/pSUh3Js.jpg',
-                circleUrl2:'https://s1.ax1x.com/2023/02/22/pSv0Bse.jpg',
+                circleUrl:'https://img2.baidu.com/it/u=6110526,633710546&fm=253&fmt=auto&app=138&f=JPEG?w=466&h=500',
+                circleUrl2:'https://s1.ax1x.com/2023/07/01/pCBw9u4.jpg',
+                circleUrl3:'https://img-qn.51miz.com/Element/00/88/82/66/9dcd533c_E888266_ade530d6.png',
+                circleUrl4:'https://s1.ax1x.com/2023/07/01/pCBwSvF.jpg',
+                circleUrl5:'https://bpic.588ku.com/element_origin_min_pic/16/09/03/1057ca385e98e0d.jpg',
+                circleUrl6:'https://s1.ax1x.com/2023/07/01/pCBwhZ9.jpg',
+                circleUrl7:'https://img2.baidu.com/it/u=1494811024,716288950&fm=253&fmt=auto&app=138&f=JPEG?w=500&h=501',
+                circleUrl8:'https://s1.ax1x.com/2023/07/01/pCBdvCV.jpg',
                 page: 1,
                 page2:1,
                 logintype:0,

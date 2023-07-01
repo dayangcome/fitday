@@ -29,7 +29,7 @@ public class DynamicCommentController {
 
     //查询动态评论
     @GetMapping("/getcomments/{dyId}")
-    public R<List<DynamicComment>> getcomments(@PathVariable Long dyId){
+    public R<List<DynamicComment>> getComments(@PathVariable Long dyId){
         LambdaQueryWrapper<DynamicComment> queryWrapper=new LambdaQueryWrapper<>();
         queryWrapper.eq(DynamicComment::getDynamicId,dyId);
         List <DynamicComment> arr=dynamicCommentService.list(queryWrapper);
@@ -38,7 +38,7 @@ public class DynamicCommentController {
 
     //用户发表评论
     @PostMapping("/addcomments/{uid}/{dyId}/{content}")
-    public R<DynamicComment> addcomments(@PathVariable Long uid,@PathVariable Long dyId,@PathVariable String content){
+    public R<DynamicComment> addComments(@PathVariable Long uid,@PathVariable Long dyId,@PathVariable String content){
         DynamicComment comments=new DynamicComment();
         comments.setCreateTime(LocalDateTime.now());
         comments.setDynamicId(dyId);

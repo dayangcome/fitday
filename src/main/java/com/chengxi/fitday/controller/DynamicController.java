@@ -26,7 +26,7 @@ public class DynamicController {
 
     //发布动态
     @PostMapping("/add")
-    public R<String> adddynamic(@RequestBody Dynamic dynamic){
+    public R<String> addDynamic(@RequestBody Dynamic dynamic){
         Dynamic dynamic1=new Dynamic();
         dynamic1.setUserId(dynamic.getUserId());
         dynamic1.setPicture(dynamic.getPicture());
@@ -50,7 +50,7 @@ public class DynamicController {
 
     //查询部分动态信息
     @GetMapping("/{uid}")
-    public R<List<Dynamic>> getdynamic(@PathVariable Long uid){
+    public R<List<Dynamic>> getDynamic(@PathVariable Long uid){
         LambdaQueryWrapper<Dynamic> queryWrapper=new LambdaQueryWrapper<>();
         queryWrapper.eq(Dynamic::getUserId,uid);
         List <Dynamic> arr=dynamicService.list(queryWrapper);
@@ -59,7 +59,7 @@ public class DynamicController {
 
     //查询单个动态信息
     @GetMapping("/one/{theid}")
-    public R<Dynamic> getonevideo(@PathVariable Long theid){
+    public R<Dynamic> getOneVideo(@PathVariable Long theid){
         Dynamic dynamic=dynamicService.getById(theid);
         if(dynamic==null){
             return R.error("未找到该动态！");
@@ -82,7 +82,7 @@ public class DynamicController {
 
     //查询所有动态信息
     @GetMapping("all")
-    public R<List<Dynamic>> getalldynamic(){
+    public R<List<Dynamic>> getAllDynamic(){
         LambdaQueryWrapper<Dynamic> queryWrapper=new LambdaQueryWrapper<>();
         List <Dynamic> arr=dynamicService.list(queryWrapper);
         return R.success(arr);
@@ -90,7 +90,7 @@ public class DynamicController {
 
     //删除动态
     @GetMapping("/del/{id}")
-    public R<String> deldynamic(@PathVariable Long id){
+    public R<String> delDynamic(@PathVariable Long id){
        try{
            dynamicService.removeById(id);        //把动态删除
            return R.success("成功解封");

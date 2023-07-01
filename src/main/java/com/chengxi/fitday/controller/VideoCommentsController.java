@@ -33,7 +33,7 @@ public class VideoCommentsController {
 
     //查询视频评论
     @GetMapping("/getcomments/{videoId}")
-    public R<List<VideoComments>> getcomments(@PathVariable Long videoId){
+    public R<List<VideoComments>> getComments(@PathVariable Long videoId){
         LambdaQueryWrapper<VideoComments> queryWrapper=new LambdaQueryWrapper<>();
         queryWrapper.eq(VideoComments::getVideoid,videoId);
         List <VideoComments> arr=videoCommentsService.list(queryWrapper);
@@ -42,7 +42,7 @@ public class VideoCommentsController {
 
     //查询视频评论
     @GetMapping("/getcommentsd/{videoId}")
-    public R<List<VideoComments>> getcommentsd(@PathVariable Long videoId){
+    public R<List<VideoComments>> getCommentsd(@PathVariable Long videoId){
         LambdaQueryWrapper<VideoComments> queryWrapper=new LambdaQueryWrapper<>();
         queryWrapper.eq(VideoComments::getVideoid,videoId);
         queryWrapper.orderByDesc(VideoComments::getCommentdate);
@@ -52,7 +52,7 @@ public class VideoCommentsController {
 
     //用户发表评论
     @PostMapping("/addcomments/{uid}/{videoId}/{content}")
-    public R<VideoComments> addcomments(@PathVariable Long uid,@PathVariable Long videoId,@PathVariable String content){
+    public R<VideoComments> addComments(@PathVariable Long uid,@PathVariable Long videoId,@PathVariable String content){
         VideoComments comments=new VideoComments();
         comments.setCommentdate(LocalDateTime.now());
         comments.setVideoid(videoId);

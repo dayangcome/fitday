@@ -30,7 +30,7 @@ public class EmployeeController {
 
     //员工账号登录（员工后台）
     @PostMapping("/login")
-    public R<Employee> emplogin(HttpServletRequest request, @RequestBody Employee employee){
+    public R<Employee> empLogin(HttpServletRequest request, @RequestBody Employee employee){
         String password=employee.getPassword();
         password= DigestUtils.md5DigestAsHex(password.getBytes());
         LambdaQueryWrapper<Employee> queryWrapper=new LambdaQueryWrapper<>();
@@ -53,7 +53,7 @@ public class EmployeeController {
 
     //员工账号退出登录（员工后台）
     @PostMapping("/logout")
-    public R<String> logout(HttpServletRequest request){
+    public R<String> logOut(HttpServletRequest request){
         request.getSession().removeAttribute("empeid");
         return R.success("退出成功");
     }
@@ -71,7 +71,7 @@ public class EmployeeController {
 
     //封禁员工账号（员工后台）
     @GetMapping("/freeze/{eid}")
-    public R<String> freezeemp(@PathVariable Long eid){
+    public R<String> freezeEmp(@PathVariable Long eid){
         Employee employee= employeeService.getById(eid);
         if(employee==null){
             return R.error("该员工不存在！");
@@ -86,7 +86,7 @@ public class EmployeeController {
 
     //解封员工账号（员工后台）
     @GetMapping("/delfreeze/{eid}")
-    public R<String> delfreezeemp(@PathVariable Long eid){
+    public R<String> delFreezeEmp(@PathVariable Long eid){
         Employee employee= employeeService.getById(eid);
         if(employee==null){
             return R.error("该员工不存在！");
@@ -132,7 +132,7 @@ public class EmployeeController {
 
     //删除员工账号（员工后台）
     @GetMapping("/delemp/{eid}")
-    public R<String> delemp(@PathVariable Long eid){
+    public R<String> delEmp(@PathVariable Long eid){
         Employee employee=employeeService.getById(eid);
         if(employee==null){
             return R.error("该账号已注销！");
@@ -143,7 +143,7 @@ public class EmployeeController {
 
     //更改员工账号个人信息（员工后台）
     @PutMapping("/changeempinfo")
-    public R<String> changeempinfo(@RequestBody Employee employee){
+    public R<String> changeEmpInfo(@RequestBody Employee employee){
         Employee emp=employeeService.getById(employee.getEid());
 
         LambdaQueryWrapper<Employee> queryWrapper=new LambdaQueryWrapper<>();
@@ -164,7 +164,7 @@ public class EmployeeController {
 
     //更改员工账号个人信息（员工后台）
     @PostMapping("/changecodeApi")
-    public R<String> changecode(@RequestBody Changecodedto changecodedto){
+    public R<String> changeCode(@RequestBody Changecodedto changecodedto){
         Employee emp=employeeService.getById(changecodedto.getEid());
         String oldcode=DigestUtils.md5DigestAsHex(changecodedto.getCode().getBytes());
         if(!oldcode.equals(emp.getPassword())){
